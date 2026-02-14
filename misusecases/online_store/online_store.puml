@@ -1,0 +1,74 @@
+@startuml onlinestore
+
+'skinparam monochrome false
+'skinparam shadowing true
+
+left to right direction
+hide stereotype
+
+'skinparam ranksep 30
+skinparam nodesep 15
+
+skinparam usecase {
+  BackgroundColor<<misuse>> #000000
+  BorderColor<<misuse>> #000000
+  FontColor<<misuse>> #FFFFFF
+  StereotypeFontColor<<misuse>> #FFCCCC
+  ArrowColor<<threaten>> #B00000
+  ArrowColor<<mitigate>> #006600
+}
+
+rectangle "Online Store System" {
+
+    usecase "Make Payment"   as MakePayment
+    usecase "Verify Payment\nDetails"         as VerifyPayment
+    usecase "Apply Rate\nLimiting"         as ApplyRate
+    usecase "Encrypt\nCommunication\n(SSL/TLS)"        as Encrypt
+
+    usecase "Place Order"     as PlaceOrder
+    usecase "Browse Catalogue"       as Browse
+    usecase "Authenticate\nUser"       as Authenticate
+
+    usecase "Place Fraudulent\nOrder"        as PlaceFraudulent <<misuse>>
+    usecase "Steal Credit\nCard Data" as StealCreditCard <<misuse>>
+    usecase "Denial of\nService (DoS)" as DenailOfService <<misuse>>
+    usecase "Impersonate\nCustomer" as Impersonate <<misuse>>
+}
+
+together {
+    actor "Customer"          as Customer
+}
+
+together {
+    actor "Fraudster"     as Fraudster #black
+    actor "Hacker" as Hacker #black
+}
+
+' Legitimate associations & include
+Customer --> MakePayment
+Customer --> PlaceOrder
+Customer --> Browse
+
+MakePayment ..> Encrypt : <<includes>>
+PlaceOrder ..> Authenticate : <<includes>>
+
+' Threaten from misuse → use case
+PlaceFraudulent .u[#red].> PlaceOrder : <<threatens>>
+DenailOfService .u[#red].> PlaceOrder : <<threatens>>
+DenailOfService .u[#red].> Browse : <<threatens>>
+StealCreditCard .u[#red].> MakePayment : <<threatens>>
+Impersonate .u[#red].> PlaceOrder : <<threatens>>
+
+' Mitigate
+VerifyPayment .[#green].> PlaceFraudulent : <<mitigates>>
+Encrypt .[#green].> StealCreditCard : <<mitigates>>
+ApplyRate .[#green].> DenailOfService : <<mitigates>>
+Authenticate .[#green].> Impersonate : <<mitigates>>
+
+' Assoications from misactor
+Fraudster -u-> PlaceFraudulent
+Hacker -u-> StealCreditCard
+Hacker -u-> DenailOfService
+Hacker -u-> Impersonate
+
+@enduml

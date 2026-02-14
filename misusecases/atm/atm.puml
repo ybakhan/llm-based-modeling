@@ -1,0 +1,74 @@
+@startuml atm
+
+'skinparam monochrome false
+'skinparam shadowing true
+
+left to right direction
+hide stereotype
+
+'skinparam ranksep 30
+'skinparam nodesep 30
+
+skinparam usecase {
+  BackgroundColor<<misuse>> #000000
+  BorderColor<<misuse>> #000000
+  FontColor<<misuse>> #FFFFFF
+  StereotypeFontColor<<misuse>> #FFCCCC
+  ArrowColor<<threaten>> #B00000
+  ArrowColor<<mitigate>> #006600
+}
+
+actor "Customer"          as Customer
+actor "Bank"        as Bank
+
+together {
+    actor "Shoulder\nSurfer"     as ShoulderSurfer #black
+    actor "Card\nSkimmer" as CardSkimmer #black
+}
+
+rectangle "Bank ATM System" {
+    usecase "Transfer Funds"   as TransferFunds
+    usecase "Withdraw Cash"         as WithdrawCash
+    usecase "Encrypt\nCard Data"        as Encrypt
+    usecase "Customer\nAuthentication"     as CustomerAuthentication
+    usecase "Send Transaction\nAlert"       as SendAlert
+    usecase "Shield\nPIN Pad"        as Shield
+
+    usecase "Perform Unauthorized\nWithdrawal" as PerformUnauthorized <<misuse>>
+    usecase "Install Skimming\nDevice" as InstallSkim <<misuse>>
+    usecase "Spy on\nPIN Entry" as Spy <<misuse>>
+}
+
+' Legitimate associations & include
+Customer --> TransferFunds
+Customer --> WithdrawCash
+
+Bank --> TransferFunds
+Bank --> WithdrawCash
+
+TransferFunds ..> CustomerAuthentication : <<includes>>
+WithdrawCash ..> CustomerAuthentication : <<includes>>
+WithdrawCash ..> Encrypt : <<includes>>
+WithdrawCash ..> SendAlert : <<includes>>
+CustomerAuthentication ..> Shield : <<includes>>
+PerformUnauthorized ..> Spy : <<includes>>
+
+' Threaten from misuse → use case
+PerformUnauthorized .u[#red].> WithdrawCash : <<threatens>>
+InstallSkim .u[#red].> WithdrawCash : <<threatens>>
+Spy .u[#red].> CustomerAuthentication : <<threatens>>
+
+' Mitigate
+Encrypt .[#green].> InstallSkim : <<mitigates>>
+SendAlert .[#green].> PerformUnauthorized : <<mitigates>>
+Shield .[#green].> Spy : <<mitigates>>
+
+' Assoications from misactor
+ShoulderSurfer -u-> PerformUnauthorized
+ShoulderSurfer -u-> Spy
+CardSkimmer -u-> InstallSkim
+
+' Force layout at source diagram
+'Customer -[hidden]r->Bank
+
+@enduml

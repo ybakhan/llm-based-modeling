@@ -1,0 +1,84 @@
+@startuml healthcare
+
+'skinparam monochrome false
+'skinparam shadowing true
+
+left to right direction
+hide stereotype
+
+'skinparam ranksep 30
+skinparam nodesep 10
+
+skinparam usecase {
+  BackgroundColor<<misuse>> #000000
+  BorderColor<<misuse>> #000000
+  FontColor<<misuse>> #FFFFFF
+  StereotypeFontColor<<misuse>> #FFCCCC
+  ArrowColor<<threaten>> #B00000
+  ArrowColor<<mitigate>> #006600
+}
+
+together {
+    actor "Doctor"          as Doctor
+    actor "Nurse"        as Nurse
+    actor "Patient"        as Patient
+}
+
+together {
+    actor "Disgruntled\nEmployee"     as Disgruntled #black
+    actor "Identity\nThief" as IdentityThief #black
+}
+
+rectangle "Healthcare Information System" {
+    usecase "View Patient\nRecords"   as ViewPatient
+    usecase "Update Medical\nHistory"         as Update
+    usecase "Prescribe\nMedication"         as PrescribeMedication
+    usecase "Encrypt Patient\nData"        as Encrypt
+    usecase "Role-Based\nAccess Control"     as RoleBased
+    usecase "Audit Trail\nLogging"       as AuditTrail
+    usecase "Request\nAppointment"       as RequestAppointment
+    usecase "Verify Patient\nIdentity" as VerifyPatient
+
+    usecase "Tamper with\nMedical Records"        as Tamper <<misuse>>
+    usecase "Unauthorized Access\nto Patient Records" as Unauthorized <<misuse>>
+    usecase "Prescribe Harmful\nMedication" as PrescribeHarmful <<misuse>>
+    usecase "Steal Patient\nIdentity" as Steal <<misuse>>
+}
+
+' Legitimate associations & include
+Doctor --> ViewPatient
+Doctor --> Update
+Doctor --> PrescribeMedication
+
+Patient --> RequestAppointment
+
+Nurse --> ViewPatient
+Nurse --> Update
+
+ViewPatient ..> RoleBased : <<includes>>
+ViewPatient ..> Encrypt : <<includes>>
+
+Update ..> AuditTrail : <<includes>>
+
+RequestAppointment ..> VerifyPatient : <<includes>>
+
+' Threaten from misuse → use case
+Tamper .u[#red].> Update : <<threatens>>
+Unauthorized .u[#red].> ViewPatient : <<threatens>>
+PrescribeHarmful .u[#red].> PrescribeMedication : <<threatens>>
+Steal .u[#red].> RequestAppointment : <<threatens>>
+
+' Mitigate
+AuditTrail .[#green].> Tamper : <<mitigates>>
+RoleBased .[#green].> Unauthorized : <<mitigates>>
+RoleBased .[#green].> PrescribeHarmful : <<mitigates>>
+Encrypt .[#green].> Steal : <<mitigates>>
+VerifyPatient .[#green].> Steal : <<mitigates>>
+
+' Assoications from misactor
+Disgruntled -u-> Tamper
+Disgruntled -u-> Unauthorized
+Disgruntled -u-> PrescribeHarmful
+IdentityThief -u-> Steal
+
+@enduml

@@ -1,0 +1,77 @@
+@startuml online_exam
+
+' ============================================================
+' Misuse Case Diagram: Online Exam System
+' NOT from a published source. Fabricated by Claude.
+' ============================================================
+
+left to right direction
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+
+together {
+    ' -- Actors (legitimate) --
+    actor "Student" as student
+    actor "Instructor" as instructor
+}
+
+together {
+    ' -- Misactors --
+    actor "Cheating\nStudent" as cheater #Black
+    actor "Exam\nLeaker" as leaker #Black
+}
+
+rectangle "Online Exam System" {
+
+    ' === Use Cases ===
+    usecase "Take Exam" as UC1
+    usecase "Submit\nAnswers" as UC2
+    usecase "Create Exam" as UC3
+
+    ' === Extend ===
+    usecase "Request Time\nExtension" as UC5
+
+    ' === Security Use Cases (mitigations) ===
+    usecase "Enable Webcam\nProctoring" as SEC1
+    usecase "Randomize\nQuestion Order" as SEC2
+    usecase "Restrict Exam\nAccess Window" as SEC3
+
+    ' === Misuse Cases ===
+    usecase "Use Unauthorized\nResources" as MUC1 #333333;text:white
+    usecase "Share Exam\nContent" as MUC2 #333333;text:white
+    usecase "Impersonate\nAnother Student" as MUC3 #333333;text:white
+}
+
+' -- Actor associations --
+student --> UC1
+student --> UC2
+instructor --> UC3
+
+' -- Extend relationship (legitimate) --
+UC5 .u.> UC1 : <<extend>>
+
+' -- Include relationships --
+UC1 ..> SEC1 : <<include>>
+UC3 ..> SEC2 : <<include>>
+UC3 ..> SEC3 : <<include>>
+
+' -- Misactor associations --
+cheater -u-> MUC1
+cheater -u-> MUC3
+leaker -u-> MUC2
+
+' -- THREATENS relationships --
+MUC1 .u[#red].> UC1 : <<threatens>>
+MUC2 .u[#red].> UC3 : <<threatens>>
+MUC3 .u[#red].> UC2 : <<threatens>>
+
+' -- MITIGATES relationships --
+SEC1 ..[#green]..> MUC1 : <<mitigates>>
+SEC1 ..[#green]..> MUC3 : <<mitigates>>
+SEC2 ..[#green]..> MUC2 : <<mitigates>>
+SEC3 ..[#green]..> MUC2 : <<mitigates>>
+
+' hidden to force layout
+UC1 -[hidden]-> UC2
+UC3 -[hidden]-> UC2
+@enduml

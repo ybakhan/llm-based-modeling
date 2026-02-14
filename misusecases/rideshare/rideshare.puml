@@ -1,0 +1,74 @@
+@startuml rideshare
+
+' ============================================================
+' Misuse Case Diagram: Ride-Sharing System
+' NOT from a published source. Fabricated by Claude.
+' ============================================================
+
+left to right direction
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+
+together {
+    ' -- Actors (legitimate) --
+    actor "Passenger" as passenger
+    actor "Driver" as driver
+}
+
+together {
+    ' -- Misactors --
+    actor "Fake\nDriver" as fakedriver #Black
+    actor "Fare\nCheat" as cheat #Black
+}
+
+
+rectangle "Ride Sharing System" {
+
+    ' === Use Cases ===
+    usecase "Request Ride" as UC1
+    usecase "Process\nPayment" as UC2
+    usecase "Track Ride\nLocation" as UC3
+
+    ' === Extend ===
+    usecase "Split Fare" as UC5
+
+    ' === Security Use Cases (mitigations) ===
+    usecase "Verify Driver\nIdentity" as SEC1
+    usecase "Share Ride\nDetails with\nTrusted Contact" as SEC2
+    usecase "Require Payment\nPre-Authorization" as SEC3
+
+    ' === Misuse Cases ===
+    usecase "Impersonate\nRegistered Driver" as MUC1 #333333;text:white
+    usecase "Spoof Vehicle\nLocation" as MUC2 #333333;text:white
+    usecase "Evade\nPayment" as MUC3 #333333;text:white
+}
+
+' -- Actor associations --
+passenger --> UC1
+passenger --> UC2
+driver --> UC3
+
+' -- Extend relationship (legitimate) --
+UC5 .u.> UC2 : <<extend>>
+
+' -- Include relationships --
+UC1 ..> SEC1 : <<include>>
+UC3 ..> SEC2 : <<include>>
+UC2 ..> SEC3 : <<include>>
+
+' -- Misactor associations --
+fakedriver -u-> MUC1
+fakedriver -u-> MUC2
+cheat -u-> MUC3
+
+' -- THREATENS relationships --
+MUC1 .u[#red].> UC1 : <<threatens>>
+MUC2 .u[#red].> UC3 : <<threatens>>
+MUC3 .u[#red].> UC2 : <<threatens>>
+
+' -- MITIGATES relationships --
+SEC1 ..[#green]..> MUC1 : <<mitigates>>
+SEC2 ..[#green]..> MUC2 : <<mitigates>>
+SEC3 ..[#green]..> MUC3 : <<mitigates>>
+
+@enduml

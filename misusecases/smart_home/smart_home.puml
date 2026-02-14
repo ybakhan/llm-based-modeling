@@ -1,0 +1,73 @@
+@startuml smart_home
+
+' ============================================================
+' Misuse Case Diagram: Smart Home System
+' NOT from a published source. Fabricated by Claude.
+' ============================================================
+
+left to right direction
+hide stereotype
+
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+
+' -- Actors (legitimate) --
+actor "Homeowner" as owner
+
+together {
+    ' -- Misactors --
+    actor "Burglar" as burglar #Black
+    actor "Eavesdropper" as eaves #Black
+}
+
+rectangle "Smart Home System" {
+
+    ' === Use Cases ===
+    usecase "Unlock Door\nRemotely" as UnlockDoor
+    usecase "View Security\nCamera" as ViewSecurity
+    usecase "Receive\nIntrusion Alert" as ReceiveIntrusionAlert
+
+    ' === Extend ===
+    usecase "Notify Emergency\nContacts" as Notify
+
+    ' === Security Use Cases (mitigations) ===
+    usecase "Require Biometric\nVerification" as RequireBiometric
+    usecase "Encrypt\nVideo Stream" as EncryptVideo
+    usecase "Encrypt Device\nCommunication" as EncryptDevice
+
+    ' === Misuse Cases ===
+    usecase "Hijack\nSmart Lock" as Hijack #333333;text:white
+    usecase "Spy on\nCamera Feed" as SpyOnCamera #333333;text:white
+    usecase "Intercept Device\nTraffic" as InterceptDevice #333333;text:white
+}
+
+' -- Actor associations --
+owner --> UnlockDoor
+owner --> ViewSecurity
+owner --> ReceiveIntrusionAlert
+
+' -- Extend relationship (legitimate) --
+Notify .u.> ReceiveIntrusionAlert : <<extend>>
+
+' -- Include relationships --
+UnlockDoor .> RequireBiometric : <<include>>
+ViewSecurity .> EncryptVideo : <<include>>
+UnlockDoor .> EncryptDevice : <<include>>
+
+' -- Misactor associations --
+burglar -u-> Hijack
+eaves -u-> SpyOnCamera
+eaves -u-> InterceptDevice
+
+' -- THREATENS relationships --
+Hijack .u[#red].> UnlockDoor : <<threatens>>
+SpyOnCamera .u[#red].> ViewSecurity : <<threatens>>
+InterceptDevice .u[#red].> UnlockDoor : <<threatens>>
+InterceptDevice .u[#red].> ViewSecurity : <<threatens>>
+
+' -- MITIGATES relationships --
+RequireBiometric .[#green].> Hijack : <<mitigates>>
+EncryptVideo .[#green].> SpyOnCamera : <<mitigates>>
+EncryptDevice .[#green].> InterceptDevice : <<mitigates>>
+
+@enduml

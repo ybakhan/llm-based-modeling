@@ -1,0 +1,106 @@
+@startuml rfid
+
+' ============================================================
+' Misuse Case Diagram: RFID
+' Faisal Saleh, Mohamed El-Attar,
+' A scientific evaluation of the misuse case diagrams visual syntax,
+' Information and Software Technology
+' ============================================================
+
+'skinparam monochrome false
+'skinparam shadowing true
+
+left to right direction
+hide stereotype
+
+'skinparam ranksep 50
+'skinparam nodesep 50
+
+skinparam usecase {
+  BackgroundColor<<misuse>> #000000
+  BorderColor<<misuse>> #000000
+  FontColor<<misuse>> #FFFFFF
+  StereotypeFontColor<<misuse>> #FFCCCC
+  ArrowColor<<threaten>> #B00000
+  ArrowColor<<mitigate>> #006600
+}
+
+actor "Product\nManager"          as ProductManager
+actor "Licit Actor"        as LicitActor
+actor "Supervisor" as Supervisor
+actor "Illicit Actor"     as IllicitActor #black
+
+usecase "Tag\nAuthentication"   as TagAuthentication
+usecase "Authenticate\nproduct"         as Authenticate
+usecase "Location based\nauthentication"     as LocationBased
+
+' include usecases
+usecase "Use security\nprotocol with\nsufficient key length" as UseSecurityProtocol
+usecase "Secure internal\nIT system" as SecureInternal
+usecase "Secure tags against\nside channel attack" as SecureTags
+usecase "Verify object\nspecific features" as VerifyObject
+usecase "Prevent/Detect\ntag removal" as PreventDetect
+usecase "Secure equipment\nenvironmental IT System" as SecureEquipment
+usecase "Guarantee\nintegrity of history" as GuaranteeIntegrity
+usecase "Guarantee\nauthenticity of history" as GuaranteeAuthenticity
+usecase "Detect\ncloned tags" as DetectCloned
+
+' Misuse cases
+usecase "Cryptanalysis and\nreverse engineering" as CryptAnalysis <<misuse>>
+usecase "Data theft from \ninternal IT system" as DataTheft <<misuse>>
+usecase "ID number\ncopying" as IDNumberCopying <<misuse>>
+usecase "Tag Cloning" as TagCloning <<misuse>>
+usecase "Attack against\ninternal IT system" as AttackInternal <<misuse>>
+usecase "Attack against\nRF communication" as AttackRF <<misuse>>
+usecase "Forgery of\nproduct history" as Forgery <<misuse>>
+
+'Legitimeate associations
+ProductManager --> TagAuthentication
+LicitActor --> Authenticate
+Supervisor --> LocationBased
+
+' Legitimate include
+TagAuthentication ..> UseSecurityProtocol : <<includes>>
+TagAuthentication ..> SecureInternal : <<includes>>
+TagAuthentication ..> SecureTags : <<includes>>
+
+Authenticate ..> TagAuthentication : <<includes>>
+Authenticate ..> VerifyObject : <<includes>>
+Authenticate ..> PreventDetect : <<includes>>
+Authenticate ..> SecureEquipment : <<includes>>
+Authenticate ..> LocationBased : <<includes>>
+
+LocationBased ..> GuaranteeIntegrity : <<includes>>
+LocationBased ..> GuaranteeAuthenticity : <<includes>>
+LocationBased ..> DetectCloned : <<includes>>
+
+'Illegitimeate associations
+IllicitActor -u-> TagCloning
+
+'mitigates
+UseSecurityProtocol ..[#green]..> CryptAnalysis : <<mitigates>>
+SecureInternal ..[#green]..> DataTheft : <<mitigates>>
+TagAuthentication ..[#green]..> IDNumberCopying : <<mitigates>>
+VerifyObject ..[#green]..> TagCloning : <<mitigates>>
+SecureEquipment ..[#green]..> AttackInternal : <<mitigates>>
+SecureEquipment ..[#green]..> AttackRF : <<mitigates>>
+GuaranteeAuthenticity ..[#green]..> Forgery : <<mitigates>>
+DetectCloned ..[#green]..> TagCloning : <<mitigates>>
+
+'threatens
+CryptAnalysis ..u[#red]..> TagAuthentication : <<threatens>>
+DataTheft ..u[#red]..> TagAuthentication : <<threatens>>
+IDNumberCopying ..u[#red]..> Authenticate : <<threatens>>
+AttackInternal ..u[#red]..> Authenticate : <<threatens>>
+AttackRF ..u[#red]..> Authenticate : <<threatens>>
+Forgery ..u[#red]..> DetectCloned : <<threatens>>
+
+'misuse includes
+TagCloning .u.> CryptAnalysis : <<includes>>
+TagCloning .u.> DataTheft : <<includes>>
+TagCloning .u.> IDNumberCopying : <<includes>>
+TagCloning .u.> AttackInternal : <<includes>>
+TagCloning .u.> AttackRF : <<includes>>
+TagCloning .u.> Forgery : <<includes>>
+
+@enduml

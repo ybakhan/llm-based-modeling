@@ -1,0 +1,77 @@
+@startuml e-voting
+
+' ============================================================
+' Misuse Case Diagram: E-Voting System
+' NOT from a published source. Fabricated by Claude.
+' ============================================================
+
+left to right direction
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+
+together {
+    ' -- Actors (legitimate) --
+    actor "Voter" as voter
+    actor "Election\nOfficial" as official
+}
+
+together {
+    ' -- Misactors --
+    actor "Vote\nManipulator" as manipulator #Black
+    actor "Foreign\nAgent" as agent #Black
+}
+
+rectangle "E-Voting System" {
+
+    ' === Use Cases ===
+    usecase "Cast Vote" as UC1
+    usecase "Verify Voter\nEligibility" as UC2
+    usecase "Tally Results" as UC3
+    usecase "Publish\nResults" as UC4
+
+    ' === Extend ===
+    usecase "Request\nRecount" as UC5
+
+    ' === Security Use Cases (mitigations) ===
+    usecase "Generate Voter\nReceipt" as SEC1
+    usecase "Require\nMulti-Factor\nAuthentication" as SEC2
+    usecase "Maintain\nAudit Trail" as SEC3
+
+    ' === Misuse Cases ===
+    usecase "Cast Multiple\nVotes" as MUC1 #333333;text:white
+    usecase "Alter Vote\nCount" as MUC2 #333333;text:white
+    usecase "Impersonate\nRegistered Voter" as MUC3 #333333;text:white
+}
+
+' -- Actor associations --
+voter --> UC1
+voter --> UC2
+official --> UC3
+official --> UC4
+
+' -- Extend relationship (legitimate) --
+UC5 .u.> UC4 : <<extend>>
+
+' -- Include relationships --
+UC1 ..> UC2 : <<include>>
+UC1 ..> SEC1 : <<include>>
+UC2 ..> SEC2 : <<include>>
+UC3 ..> SEC3 : <<include>>
+
+' -- Misactor associations --
+manipulator -u-> MUC1
+manipulator -u-> MUC2
+agent -u-> MUC2
+agent -u-> MUC3
+
+' -- THREATENS relationships --
+MUC1 .u[#red].> UC1 : <<threatens>>
+MUC2 .u[#red].> UC3 : <<threatens>>
+MUC3 .u[#red].> UC2 : <<threatens>>
+
+' -- MITIGATES relationships --
+SEC1 .[#green].> MUC2 : <<mitigates>>
+SEC2 .[#green].> MUC3 : <<mitigates>>
+SEC3 .[#green].> MUC1 : <<mitigates>>
+
+@enduml

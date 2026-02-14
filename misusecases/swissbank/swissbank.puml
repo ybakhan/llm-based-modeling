@@ -1,0 +1,157 @@
+@startuml swissbank
+
+' ============================================================
+' Misuse Case Diagram: Swiss Bank
+' Faisal Saleh, Mohamed El-Attar,
+' A scientific evaluation of the misuse case diagrams visual syntax,
+' Information and Software Technology
+' ============================================================
+
+'skinparam monochrome false
+'skinparam shadowing true
+
+left to right direction
+hide stereotype
+
+'skinparam ranksep 10
+'skinparam nodesep 30
+
+skinparam usecase {
+  BackgroundColor<<misuse>> #000000
+  BorderColor<<misuse>> #000000
+  FontColor<<misuse>> #FFFFFF
+  StereotypeFontColor<<misuse>> #FFCCCC
+  ArrowColor<<threatens>> #B00000
+  ArrowColor<<mitigates>> #006600
+}
+
+together {
+  actor "Director"          as Director  
+  actor "Customer\nRepresentative\n(Front Office)"        as CustomerRepresentative
+  actor "Account Manager\n(Middle Office)" as AccountManager
+}
+
+together {
+  usecase "Maintain business" as MaintainBusiness  
+  usecase "Comply with\ncountry regulation" as ComplyWith
+}
+
+together {
+  usecase "Establish good\nreputation" as EstablishGood
+  usecase "Provide ROI to clients" as ProvideROI
+}
+
+together {
+  usecase "Take client orders" as TakeClientOrders
+  usecase "Verify origin\nof funds" as VerifyOrigin
+}
+
+together {
+  usecase "Monitor transaction\namounts" as MonitorTransaction
+  usecase "Reject transfer amount\nabove threshold" as RejectTransfer
+}
+
+together {
+  usecase "Reject suspicious\nclients" as RejectSuspicious
+  usecase "Alert authorities\nin case of suspicion" as AlertAuthorities
+}
+
+together {
+  usecase "Enroll new clients" as EnrollNewClients
+  usecase "Verify Client\nidentity" as VerifyClient
+}
+
+' Misuse cases
+together {
+  actor "Criminal"     as Criminal #black  
+  actor "Country\nAuthority"     as CountryAuthority #black
+
+  usecase "Launder money" as LaunderMoney <<misuse>>
+  usecase "Invest\nanonymously" as InvestAnonymously <<misuse>>
+  usecase "Invest under\nfalse identity" as InvestUnder <<misuse>>
+  usecase "Invest illegal\nfunds" as InvestIllegal <<misuse>>
+  usecase "Invest one\nlarge sum" as InvestOne <<misuse>>
+  usecase "Probe bank\noperations" as ProbeBank <<misuse>>
+}
+
+'Legitimate associations
+Director --> MaintainBusiness
+Director --> EstablishGood
+Director --> ComplyWith
+Director --> AlertAuthorities
+
+CustomerRepresentative --> VerifyClient
+CustomerRepresentative --> EnrollNewClients
+CustomerRepresentative --> TakeClientOrders
+
+AccountManager --> ProvideROI
+AccountManager --> VerifyOrigin
+AccountManager --> MonitorTransaction
+AccountManager --> RejectTransfer
+AccountManager --> RejectSuspicious
+
+' Legitimate include
+MaintainBusiness ..> EstablishGood : <<includes>>
+MaintainBusiness ..> EnrollNewClients : <<includes>>
+MaintainBusiness .> ProvideROI : <<includes>>
+
+EstablishGood ..> ComplyWith : <<includes>>
+EstablishGood ..> ProvideROI : <<includes>>
+
+ComplyWith ..> VerifyClient : <<includes>>
+
+EnrollNewClients ..> VerifyClient : <<includes>>
+EnrollNewClients ..> RejectSuspicious : <<includes>>
+
+ProvideROI ..> TakeClientOrders : <<includes>>
+
+TakeClientOrders ..> VerifyOrigin : <<includes>>
+TakeClientOrders ..> MonitorTransaction : <<includes>>
+
+MonitorTransaction ..> RejectTransfer : <<includes>>
+
+RejectSuspicious ..> RejectTransfer : <<includes>>
+RejectSuspicious ..> AlertAuthorities : <<includes>>
+
+RejectTransfer ..> AlertAuthorities : <<includes>>
+
+'Illegitimeate associations
+CountryAuthority -u-> ProbeBank
+Criminal -u-> LaunderMoney
+Criminal -u-> InvestAnonymously
+Criminal -u-> InvestUnder
+Criminal -u-> InvestIllegal
+Criminal -u->  InvestOne
+
+'mitigates
+ComplyWith ..[#green]..> ProbeBank : <<mitigates>>
+ComplyWith ..[#green]..> LaunderMoney : <<mitigates>>
+
+VerifyClient ..[#green]..> InvestAnonymously : <<mitigates>>
+VerifyClient ..[#green]..> InvestUnder : <<mitigates>>
+
+VerifyOrigin ..[#green]..> InvestIllegal : <<mitigates>>
+
+RejectTransfer ..[#green]..> InvestOne : <<mitigates>>
+
+AlertAuthorities ..[#green]..> LaunderMoney : <<mitigates>>
+RejectSuspicious ..[#green]..> ProbeBank : <<mitigates>>
+
+
+'threatens
+ProbeBank ..u[#red]..> EstablishGood : <<threatens>>
+LaunderMoney ..u[#red]..> EstablishGood : <<threatens>>
+InvestAnonymously ..u[#red]..> TakeClientOrders : <<threatens>>
+InvestOne ..u[#red]..> MonitorTransaction : <<threatens>>
+
+'misuse includes
+LaunderMoney .u.> InvestAnonymously : <<includes>>
+LaunderMoney .u.> InvestUnder : <<includes>>
+LaunderMoney .u.> InvestIllegal : <<includes>>
+LaunderMoney .u.> InvestOne : <<includes>>
+
+'hidden
+'Director -u[hidden]-> CustomerRepresentative
+
+
+@enduml
