@@ -1,0 +1,45 @@
+@startuml food_delivery
+
+' ============================================================
+' Misuse Case Diagram: Food Delivery System
+' NOT from a published source. Fabricated by Claude.
+' ============================================================
+
+left to right direction
+
+' -- Actor (legitimate) --
+actor "Customer" as customer
+
+' -- Misactor --
+actor "Scammer" as scammer #Black
+
+rectangle "Food Delivery System" {
+
+    ' === Use Cases ===
+    usecase "Place Order" as UC1
+    usecase "Track Delivery" as UC2
+
+    ' === Security Use Case (mitigation) ===
+    usecase "Verify Delivery\nwith PIN Code" as SEC1
+
+    ' === Misuse Case ===
+    usecase "Falsely Claim\nNon-Delivery" as MUC1 #333333;text:white
+}
+
+' -- Actor associations --
+customer --> UC1
+customer --> UC2
+
+' -- Include relationships (legitimate) --
+UC2 ..> SEC1 : <<include>>
+
+' -- Misactor association --
+scammer -u-> MUC1
+
+' -- THREATENS relationship (one) --
+MUC1 .u[#red].> UC2 : <<threatens>>
+
+' -- MITIGATES relationship (one) --
+SEC1 .r[#green].> MUC1 : <<mitigates>>
+
+@enduml

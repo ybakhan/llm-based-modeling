@@ -1,0 +1,56 @@
+@startuml library
+
+' ============================================================
+' Misuse Case Diagram: Library Management System
+' NOT from a published source. Fabricated by Claude.
+' ============================================================
+
+left to right direction
+
+' -- Actor (legitimate) --
+actor "Library\nMember" as member
+
+' -- Misactor --
+actor "Identity\nFraudster" as fraudster #Black
+
+rectangle "Library Management System" {
+
+    ' === Use Cases ===
+    usecase "Borrow Book" as UC1
+    usecase "Return Book" as UC2
+    usecase "Verify\nMembership" as UC3
+
+    ' === Security Use Case (mitigation) ===
+    usecase "Scan Member\nPhoto ID" as SEC1
+
+    ' === Misuse Cases ===
+    usecase "Borrow Under\nFalse Identity" as MUC1 #333333;text:white
+    usecase "Steal Borrowed\nBook" as MUC2 #333333;text:white
+}
+
+' -- Actor associations --
+member --> UC1
+member --> UC2
+
+' hidden
+UC1 .l[hidden].> UC2
+
+' -- Include relationships (legitimate) --
+UC1 .l.> UC3 : <<include>>
+UC3 .l.> SEC1 : <<include>>
+
+' -- Misactor association --
+fraudster -u-> MUC1
+
+' -- Extend between misuse cases --
+' (optionally, after borrowing under false identity,
+'  the fraudster never returns the book — stealing it)
+MUC2 .r.> MUC1 : <<extend>>
+
+' -- THREATENS relationship (one) --
+MUC1 .u[#red].> UC1 : <<threatens>>
+
+' -- MITIGATES relationship (one) --
+SEC1 .[#green].> MUC1 : <<mitigates>>
+
+@enduml
