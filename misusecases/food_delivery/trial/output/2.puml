@@ -1,0 +1,42 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+' Keep the display name explicitly and apply the stereotype
+actor "Scammer" as scammer <<misactor>>
+actor "Customer" as customer
+
+' --- Visual styling ---
+skinparam actor {
+  BackgroundColor<<misactor>> #222222
+  BorderColor<<misactor>> #222222
+  FontColor<<misactor>> white
+}
+
+skinparam usecase {
+  BackgroundColor<<misuse>> #222222
+  BorderColor<<misuse>> #222222
+  FontColor<<misuse>> white
+}
+
+rectangle "Food Delivery System" {
+  usecase "Place Order" as UC_PlaceOrder
+  usecase "Track Delivery" as UC_TrackDelivery
+  usecase "Verify Delivery\nwith PIN Code" as UC_VerifyPIN
+
+  usecase "Falsely Claim\nNon-Delivery" as MU_ClaimNonDelivery <<misuse>>
+}
+
+' --- Associations (no labels) ---
+customer --> UC_PlaceOrder
+customer --> UC_TrackDelivery
+scammer --> MU_ClaimNonDelivery
+
+' Include security use case
+UC_TrackDelivery ..> UC_VerifyPIN : <<include>>
+
+' Threatens / mitigates shown as stereotypes
+MU_ClaimNonDelivery ..> UC_TrackDelivery : <<threatens>>
+UC_VerifyPIN ..> MU_ClaimNonDelivery : <<mitigates>>
+
+@enduml
