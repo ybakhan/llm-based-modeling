@@ -1,0 +1,33 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Customer as customer
+actor Scammer as scammer
+
+rectangle "Food Delivery System" {
+  usecase "Place Order" as UC_PlaceOrder
+  usecase "Track Delivery" as UC_TrackDelivery
+  usecase "Verify Delivery\nwith PIN Code" as UC_VerifyPIN
+
+  ' Misuse case (shown as a use case stereotyped as misuse)
+  usecase "Falsely Claim\nNon-Delivery" as MU_ClaimNonDelivery <<misuse>>
+}
+
+' Legitimate interactions
+customer --> UC_PlaceOrder : initiates
+customer --> UC_TrackDelivery : initiates
+
+' Include security use case
+UC_TrackDelivery ..> UC_VerifyPIN : <<include>>
+
+' Misactor interaction
+scammer --> MU_ClaimNonDelivery : performs
+
+' Threatens relationship (misuse -> threatened use case)
+MU_ClaimNonDelivery ..> UC_TrackDelivery : threatens
+
+' Mitigates relationship (security use case -> misuse)
+UC_VerifyPIN ..> MU_ClaimNonDelivery : mitigates
+
+@enduml
