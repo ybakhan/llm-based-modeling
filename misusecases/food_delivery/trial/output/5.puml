@@ -1,0 +1,49 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Customer" as customer
+actor "Scammer"  as scammer
+
+' --- Visual styling ---
+' Style the Scammer actor (dark stickman) without showing any stereotype text
+skinparam actor {
+  BackgroundColor<<scammerStyle>> #222222
+  BorderColor<<scammerStyle>>     #222222
+  FontColor<<scammerStyle>>       #111111
+  StereotypeFontColor<<scammerStyle>> #111111
+}
+
+' Misuse case: dark background, keep name + stereotype readable
+skinparam usecase {
+  BackgroundColor<<misuse>> #222222
+  BorderColor<<misuse>>     #222222
+  FontColor<<misuse>>       #FFFFFF
+  StereotypeFontColor<<misuse>> #FFFFFF
+}
+
+' Apply a "hidden" styling stereotype to Scammer (not printed)
+hide stereotype
+scammer <<scammerStyle>>
+
+rectangle "Food Delivery System" {
+  usecase "Place Order" as UC_PlaceOrder
+  usecase "Track Delivery" as UC_TrackDelivery
+  usecase "Verify Delivery\nwith PIN Code" as UC_VerifyPIN
+
+  usecase "Falsely Claim\nNon-Delivery" as MU_ClaimNonDelivery <<misuse>>
+}
+
+' --- Associations (no labels) ---
+customer --> UC_PlaceOrder
+customer --> UC_TrackDelivery
+scammer --> MU_ClaimNonDelivery
+
+' Include security use case
+UC_TrackDelivery ..> UC_VerifyPIN : <<include>>
+
+' Threatens / mitigates shown as stereotypes
+MU_ClaimNonDelivery ..> UC_TrackDelivery : <<threatens>>
+UC_VerifyPIN ..> MU_ClaimNonDelivery : <<mitigates>>
+
+@enduml
