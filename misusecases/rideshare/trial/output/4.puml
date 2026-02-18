@@ -1,0 +1,79 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+' ===== Styling =====
+' Misuse cases: dark fill, white text (incl. stereotype)
+skinparam usecase<<misuse>> {
+  BackgroundColor #2B2B2B
+  BorderColor #1A1A1A
+  FontColor #FFFFFF
+  StereotypeFontColor #FFFFFF
+}
+
+' Misactors: dark stickman, BUT label sits outside on white background in many renderers.
+' So force the LABEL text to be dark (readable on white), while keeping the actor dark.
+skinparam actor<<misactor>> {
+  BackgroundColor #2B2B2B
+  BorderColor #1A1A1A
+  FontColor #111111
+  StereotypeFontColor #111111
+}
+
+' ===== Actors & Misactors =====
+actor Passenger
+actor Driver
+
+actor "Fake Driver" as FakeDriver <<misactor>>
+actor "Fare Cheat" as FareCheat <<misactor>>
+
+rectangle "Ride Sharing System" {
+
+  ' ===== Legitimate Use Cases =====
+  usecase "Request Ride" as UC_Request
+  usecase "Process Payment" as UC_Payment
+  usecase "Track Ride Location" as UC_Track
+
+  ' ===== Extending Use Case =====
+  usecase "Split Fare" as UC_Split
+
+  ' ===== Security Use Cases =====
+  usecase "Verify Driver Identity" as SUC_Verify
+  usecase "Share Ride Details with Trusted Contact" as SUC_Share
+  usecase "Require Payment Pre-Authorization" as SUC_PreAuth
+
+  ' ===== Misuse Cases =====
+  usecase "Impersonate Registered Driver" as MUC_Impersonate <<misuse>>
+  usecase "Spoof Vehicle Location" as MUC_Spoof <<misuse>>
+  usecase "Evade Payment" as MUC_Evade <<misuse>>
+}
+
+' ===== Initiation Associations =====
+Passenger --> UC_Request
+Passenger --> UC_Payment
+Driver --> UC_Track
+
+' ===== Include Relationships =====
+UC_Request ..> SUC_Verify : <<include>>
+UC_Track ..> SUC_Share : <<include>>
+UC_Payment ..> SUC_PreAuth : <<include>>
+
+' ===== Extend Relationship =====
+UC_Split ..> UC_Payment : <<extend>>
+
+' ===== Misactor Associations =====
+FakeDriver --> MUC_Impersonate
+FakeDriver --> MUC_Spoof
+FareCheat --> MUC_Evade
+
+' ===== Threatens Relationships =====
+MUC_Impersonate ..> UC_Request : <<threatens>>
+MUC_Spoof ..> UC_Track : <<threatens>>
+MUC_Evade ..> UC_Payment : <<threatens>>
+
+' ===== Mitigates Relationships =====
+SUC_Verify ..> MUC_Impersonate : <<mitigates>>
+SUC_Share ..> MUC_Spoof : <<mitigates>>
+SUC_PreAuth ..> MUC_Evade : <<mitigates>>
+
+@enduml
