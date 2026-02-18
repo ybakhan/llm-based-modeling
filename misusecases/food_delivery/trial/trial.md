@@ -18,9 +18,9 @@ LLM used - ChatGPT 5.2 (Thinking Mode)
 
 ### Statistics
 
-| Session | Prompts | Result  | Failure reason |
-| ------- | ------- | ------- | -------------- |
-| 1       | 6       | Success |                |
+| Session | Construct Prompts | Visual Prompts | Total Prompts | Result  | Failure reason |
+| ------- | ----------------- | -------------- | ------------- | ------- | -------------- |
+| 1       | 2                 | 4              | 6             | Success |                |
 
 ### Response Summary
 
