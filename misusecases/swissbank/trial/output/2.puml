@@ -1,0 +1,132 @@
+@startuml
+left to right direction
+
+title Swiss Bank — Misuse Case Diagram
+
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor white
+
+' Default (regular) styling
+skinparam usecase {
+  BackgroundColor white
+  BorderColor black
+  FontColor black
+}
+
+' Misuse case styling (dark background + white text, including stereotype text)
+skinparam usecase<<misuse>> {
+  BackgroundColor #1E1E1E
+  BorderColor #1E1E1E
+  FontColor white
+  StereotypeFontColor white
+}
+
+' Misactors: dark stickman fill, but keep label readable on white background
+actor "Criminal" as Criminal #1E1E1E
+actor "Country Authority" as CountryAuthority #1E1E1E
+
+actor "Director" as Director
+actor "Customer Representative\n(Front Office)" as FrontOffice
+actor "Account Manager\n(Middle Office)" as MiddleOffice
+
+rectangle "Swiss Bank" {
+  ' Regular use cases
+  (Maintain Business) as U_Maintain
+  (Establish Good Reputation) as U_Reputation
+  (Comply with Country Regulation) as U_Comply
+  (Alert Authorities in Case of Suspicion) as U_Alert
+
+  (Enroll New Clients) as U_Enroll
+  (Verify Client Identity) as U_VerifyID
+  (Take Client Orders) as U_Orders
+
+  (Provide ROI to Clients) as U_ROI
+  (Verify Origin of Funds) as U_Origin
+  (Monitor Transaction Amounts) as U_Monitor
+  (Reject Transfer Amount Above Threshold) as U_RejectAmt
+  (Reject Suspicious Clients) as U_RejectClient
+
+  ' Misuse cases
+  (Launder Money) as M_Launder <<misuse>>
+  (Invest Anonymously) as M_Anon <<misuse>>
+  (Invest under False Identity) as M_FalseID <<misuse>>
+  (Invest Illegal Funds) as M_Illegal <<misuse>>
+  (Invest One Large Sum) as M_Large <<misuse>>
+  (Probe Bank Operations) as M_Probe <<misuse>>
+}
+
+' Actor -> Use case (initiations)
+Director --> U_Maintain
+Director --> U_Reputation
+Director --> U_Comply
+Director --> U_Alert
+
+FrontOffice --> U_Enroll
+FrontOffice --> U_VerifyID
+FrontOffice --> U_Orders
+
+MiddleOffice --> U_ROI
+MiddleOffice --> U_Origin
+MiddleOffice --> U_Monitor
+MiddleOffice --> U_RejectAmt
+MiddleOffice --> U_RejectClient
+
+' Misactor -> Misuse case (perform)
+Criminal --> M_Launder
+Criminal --> M_Anon
+Criminal --> M_FalseID
+Criminal --> M_Illegal
+Criminal --> M_Large
+CountryAuthority --> M_Probe
+
+' Include relationships among regular use cases
+U_Maintain ..> U_Reputation : <<include>>
+U_Maintain ..> U_Enroll : <<include>>
+U_Maintain ..> U_ROI : <<include>>
+
+U_Reputation ..> U_Comply : <<include>>
+U_Reputation ..> U_ROI : <<include>>
+
+U_Comply ..> U_VerifyID : <<include>>
+
+U_Enroll ..> U_VerifyID : <<include>>
+U_Enroll ..> U_RejectClient : <<include>>
+
+U_ROI ..> U_Orders : <<include>>
+
+U_Orders ..> U_Origin : <<include>>
+U_Orders ..> U_Monitor : <<include>>
+
+U_Monitor ..> U_RejectAmt : <<include>>
+
+U_RejectClient ..> U_RejectAmt : <<include>>
+U_RejectClient ..> U_Alert : <<include>>
+
+U_RejectAmt ..> U_Alert : <<include>>
+
+' Misuse includes
+M_Launder ..> M_Anon : <<include>>
+M_Launder ..> M_FalseID : <<include>>
+M_Launder ..> M_Illegal : <<include>>
+M_Launder ..> M_Large : <<include>>
+
+' Threatens relationships
+M_Probe ..> U_Reputation : <<threatens>>
+M_Launder ..> U_Reputation : <<threatens>>
+M_Anon ..> U_Orders : <<threatens>>
+M_Large ..> U_Monitor : <<threatens>>
+
+' Mitigates relationships
+U_Comply ..> M_Probe : <<mitigates>>
+U_Comply ..> M_Launder : <<mitigates>>
+
+U_VerifyID ..> M_Anon : <<mitigates>>
+U_VerifyID ..> M_FalseID : <<mitigates>>
+
+U_Origin ..> M_Illegal : <<mitigates>>
+U_RejectAmt ..> M_Large : <<mitigates>>
+U_Alert ..> M_Launder : <<mitigates>>
+U_RejectClient ..> M_Probe : <<mitigates>>
+
+@enduml
