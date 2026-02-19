@@ -4,6 +4,8 @@ LLM used - ChatGPT 5.2 (Thinking Mode)
 
 ### Prompts for intended [model](../food_delivery.png).
 
+[Chat Transcript](https://chatgpt.com/share/6994df67-b45c-8006-9148-98fe904bd0f2)
+
 1. Generate a misuse case diagram adhering to the following specification, and produce the output in PlantUML. The system is a Food Delivery System with one legitimate actor, a Customer, and one misactor, a Scammer. The system contains two regular use cases "Place Order" and "Track Delivery" both initiated by the Customer. There is one security use case "Verify Delivery with PIN Code" which is included by "Track Delivery". There is one misuse case "Falsely Claim Non-Delivery" performed by the Scammer. The misuse case threatens "Track Delivery", and "Verify Delivery with PIN Code" mitigates the misuse case.
 
 2. Please make the following corrections to the diagram. Remove the labels on the associations between the Customer and the legitimate use cases. Also remove the label on the assocation between the Scammer and misuse case. Update the threatens and mitigates labels to be displayed as stereotypes `<<threatens>>` and `<<mitigates>>`. Style the misuse case with a dark background and white text to visually distinguish it as a misuse case. Finally, style the Scammer actor with a dark background to visually distinguish it as a misactor.

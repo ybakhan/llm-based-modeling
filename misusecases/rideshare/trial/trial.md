@@ -4,6 +4,8 @@ LLM used - ChatGPT 5.2 (Default Mode)
 
 ### Prompts for intended [model](../rideshare.png).
 
+[Chat Transcript](https://chatgpt.com/share/69966c4f-4e88-8006-8553-501018cecdfb)
+
 1. Generate a misuse case diagram adhering to the following specification, and produce the output in PlantUML. The system is a Ride Sharing System with two legitimate actors, a Passenger and a Driver, and two misactors, a Fake Driver and a Fare Cheat. The system contains three regular use cases "Request Ride" and "Process Payment" both initiated by the Passenger, and "Track Ride Location" initiated by the Driver. There is one extending use case "Split Fare" which extends "Process Payment". There are three security use cases "Verify Driver Identity" included by "Request Ride"; "Share Ride Details with Trusted Contact" included by "Track Ride Location"; and "Require Payment Pre-Authorization" included by "Process Payment". There are three misuse cases "Impersonate Registered Driver" and "Spoof Vehicle Location" both performed by the Fake Driver; and "Evade Payment" performed by the Fare Cheat. "Impersonate Registered Driver" threatens "Request Ride"; "Spoof Vehicle Location" threatens "Track Ride Location"; and "Evade Payment" threatens "Process Payment". "Verify Driver Identity" mitigates "Impersonate Registered Driver"; "Share Ride Details with Trusted Contact" mitigates "Spoof Vehicle Location"; and "Require Payment Pre-Authorization" mitigates "Evade Payment".
 
 2. Please style all misuse cases with a dark background and white text, and all misactors with a dark background.
