@@ -1,0 +1,98 @@
+@startuml
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+' --- Styling ---
+skinparam usecase {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+skinparam actor {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+
+' Dark misuse cases + readable stereotype
+skinparam usecase<<misuse>> {
+  BackgroundColor #222222
+  BorderColor #222222
+  FontColor White
+  StereotypeFontColor White
+}
+
+' Dark misactors + readable labels
+skinparam actor<<misactor>> {
+  BackgroundColor #222222
+  BorderColor #222222
+  FontColor White
+}
+
+' --- Actors ---
+actor Doctor as Doc
+actor Nurse as Nur
+actor Patient as Pat
+
+actor "Disgruntled Employee" as DE <<misactor>>
+actor "Identity Thief" as IT <<misactor>>
+
+rectangle "Healthcare Information System" {
+
+  ' --- Regular use cases ---
+  usecase "View Patient Records" as VPR
+  usecase "Update Medical History" as UMH
+  usecase "Prescribe Medication" as PM
+  usecase "Request Appointment" as RA
+
+  ' --- Security use cases ---
+  usecase "Role-Based Access Control" as RBAC <<security>>
+  usecase "Encrypt Patient Data" as EPD <<security>>
+  usecase "Audit Trail Logging" as ATL <<security>>
+  usecase "Verify Patient Identity" as VPI <<security>>
+
+  ' --- Misuse cases ---
+  usecase "Tamper with Medical Records" as TMR <<misuse>>
+  usecase "Unauthorized Access to Patient Records" as UAPR <<misuse>>
+  usecase "Prescribe Harmful Medication" as PHM <<misuse>>
+  usecase "Steal Patient Identity" as SPI <<misuse>>
+
+  ' --- Include relationships ---
+  VPR ..> RBAC : <<include>>
+  VPR ..> EPD  : <<include>>
+  UMH ..> ATL  : <<include>>
+  RA  ..> VPI  : <<include>>
+
+  ' --- Threatens relationships ---
+  TMR  ..> UMH : <<threatens>>
+  UAPR ..> VPR : <<threatens>>
+  PHM  ..> PM  : <<threatens>>
+  SPI  ..> RA  : <<threatens>>
+
+  ' --- Mitigates relationships ---
+  ATL  ..> TMR  : <<mitigates>>
+  RBAC ..> UAPR : <<mitigates>>
+  RBAC ..> PHM  : <<mitigates>>
+  EPD  ..> SPI  : <<mitigates>>
+  VPI  ..> SPI  : <<mitigates>>
+}
+
+' --- Associations (legitimate actors) ---
+Doc -- VPR
+Nur -- VPR
+
+Doc -- UMH
+Nur -- UMH
+
+Doc -- PM
+Pat -- RA
+
+' --- Associations (misactors) ---
+DE -- TMR
+DE -- UAPR
+DE -- PHM
+
+IT -- SPI
+
+@enduml
