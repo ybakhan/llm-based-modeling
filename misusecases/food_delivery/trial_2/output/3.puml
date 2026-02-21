@@ -1,0 +1,61 @@
+```plantuml
+@startuml
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+'----------------------------
+' Diagram background (avoid checkerboard)
+'----------------------------
+skinparam BackgroundColor White
+
+'----------------------------
+' Regular use cases
+'----------------------------
+skinparam usecase {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+
+'----------------------------
+' Misuse cases: dark fill, white text (including stereotype)
+'----------------------------
+skinparam usecase<<misuse>> {
+  BackgroundColor #1F1F1F
+  BorderColor #1F1F1F
+  FontColor White
+  StereotypeFontColor White
+}
+
+'----------------------------
+' Actors
+'----------------------------
+actor "Customer" as Customer
+actor "Scammer" as Scammer <<misactor>>
+
+rectangle "Food Delivery System" {
+
+  usecase "Place Food Order" as UC_Order
+  usecase "Track Delivery Status" as UC_Track
+  usecase "Verify Delivery\nUsing PIN Code" as UC_PIN
+
+  usecase "Falsely Claim Non-Delivery" as MU_FalseClaim <<misuse>>
+}
+
+'----------------------------
+' Associations
+'----------------------------
+Customer --> UC_Order
+Customer --> UC_Track
+Scammer --> MU_FalseClaim
+
+'----------------------------
+' Relationships
+'----------------------------
+UC_Track .> UC_PIN : <<include>>
+MU_FalseClaim .> UC_Track : <<threatens>>
+UC_PIN .> MU_FalseClaim : <<mitigates>>
+
+@enduml
+```

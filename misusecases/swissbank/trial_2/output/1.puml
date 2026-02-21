@@ -1,0 +1,145 @@
+@startuml
+title Swiss Bank — Misuse Case Diagram
+left to right direction
+skinparam backgroundColor white
+skinparam shadowing false
+
+' ===== Styles =====
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #222222
+  FontColor #111111
+}
+
+' Dark misuse cases with visible white text (incl. stereotype)
+skinparam usecase<<misuse>> {
+  BackgroundColor #1F1F1F
+  BorderColor #111111
+  FontColor #FFFFFF
+  StereotypeFontColor #FFFFFF
+}
+
+' Dark misactors with readable label (outside stickman on white background)
+skinparam actor<<misactor>> {
+  BackgroundColor #1F1F1F
+  BorderColor #111111
+  FontColor #111111
+}
+
+' Relationship labels rendered as stereotypes
+skinparam class {
+  FontColor #111111
+}
+
+' ===== Actors =====
+actor "Director" as Director
+actor "Customer Representative" as CR
+actor "Account Manager" as AM
+
+actor "Criminal" as Criminal <<misactor>>
+actor "Country Authority" as Authority <<misactor>>
+
+rectangle "Swiss Bank System" {
+
+  ' ===== Regular use cases =====
+  usecase "Maintain Business" as UC_Maintain
+  usecase "Establish Good Reputation" as UC_Reputation
+  usecase "Comply with Country Regulation" as UC_Comply
+  usecase "Enroll New Clients" as UC_Enroll
+  usecase "Provide ROI to Clients" as UC_ROI
+  usecase "Verify Client Identity" as UC_VerifyID
+  usecase "Take Client Orders" as UC_Orders
+  usecase "Verify Origin of Funds" as UC_Origin
+  usecase "Monitor Transaction Amounts" as UC_Monitor
+  usecase "Reject Transfer Amount Above Threshold" as UC_RejectAbove
+  usecase "Reject Suspicious Clients" as UC_RejectSus
+  usecase "Alert Authorities in Case of Suspicion" as UC_Alert
+
+  ' ===== Misuse cases =====
+  usecase "Launder Money" as MU_Launder <<misuse>>
+  usecase "Invest Anonymously" as MU_Anon <<misuse>>
+  usecase "Invest Under False Identity" as MU_FalseID <<misuse>>
+  usecase "Invest Illegal Funds" as MU_Illegal <<misuse>>
+  usecase "Invest One Large Sum" as MU_LargeSum <<misuse>>
+  usecase "Probe Bank Operations" as MU_Probe <<misuse>>
+
+  ' ===== Includes among regular use cases =====
+  UC_Maintain ..> UC_Reputation : <<include>>
+  UC_Maintain ..> UC_Enroll : <<include>>
+  UC_Maintain ..> UC_ROI : <<include>>
+
+  UC_Reputation ..> UC_Comply : <<include>>
+  UC_Reputation ..> UC_ROI : <<include>>
+
+  UC_Comply ..> UC_VerifyID : <<include>>
+
+  UC_Enroll ..> UC_VerifyID : <<include>>
+  UC_Enroll ..> UC_RejectSus : <<include>>
+
+  UC_ROI ..> UC_Orders : <<include>>
+
+  UC_Orders ..> UC_Origin : <<include>>
+  UC_Orders ..> UC_Monitor : <<include>>
+
+  UC_Monitor ..> UC_RejectAbove : <<include>>
+
+  UC_RejectSus ..> UC_RejectAbove : <<include>>
+  UC_RejectSus ..> UC_Alert : <<include>>
+
+  UC_RejectAbove ..> UC_Alert : <<include>>
+
+  ' ===== Actor -> use case associations (directed) =====
+  Director --> UC_Maintain
+  Director --> UC_Reputation
+  Director --> UC_Comply
+  Director --> UC_Alert
+
+  CR --> UC_Enroll
+  CR --> UC_VerifyID
+  CR --> UC_Orders
+
+  AM --> UC_ROI
+  AM --> UC_Origin
+  AM --> UC_Monitor
+  AM --> UC_RejectAbove
+  AM --> UC_RejectSus
+
+  ' ===== Misactor -> misuse associations (directed) =====
+  Criminal --> MU_Launder
+  Criminal --> MU_Anon
+  Criminal --> MU_FalseID
+  Criminal --> MU_Illegal
+  Criminal --> MU_LargeSum
+
+  Authority --> MU_Probe
+
+  ' ===== Includes among misuse cases =====
+  MU_Launder ..> MU_Anon : <<include>>
+  MU_Launder ..> MU_FalseID : <<include>>
+  MU_Launder ..> MU_Illegal : <<include>>
+  MU_Launder ..> MU_LargeSum : <<include>>
+
+  ' ===== Threatens relationships =====
+  MU_Launder ..> UC_Reputation : <<threatens>>
+  MU_Probe ..> UC_Reputation : <<threatens>>
+
+  MU_Anon ..> UC_Orders : <<threatens>>
+  MU_LargeSum ..> UC_Monitor : <<threatens>>
+
+  ' ===== Mitigates (countermeasures) =====
+  UC_Comply ..> MU_Launder : <<mitigates>>
+  UC_Comply ..> MU_Probe : <<mitigates>>
+
+  UC_VerifyID ..> MU_Anon : <<mitigates>>
+  UC_VerifyID ..> MU_FalseID : <<mitigates>>
+
+  UC_Origin ..> MU_Illegal : <<mitigates>>
+
+  UC_RejectAbove ..> MU_LargeSum : <<mitigates>>
+
+  UC_Alert ..> MU_Launder : <<mitigates>>
+
+  UC_RejectSus ..> MU_Probe : <<mitigates>>
+}
+
+@enduml

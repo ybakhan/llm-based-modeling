@@ -1,0 +1,90 @@
+@startuml
+title Ride Sharing System — Misuse Case Diagram
+left to right direction
+skinparam backgroundColor #FFFFFF
+
+' ===== Global styling =====
+skinparam shadowing false
+skinparam ArrowColor #444444
+skinparam DefaultFontName Arial
+
+' Regular actors
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #333333
+  FontColor #111111
+}
+
+' Misactors (dark fill; label must remain readable on white canvas)
+skinparam actor<<misactor>> {
+  BackgroundColor #111111
+  BorderColor #111111
+  FontColor #111111
+}
+
+' Regular use cases
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #333333
+  FontColor #111111
+}
+
+' Misuse cases (dark background + white text)
+skinparam usecase<<misuse>> {
+  BackgroundColor #111111
+  BorderColor #111111
+  FontColor #FFFFFF
+  StereotypeFontColor #FFFFFF
+}
+
+' ===== Actors =====
+actor Passenger
+actor Driver
+
+actor "Fake Driver" as FakeDriver <<misactor>>
+actor "Fare Cheat" as FareCheat <<misactor>>
+
+rectangle "Ride Sharing System" {
+
+  ' ===== Legitimate use cases =====
+  usecase "Request Ride" as UC_Request
+  usecase "Process Payment" as UC_Pay
+  usecase "Split Fare" as UC_Split
+  usecase "Track Ride Location" as UC_Track
+
+  ' ===== Security (regular) use cases =====
+  usecase "Verify Driver Identity" as UC_VerifyDriver
+  usecase "Share Ride Details with Trusted Contact" as UC_ShareDetails
+  usecase "Require Payment Pre-Authorization" as UC_PreAuth
+
+  ' ===== Misuse cases =====
+  usecase "Impersonate Driver" as MU_Impersonate <<misuse>>
+  usecase "Spoof Vehicle Location" as MU_Spoof <<misuse>>
+  usecase "Evade Payment" as MU_Evade <<misuse>>
+}
+
+' ===== Associations (no labels) =====
+Passenger -- UC_Request
+Passenger -- UC_Pay
+Driver -- UC_Track
+
+FakeDriver -- MU_Impersonate
+FakeDriver -- MU_Spoof
+FareCheat -- MU_Evade
+
+' ===== Include / Extend =====
+UC_Split ..> UC_Pay : <<extend>>
+UC_Request ..> UC_VerifyDriver : <<include>>
+UC_Track ..> UC_ShareDetails : <<include>>
+UC_Pay ..> UC_PreAuth : <<include>>
+
+' ===== Threatens / Mitigates =====
+MU_Impersonate ..> UC_Request : <<threatens>>
+MU_Spoof ..> UC_Track : <<threatens>>
+MU_Evade ..> UC_Pay : <<threatens>>
+
+UC_VerifyDriver ..> MU_Impersonate : <<mitigates>>
+UC_ShareDetails ..> MU_Spoof : <<mitigates>>
+UC_PreAuth ..> MU_Evade : <<mitigates>>
+
+@enduml

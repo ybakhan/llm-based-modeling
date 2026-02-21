@@ -1,0 +1,107 @@
+@startuml
+' Misuse Case Diagram — Healthcare Information System
+
+left to right direction
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam style strictuml
+
+' ---- Global styling ----
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #2F2F2F
+  FontColor #2F2F2F
+  ArrowColor #2F2F2F
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #2F2F2F
+  FontColor #2F2F2F
+}
+
+' ---- Misuse case styling (dark fill + white text, including stereotype) ----
+skinparam usecase<<misuse>> {
+  BackgroundColor #1F1F1F
+  BorderColor #1F1F1F
+  FontColor #FFFFFF
+  StereotypeFontColor #FFFFFF
+}
+
+' ---- Misactor styling: dark stickman, BUT label must be dark on white background ----
+' The label is drawn outside the stickman on the diagram background (white),
+' so we force the label font color to a dark color.
+skinparam actor<<misactor>> {
+  BackgroundColor #1F1F1F
+  BorderColor #1F1F1F
+  FontColor #1A1A1A
+}
+
+' ---- Actors ----
+actor Doctor as doc
+actor Nurse as nurse
+actor Patient as patient
+
+actor "Disgruntled Employee" as de <<misactor>>
+actor "Identity Thief" as it <<misactor>>
+
+' ---- System Boundary ----
+rectangle "Healthcare Information System" as HIS {
+
+  ' Regular use cases
+  usecase "View Patient Records" as U1
+  usecase "Update Medical History" as U2
+  usecase "Prescribe Medication" as U3
+  usecase "Request Appointment" as U4
+
+  ' Security use cases (regular use cases; no stereotype)
+  usecase "Role-Based Access Control" as S1
+  usecase "Encrypt Patient Data" as S2
+  usecase "Audit Trail Logging" as S3
+  usecase "Verify Patient Identity" as S4
+
+  ' Misuse cases
+  usecase "Tamper with Medical Records" as M1 <<misuse>>
+  usecase "Gain Unauthorized Access to Patient Records" as M2 <<misuse>>
+  usecase "Prescribe Harmful Medication" as M3 <<misuse>>
+  usecase "Steal Patient Identity" as M4 <<misuse>>
+}
+
+' ---- Directed actor -> use case associations ----
+doc --> U1
+nurse --> U1
+
+doc --> U2
+nurse --> U2
+
+doc --> U3
+
+patient --> U4
+
+' ---- Include relationships (mandatory controls) ----
+U1 ..> S1 : <<include>>
+U1 ..> S2 : <<include>>
+
+U2 ..> S3 : <<include>>
+
+U4 ..> S4 : <<include>>
+
+' ---- Misactor -> misuse case associations (directed) ----
+de --> M1
+de --> M2
+de --> M3
+it --> M4
+
+' ---- Threatens relationships ----
+M1 ..> U2 : <<threatens>>
+M2 ..> U1 : <<threatens>>
+M3 ..> U3 : <<threatens>>
+M4 ..> U4 : <<threatens>>
+
+' ---- Mitigates relationships (countermeasures) ----
+S3 ..> M1 : <<mitigates>>
+S1 ..> M2 : <<mitigates>>
+S1 ..> M3 : <<mitigates>>
+S2 ..> M4 : <<mitigates>>
+S4 ..> M4 : <<mitigates>>
+
+@enduml

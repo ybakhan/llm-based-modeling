@@ -1,0 +1,33 @@
+@startuml
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+'--- Actors ---
+actor "Customer" as Customer
+actor "Scammer" as Scammer <<misactor>>
+
+rectangle "Food Delivery System" {
+
+  '--- Regular use cases ---
+  usecase "Place Food Order" as UC_Order
+  usecase "Track Delivery Status\n(Real-Time)" as UC_Track
+  usecase "Verify Delivery\nUsing PIN Code" as UC_PIN
+
+  '--- Misuse case ---
+  usecase "Falsely Claim\nNon-Delivery\n(to get refund/replacement)" as MU_FalseClaim <<misuse>>
+}
+
+'--- Associations ---
+Customer --> UC_Order
+Customer --> UC_Track
+
+Scammer --> MU_FalseClaim
+
+'--- Relationships ---
+UC_Track .> UC_PIN : <<include>>
+
+MU_FalseClaim .> UC_Track : <<threatens>>
+UC_PIN .> MU_FalseClaim : <<mitigates>>
+
+@enduml
