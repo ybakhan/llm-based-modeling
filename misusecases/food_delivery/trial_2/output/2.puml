@@ -1,0 +1,56 @@
+@startuml
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+'----------------------------
+' Global styling
+'----------------------------
+skinparam BackgroundColor transparent
+
+' Regular use cases (keep default look)
+skinparam usecase {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+
+' Misuse cases: dark background + white text
+skinparam usecase<<misuse>> {
+  BackgroundColor #1F1F1F
+  BorderColor #1F1F1F
+  FontColor White
+}
+
+'----------------------------
+' Actors
+'----------------------------
+actor "Customer" as Customer
+actor "Scammer" as Scammer <<misactor>>
+
+rectangle "Food Delivery System" {
+
+  ' Regular use cases
+  usecase "Place Food Order" as UC_Order
+  usecase "Track Delivery Status" as UC_Track
+  usecase "Verify Delivery\nUsing PIN Code" as UC_PIN
+
+  ' Misuse case (shortened)
+  usecase "Falsely Claim Non-Delivery" as MU_FalseClaim <<misuse>>
+}
+
+'----------------------------
+' Associations
+'----------------------------
+Customer --> UC_Order
+Customer --> UC_Track
+Scammer --> MU_FalseClaim
+
+'----------------------------
+' Relationships
+'----------------------------
+UC_Track .> UC_PIN : <<include>>
+MU_FalseClaim .> UC_Track : <<threatens>>
+UC_PIN .> MU_FalseClaim : <<mitigates>>
+
+@enduml
