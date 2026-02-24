@@ -4,7 +4,7 @@ LLM used - ChatGPT 5.2 (Default Mode)
 
 ### Prompts for intended [model](../atm.png).
 
-[Chat Transcript]()
+[Chat Transcript](https://chatgpt.com/share/699d5365-11ec-8006-95a1-36f8bdf769dd)
 
 1. Generate a misuse case diagram in PlantUML for a Bank ATM System based on the following requirements.
    - Req 1: The system shall allow customers and the bank to transfer funds.

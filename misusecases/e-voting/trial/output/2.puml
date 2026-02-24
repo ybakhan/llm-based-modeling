@@ -1,0 +1,88 @@
+@startuml
+left to right direction
+skinparam backgroundColor white
+skinparam shadowing false
+
+' --- General styling ---
+skinparam actorStyle stickman
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #333333
+  ArrowColor #333333
+  FontColor #111111
+}
+
+' Misuse cases: dark background + white text (so <<misuse>> is visible too)
+skinparam usecase<<misuse>> {
+  BackgroundColor #1f1f1f
+  BorderColor #111111
+  FontColor #FFFFFF
+}
+
+' Misactors: dark fill, but label text must be dark (label is outside the stickman on white)
+skinparam actor<<misactor>> {
+  BackgroundColor #1f1f1f
+  BorderColor #111111
+  FontColor #111111
+}
+
+' Ensure all relationship labels are visible
+skinparam ArrowFontColor #111111
+skinparam ArrowFontSize 12
+
+' --- Actors ---
+actor "Voter" as V
+actor "Election Official" as EO
+actor "Vote Manipulator" as VM <<misactor>>
+actor "Foreign Agent" as FA <<misactor>>
+
+rectangle "E-Voting System" {
+
+  ' --- Regular use cases ---
+  usecase "Cast Vote" as UC_Cast
+  usecase "Verify Eligibility" as UC_Verify
+  usecase "Generate Voter Receipt" as UC_Receipt
+  usecase "Multi-Factor Authentication" as UC_MFA
+
+  usecase "Tally Results" as UC_Tally
+  usecase "Publish Results" as UC_Publish
+  usecase "Maintain Audit Trail" as UC_Audit
+  usecase "Request Recount" as UC_Recount
+
+  ' --- Misuse cases ---
+  usecase "Cast Multiple Votes" as MU_MultiVote <<misuse>>
+  usecase "Alter Vote Count" as MU_AlterCount <<misuse>>
+  usecase "Impersonate Registered Voter" as MU_Impersonate <<misuse>>
+}
+
+' --- Actor -> use case (directed) ---
+V  --> UC_Cast
+V  --> UC_Verify
+EO --> UC_Tally
+EO --> UC_Publish
+
+VM --> MU_MultiVote
+VM --> MU_AlterCount
+FA --> MU_AlterCount
+FA --> MU_Impersonate
+
+' --- Includes / extends ---
+UC_Cast   ..> UC_Verify  : <<include>>
+UC_Cast   ..> UC_Receipt : <<include>>
+UC_Verify ..> UC_MFA     : <<include>>
+
+UC_Tally  ..> UC_Audit   : <<include>>
+
+UC_Recount ..> UC_Publish : <<extend>>
+
+' --- Threatens (misuse undermines) ---
+MU_MultiVote   ..> UC_Cast   : <<threatens>>
+MU_AlterCount  ..> UC_Tally  : <<threatens>>
+MU_Impersonate ..> UC_Verify : <<threatens>>
+
+' --- Mitigates (countermeasures) ---
+UC_Receipt ..> MU_AlterCount  : <<mitigates>>
+UC_MFA     ..> MU_Impersonate : <<mitigates>>
+UC_Audit   ..> MU_MultiVote   : <<mitigates>>
+
+@enduml
