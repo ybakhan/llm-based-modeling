@@ -1,6 +1,6 @@
 ## Trial Run - Cloud storage
 
-LLM used - ChatGPT 5.2 (Thinking Mode)
+LLM used - ChatGPT 5.2 (Default Mode)
 
 ### Prompts for intended [model](../cloud_storage.png).
 

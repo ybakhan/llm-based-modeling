@@ -1,6 +1,6 @@
 ## Trial Run - Library Management System
 
-LLM used - ChatGPT 5.2 (Thinking Mode)
+LLM used - ChatGPT 5.2 (Default Mode)
 
 ### Prompts for intended [model](../library.png).
 

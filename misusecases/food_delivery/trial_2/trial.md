@@ -1,6 +1,6 @@
 ## Trial Run - Food Delivery System
 
-LLM used - ChatGPT 5.2 (Thinking Mode)
+LLM used - ChatGPT 5.2 (Default Mode)
 
 ### Prompts for intended [model](../food_delivery.png).
 

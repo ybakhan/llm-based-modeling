@@ -1,0 +1,88 @@
+@startuml
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+'--- Use case styling
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #222222
+  FontColor #111111
+}
+
+'--- Misuse case styling (dark with visible stereotype text)
+skinparam usecase<<misuse>> {
+  BackgroundColor #1F1F1F
+  BorderColor #111111
+  FontColor #FFFFFF
+  StereotypeFontColor #FFFFFF
+}
+
+'--- Actor styling
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #222222
+  FontColor #111111
+}
+
+'--- Misactor styling (dark stickman, readable label)
+skinparam actor<<misactor>> {
+  BackgroundColor #1F1F1F
+  BorderColor #111111
+  FontColor #111111  ' label text sits outside on white background
+}
+
+actor Customer as C
+actor Bank as B
+
+actor "Shoulder Surfer" as SS <<misactor>>
+actor "Card Skimmer" as CS <<misactor>>
+
+rectangle "Bank ATM System" {
+  (Transfer Funds) as UC_Transfer
+  (Withdraw Cash) as UC_Withdraw
+
+  (Authenticate Customer) as UC_Auth
+  (Shield PIN Pad) as UC_Shield
+
+  (Encrypt Card Data) as UC_Encrypt
+  (Send Transaction Alert) as UC_Alert
+
+  (Spy on PIN Entry) as MU_Spy <<misuse>>
+  (Unauthorized Withdrawal) as MU_UnauthW <<misuse>>
+  (Install Skimming Device) as MU_Skim <<misuse>>
+}
+
+'--- Actor -> use case (directed)
+C --> UC_Transfer
+B --> UC_Transfer
+
+C --> UC_Withdraw
+B --> UC_Withdraw
+
+'--- Includes (always)
+UC_Transfer --> UC_Auth : <<include>>
+UC_Withdraw --> UC_Auth : <<include>>
+UC_Auth --> UC_Shield : <<include>>
+UC_Withdraw --> UC_Encrypt : <<include>>
+UC_Withdraw --> UC_Alert : <<include>>
+
+'--- Misactor -> misuse (directed)
+SS --> MU_Spy
+SS --> MU_UnauthW
+CS --> MU_Skim
+
+'--- Misuse relationships (threatens / includes)
+MU_Spy ..> UC_Auth : <<threatens>>
+MU_UnauthW ..> UC_Withdraw : <<threatens>>
+MU_Skim ..> UC_Withdraw : <<threatens>>
+
+MU_UnauthW --> MU_Spy : <<include>>
+
+'--- Countermeasures (mitigates)
+UC_Shield ..> MU_Spy : <<mitigates>>
+UC_Encrypt ..> MU_Skim : <<mitigates>>
+UC_Alert ..> MU_UnauthW : <<mitigates>>
+
+@enduml
