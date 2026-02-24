@@ -45,7 +45,7 @@ LLM used - ChatGPT 5.2 (Default Mode)
 
    - Req 19: Guaranteeing the authenticity of history shall serve as a countermeasure against forgery of product history.
 
-2. The `<<include>>` stereotype label on the link between "Tag Authentication" and "Use Security Protocol with Sufficient Key Length" is not visible. Please ensure all <<include>> stereotype labels on links are clearly visible.
+2. The `<<include>>` stereotype label on the link between "Tag Authentication" and "Use Security Protocol with Sufficient Key Length" is not visible. Please ensure all `<<include>>` stereotype labels on links are clearly visible.
 
 ### Statistics
 
