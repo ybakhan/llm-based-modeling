@@ -1,0 +1,94 @@
+@startuml
+' Online Exam System — Misuse Case Diagram
+
+left to right direction
+skinparam backgroundColor #FFFFFF
+
+' Make <<include>> / <<extend>> labels clearly visible and dashed
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #2B2B2B
+  ArrowColor #2B2B2B
+  FontColor #111111
+}
+skinparam actor {
+  FontColor #111111
+  BorderColor #2B2B2B
+}
+
+' Style for misuse cases (dark with white text + visible stereotype)
+skinparam usecase<<misuse>> {
+  BackgroundColor #1F1F1F
+  BorderColor #1F1F1F
+  FontColor #FFFFFF
+  StereotypeFontColor #FFFFFF
+}
+
+' Style for misactors (dark body, but keep label readable on white background)
+skinparam actor<<misactor>> {
+  BackgroundColor #1F1F1F
+  BorderColor #1F1F1F
+  FontColor #111111
+}
+
+' Relationship label styling
+skinparam stereotypeCBackgroundColor #FFFFFF
+skinparam stereotypeCFontColor #111111
+skinparam ArrowFontColor #111111
+skinparam ArrowFontSize 12
+skinparam ArrowThickness 1
+
+rectangle "Online Exam System" {
+
+  actor "Student" as Student
+  actor "Instructor" as Instructor
+
+  actor "Cheating Student" as Cheater <<misactor>>
+  actor "Exam Leaker" as Leaker <<misactor>>
+
+  (Take Exam) as UC_Take
+  (Submit Answers) as UC_Submit
+  (Create Exam) as UC_Create
+
+  (Request Time Extension) as UC_Extend
+
+  (Enable Webcam Proctoring) as UC_Proctor
+  (Randomize Question Order) as UC_Rand
+  (Restrict Exam Access Window) as UC_Window
+
+  (Use Unauthorized Resources) as MU_Resources <<misuse>>
+  (Impersonate Student) as MU_Impersonate <<misuse>>
+  (Share Exam Content) as MU_Share <<misuse>>
+}
+
+' Actor -> use case associations (directed)
+Student --> UC_Take
+Student --> UC_Submit
+Instructor --> UC_Create
+
+' Optional extension
+UC_Extend ..> UC_Take : <<extend>>
+
+' Includes (always)
+UC_Take ..> UC_Proctor : <<include>>
+UC_Create ..> UC_Rand : <<include>>
+UC_Create ..> UC_Window : <<include>>
+
+' Misactors -> misuse cases (directed)
+Cheater --> MU_Resources
+Cheater --> MU_Impersonate
+Leaker --> MU_Share
+
+' Threatens relationships
+MU_Resources ..> UC_Take : <<threatens>>
+MU_Impersonate ..> UC_Submit : <<threatens>>
+MU_Share ..> UC_Create : <<threatens>>
+
+' Mitigates relationships (countermeasures)
+UC_Proctor ..> MU_Resources : <<mitigates>>
+UC_Proctor ..> MU_Impersonate : <<mitigates>>
+
+UC_Rand ..> MU_Share : <<mitigates>>
+UC_Window ..> MU_Share : <<mitigates>>
+
+@enduml
