@@ -1,0 +1,61 @@
+@startuml
+left to right direction
+skinparam backgroundColor white
+
+' ===== Styling =====
+skinparam usecase {
+  BackgroundColor #ffffff
+  BorderColor #2b2b2b
+  FontColor #1a1a1a
+}
+
+' Misuse cases: dark background + white text (including stereotype)
+skinparam usecase<<misuse>> {
+  BackgroundColor #1f1f1f
+  BorderColor #1f1f1f
+  FontColor #ffffff
+  StereotypeFontColor #ffffff
+}
+
+' Misactors: dark actor fill, readable label
+skinparam actor {
+  BackgroundColor #1f1f1f
+  BorderColor #1f1f1f
+  FontColor #1a1a1a
+}
+
+' ===== Actors =====
+actor "Library Member" as Member
+actor "Identity Fraudster" as Fraudster <<misactor>>
+
+' ===== Use cases =====
+usecase "Borrow Books" as UC_Borrow
+usecase "Return Books" as UC_Return
+usecase "Verify Membership" as UC_Verify
+usecase "Scan Photo ID" as UC_Scan
+
+' ===== Misuse cases =====
+usecase "Borrow Under False Identity" as MU_FalseId <<misuse>>
+usecase "Steal Borrowed Book\n(Never Return)" as MU_Steal <<misuse>>
+
+' ===== Associations (directed) =====
+Member --> UC_Borrow
+Member --> UC_Return
+
+Fraudster --> MU_FalseId
+Fraudster --> MU_Steal
+
+' ===== Include relationships =====
+UC_Borrow ..> UC_Verify : <<include>>
+UC_Verify ..> UC_Scan : <<include>>
+
+' ===== Threatens / mitigates =====
+MU_FalseId ..> UC_Borrow : <<threatens>>
+MU_FalseId ..> UC_Verify : <<threatens>>
+
+UC_Scan ..> MU_FalseId : <<mitigates>>
+
+' ===== Misuse-to-misuse relation =====
+MU_Steal ..> MU_FalseId : <<extend>>
+
+@enduml
