@@ -1,0 +1,60 @@
+@startuml
+title Cloud Storage System - Misuse Case Diagram
+left to right direction
+skinparam backgroundColor #FFFFFF
+
+' --- Styling ---
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #2D2D2D
+  ArrowColor #2D2D2D
+}
+
+' Misuse cases: dark background + white text
+skinparam usecase<<misuse>> {
+  BackgroundColor #1F1F1F
+  BorderColor #1F1F1F
+  FontColor #FFFFFF
+  StereotypeFontColor #FFFFFF
+}
+
+' Misactors: dark background (note: label stays readable on white background)
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #2D2D2D
+  FontColor #2D2D2D
+}
+skinparam actor<<misactor>> {
+  BackgroundColor #1F1F1F
+  BorderColor #1F1F1F
+  FontColor #2D2D2D
+  StereotypeFontColor #2D2D2D
+}
+
+actor "User" as User
+actor "Data Thief" as Thief <<misactor>>
+
+rectangle "Cloud Storage System" {
+  usecase "Upload File" as UC_Upload
+  usecase "Download File" as UC_Download
+  usecase "Authenticate User" as UC_Auth
+  usecase "Encrypt File Transfer" as UC_Encrypt
+
+  usecase "Intercept File Transfer" as MU_Intercept <<misuse>>
+}
+
+' Actor -> use case (directed)
+User --> UC_Upload
+User --> UC_Download
+Thief --> MU_Intercept
+
+' Includes (always)
+UC_Upload ..> UC_Auth : <<include>>
+UC_Download ..> UC_Auth : <<include>>
+UC_Download ..> UC_Encrypt : <<include>>
+
+' Threat / Mitigation relations (as stereotypes)
+MU_Intercept ..> UC_Download : <<threatens>>
+UC_Encrypt ..> MU_Intercept : <<mitigates>>
+
+@enduml
