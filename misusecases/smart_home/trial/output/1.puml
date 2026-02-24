@@ -1,0 +1,89 @@
+@startuml
+title Smart Home System - Misuse Case Diagram
+left to right direction
+skinparam backgroundColor white
+
+' ---- Actor styling ----
+skinparam actor {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+
+' ---- Use case styling ----
+skinparam usecase {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+
+' ---- Misuse case styling ----
+skinparam usecase<<misuse>> {
+  BackgroundColor #1f1f1f
+  BorderColor Black
+  FontColor White
+  StereotypeFontColor White
+}
+
+' ---- Misactor styling ----
+skinparam actor<<misactor>> {
+  BackgroundColor #1f1f1f
+  BorderColor Black
+  FontColor Black
+}
+
+' ---- Relationship styling ----
+skinparam ArrowColor Black
+skinparam ArrowThickness 1
+
+rectangle "Smart Home System" {
+
+  actor "Homeowner" as Homeowner
+
+  actor "Burglar" as Burglar <<misactor>>
+  actor "Eavesdropper" as Eavesdropper <<misactor>>
+
+  (Unlock Door Remotely) as UC_Unlock
+  (View Security Camera Feed) as UC_ViewCam
+  (Receive Intrusion Alerts) as UC_Alerts
+  (Notify Emergency Contacts) as UC_Notify
+
+  (Biometric Verification) as UC_Bio
+  (Encrypt Device Communication) as UC_EncryptDev
+  (Encrypt Video Stream) as UC_EncryptVid
+
+  (Hijack Smart Lock) as MU_Hijack <<misuse>>
+  (Spy on Camera Feed) as MU_Spy <<misuse>>
+  (Intercept Device Traffic) as MU_Intercept <<misuse>>
+
+  ' --- Actor to use case associations (directed) ---
+  Homeowner --> UC_Unlock
+  Homeowner --> UC_ViewCam
+  Homeowner --> UC_Alerts
+
+  ' --- Optional behavior ---
+  UC_Notify ..> UC_Alerts : <<extend>>
+
+  ' --- Includes (always) ---
+  UC_Unlock ..> UC_Bio : <<include>>
+  UC_Unlock ..> UC_EncryptDev : <<include>>
+  UC_ViewCam ..> UC_EncryptVid : <<include>>
+
+  ' --- Misactor to misuse associations (directed) ---
+  Burglar --> MU_Hijack
+  Eavesdropper --> MU_Spy
+  Eavesdropper --> MU_Intercept
+
+  ' --- Threatens relationships ---
+  MU_Hijack ..> UC_Unlock : <<threatens>>
+  MU_Spy ..> UC_ViewCam : <<threatens>>
+  MU_Intercept ..> UC_Unlock : <<threatens>>
+  MU_Intercept ..> UC_ViewCam : <<threatens>>
+
+  ' --- Mitigates / countermeasures ---
+  UC_Bio ..> MU_Hijack : <<mitigates>>
+  UC_EncryptVid ..> MU_Spy : <<mitigates>>
+  UC_EncryptDev ..> MU_Intercept : <<mitigates>>
+}
+
+@enduml
