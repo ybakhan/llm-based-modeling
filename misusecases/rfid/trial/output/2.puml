@@ -1,0 +1,115 @@
+@startuml
+left to right direction
+skinparam backgroundColor white
+skinparam shadowing false
+
+' Readable labels
+skinparam actorFontColor #111111
+skinparam usecaseFontColor #111111
+
+' Make ALL relationship labels (like <<include>>) clearly visible
+skinparam ArrowColor #111111
+skinparam ArrowFontColor #111111
+skinparam ArrowFontSize 14
+
+' Misuse case styling (dark with white text + visible stereotype)
+skinparam usecase<<misuse>> {
+  BackgroundColor #2B2B2B
+  BorderColor #2B2B2B
+  FontColor #FFFFFF
+  StereotypeFontColor #FFFFFF
+}
+
+' Misactor styling (dark stick figure, readable label outside)
+skinparam actor<<misactor>> {
+  BackgroundColor #2B2B2B
+  BorderColor #2B2B2B
+}
+
+hide circle
+
+actor "Product Manager" as PM
+actor "Licit Actor" as LA
+actor "Supervisor" as SUP
+actor "Illicit Actor" as IA <<misactor>>
+
+rectangle "RFID System" {
+
+  ' ===== Regular use cases =====
+  usecase "Tag Authentication" as UC_TagAuth
+  usecase "Use Security Protocol\nwith Sufficient Key Length" as UC_KeyLen
+  usecase "Secure Internal IT System" as UC_SecureInternalIT
+  usecase "Secure Tags Against\nSide-Channel Attacks" as UC_SecureTagsSCA
+
+  usecase "Authenticate Products" as UC_ProdAuth
+  usecase "Verify Object-Specific\nFeatures" as UC_VerifyFeatures
+  usecase "Prevent & Detect\nTag Removal" as UC_TagRemoval
+  usecase "Secure Equipment\nEnvironmental IT System" as UC_SecureEquipEnvIT
+  usecase "Location-Based\nAuthentication" as UC_LocAuth
+
+  usecase "Guarantee Integrity\nof History" as UC_IntegrityHistory
+  usecase "Guarantee Authenticity\nof History" as UC_AuthenticityHistory
+  usecase "Detect Cloned Tags" as UC_DetectClones
+
+  ' ===== Misuse cases =====
+  usecase "Clone Tags" as MU_CloneTags <<misuse>>
+  usecase "Cryptanalysis &\nReverse Engineering" as MU_CryptoRE <<misuse>>
+  usecase "Steal Data from\nInternal IT System" as MU_DataTheft <<misuse>>
+  usecase "Copy ID Numbers" as MU_CopyID <<misuse>>
+  usecase "Attack Internal\nIT System" as MU_AttackInternalIT <<misuse>>
+  usecase "Attack RF\nCommunication" as MU_AttackRF <<misuse>>
+  usecase "Forge Product\nHistory" as MU_ForgeHistory <<misuse>>
+}
+
+' ===== Actor -> Use case (directed arrows) =====
+PM --> UC_TagAuth
+LA --> UC_ProdAuth
+SUP --> UC_LocAuth
+IA --> MU_CloneTags
+
+' ===== Include relationships (regular) =====
+' Use the explicit include arrow style to help PlantUML render the label reliably
+UC_TagAuth ..> UC_KeyLen : <<include>>
+UC_TagAuth ..> UC_SecureInternalIT : <<include>>
+UC_TagAuth ..> UC_SecureTagsSCA : <<include>>
+
+UC_ProdAuth ..> UC_TagAuth : <<include>>
+UC_ProdAuth ..> UC_VerifyFeatures : <<include>>
+UC_ProdAuth ..> UC_TagRemoval : <<include>>
+UC_ProdAuth ..> UC_SecureEquipEnvIT : <<include>>
+UC_ProdAuth ..> UC_LocAuth : <<include>>
+
+UC_LocAuth ..> UC_IntegrityHistory : <<include>>
+UC_LocAuth ..> UC_AuthenticityHistory : <<include>>
+UC_LocAuth ..> UC_DetectClones : <<include>>
+
+' ===== Include relationships (misuse decomposition) =====
+MU_CloneTags ..> MU_CryptoRE : <<include>>
+MU_CloneTags ..> MU_DataTheft : <<include>>
+MU_CloneTags ..> MU_CopyID : <<include>>
+MU_CloneTags ..> MU_AttackInternalIT : <<include>>
+MU_CloneTags ..> MU_AttackRF : <<include>>
+MU_CloneTags ..> MU_ForgeHistory : <<include>>
+
+' ===== Threatens relationships =====
+MU_CryptoRE ..> UC_TagAuth : <<threatens>>
+MU_DataTheft ..> UC_TagAuth : <<threatens>>
+MU_CopyID ..> UC_ProdAuth : <<threatens>>
+MU_AttackInternalIT ..> UC_ProdAuth : <<threatens>>
+MU_AttackRF ..> UC_ProdAuth : <<threatens>>
+MU_ForgeHistory ..> UC_DetectClones : <<threatens>>
+
+' ===== Mitigates / Countermeasures =====
+UC_KeyLen ..> MU_CryptoRE : <<mitigates>>
+UC_SecureInternalIT ..> MU_DataTheft : <<mitigates>>
+UC_TagAuth ..> MU_CopyID : <<mitigates>>
+
+UC_VerifyFeatures ..> MU_CloneTags : <<mitigates>>
+UC_DetectClones ..> MU_CloneTags : <<mitigates>>
+
+UC_SecureEquipEnvIT ..> MU_AttackInternalIT : <<mitigates>>
+UC_SecureEquipEnvIT ..> MU_AttackRF : <<mitigates>>
+
+UC_AuthenticityHistory ..> MU_ForgeHistory : <<mitigates>>
+
+@enduml
