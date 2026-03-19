@@ -512,6 +512,8 @@ def main():
     conversation: list[dict] = []          # multi-turn message history
 
     # ── Main generation loop ───────────────────────────────────────────────────
+    all_domains: list[str] = []
+
     for i, size in enumerate(sizes, start=1):
         lo, hi           = SIZE_RANGES[size]
         construct_count  = random.randint(lo, hi)
@@ -576,6 +578,7 @@ def main():
         domain_display = parsed["domain_display"]
         gen_at  = datetime.now().isoformat()
 
+        all_domains.append(domain_display)
         logger.info(f"  Domain       : {domain_display}")
         logger.info(f"  V1 constructs: {parsed['construct_count_v1']}")
         logger.info(f"  V2 constructs: {parsed['construct_count_v2']}")
@@ -687,6 +690,25 @@ def main():
         if i < args.num_prompts:
             logger.info(f"  Sleeping {args.rate_limit} s …")
             time.sleep(args.rate_limit)
+
+    # ── Domain summary ─────────────────────────────────────────────────────────
+    unique_domains = list(dict.fromkeys(all_domains))  # preserve order, deduplicate
+    domains_path = run_dir / "domains.yaml"
+    domains_path.write_text(
+        yaml.dump(
+            {
+                "all_domains":    all_domains,
+                "unique_domains": unique_domains,
+                "total":          len(all_domains),
+                "unique_count":   len(unique_domains),
+            },
+            allow_unicode=True,
+            sort_keys=False,
+            default_flow_style=False,
+        ),
+        encoding="utf-8",
+    )
+    logger.info(f"  domains.yaml  → {domains_path}")
 
     logger.info("")
     logger.info(f"{'═'*60}")
