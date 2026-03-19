@@ -1,0 +1,27 @@
+{
+    "python.defaultInterpreterPath": "./.venv/bin/python3",
+    "pylint.enabled": true,
+    "pylint.importStrategy": "fromEnvironment",
+    "files.trimFinalNewlines": false,
+    "files.insertFinalNewline": true,
+    "pylint.ignorePatterns": [
+        "**/tests/**",
+        "**/test_*.py",
+        "**/*_test.py"
+    ],
+    "python.testing.pytestArgs": [
+        "tests",
+        "-s",
+        "-v",
+        "-W", 
+        "ignore::DeprecationWarning",
+        "--import-mode=importlib",          // often fixes import/discovery issues in src/tests layouts
+        "--no-header", "--no-summary",  // reduce output noise during discovery
+        "--tb=no"                     // reduce traceback noise in collection
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.testing.cwd": "${workspaceFolder}",
+    "python.testing.autoTestDiscoverOnSaveEnabled": false,
+    "python.testing.pytestPath": "${workspaceFolder}/venv/bin/pytest"
+}
