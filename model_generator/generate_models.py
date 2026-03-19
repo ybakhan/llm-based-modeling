@@ -900,7 +900,19 @@ def main():
         "antipattern_name", "sample_type", "task_mode", "generated_at",
         "input", "output",
     ]
-    write_csv(run_dir / "training_samples.csv", training_rows, _training_fields)
+    training_yaml_rows = [{k: row[k] for k in _training_fields if k in row} for row in training_rows]
+    training_yaml_path = run_dir / "training_samples.yaml"
+    training_yaml_path.write_text(
+        yaml.dump(training_yaml_rows, allow_unicode=True, sort_keys=False, default_flow_style=False),
+        encoding="utf-8",
+    )
+    logger.info(f"    Wrote  {training_yaml_path}")
+
+    training_jsonl_path = run_dir / "training_samples.jsonl"
+    with open(training_jsonl_path, "w", encoding="utf-8") as f:
+        for row in training_yaml_rows:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    logger.info(f"    Wrote  {training_jsonl_path}")
 
     unique_domains = list(dict.fromkeys(all_domains))  # preserve order, deduplicate
     domains_path = run_dir / "domains.yaml"
