@@ -633,8 +633,9 @@ def main():
 
     # ── Main generation loop ───────────────────────────────────────────────────
     all_domains: list[str] = []
-    ap_stats_rows:  list[dict] = []
-    ref_stats_rows: list[dict] = []
+    ap_stats_rows:   list[dict] = []
+    ref_stats_rows:  list[dict] = []
+    training_rows:   list[dict] = []
 
     for i, size in enumerate(sizes, start=1):
         lo, hi           = SIZE_RANGES[size]
@@ -783,6 +784,8 @@ def main():
             parsed["refactored_puml"],
         ).split("Answer:\n", 1)[-1].strip()
 
+        _task_instr = _TASK_INSTRUCTION[args.task_mode].replace("\n", " ")
+
         write_file(
             yaml.dump(
                 make_yaml_record(
@@ -811,6 +814,18 @@ def main():
             ),
             training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.yaml",
         )
+        training_rows.append({
+            "prompt_num":      i,
+            "domain":          domain,
+            "domain_display":  domain_display,
+            "size":            size,
+            "antipattern_name": antipattern_name,
+            "sample_type":     "antipattern",
+            "task_mode":       args.task_mode,
+            "generated_at":    gen_at,
+            "input":           f"{_task_instr}\n\nPlantUML Model:\n{parsed['antipattern_puml']}",
+            "output":          ap_answer,
+        })
 
         # ── Training sample – refactored (positive) ────────────────────────────
         rf_answer = "No antipattern detected."
@@ -848,6 +863,18 @@ def main():
             ),
             training_dir / "refactored" / f"prompt_{i:03d}_{domain_slug}_refactored.yaml",
         )
+        training_rows.append({
+            "prompt_num":      i,
+            "domain":          domain,
+            "domain_display":  domain_display,
+            "size":            size,
+            "antipattern_name": antipattern_name,
+            "sample_type":     "refactored",
+            "task_mode":       args.task_mode,
+            "generated_at":    gen_at,
+            "input":           f"{_task_instr}\n\nPlantUML Model:\n{parsed['refactored_puml']}",
+            "output":          rf_answer,
+        })
 
         # ── Rate limit ─────────────────────────────────────────────────────────
         if i < args.num_prompts:
@@ -868,6 +895,13 @@ def main():
     write_csv(run_dir / "stats_antipattern.csv", ap_stats_rows,  _csv_fields)
     write_csv(run_dir / "stats_refactored.csv",  ref_stats_rows, _csv_fields)
     write_csv(run_dir / "stats_combined.csv",    ap_stats_rows + ref_stats_rows, _csv_fields)
+
+    _training_fields = [
+        "prompt_num", "domain", "domain_display", "size",
+        "antipattern_name", "sample_type", "task_mode", "generated_at",
+        "input", "output",
+    ]
+    write_csv(run_dir / "training_samples.csv", training_rows, _training_fields)
 
     unique_domains = list(dict.fromkeys(all_domains))  # preserve order, deduplicate
     domains_path = run_dir / "domains.yaml"
