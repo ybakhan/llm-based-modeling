@@ -884,7 +884,7 @@ def main():
     # ── Domain summary ────────────────────���────────────────────────────────────
     # ── CSV statistics output ──────────────────────────────────────────────────
     _csv_fields = [
-        "prompt_num", "domain", "domain_display", "size",
+        "prompt_num", "domain_display", "size",
         "antipattern_name", "sample_type", "task_mode",
         "constructs_involved",
         "construct_count_reported",
@@ -896,7 +896,7 @@ def main():
     write_csv(run_dir / "stats_combined.csv",    ap_stats_rows + ref_stats_rows, _csv_fields)
 
     _training_fields = [
-        "prompt_num", "domain", "domain_display", "size",
+        "prompt_num", "domain_display", "size",
         "antipattern_name", "sample_type", "task_mode", "generated_at",
         "input", "output",
     ]
