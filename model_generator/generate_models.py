@@ -33,6 +33,19 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
+def setup_file_logging(run_dir: Path) -> None:
+    """Add a DEBUG-level file handler writing to run_dir/run.log."""
+    log_path = run_dir / "run.log"
+    fh = logging.FileHandler(log_path, encoding="utf-8")
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(logging.Formatter(
+        "%(asctime)s [%(levelname)s] %(message)s",
+        datefmt="%Y-%m-%dT%H:%M:%S",
+    ))
+    logging.getLogger().addHandler(fh)
+    logger.info(f"Log file      : {log_path}")
+
 # ── Size ranges (construct counts) ────────────────────────────────────────────
 
 SIZE_RANGES = {
@@ -128,6 +141,64 @@ def convert_to_png(puml_path: Path, jar_path: str) -> Path:
     except Exception as exc:
         logger.error(f"    PNG conversion failed: {exc}")
     return png_path
+
+
+# ── Audit log ─────────────────────────────────────────────────────────────────
+
+def write_audit(
+    run_dir: Path,
+    prompt_num: int,
+    system_prompt: str,
+    messages: list[dict],
+    raw_response: str,
+    model: str,
+    usage: dict | None,
+) -> Path:
+    """Write a human-readable audit file for one API round-trip."""
+    audit_dir = run_dir / "audit"
+    audit_dir.mkdir(parents=True, exist_ok=True)
+    path = audit_dir / f"prompt_{prompt_num:03d}_audit.txt"
+
+    sep = "─" * 72
+    lines = [
+        f"AUDIT LOG — Prompt #{prompt_num:03d}",
+        f"Timestamp : {datetime.now().isoformat()}",
+        f"Model     : {model}",
+    ]
+    if usage:
+        lines.append(
+            f"Tokens    : input={usage.get('input_tokens')}  "
+            f"output={usage.get('output_tokens')}"
+        )
+    lines += [
+        "",
+        sep,
+        "SYSTEM PROMPT",
+        sep,
+        system_prompt,
+        "",
+    ]
+    for idx, msg in enumerate(messages, start=1):
+        role = msg["role"].upper()
+        content = msg["content"] if isinstance(msg["content"], str) else str(msg["content"])
+        lines += [
+            sep,
+            f"MESSAGE {idx} — {role}",
+            sep,
+            content,
+            "",
+        ]
+    lines += [
+        sep,
+        "ASSISTANT RESPONSE (raw)",
+        sep,
+        raw_response,
+        "",
+    ]
+
+    path.write_text("\n".join(lines), encoding="utf-8")
+    logger.debug(f"  Audit      : {path}")
+    return path
 
 
 # ── Prompt builders ───────────────────────────────────────────────────────────
@@ -415,6 +486,9 @@ def main():
     models_dir   = run_dir / "models"
     training_dir = run_dir / "training_samples"
 
+    run_dir.mkdir(parents=True, exist_ok=True)
+    setup_file_logging(run_dir)
+
     logger.info(f"Output root  : {run_dir}")
     logger.info(f"Antipattern  : {antipattern_name}")
     logger.info(f"Task mode    : {args.task_mode}")
@@ -447,10 +521,16 @@ def main():
         conversation.append({"role": "user", "content": user_msg})
 
         # ── API call ───────────────────────────────────────────────────────────
+        _model = "claude-opus-4-6"
+        _max_tokens = 4096
+        logger.debug(
+            f"  API request  model={_model}  max_tokens={_max_tokens}"
+            f"  messages_in_history={len(conversation)}"
+        )
         try:
             response = client.messages.create(
-                model="claude-opus-4-6",
-                max_tokens=4096,
+                model=_model,
+                max_tokens=_max_tokens,
                 system=system_prompt,
                 messages=conversation,
             )
@@ -460,8 +540,8 @@ def main():
             time.sleep(30)
             try:
                 response = client.messages.create(
-                    model="claude-opus-4-6",
-                    max_tokens=4096,
+                    model=_model,
+                    max_tokens=_max_tokens,
                     system=system_prompt,
                     messages=conversation,
                 )
@@ -476,6 +556,15 @@ def main():
             time.sleep(args.rate_limit)
             continue
 
+        usage = vars(response.usage) if hasattr(response, "usage") else None
+        if usage:
+            logger.debug(
+                f"  API response input_tokens={usage.get('input_tokens')}  "
+                f"output_tokens={usage.get('output_tokens')}"
+            )
+
+        write_audit(run_dir, i, system_prompt, list(conversation), raw, _model, usage)
+
         conversation.append({"role": "assistant", "content": raw})
 
         # ── Parse ──────────────────────────────────────────────────────────────
@@ -487,6 +576,10 @@ def main():
         logger.info(f"  Domain       : {domain_display}")
         logger.info(f"  V1 constructs: {parsed['construct_count_v1']}")
         logger.info(f"  V2 constructs: {parsed['construct_count_v2']}")
+        logger.debug(f"  Antipattern  : {parsed['antipattern_detected']}")
+        logger.debug(f"  Constructs   : {parsed['constructs_involved']}")
+        logger.debug(f"  V1 PUML parsed: {parsed['antipattern_puml'] is not None}")
+        logger.debug(f"  V2 PUML parsed: {parsed['refactored_puml'] is not None}")
 
         if not parsed["antipattern_puml"] or not parsed["refactored_puml"]:
             logger.warning("  Could not parse both PlantUML blocks — skipping file output for this prompt.")
