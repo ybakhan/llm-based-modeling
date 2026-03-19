@@ -89,6 +89,11 @@ def parse_args():
                    help="Which model sizes to generate (default: small). "
                         "Allowed values: small medium large. "
                         "Example: --sizes small medium")
+    p.add_argument("--size-weights", nargs="+", type=float, default=None,
+                   help="Sampling weights for each size in --sizes (default: equal). "
+                        "Must have the same number of values as --sizes. "
+                        "Values are relative (need not sum to 1). "
+                        "Example: --sizes small medium --size-weights 0.7 0.3")
     p.add_argument("--task-mode",     choices=["detect", "detect-and-refactor"],
                    default="detect",
                    help="Training sample task: 'detect' (default) or 'detect-and-refactor'.")
@@ -118,9 +123,13 @@ def slugify(text: str) -> str:
     return text.strip("_")
 
 
-def determine_sizes(n: int, allowed_sizes: list[str]) -> list[str]:
-    """Return a shuffled list of n size labels drawn uniformly from allowed_sizes."""
-    sizes = [random.choice(allowed_sizes) for _ in range(n)]
+def determine_sizes(n: int, allowed_sizes: list[str], weights: list[float] | None = None) -> list[str]:
+    """Return a shuffled list of n size labels drawn from allowed_sizes.
+
+    weights: relative sampling weights (same length as allowed_sizes).
+             If None, all sizes are equally likely.
+    """
+    sizes = random.choices(allowed_sizes, weights=weights, k=n)
     random.shuffle(sizes)
     return sizes
 
@@ -433,7 +442,7 @@ def parse_response(text: str) -> dict:
     v2_sec = re.search(r"=== VERSION 2.*?===(.*?)$",             text, re.DOTALL)
     v1_text = v1_sec.group(1) if v1_sec else ""
 
-    # ── Per-instance parsing ───────────────────────────────────────────────────
+    # ── Per-instance parsing ────────���──────────────────────────────────────────
     def parse_instances(section: str) -> list[dict]:
         """Return [{constructs_involved, explanation}, …], one dict per instance."""
         blocks = re.split(r"\[INSTANCE\s+\d+\]", section, flags=re.IGNORECASE)
@@ -681,7 +690,18 @@ def main():
     cfg              = load_config(args.config)
     all_antipatterns = cfg["antipatterns"]
 
-    # Validate percentages sum to ~1.0
+    # Validate size weights
+    if args.size_weights is not None:
+        if len(args.size_weights) != len(args.sizes):
+            logger.error(
+                f"--size-weights has {len(args.size_weights)} value(s) "
+                f"but --sizes has {len(args.sizes)}; they must match."
+            )
+            sys.exit(1)
+        if any(w < 0 for w in args.size_weights):
+            logger.error("--size-weights values must be non-negative.")
+            sys.exit(1)
+
     # Output directories
     script_dir  = Path(__file__).parent
     output_root = Path(args.output_dir) if args.output_dir else script_dir / "output"
@@ -697,7 +717,11 @@ def main():
     logger.info(f"Antipatterns : {', '.join(ap['name'] for ap in all_antipatterns)}")
     logger.info(f"Task mode    : {args.task_mode}")
     logger.info(f"Num prompts  : {args.num_prompts}")
-    logger.info(f"Sizes        : {', '.join(args.sizes)}")
+    if args.size_weights:
+        size_dist = "  ".join(f"{s}={w}" for s, w in zip(args.sizes, args.size_weights))
+        logger.info(f"Sizes        : {size_dist} (weighted)")
+    else:
+        logger.info(f"Sizes        : {', '.join(args.sizes)} (equal weight)")
 
     # Anthropic client
     api_key = args.api_key or os.environ.get("ANTHROPIC_API_KEY")
@@ -708,7 +732,7 @@ def main():
     client = anthropic.Anthropic(api_key=api_key)
 
     # Prepare conversation
-    sizes         = determine_sizes(args.num_prompts, args.sizes)
+    sizes         = determine_sizes(args.num_prompts, args.sizes, args.size_weights)
     conversation: list[dict] = []          # multi-turn message history
 
     # Tracks how many times each antipattern type has been assigned (for balance)
