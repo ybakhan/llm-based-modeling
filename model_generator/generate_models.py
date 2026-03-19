@@ -890,7 +890,6 @@ def main():
         "construct_count_reported",
         "actors", "use_cases", "includes", "extends", "generalizations",
         "total_parsed", "count_matches_reported", "has_system_boundary",
-        "generated_at", "puml_file", "png_file",
     ]
     write_csv(run_dir / "stats_antipattern.csv", ap_stats_rows,  _csv_fields)
     write_csv(run_dir / "stats_refactored.csv",  ref_stats_rows, _csv_fields)
