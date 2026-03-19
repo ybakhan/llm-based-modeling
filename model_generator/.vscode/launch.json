@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "generate_models: Functional Decomposition",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/generate_models.py",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": [
+        "--config",       "${workspaceFolder}/antipattern_config.yaml",
+        "--plantuml-jar", "/path/to/plantuml.jar",
+        "--output-dir",   "${workspaceFolder}/output",
+        "--num-prompts",  "10",
+        "--pct-small",    "0.30",
+        "--pct-medium",   "0.50",
+        "--pct-large",    "0.20",
+        "--task-mode",    "detect",
+        "--rate-limit",   "2.5"
+      ],
+      "env": {
+        "ANTHROPIC_API_KEY": ""
+      }
+    }
+  ]
+}
