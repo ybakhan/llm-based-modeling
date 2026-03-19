@@ -59,6 +59,14 @@ SIZE_RANGES = {
     "large":  (31, 54),
 }
 
+# ── Antipattern instance caps by size ─────────────────────────────────────────
+
+MAX_INSTANCES_BY_SIZE = {
+    "small":  1,
+    "medium": 3,
+    "large":  5,
+}
+
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
 def parse_args():
@@ -76,12 +84,11 @@ def parse_args():
                    help="Root output directory (default: ./output next to this script).")
     p.add_argument("--num-prompts",   type=int, default=10,
                    help="Number of model pairs to generate (default: 10).")
-    p.add_argument("--pct-small",     type=float, default=0.30,
-                   help="Fraction of small models, 9–13 constructs (default: 0.30).")
-    p.add_argument("--pct-medium",    type=float, default=0.50,
-                   help="Fraction of medium models, 24–30 constructs (default: 0.50).")
-    p.add_argument("--pct-large",     type=float, default=0.20,
-                   help="Fraction of large models, 31–54 constructs (default: 0.20).")
+    p.add_argument("--sizes", nargs="+", choices=["small", "medium", "large"],
+                   default=["small"],
+                   help="Which model sizes to generate (default: small). "
+                        "Allowed values: small medium large. "
+                        "Example: --sizes small medium")
     p.add_argument("--task-mode",     choices=["detect", "detect-and-refactor"],
                    default="detect",
                    help="Training sample task: 'detect' (default) or 'detect-and-refactor'.")
@@ -111,14 +118,51 @@ def slugify(text: str) -> str:
     return text.strip("_")
 
 
-def determine_sizes(n: int, pct_small: float, pct_medium: float, pct_large: float) -> list[str]:
-    """Return a shuffled list of size labels matching the requested distribution."""
-    n_small  = round(n * pct_small)
-    n_large  = round(n * pct_large)
-    n_medium = n - n_small - n_large
-    sizes = ["small"] * n_small + ["medium"] * n_medium + ["large"] * n_large
+def determine_sizes(n: int, allowed_sizes: list[str]) -> list[str]:
+    """Return a shuffled list of n size labels drawn uniformly from allowed_sizes."""
+    sizes = [random.choice(allowed_sizes) for _ in range(n)]
     random.shuffle(sizes)
     return sizes
+
+
+def assign_antipatterns_for_prompt(
+    all_antipatterns: list[dict],
+    size: str,
+    usage_counts: dict[str, int],
+) -> list[dict]:
+    """Select antipatterns and instance counts for one prompt.
+
+    Returns a list of {"antipattern": {...}, "instance_count": int}.
+    Prefers antipattern types with lower usage counts to keep balance across the run.
+    """
+    max_instances = MAX_INSTANCES_BY_SIZE[size]
+    n_available   = len(all_antipatterns)
+
+    # Number of distinct antipattern types to embed
+    if size == "small":
+        n_types = 1
+    elif size == "medium":
+        n_types = random.randint(1, min(2, n_available))
+    else:  # large
+        n_types = random.randint(1, min(3, n_available))
+
+    # Can't have more types than the instance budget allows
+    n_types = min(n_types, max_instances)
+
+    # Sort by usage count ascending; random.random() breaks ties
+    ranked = sorted(
+        range(n_available),
+        key=lambda idx: (usage_counts.get(all_antipatterns[idx]["name"], 0), random.random()),
+    )
+    selected = [all_antipatterns[idx] for idx in ranked[:n_types]]
+
+    # Give each selected type at least 1 instance, then distribute remainder randomly
+    counts    = [1] * n_types
+    remaining = max_instances - n_types
+    for _ in range(remaining):
+        counts[random.randrange(n_types)] += 1
+
+    return [{"antipattern": ap, "instance_count": c} for ap, c in zip(selected, counts)]
 
 
 def write_file(content: str, path: Path) -> Path:
@@ -211,27 +255,65 @@ def write_audit(
 
 # ── Prompt builders ───────────────────────────────────────────────────────────
 
-def build_system_prompt(cfg: dict, task_mode: str) -> str:
-    ap = cfg["antipattern"]
-    refactorings: list[dict] = ap["refactorings"]
+def build_system_prompt(assigned_antipatterns: list[dict], task_mode: str) -> str:
+    """Build the system prompt for one prompt turn.
 
+    assigned_antipatterns: list of {"antipattern": {...}, "instance_count": int}
+    """
     task_line = (
-        "detect the antipattern — name it and list the exact constructs involved"
+        "detect antipatterns — name each one and list the exact constructs involved"
         if task_mode == "detect"
-        else "detect the antipattern (name it and list the exact constructs involved) "
+        else "detect antipatterns (name each one and list the exact constructs involved) "
              "AND provide the full refactored PlantUML model"
     )
 
-    # Build refactoring section — supports one or many entries
-    rf_lines = []
-    for idx, rf in enumerate(refactorings, start=1):
-        prefix = f"[{idx}] " if len(refactorings) > 1 else ""
-        rf_lines.append(f"{prefix}Name        : {rf['name']}")
-        rf_lines.append(f"{prefix}Description : {rf['description']}")
-    rf_section = "\n".join(rf_lines)
+    # ── Antipattern + refactoring sections ────────────────────────────────────
+    ap_section_lines = []
+    for entry in assigned_antipatterns:
+        ap = entry["antipattern"]
+        n  = entry["instance_count"]
+        ap_section_lines += [
+            f"─── Antipattern: {ap['name']} ({'%d instance' % n if n == 1 else '%d instances' % n}) ───",
+            f"Description : {ap['description'].strip()}",
+            "",
+            "Refactoring strategy:",
+        ]
+        for rf in ap["refactorings"]:
+            ap_section_lines += [
+                f"  Name        : {rf['name']}",
+                f"  Description : {rf['description'].strip()}",
+            ]
+        ap_section_lines.append("")
+    ap_section = "\n".join(ap_section_lines).rstrip()
 
-    # For the Version 2 comment, list all refactoring names
-    rf_names = ", ".join(rf["name"] for rf in refactorings)
+    # ── VERSION 1 response template (dynamic per assignment) ──────────────────
+    v1_lines = []
+    for k, entry in enumerate(assigned_antipatterns, start=1):
+        ap = entry["antipattern"]
+        n  = entry["instance_count"]
+        v1_lines.append(f"[ANTIPATTERN {k}]")
+        v1_lines.append(f"ANTIPATTERN_DETECTED: {ap['name']}")
+        v1_lines.append(f"INSTANCE_COUNT: {n}")
+        v1_lines.append("")
+        for inst_num in range(1, n + 1):
+            v1_lines.append(f"[INSTANCE {inst_num}]")
+            v1_lines.append("CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>")
+            v1_lines.append(
+                f"EXPLANATION: <clear, specific explanation of why exactly these constructs constitute "
+                f"the \"{ap['name']}\" antipattern — reference each construct by name>"
+            )
+            v1_lines.append("")
+    v1_template = "\n".join(v1_lines).rstrip()
+
+    # All refactoring names for the Version 2 comment
+    rf_names = ", ".join(
+        rf["name"]
+        for entry in assigned_antipatterns
+        for rf in entry["antipattern"]["refactorings"]
+    )
+
+    # All antipattern names for quality rule
+    ap_names_list = "; ".join(e["antipattern"]["name"] for e in assigned_antipatterns)
 
     return f"""\
 You are an expert UML use case modeling consultant specialising in antipattern \
@@ -240,12 +322,8 @@ detection and refactoring for software engineering research.
 Your task: for each request, generate exactly TWO versions of a PlantUML use case \
 model for the specified domain and construct count.
 
-═══ ANTIPATTERN TO EMBED ═══════════════════════════════════════════════════════
-Name        : {ap['name']}
-Description : {ap['description']}
-
-═══ REFACTORING STRATEGY ════════════════════════════════════════════════════════
-{rf_section}
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+{ap_section}
 
 ═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
   • Actor          – each actor node
@@ -268,26 +346,16 @@ DOMAIN: <snake_case_domain>
 DOMAIN_DISPLAY: <Human Readable Domain Name>
 SIZE: <small|medium|large>
 
-=== VERSION 1: WITH ANTIPATTERN ===
-ANTIPATTERN_DETECTED: {ap['name']}
-INSTANCE_COUNT: <number of distinct antipattern instances present in this model>
+=== VERSION 1: WITH ANTIPATTERNS ===
+{v1_template}
 
-[INSTANCE 1]
-CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
-EXPLANATION: <clear, specific explanation of why exactly these constructs constitute \
-the "{ap['name']}" antipattern — reference each construct by name>
-
-[INSTANCE 2]   ← include only if INSTANCE_COUNT > 1; add more blocks as needed
-CONSTRUCTS_INVOLVED: <comma-separated names>
-EXPLANATION: <explanation for this instance>
-
-REFACTORING_RATIONALE: <what must change and why — address each instance explicitly, \
-naming the constructs to be restructured and the goal of the refactoring>
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance \
+explicitly, naming the constructs to be restructured and the goal of the refactoring>
 CONSTRUCT_COUNT: <integer>
 
 ```plantuml
 @startuml
-' Version 1 – contains {ap['name']} antipattern
+' Version 1 – contains {ap_names_list}
 <model here>
 @enduml
 ```
@@ -305,22 +373,22 @@ CONSTRUCT_COUNT: <integer>
 
 ═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
 Every PlantUML model MUST include a system boundary rectangle:
-  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • Use a `rectangle "System Name" {{{{ }}}}` block to represent the system context.
   • ALL use cases MUST be placed INSIDE the rectangle.
   • ALL actors MUST be placed OUTSIDE the rectangle.
   • The rectangle label should be the name of the system being modelled.
 
 Example structure:
   actor Customer
-  rectangle "Online Store" {{
+  rectangle "Online Store" {{{{
     usecase "Browse Products" as UC1
     usecase "Place Order" as UC2
-  }}
+  }}}}
   Customer --> UC1
   Customer --> UC2
 
 ═══ QUALITY RULES ════════════════════════════════════════════════════════════════
-1. Version 1 MUST be a clear, unambiguous example of the "{ap['name']}" antipattern.
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
 2. Version 2 MUST be a correct, fully refactored model with no antipattern.
 3. The construct count in each version must match CONSTRUCT_COUNT exactly.
 4. Both models must be realistic and domain-appropriate.
@@ -349,12 +417,11 @@ def parse_response(text: str) -> dict:
         m = re.search(pattern, src)
         return m.group(1).strip() if m else default
 
-    domain_raw      = first_group(r"DOMAIN:\s*(\S+)", default="unknown_domain")
-    domain_display  = first_group(r"DOMAIN_DISPLAY:\s*(.+)", default=domain_raw)
-    size            = first_group(r"SIZE:\s*(\S+)", default="unknown")
-    antipattern_det = first_group(r"ANTIPATTERN_DETECTED:\s*(.+)", default="Unknown")
+    domain_raw     = first_group(r"DOMAIN:\s*(\S+)", default="unknown_domain")
+    domain_display = first_group(r"DOMAIN_DISPLAY:\s*(.+)", default=domain_raw)
+    size           = first_group(r"SIZE:\s*(\S+)", default="unknown")
 
-    counts = re.findall(r"CONSTRUCT_COUNT:\s*(\d+)", text)
+    counts   = re.findall(r"CONSTRUCT_COUNT:\s*(\d+)", text)
     count_v1 = int(counts[0]) if len(counts) > 0 else None
     count_v2 = int(counts[1]) if len(counts) > 1 else None
 
@@ -366,15 +433,13 @@ def parse_response(text: str) -> dict:
     v2_sec = re.search(r"=== VERSION 2.*?===(.*?)$",             text, re.DOTALL)
     v1_text = v1_sec.group(1) if v1_sec else ""
 
-    # ── Per-instance antipattern analysis ─────────────────────────────────────
+    # ── Per-instance parsing ───────────────────────────────────────────────────
     def parse_instances(section: str) -> list[dict]:
-        """Return a list of {constructs_involved, explanation} dicts, one per instance."""
-        # Split on [INSTANCE n] markers
+        """Return [{constructs_involved, explanation}, …], one dict per instance."""
         blocks = re.split(r"\[INSTANCE\s+\d+\]", section, flags=re.IGNORECASE)
         instances = []
-        for block in blocks[1:]:  # skip text before first [INSTANCE]
-            constructs = re.search(r"CONSTRUCTS_INVOLVED:\s*(.+)", block)
-            # EXPLANATION runs until the next ALL-CAPS keyword line or end of block
+        for block in blocks[1:]:
+            constructs  = re.search(r"CONSTRUCTS_INVOLVED:\s*(.+)", block)
             explanation = re.search(
                 r"EXPLANATION:\s*(.*?)(?=\n[A-Z_]+\s*:|$)", block, re.DOTALL
             )
@@ -382,9 +447,9 @@ def parse_response(text: str) -> dict:
                 "constructs_involved": constructs.group(1).strip() if constructs else "",
                 "explanation":         explanation.group(1).strip() if explanation else "",
             })
-        # Fallback: no [INSTANCE] markers — single instance with old-style fields
+        # Fallback for single instance without markers
         if not instances:
-            constructs = re.search(r"CONSTRUCTS_INVOLVED:\s*(.+)", section)
+            constructs  = re.search(r"CONSTRUCTS_INVOLVED:\s*(.+)", section)
             explanation = re.search(
                 r"EXPLANATION:\s*(.*?)(?=\n[A-Z_]+\s*:|$)", section, re.DOTALL
             )
@@ -394,31 +459,49 @@ def parse_response(text: str) -> dict:
             })
         return instances
 
-    instances = parse_instances(v1_text)
+    # ── Parse multiple [ANTIPATTERN k] blocks ─────────────────────────────────
+    ap_blocks = re.split(r"\[ANTIPATTERN\s+\d+\]", v1_text, flags=re.IGNORECASE)
+    antipatterns_detected: list[dict] = []
+    for block in ap_blocks[1:]:
+        name_m = re.search(r"ANTIPATTERN_DETECTED:\s*(.+)", block)
+        name   = name_m.group(1).strip() if name_m else "Unknown"
+        antipatterns_detected.append({
+            "name":      name,
+            "instances": parse_instances(block),
+        })
 
-    # Flat constructs string for backward-compatible CSV / logging
-    constructs_inv = "; ".join(
-        f"[{i+1}] {inst['constructs_involved']}"
-        for i, inst in enumerate(instances)
-    ) if len(instances) > 1 else (instances[0]["constructs_involved"] if instances else "Unknown")
+    # Fallback: no [ANTIPATTERN k] markers — treat the whole v1 section as one antipattern
+    if not antipatterns_detected:
+        name_m = re.search(r"ANTIPATTERN_DETECTED:\s*(.+)", v1_text)
+        name   = name_m.group(1).strip() if name_m else "Unknown"
+        antipatterns_detected.append({
+            "name":      name,
+            "instances": parse_instances(v1_text),
+        })
 
     refactoring_rationale = first_group(
         r"REFACTORING_RATIONALE:\s*(.*?)(?=CONSTRUCT_COUNT|```|$)",
         src=v1_text, default="",
     )
 
+    # Flat summary strings for logging / CSV
+    antipattern_names          = "; ".join(ap["name"] for ap in antipatterns_detected)
+    antipattern_instance_counts = "; ".join(str(len(ap["instances"])) for ap in antipatterns_detected)
+    total_antipattern_instances = sum(len(ap["instances"]) for ap in antipatterns_detected)
+
     return {
-        "domain":                 slugify(domain_raw),
-        "domain_display":         domain_display,
-        "size":                   size.lower(),
-        "antipattern_detected":   antipattern_det,
-        "instances":              instances,
-        "constructs_involved":    constructs_inv,   # flat string for CSV / logging
-        "refactoring_rationale":  refactoring_rationale,
-        "construct_count_v1":     count_v1,
-        "construct_count_v2":     count_v2,
-        "antipattern_puml":       extract_puml(v1_sec.group(1)) if v1_sec else None,
-        "refactored_puml":        extract_puml(v2_sec.group(1)) if v2_sec else None,
+        "domain":                       slugify(domain_raw),
+        "domain_display":               domain_display,
+        "size":                         size.lower(),
+        "antipatterns_detected":        antipatterns_detected,
+        "antipattern_names":            antipattern_names,
+        "antipattern_instance_counts":  antipattern_instance_counts,
+        "total_antipattern_instances":  total_antipattern_instances,
+        "refactoring_rationale":        refactoring_rationale,
+        "construct_count_v1":           count_v1,
+        "construct_count_v2":           count_v2,
+        "antipattern_puml":             extract_puml(v1_sec.group(1)) if v1_sec else None,
+        "refactored_puml":              extract_puml(v2_sec.group(1)) if v2_sec else None,
     }
 
 
@@ -443,8 +526,7 @@ _TASK_INSTRUCTION = {
 
 def make_jinja_antipattern(
     puml: str,
-    antipattern_name: str,
-    instances: list[dict],
+    antipatterns_detected: list[dict],
     refactoring_rationale: str,
     task_mode: str,
     refactored_puml: str | None = None,
@@ -452,14 +534,18 @@ def make_jinja_antipattern(
     """Return the content of a .jinja training-sample file for the antipattern version."""
     instruction = _TASK_INSTRUCTION[task_mode]
 
-    answer_lines = [f"Antipattern Detected: {antipattern_name}", ""]
-    for idx, inst in enumerate(instances, start=1):
-        prefix = f"Instance {idx}: " if len(instances) > 1 else ""
-        answer_lines += [
-            f"{prefix}Constructs Involved: {inst['constructs_involved']}",
-            f"{prefix}Explanation: {inst['explanation']}",
-            "",
-        ]
+    answer_lines: list[str] = []
+    for ap_idx, ap in enumerate(antipatterns_detected, start=1):
+        prefix = f"{ap_idx}. " if len(antipatterns_detected) > 1 else ""
+        answer_lines.append(f"{prefix}Antipattern Detected: {ap['name']}")
+        answer_lines.append("")
+        for inst_idx, inst in enumerate(ap["instances"], start=1):
+            inst_prefix = f"   Instance {inst_idx}: " if len(ap["instances"]) > 1 else "   "
+            answer_lines += [
+                f"{inst_prefix}Constructs Involved: {inst['constructs_involved']}",
+                f"{inst_prefix}Explanation: {inst['explanation']}",
+                "",
+            ]
     if refactoring_rationale:
         answer_lines += [f"Refactoring Rationale: {refactoring_rationale}", ""]
     if task_mode == "detect-and-refactor" and refactored_puml:
@@ -499,9 +585,7 @@ def make_yaml_record(
     domain: str,
     domain_display: str,
     size: str,
-    antipattern_name: str,
-    constructs_involved: str | None,
-    instances: list[dict] | None,
+    antipatterns_detected: list[dict],
     refactoring_rationale: str | None,
     construct_count: int | None,
     puml: str,
@@ -525,22 +609,20 @@ def make_yaml_record(
 
     return {
         "metadata": {
-            "prompt_number":     prompt_num,
-            "domain":            domain,
-            "domain_display":    domain_display,
-            "size":              size,
-            "antipattern_name":  antipattern_name,
-            "sample_type":       sample_type,
-            "task_mode":         task_mode,
+            "prompt_number":          prompt_num,
+            "domain":                 domain,
+            "domain_display":         domain_display,
+            "size":                   size,
+            "antipatterns_detected":  antipatterns_detected,
+            "sample_type":            sample_type,
+            "task_mode":              task_mode,
             "construct_count":        construct_count,
-            "constructs_involved":    constructs_involved,
-            "instances":              instances or [],
             "refactoring_rationale":  refactoring_rationale or "",
             "generated_at":           generated_at,
             "files": {
                 "plantuml": str(puml_path),
                 "image":    str(img_path),
-                "jinja":     str(jinja_path),
+                "jinja":    str(jinja_path),
             },
         },
         "training_sample": {
@@ -551,30 +633,30 @@ def make_yaml_record(
     }
 
 
-# ── PlantUML construct counter ─────────────────────────────────────────����─���───
+# ── PlantUML construct counter ────────────────────────────────────────────────
 
 def parse_puml_stats(puml: str) -> dict:
     """Count UML constructs and detect system boundary in a PlantUML source string."""
     lines = puml.splitlines()
 
-    actors         = sum(1 for l in lines if re.match(r"^\s*actor\b", l, re.IGNORECASE))
-    use_cases      = sum(1 for l in lines if re.match(r"^\s*usecase\b", l, re.IGNORECASE)
-                         or re.match(r"^\s*\(", l))
-    includes       = sum(1 for l in lines if re.search(r"<<include>>", l, re.IGNORECASE)
-                         or re.search(r"\.include\b", l, re.IGNORECASE))
-    extends        = sum(1 for l in lines if re.search(r"<<extend>>", l, re.IGNORECASE)
-                         or re.search(r"\.extend\b", l, re.IGNORECASE))
+    actors          = sum(1 for l in lines if re.match(r"^\s*actor\b", l, re.IGNORECASE))
+    use_cases       = sum(1 for l in lines if re.match(r"^\s*usecase\b", l, re.IGNORECASE)
+                          or re.match(r"^\s*\(", l))
+    includes        = sum(1 for l in lines if re.search(r"<<include>>", l, re.IGNORECASE)
+                          or re.search(r"\.include\b", l, re.IGNORECASE))
+    extends         = sum(1 for l in lines if re.search(r"<<extend>>", l, re.IGNORECASE)
+                          or re.search(r"\.extend\b", l, re.IGNORECASE))
     generalizations = sum(1 for l in lines if re.search(r"--|>|<\|--", l))
-    has_boundary   = any(re.match(r"^\s*rectangle\b", l, re.IGNORECASE) for l in lines)
-    total_parsed   = actors + use_cases + includes + extends + generalizations
+    has_boundary    = any(re.match(r"^\s*rectangle\b", l, re.IGNORECASE) for l in lines)
+    total_parsed    = actors + use_cases + includes + extends + generalizations
 
     return {
-        "actors":          actors,
-        "use_cases":       use_cases,
-        "includes":        includes,
-        "extends":         extends,
-        "generalizations": generalizations,
-        "total_parsed":    total_parsed,
+        "actors":              actors,
+        "use_cases":           use_cases,
+        "includes":            includes,
+        "extends":             extends,
+        "generalizations":     generalizations,
+        "total_parsed":        total_parsed,
         "has_system_boundary": has_boundary,
     }
 
@@ -596,15 +678,10 @@ def main():
     if args.seed is not None:
         random.seed(args.seed)
 
-    cfg = load_config(args.config)
-    antipattern_name = cfg["antipattern"]["name"]
+    cfg              = load_config(args.config)
+    all_antipatterns = cfg["antipatterns"]
 
     # Validate percentages sum to ~1.0
-    total_pct = args.pct_small + args.pct_medium + args.pct_large
-    if not (0.99 <= total_pct <= 1.01):
-        logger.error(f"pct-small + pct-medium + pct-large = {total_pct:.2f}; must sum to 1.0")
-        sys.exit(1)
-
     # Output directories
     script_dir  = Path(__file__).parent
     output_root = Path(args.output_dir) if args.output_dir else script_dir / "output"
@@ -617,10 +694,10 @@ def main():
     setup_file_logging(run_dir)
 
     logger.info(f"Output root  : {run_dir}")
-    logger.info(f"Antipattern  : {antipattern_name}")
+    logger.info(f"Antipatterns : {', '.join(ap['name'] for ap in all_antipatterns)}")
     logger.info(f"Task mode    : {args.task_mode}")
     logger.info(f"Num prompts  : {args.num_prompts}")
-    logger.info(f"Distribution : small={args.pct_small:.0%}  medium={args.pct_medium:.0%}  large={args.pct_large:.0%}")
+    logger.info(f"Sizes        : {', '.join(args.sizes)}")
 
     # Anthropic client
     api_key = args.api_key or os.environ.get("ANTHROPIC_API_KEY")
@@ -631,29 +708,41 @@ def main():
     client = anthropic.Anthropic(api_key=api_key)
 
     # Prepare conversation
-    sizes         = determine_sizes(args.num_prompts, args.pct_small, args.pct_medium, args.pct_large)
-    system_prompt = build_system_prompt(cfg, args.task_mode)
+    sizes         = determine_sizes(args.num_prompts, args.sizes)
     conversation: list[dict] = []          # multi-turn message history
 
+    # Tracks how many times each antipattern type has been assigned (for balance)
+    ap_usage_counts: dict[str, int] = {ap["name"]: 0 for ap in all_antipatterns}
+
     # ── Main generation loop ───────────────────────────────────────────────────
-    all_domains: list[str] = []
-    ap_stats_rows:   list[dict] = []
-    ref_stats_rows:  list[dict] = []
-    training_rows:   list[dict] = []
+    all_domains:   list[str]  = []
+    ap_stats_rows:  list[dict] = []
+    ref_stats_rows: list[dict] = []
+    training_rows:  list[dict] = []
 
     for i, size in enumerate(sizes, start=1):
-        lo, hi           = SIZE_RANGES[size]
-        construct_count  = random.randint(lo, hi)
-        user_msg         = build_user_message(i, size, construct_count)
+        lo, hi          = SIZE_RANGES[size]
+        construct_count = random.randint(lo, hi)
+
+        # Select antipatterns for this prompt and build system prompt
+        assigned      = assign_antipatterns_for_prompt(all_antipatterns, size, ap_usage_counts)
+        system_prompt = build_system_prompt(assigned, args.task_mode)
+
+        assigned_summary = ", ".join(
+            f"{e['antipattern']['name']} ×{e['instance_count']}" for e in assigned
+        )
+
+        user_msg = build_user_message(i, size, construct_count)
 
         logger.info("")
         logger.info(f"{'─'*60}")
         logger.info(f"Prompt {i}/{args.num_prompts}  size={size}  target_constructs={construct_count}")
+        logger.info(f"  Antipatterns : {assigned_summary}")
 
         conversation.append({"role": "user", "content": user_msg})
 
         # ── API call ───────────────────────────────────────────────────────────
-        _model = "claude-opus-4-6"
+        _model      = "claude-opus-4-6"
         _max_tokens = 4096
         logger.debug(
             f"  API request  model={_model}  max_tokens={_max_tokens}"
@@ -699,18 +788,22 @@ def main():
 
         conversation.append({"role": "assistant", "content": raw})
 
+        # Update usage counts now that this prompt succeeded
+        for entry in assigned:
+            ap_usage_counts[entry["antipattern"]["name"]] += 1
+
         # ── Parse ──────────────────────────────────────────────────────────────
-        parsed  = parse_response(raw)
-        domain  = parsed["domain"] or f"prompt_{i:03d}"
+        parsed         = parse_response(raw)
+        domain         = parsed["domain"] or f"prompt_{i:03d}"
         domain_display = parsed["domain_display"]
-        gen_at  = datetime.now().isoformat()
+        gen_at         = datetime.now().isoformat()
 
         all_domains.append(domain_display)
         logger.info(f"  Domain       : {domain_display}")
         logger.info(f"  V1 constructs: {parsed['construct_count_v1']}")
         logger.info(f"  V2 constructs: {parsed['construct_count_v2']}")
-        logger.debug(f"  Antipattern  : {parsed['antipattern_detected']}")
-        logger.debug(f"  Constructs   : {parsed['constructs_involved']}")
+        logger.debug(f"  Antipatterns : {parsed['antipattern_names']}")
+        logger.debug(f"  Instances    : {parsed['antipattern_instance_counts']}")
         logger.debug(f"  V1 PUML parsed: {parsed['antipattern_puml'] is not None}")
         logger.debug(f"  V2 PUML parsed: {parsed['refactored_puml'] is not None}")
 
@@ -720,16 +813,16 @@ def main():
             continue
 
         # ── Directory & file names ─────────────────────────────────────────────
-        dir_name     = f"prompt_{i:03d}_{slugify(domain)}"
-        prompt_dir   = models_dir / dir_name
-        domain_slug  = slugify(domain)
+        dir_name    = f"prompt_{i:03d}_{slugify(domain)}"
+        prompt_dir  = models_dir / dir_name
+        domain_slug = slugify(domain)
 
         # ── PlantUML files ─────────────────────────────────────────────────────
         v1_puml = write_file(parsed["antipattern_puml"], prompt_dir / f"{domain_slug}_antipattern.puml")
         v2_puml = write_file(parsed["refactored_puml"],  prompt_dir / f"{domain_slug}_refactored.puml")
 
-        v1_png = convert_to_image(v1_puml, args.plantuml_jar, use_png=args.png)
-        v2_png = convert_to_image(v2_puml, args.plantuml_jar, use_png=args.png)
+        v1_img = convert_to_image(v1_puml, args.plantuml_jar, use_png=args.png)
+        v2_img = convert_to_image(v2_puml, args.plantuml_jar, use_png=args.png)
 
         # ── Descriptive statistics ─────────────────────────────────────────────
         v1_stats = parse_puml_stats(parsed["antipattern_puml"])
@@ -740,37 +833,36 @@ def main():
             domain=domain,
             domain_display=domain_display,
             size=size,
-            antipattern_name=antipattern_name,
+            antipattern_names=parsed["antipattern_names"],
+            antipattern_instance_counts=parsed["antipattern_instance_counts"],
+            total_antipattern_instances=parsed["total_antipattern_instances"],
             task_mode=args.task_mode,
             generated_at=gen_at,
         )
         ap_stats_rows.append({
             **_base,
-            "sample_type":            "antipattern",
-            "constructs_involved":    parsed["constructs_involved"],
+            "sample_type":              "antipattern",
             "construct_count_reported": parsed["construct_count_v1"],
             **v1_stats,
-            "count_matches_reported": parsed["construct_count_v1"] == v1_stats["total_parsed"],
-            "puml_file":              str(v1_puml),
-            "png_file":               str(v1_png),
+            "count_matches_reported":   parsed["construct_count_v1"] == v1_stats["total_parsed"],
+            "puml_file":                str(v1_puml),
+            "img_file":                 str(v1_img),
         })
         ref_stats_rows.append({
             **_base,
-            "sample_type":            "refactored",
-            "constructs_involved":    "",
+            "sample_type":              "refactored",
             "construct_count_reported": parsed["construct_count_v2"],
             **v2_stats,
-            "count_matches_reported": parsed["construct_count_v2"] == v2_stats["total_parsed"],
-            "puml_file":              str(v2_puml),
-            "png_file":               str(v2_png),
+            "count_matches_reported":   parsed["construct_count_v2"] == v2_stats["total_parsed"],
+            "puml_file":                str(v2_puml),
+            "img_file":                 str(v2_img),
         })
 
         # ── Training sample – antipattern (negative) ───────────────────────────
         jinja_ap = write_file(
             make_jinja_antipattern(
                 parsed["antipattern_puml"],
-                parsed["antipattern_detected"],
-                parsed["instances"],
+                parsed["antipatterns_detected"],
                 parsed["refactoring_rationale"],
                 args.task_mode,
                 parsed["refactored_puml"],
@@ -778,11 +870,9 @@ def main():
             training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.jinja",
         )
 
-        # Re-use the jinja answer text as the YAML expected_output too
         ap_answer = make_jinja_antipattern(
             parsed["antipattern_puml"],
-            parsed["antipattern_detected"],
-            parsed["instances"],
+            parsed["antipatterns_detected"],
             parsed["refactoring_rationale"],
             args.task_mode,
             parsed["refactored_puml"],
@@ -797,9 +887,7 @@ def main():
                     domain=domain,
                     domain_display=domain_display,
                     size=size,
-                    antipattern_name=antipattern_name,
-                    constructs_involved=parsed["constructs_involved"],
-                    instances=parsed["instances"],
+                    antipatterns_detected=parsed["antipatterns_detected"],
                     refactoring_rationale=parsed["refactoring_rationale"],
                     construct_count=parsed["construct_count_v1"],
                     puml=parsed["antipattern_puml"],
@@ -807,7 +895,7 @@ def main():
                     sample_type="antipattern",
                     task_mode=args.task_mode,
                     puml_path=v1_puml,
-                    img_path=v1_png,
+                    img_path=v1_img,
                     jinja_path=jinja_ap,
                     generated_at=gen_at,
                     raw_response=raw,
@@ -819,16 +907,17 @@ def main():
             training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.yaml",
         )
         training_rows.append({
-            "prompt_num":      i,
-            "domain":          domain,
-            "domain_display":  domain_display,
-            "size":            size,
-            "antipattern_name": antipattern_name,
-            "sample_type":     "antipattern",
-            "task_mode":       args.task_mode,
-            "generated_at":    gen_at,
-            "input":           f"{_task_instr}\n\nPlantUML Model:\n{parsed['antipattern_puml']}",
-            "output":          ap_answer,
+            "prompt_num":               i,
+            "domain_display":           domain_display,
+            "size":                     size,
+            "antipattern_names":        parsed["antipattern_names"],
+            "antipattern_instance_counts": parsed["antipattern_instance_counts"],
+            "total_antipattern_instances": parsed["total_antipattern_instances"],
+            "sample_type":              "antipattern",
+            "task_mode":                args.task_mode,
+            "generated_at":             gen_at,
+            "input":                    f"{_task_instr}\n\nPlantUML Model:\n{parsed['antipattern_puml']}",
+            "output":                   ap_answer,
         })
 
         # ── Training sample – refactored (positive) ────────────────────────────
@@ -846,9 +935,7 @@ def main():
                     domain=domain,
                     domain_display=domain_display,
                     size=size,
-                    antipattern_name=antipattern_name,
-                    constructs_involved=None,
-                    instances=None,
+                    antipatterns_detected=[],
                     refactoring_rationale=None,
                     construct_count=parsed["construct_count_v2"],
                     puml=parsed["refactored_puml"],
@@ -856,7 +943,7 @@ def main():
                     sample_type="refactored",
                     task_mode=args.task_mode,
                     puml_path=v2_puml,
-                    img_path=v2_png,
+                    img_path=v2_img,
                     jinja_path=jinja_rf,
                     generated_at=gen_at,
                     raw_response=raw,
@@ -868,16 +955,17 @@ def main():
             training_dir / "refactored" / f"prompt_{i:03d}_{domain_slug}_refactored.yaml",
         )
         training_rows.append({
-            "prompt_num":      i,
-            "domain":          domain,
-            "domain_display":  domain_display,
-            "size":            size,
-            "antipattern_name": antipattern_name,
-            "sample_type":     "refactored",
-            "task_mode":       args.task_mode,
-            "generated_at":    gen_at,
-            "input":           f"{_task_instr}\n\nPlantUML Model:\n{parsed['refactored_puml']}",
-            "output":          rf_answer,
+            "prompt_num":               i,
+            "domain_display":           domain_display,
+            "size":                     size,
+            "antipattern_names":        "",
+            "antipattern_instance_counts": "",
+            "total_antipattern_instances": 0,
+            "sample_type":              "refactored",
+            "task_mode":                args.task_mode,
+            "generated_at":             gen_at,
+            "input":                    f"{_task_instr}\n\nPlantUML Model:\n{parsed['refactored_puml']}",
+            "output":                   rf_answer,
         })
 
         # ── Rate limit ─────────────────────────────────────────────────────────
@@ -885,11 +973,11 @@ def main():
             logger.info(f"  Sleeping {args.rate_limit} s …")
             time.sleep(args.rate_limit)
 
-    # ── Domain summary ────────────────────���────────────────────────────────────
     # ── CSV statistics output ──────────────────────────────────────────────────
     _csv_fields = [
         "prompt_num", "domain_display", "size",
-        "antipattern_name", "sample_type", "task_mode",
+        "antipattern_names", "antipattern_instance_counts", "total_antipattern_instances",
+        "sample_type", "task_mode",
         "construct_count_reported",
         "actors", "use_cases", "includes", "extends", "generalizations",
         "total_parsed", "count_matches_reported", "has_system_boundary",
@@ -900,7 +988,8 @@ def main():
 
     _training_fields = [
         "prompt_num", "domain_display", "size",
-        "antipattern_name", "sample_type", "task_mode", "generated_at",
+        "antipattern_names", "antipattern_instance_counts", "total_antipattern_instances",
+        "sample_type", "task_mode", "generated_at",
         "input", "output",
     ]
     training_yaml_rows = [{k: row[k] for k in _training_fields if k in row} for row in training_rows]
@@ -917,8 +1006,15 @@ def main():
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
     logger.info(f"    Wrote  {training_jsonl_path}")
 
-    unique_domains = list(dict.fromkeys(all_domains))  # preserve order, deduplicate
-    domains_path = run_dir / "domains.yaml"
+    # ── Antipattern usage summary ──────────────────────────────────────────────
+    logger.info("")
+    logger.info("Antipattern usage across run:")
+    for name, count in ap_usage_counts.items():
+        logger.info(f"  {count:3d}×  {name}")
+
+    # ── Domain summary ─────────────────────────────────────────────────────────
+    unique_domains = list(dict.fromkeys(all_domains))
+    domains_path   = run_dir / "domains.yaml"
     domains_path.write_text(
         yaml.dump(
             {
