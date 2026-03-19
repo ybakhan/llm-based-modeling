@@ -287,12 +287,29 @@ CONSTRUCT_COUNT: <integer>
 @enduml
 ```
 
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
 ═══ QUALITY RULES ════════════════════════════════════════════════════════════════
 1. Version 1 MUST be a clear, unambiguous example of the "{ap['name']}" antipattern.
 2. Version 2 MUST be a correct, fully refactored model with no antipattern.
 3. The construct count in each version must match CONSTRUCT_COUNT exactly.
 4. Both models must be realistic and domain-appropriate.
-5. These models train an LLM to {task_line}. \
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to {task_line}. \
 Make them educationally clear examples.
 """
 
