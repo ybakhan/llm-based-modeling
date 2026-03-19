@@ -26,6 +26,7 @@ import sys
 from pathlib import Path
 from datetime import datetime
 import logging
+import json
 
 _console_handler = logging.StreamHandler(sys.stdout)
 _console_handler.setLevel(logging.INFO)
@@ -68,7 +69,9 @@ def parse_args():
     p.add_argument("--config",        required=True,
                    help="Path to YAML antipattern/refactoring config file.")
     p.add_argument("--plantuml-jar",  required=True,
-                   help="Path to plantuml.jar for PNG conversion.")
+                   help="Path to plantuml.jar for image conversion.")
+    p.add_argument("--png", action="store_true",
+                   help="Output images as PNG instead of the default JPEG.")
     p.add_argument("--output-dir",    default=None,
                    help="Root output directory (default: ./output next to this script).")
     p.add_argument("--num-prompts",   type=int, default=10,
@@ -126,25 +129,26 @@ def write_file(content: str, path: Path) -> Path:
     return path
 
 
-def convert_to_png(puml_path: Path, jar_path: str) -> Path:
-    """Run PlantUML to generate a PNG beside the .puml file."""
-    png_path = puml_path.with_suffix(".png")
+def convert_to_image(puml_path: Path, jar_path: str, use_png: bool = False) -> Path:
+    """Run PlantUML to generate a JPEG (default) or PNG beside the .puml file."""
+    fmt = "png" if use_png else "jpg"
+    img_path = puml_path.with_suffix(f".{fmt}")
     try:
         proc = subprocess.run(
-            ["java", "-jar", str(jar_path), "-tpng", str(puml_path)],
+            ["java", "-jar", str(jar_path), f"-t{fmt}", str(puml_path)],
             capture_output=True, text=True, timeout=60,
         )
         if proc.returncode != 0:
             logger.warning(f"    PlantUML warning: {proc.stderr.strip()[:200]}")
         else:
-            logger.info(f"    PNG    {png_path}")
+            logger.info(f"    {fmt.upper():<4} {img_path}")
     except FileNotFoundError:
-        logger.error("    'java' not found on PATH. PNG conversion skipped.")
+        logger.error("    'java' not found on PATH. Image conversion skipped.")
     except subprocess.TimeoutExpired:
         logger.error(f"    PlantUML timed out for {puml_path}")
     except Exception as exc:
-        logger.error(f"    PNG conversion failed: {exc}")
-    return png_path
+        logger.error(f"    Image conversion failed: {exc}")
+    return img_path
 
 
 # ── Audit log ─────────────────────────────────────────────────────────────────
@@ -505,7 +509,7 @@ def make_yaml_record(
     sample_type: str,           # "antipattern" | "refactored"
     task_mode: str,
     puml_path: Path,
-    png_path: Path,
+    img_path: Path,
     jinja_path: Path,
     generated_at: str,
     raw_response: str,
@@ -535,7 +539,7 @@ def make_yaml_record(
             "generated_at":           generated_at,
             "files": {
                 "plantuml": str(puml_path),
-                "png":       str(png_path),
+                "image":    str(img_path),
                 "jinja":     str(jinja_path),
             },
         },
@@ -547,7 +551,7 @@ def make_yaml_record(
     }
 
 
-# ── PlantUML construct counter ────────────────────────────────────────────────
+# ── PlantUML construct counter ─────────────────────────────────────────����─���───
 
 def parse_puml_stats(puml: str) -> dict:
     """Count UML constructs and detect system boundary in a PlantUML source string."""
@@ -724,8 +728,8 @@ def main():
         v1_puml = write_file(parsed["antipattern_puml"], prompt_dir / f"{domain_slug}_antipattern.puml")
         v2_puml = write_file(parsed["refactored_puml"],  prompt_dir / f"{domain_slug}_refactored.puml")
 
-        v1_png = convert_to_png(v1_puml, args.plantuml_jar)
-        v2_png = convert_to_png(v2_puml, args.plantuml_jar)
+        v1_png = convert_to_image(v1_puml, args.plantuml_jar, use_png=args.png)
+        v2_png = convert_to_image(v2_puml, args.plantuml_jar, use_png=args.png)
 
         # ── Descriptive statistics ─────────────────────────────────────────────
         v1_stats = parse_puml_stats(parsed["antipattern_puml"])
@@ -803,7 +807,7 @@ def main():
                     sample_type="antipattern",
                     task_mode=args.task_mode,
                     puml_path=v1_puml,
-                    png_path=v1_png,
+                    img_path=v1_png,
                     jinja_path=jinja_ap,
                     generated_at=gen_at,
                     raw_response=raw,
@@ -852,7 +856,7 @@ def main():
                     sample_type="refactored",
                     task_mode=args.task_mode,
                     puml_path=v2_puml,
-                    png_path=v2_png,
+                    img_path=v2_png,
                     jinja_path=jinja_rf,
                     generated_at=gen_at,
                     raw_response=raw,
@@ -886,7 +890,6 @@ def main():
     _csv_fields = [
         "prompt_num", "domain_display", "size",
         "antipattern_name", "sample_type", "task_mode",
-        "constructs_involved",
         "construct_count_reported",
         "actors", "use_cases", "includes", "extends", "generalizations",
         "total_parsed", "count_matches_reported", "has_system_boundary",
@@ -935,7 +938,7 @@ def main():
     logger.info("")
     logger.info(f"{'═'*60}")
     logger.info(f"Done. All output under: {run_dir}")
-    logger.info(f"  models/           → PlantUML + PNG pairs")
+    logger.info(f"  models/           → PlantUML + image pairs")
     logger.info(f"  training_samples/ → .jinja + .yaml training data")
 
 
