@@ -482,6 +482,43 @@ def make_yaml_record(
     }
 
 
+# ── PlantUML construct counter ────────────────────────────────────────────────
+
+def parse_puml_stats(puml: str) -> dict:
+    """Count UML constructs and detect system boundary in a PlantUML source string."""
+    lines = puml.splitlines()
+
+    actors         = sum(1 for l in lines if re.match(r"^\s*actor\b", l, re.IGNORECASE))
+    use_cases      = sum(1 for l in lines if re.match(r"^\s*usecase\b", l, re.IGNORECASE)
+                         or re.match(r"^\s*\(", l))
+    includes       = sum(1 for l in lines if re.search(r"<<include>>", l, re.IGNORECASE)
+                         or re.search(r"\.include\b", l, re.IGNORECASE))
+    extends        = sum(1 for l in lines if re.search(r"<<extend>>", l, re.IGNORECASE)
+                         or re.search(r"\.extend\b", l, re.IGNORECASE))
+    generalizations = sum(1 for l in lines if re.search(r"--|>|<\|--", l))
+    has_boundary   = any(re.match(r"^\s*rectangle\b", l, re.IGNORECASE) for l in lines)
+    total_parsed   = actors + use_cases + includes + extends + generalizations
+
+    return {
+        "actors":          actors,
+        "use_cases":       use_cases,
+        "includes":        includes,
+        "extends":         extends,
+        "generalizations": generalizations,
+        "total_parsed":    total_parsed,
+        "has_system_boundary": has_boundary,
+    }
+
+
+def write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+    logger.info(f"    Wrote  {path}")
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
@@ -531,6 +568,8 @@ def main():
 
     # ── Main generation loop ───────────────────────────────────────────────────
     all_domains: list[str] = []
+    ap_stats_rows:  list[dict] = []
+    ref_stats_rows: list[dict] = []
 
     for i, size in enumerate(sizes, start=1):
         lo, hi           = SIZE_RANGES[size]
@@ -622,6 +661,40 @@ def main():
         v1_png = convert_to_png(v1_puml, args.plantuml_jar)
         v2_png = convert_to_png(v2_puml, args.plantuml_jar)
 
+        # ── Descriptive statistics ─────────────────────────────────────────────
+        v1_stats = parse_puml_stats(parsed["antipattern_puml"])
+        v2_stats = parse_puml_stats(parsed["refactored_puml"])
+
+        _base = dict(
+            prompt_num=i,
+            domain=domain,
+            domain_display=domain_display,
+            size=size,
+            antipattern_name=antipattern_name,
+            task_mode=args.task_mode,
+            generated_at=gen_at,
+        )
+        ap_stats_rows.append({
+            **_base,
+            "sample_type":            "antipattern",
+            "constructs_involved":    parsed["constructs_involved"],
+            "construct_count_reported": parsed["construct_count_v1"],
+            **v1_stats,
+            "count_matches_reported": parsed["construct_count_v1"] == v1_stats["total_parsed"],
+            "puml_file":              str(v1_puml),
+            "png_file":               str(v1_png),
+        })
+        ref_stats_rows.append({
+            **_base,
+            "sample_type":            "refactored",
+            "constructs_involved":    "",
+            "construct_count_reported": parsed["construct_count_v2"],
+            **v2_stats,
+            "count_matches_reported": parsed["construct_count_v2"] == v2_stats["total_parsed"],
+            "puml_file":              str(v2_puml),
+            "png_file":               str(v2_png),
+        })
+
         # ── Training sample – antipattern (negative) ───────────────────────────
         ap_answer_lines = [
             f"Antipattern Detected: {parsed['antipattern_detected']}",
@@ -709,7 +782,21 @@ def main():
             logger.info(f"  Sleeping {args.rate_limit} s …")
             time.sleep(args.rate_limit)
 
-    # ── Domain summary ─────────────────────────────────────────────────────────
+    # ── Domain summary ────────────────────���────────────────────────────────────
+    # ── CSV statistics output ──────────────────────────────────────────────────
+    _csv_fields = [
+        "prompt_num", "domain", "domain_display", "size",
+        "antipattern_name", "sample_type", "task_mode",
+        "constructs_involved",
+        "construct_count_reported",
+        "actors", "use_cases", "includes", "extends", "generalizations",
+        "total_parsed", "count_matches_reported", "has_system_boundary",
+        "generated_at", "puml_file", "png_file",
+    ]
+    write_csv(run_dir / "stats_antipattern.csv", ap_stats_rows,  _csv_fields)
+    write_csv(run_dir / "stats_refactored.csv",  ref_stats_rows, _csv_fields)
+    write_csv(run_dir / "stats_combined.csv",    ap_stats_rows + ref_stats_rows, _csv_fields)
+
     unique_domains = list(dict.fromkeys(all_domains))  # preserve order, deduplicate
     domains_path = run_dir / "domains.yaml"
     domains_path.write_text(
