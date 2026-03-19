@@ -266,8 +266,19 @@ SIZE: <small|medium|large>
 
 === VERSION 1: WITH ANTIPATTERN ===
 ANTIPATTERN_DETECTED: {ap['name']}
-CONSTRUCTS_INVOLVED: <comma-separated list of the specific construct names that \
-exhibit the antipattern>
+INSTANCE_COUNT: <number of distinct antipattern instances present in this model>
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute \
+the "{ap['name']}" antipattern — reference each construct by name>
+
+[INSTANCE 2]   ← include only if INSTANCE_COUNT > 1; add more blocks as needed
+CONSTRUCTS_INVOLVED: <comma-separated names>
+EXPLANATION: <explanation for this instance>
+
+REFACTORING_RATIONALE: <what must change and why — address each instance explicitly, \
+naming the constructs to be restructured and the goal of the refactoring>
 CONSTRUCT_COUNT: <integer>
 
 ```plantuml
@@ -330,15 +341,14 @@ def build_user_message(prompt_num: int, size: str, construct_count: int) -> str:
 def parse_response(text: str) -> dict:
     """Extract all structured fields from Claude's formatted response."""
 
-    def first_group(pattern, default=""):
-        m = re.search(pattern, text)
+    def first_group(pattern, src=text, default=""):
+        m = re.search(pattern, src)
         return m.group(1).strip() if m else default
 
-    domain_raw      = first_group(r"DOMAIN:\s*(\S+)", "unknown_domain")
-    domain_display  = first_group(r"DOMAIN_DISPLAY:\s*(.+)", domain_raw)
-    size            = first_group(r"SIZE:\s*(\S+)", "unknown")
-    antipattern_det = first_group(r"ANTIPATTERN_DETECTED:\s*(.+)", "Unknown")
-    constructs_inv  = first_group(r"CONSTRUCTS_INVOLVED:\s*(.+)", "Unknown")
+    domain_raw      = first_group(r"DOMAIN:\s*(\S+)", default="unknown_domain")
+    domain_display  = first_group(r"DOMAIN_DISPLAY:\s*(.+)", default=domain_raw)
+    size            = first_group(r"SIZE:\s*(\S+)", default="unknown")
+    antipattern_det = first_group(r"ANTIPATTERN_DETECTED:\s*(.+)", default="Unknown")
 
     counts = re.findall(r"CONSTRUCT_COUNT:\s*(\d+)", text)
     count_v1 = int(counts[0]) if len(counts) > 0 else None
@@ -350,17 +360,61 @@ def parse_response(text: str) -> dict:
 
     v1_sec = re.search(r"=== VERSION 1.*?===(.*?)=== VERSION 2", text, re.DOTALL)
     v2_sec = re.search(r"=== VERSION 2.*?===(.*?)$",             text, re.DOTALL)
+    v1_text = v1_sec.group(1) if v1_sec else ""
+
+    # ── Per-instance antipattern analysis ─────────────────────────────────────
+    def parse_instances(section: str) -> list[dict]:
+        """Return a list of {constructs_involved, explanation} dicts, one per instance."""
+        # Split on [INSTANCE n] markers
+        blocks = re.split(r"\[INSTANCE\s+\d+\]", section, flags=re.IGNORECASE)
+        instances = []
+        for block in blocks[1:]:  # skip text before first [INSTANCE]
+            constructs = re.search(r"CONSTRUCTS_INVOLVED:\s*(.+)", block)
+            # EXPLANATION runs until the next ALL-CAPS keyword line or end of block
+            explanation = re.search(
+                r"EXPLANATION:\s*(.*?)(?=\n[A-Z_]+\s*:|$)", block, re.DOTALL
+            )
+            instances.append({
+                "constructs_involved": constructs.group(1).strip() if constructs else "",
+                "explanation":         explanation.group(1).strip() if explanation else "",
+            })
+        # Fallback: no [INSTANCE] markers — single instance with old-style fields
+        if not instances:
+            constructs = re.search(r"CONSTRUCTS_INVOLVED:\s*(.+)", section)
+            explanation = re.search(
+                r"EXPLANATION:\s*(.*?)(?=\n[A-Z_]+\s*:|$)", section, re.DOTALL
+            )
+            instances.append({
+                "constructs_involved": constructs.group(1).strip() if constructs else "Unknown",
+                "explanation":         explanation.group(1).strip() if explanation else "",
+            })
+        return instances
+
+    instances = parse_instances(v1_text)
+
+    # Flat constructs string for backward-compatible CSV / logging
+    constructs_inv = "; ".join(
+        f"[{i+1}] {inst['constructs_involved']}"
+        for i, inst in enumerate(instances)
+    ) if len(instances) > 1 else (instances[0]["constructs_involved"] if instances else "Unknown")
+
+    refactoring_rationale = first_group(
+        r"REFACTORING_RATIONALE:\s*(.*?)(?=CONSTRUCT_COUNT|```|$)",
+        src=v1_text, default="",
+    )
 
     return {
-        "domain":            slugify(domain_raw),
-        "domain_display":    domain_display,
-        "size":              size.lower(),
-        "antipattern_detected": antipattern_det,
-        "constructs_involved":  constructs_inv,
-        "construct_count_v1":   count_v1,
-        "construct_count_v2":   count_v2,
-        "antipattern_puml":  extract_puml(v1_sec.group(1)) if v1_sec else None,
-        "refactored_puml":   extract_puml(v2_sec.group(1)) if v2_sec else None,
+        "domain":                 slugify(domain_raw),
+        "domain_display":         domain_display,
+        "size":                   size.lower(),
+        "antipattern_detected":   antipattern_det,
+        "instances":              instances,
+        "constructs_involved":    constructs_inv,   # flat string for CSV / logging
+        "refactoring_rationale":  refactoring_rationale,
+        "construct_count_v1":     count_v1,
+        "construct_count_v2":     count_v2,
+        "antipattern_puml":       extract_puml(v1_sec.group(1)) if v1_sec else None,
+        "refactored_puml":        extract_puml(v2_sec.group(1)) if v2_sec else None,
     }
 
 
@@ -386,21 +440,28 @@ _TASK_INSTRUCTION = {
 def make_jinja_antipattern(
     puml: str,
     antipattern_name: str,
-    constructs_involved: str,
+    instances: list[dict],
+    refactoring_rationale: str,
     task_mode: str,
     refactored_puml: str | None = None,
 ) -> str:
     """Return the content of a .jinja training-sample file for the antipattern version."""
     instruction = _TASK_INSTRUCTION[task_mode]
 
-    answer_lines = [
-        f"Antipattern Detected: {antipattern_name}",
-        f"Constructs Involved: {constructs_involved}",
-    ]
+    answer_lines = [f"Antipattern Detected: {antipattern_name}", ""]
+    for idx, inst in enumerate(instances, start=1):
+        prefix = f"Instance {idx}: " if len(instances) > 1 else ""
+        answer_lines += [
+            f"{prefix}Constructs Involved: {inst['constructs_involved']}",
+            f"{prefix}Explanation: {inst['explanation']}",
+            "",
+        ]
+    if refactoring_rationale:
+        answer_lines += [f"Refactoring Rationale: {refactoring_rationale}", ""]
     if task_mode == "detect-and-refactor" and refactored_puml:
-        answer_lines += ["", "Refactored Model:", refactored_puml]
+        answer_lines += ["Refactored Model:", refactored_puml]
 
-    answer = "\n".join(answer_lines)
+    answer = "\n".join(answer_lines).rstrip()
 
     return (
         f"{instruction}\n"
@@ -436,6 +497,8 @@ def make_yaml_record(
     size: str,
     antipattern_name: str,
     constructs_involved: str | None,
+    instances: list[dict] | None,
+    refactoring_rationale: str | None,
     construct_count: int | None,
     puml: str,
     expected_output: str,
@@ -465,9 +528,11 @@ def make_yaml_record(
             "antipattern_name":  antipattern_name,
             "sample_type":       sample_type,
             "task_mode":         task_mode,
-            "construct_count":   construct_count,
-            "constructs_involved": constructs_involved,
-            "generated_at":      generated_at,
+            "construct_count":        construct_count,
+            "constructs_involved":    constructs_involved,
+            "instances":              instances or [],
+            "refactoring_rationale":  refactoring_rationale or "",
+            "generated_at":           generated_at,
             "files": {
                 "plantuml": str(puml_path),
                 "png":       str(png_path),
@@ -696,24 +761,27 @@ def main():
         })
 
         # ── Training sample – antipattern (negative) ───────────────────────────
-        ap_answer_lines = [
-            f"Antipattern Detected: {parsed['antipattern_detected']}",
-            f"Constructs Involved: {parsed['constructs_involved']}",
-        ]
-        if args.task_mode == "detect-and-refactor":
-            ap_answer_lines += ["", "Refactored Model:", parsed["refactored_puml"]]
-        ap_answer = "\n".join(ap_answer_lines)
-
         jinja_ap = write_file(
             make_jinja_antipattern(
                 parsed["antipattern_puml"],
                 parsed["antipattern_detected"],
-                parsed["constructs_involved"],
+                parsed["instances"],
+                parsed["refactoring_rationale"],
                 args.task_mode,
                 parsed["refactored_puml"],
             ),
             training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.jinja",
         )
+
+        # Re-use the jinja answer text as the YAML expected_output too
+        ap_answer = make_jinja_antipattern(
+            parsed["antipattern_puml"],
+            parsed["antipattern_detected"],
+            parsed["instances"],
+            parsed["refactoring_rationale"],
+            args.task_mode,
+            parsed["refactored_puml"],
+        ).split("Answer:\n", 1)[-1].strip()
 
         write_file(
             yaml.dump(
@@ -724,6 +792,8 @@ def main():
                     size=size,
                     antipattern_name=antipattern_name,
                     constructs_involved=parsed["constructs_involved"],
+                    instances=parsed["instances"],
+                    refactoring_rationale=parsed["refactoring_rationale"],
                     construct_count=parsed["construct_count_v1"],
                     puml=parsed["antipattern_puml"],
                     expected_output=ap_answer,
@@ -759,6 +829,8 @@ def main():
                     size=size,
                     antipattern_name=antipattern_name,
                     constructs_involved=None,
+                    instances=None,
+                    refactoring_rationale=None,
                     construct_count=parsed["construct_count_v2"],
                     puml=parsed["refactored_puml"],
                     expected_output=rf_answer,
