@@ -26,11 +26,14 @@ from pathlib import Path
 from datetime import datetime
 import logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
+_console_handler = logging.StreamHandler(sys.stdout)
+_console_handler.setLevel(logging.INFO)
+_console_handler.setFormatter(logging.Formatter(
+    "%(asctime)s [%(levelname)s] %(message)s",
     datefmt="%H:%M:%S",
-)
+))
+logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger().addHandler(_console_handler)
 logger = logging.getLogger(__name__)
 
 
