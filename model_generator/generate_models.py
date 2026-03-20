@@ -841,6 +841,9 @@ def main():
         prompt_dir  = models_dir / dir_name
         domain_slug = slugify(domain)
 
+        # ── Raw response ───────────────────────────────────────────────────────
+        write_file(raw, prompt_dir / f"prompt_{i:03d}_response.txt")
+
         # ── PlantUML files ─────────────────────────────────────────────────────
         v1_puml = write_file(parsed["antipattern_puml"], prompt_dir / f"{domain_slug}_antipattern.puml")
         v2_puml = write_file(parsed["refactored_puml"],  prompt_dir / f"{domain_slug}_refactored.puml")
