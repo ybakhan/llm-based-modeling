@@ -655,7 +655,7 @@ def parse_puml_stats(puml: str) -> dict:
                           or re.search(r"\.include\b", l, re.IGNORECASE))
     extends         = sum(1 for l in lines if re.search(r"<<extend>>", l, re.IGNORECASE)
                           or re.search(r"\.extend\b", l, re.IGNORECASE))
-    generalizations = sum(1 for l in lines if re.search(r"--|>|<\|--", l))
+    generalizations = sum(1 for l in lines if re.search(r"<\|--|--\|>", l))
     has_boundary    = any(re.match(r"^\s*rectangle\b", l, re.IGNORECASE) for l in lines)
     total_parsed    = actors + use_cases + includes + extends + generalizations
 
@@ -689,6 +689,7 @@ def main():
 
     cfg              = load_config(args.config)
     all_antipatterns = cfg["antipatterns"]
+    ap_code_lookup   = {ap["name"]: ap.get("code", ap["name"]) for ap in all_antipatterns}
 
     # Validate size weights
     if args.size_weights is not None:
@@ -855,12 +856,16 @@ def main():
         v1_stats = parse_puml_stats(parsed["antipattern_puml"])
         v2_stats = parse_puml_stats(parsed["refactored_puml"])
 
+        antipattern_codes = "; ".join(
+            ap_code_lookup.get(ap["name"], ap["name"])
+            for ap in parsed["antipatterns_detected"]
+        )
         _base = dict(
             prompt_num=i,
             domain=domain,
             domain_display=domain_display,
             size=size,
-            antipattern_names=parsed["antipattern_names"],
+            antipattern_codes=antipattern_codes,
             antipattern_instance_counts=parsed["antipattern_instance_counts"],
             total_antipattern_instances=parsed["total_antipattern_instances"],
             task_mode=args.task_mode,
@@ -934,6 +939,7 @@ def main():
             training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.yaml",
         )
         training_rows.append({
+            "sample_id":                f"p{i:03d}_antipattern",
             "prompt_num":               i,
             "domain_display":           domain_display,
             "size":                     size,
@@ -982,6 +988,7 @@ def main():
             training_dir / "refactored" / f"prompt_{i:03d}_{domain_slug}_refactored.yaml",
         )
         training_rows.append({
+            "sample_id":                f"p{i:03d}_refactored",
             "prompt_num":               i,
             "domain_display":           domain_display,
             "size":                     size,
@@ -1003,7 +1010,7 @@ def main():
     # ── CSV statistics output ──────────────────────────────────────────────────
     _csv_fields = [
         "prompt_num", "domain_display", "size",
-        "antipattern_names", "antipattern_instance_counts", "total_antipattern_instances",
+        "antipattern_codes", "antipattern_instance_counts", "total_antipattern_instances",
         "sample_type", "task_mode",
         "construct_count_reported",
         "actors", "use_cases", "includes", "extends", "generalizations",
@@ -1014,7 +1021,7 @@ def main():
     write_csv(run_dir / "stats_combined.csv",    ap_stats_rows + ref_stats_rows, _csv_fields)
 
     _training_fields = [
-        "prompt_num", "domain_display", "size",
+        "sample_id", "prompt_num", "domain_display", "size",
         "antipattern_names", "antipattern_instance_counts", "total_antipattern_instances",
         "sample_type", "task_mode", "generated_at",
         "input", "output",
