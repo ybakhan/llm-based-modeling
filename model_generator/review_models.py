@@ -18,7 +18,7 @@ import sys
 import tkinter as tk
 from datetime import datetime
 from pathlib import Path
-from tkinter import filedialog, messagebox, ttk
+from tkinter import filedialog, messagebox
 
 try:
     from PIL import Image, ImageTk
@@ -27,20 +27,23 @@ except ImportError:
     sys.exit(1)
 
 # ── Palette (Catppuccin Mocha) ────────────────────────────────────────────────
-BG       = "#1e1e2e"
-BG_ALT   = "#181825"
-SURFACE  = "#313244"
-OVERLAY  = "#45475a"
-TEXT     = "#cdd6f4"
-SUBTEXT  = "#a6adc8"
-RED      = "#f38ba8"
-GREEN    = "#a6e3a1"
-YELLOW   = "#f9e2af"
-ORANGE   = "#fab387"
-BLUE     = "#89b4fa"
+BG      = "#1e1e2e"
+BG_ALT  = "#181825"
+SURFACE = "#313244"
+OVERLAY = "#45475a"
+TEXT    = "#cdd6f4"
+SUBTEXT = "#a6adc8"
+RED     = "#f38ba8"
+GREEN   = "#a6e3a1"
+ORANGE  = "#fab387"
+BLUE    = "#89b4fa"
 
 STATUS_COLORS = {"good": GREEN, "bad": RED, "needs-rework": ORANGE}
 STATUS_LABELS = {"good": "Good", "bad": "Bad", "needs-rework": "Needs Rework"}
+
+ZOOM_MIN  = 0.05
+ZOOM_MAX  = 8.0
+ZOOM_STEP = 1.20   # multiply/divide per click or scroll tick
 
 
 # ── Data helpers ──────────────────────────────────────────────────────────────
@@ -99,6 +102,183 @@ def save_review(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
+# ── ImagePanel ────────────────────────────────────────────────────────────────
+
+class ImagePanel(tk.Frame):
+    """
+    A labelled canvas panel that shows one image.
+    Supports fit-to-panel mode and zoom+pan mode.
+    Clicking the image opens a fullscreen popup.
+    Scroll wheel zooms (delegates to on_scroll callback).
+    """
+
+    def __init__(self, parent, title: str, title_color: str,
+                 on_scroll, on_click, **kw):
+        super().__init__(parent, bg=BG, **kw)
+        self._on_scroll_cb = on_scroll
+        self._on_click_cb  = on_click
+
+        tk.Label(self, text=title, fg=title_color, bg=BG,
+                 font=("Helvetica", 11, "bold")).pack(anchor="w", pady=(0, 2))
+
+        wrap = tk.Frame(self, bg=BG)
+        wrap.pack(fill="both", expand=True)
+
+        self._vscroll = tk.Scrollbar(wrap, orient="vertical",   bg=SURFACE)
+        self._hscroll = tk.Scrollbar(wrap, orient="horizontal", bg=SURFACE)
+        self._vscroll.pack(side="right",  fill="y")
+        self._hscroll.pack(side="bottom", fill="x")
+
+        self.canvas = tk.Canvas(wrap, bg=SURFACE, highlightthickness=0,
+                                xscrollcommand=self._hscroll.set,
+                                yscrollcommand=self._vscroll.set)
+        self.canvas.pack(fill="both", expand=True)
+        self._vscroll.config(command=self.canvas.yview)
+        self._hscroll.config(command=self.canvas.xview)
+
+        self._path:     Path | None        = None
+        self._orig_img: Image.Image | None = None
+        self._photo:    ImageTk.PhotoImage | None = None
+
+        self.canvas.bind("<Button-1>",   lambda _: self._on_click_cb(self._path))
+        self.canvas.bind("<MouseWheel>", self._wheel)
+        self.canvas.bind("<Button-4>",   self._wheel)   # Linux scroll up
+        self.canvas.bind("<Button-5>",   self._wheel)   # Linux scroll down
+
+    def _wheel(self, event):
+        if event.num == 4 or (hasattr(event, "delta") and event.delta > 0):
+            self._on_scroll_cb(+1)
+        else:
+            self._on_scroll_cb(-1)
+
+    def load(self, path: Path | None) -> None:
+        self._path     = path
+        self._orig_img = None
+        self._photo    = None
+        self.canvas.delete("all")
+        if path is None or not path.exists():
+            self.canvas.create_text(10, 10, text="No image",
+                                    fill=SUBTEXT, anchor="nw")
+            return
+        self._orig_img = Image.open(path)
+
+    def render(self, fit: bool, zoom: float) -> None:
+        if self._orig_img is None:
+            return
+        self.update_idletasks()
+        cw = max(self.canvas.winfo_width(),  100)
+        ch = max(self.canvas.winfo_height(), 100)
+
+        if fit:
+            img = self._orig_img.copy()
+            img.thumbnail((cw - 4, ch - 4), Image.Resampling.LANCZOS)
+            iw, ih = img.size
+            x, y = cw // 2, ch // 2
+            self._photo = ImageTk.PhotoImage(img)
+            self.canvas.delete("all")
+            self.canvas.create_image(x, y, image=self._photo, anchor="center")
+            self.canvas.configure(scrollregion=(0, 0, cw, ch))
+            self._vscroll.pack_forget()
+            self._hscroll.pack_forget()
+        else:
+            w = max(int(self._orig_img.width  * zoom), 1)
+            h = max(int(self._orig_img.height * zoom), 1)
+            img = self._orig_img.resize((w, h), Image.Resampling.LANCZOS)
+            self._photo = ImageTk.PhotoImage(img)
+            self.canvas.delete("all")
+            self.canvas.create_image(2, 2, image=self._photo, anchor="nw")
+            self.canvas.configure(scrollregion=(0, 0, w + 4, h + 4))
+            self._vscroll.pack(side="right",  fill="y")
+            self._hscroll.pack(side="bottom", fill="x")
+
+
+# ── Popup ─────────────────────────────────────────────────────────────────────
+
+def open_popup(root: tk.Tk, path: Path) -> None:
+    """Open a near-fullscreen popup for a single image with zoom + pan."""
+    if not path.exists():
+        return
+
+    top = tk.Toplevel(root)
+    top.title(path.stem.replace("_", " ").title())
+    top.configure(bg=BG)
+    sw, sh = root.winfo_screenwidth(), root.winfo_screenheight()
+    top.geometry(f"{sw - 80}x{sh - 80}+40+40")
+
+    orig = Image.open(path)
+    zoom  = [1.0]
+    photo = [None]
+
+    # ── Canvas + scrollbars
+    wrap   = tk.Frame(top, bg=BG)
+    wrap.pack(fill="both", expand=True)
+    vscroll = tk.Scrollbar(wrap, orient="vertical",   bg=SURFACE)
+    hscroll = tk.Scrollbar(wrap, orient="horizontal", bg=SURFACE)
+    vscroll.pack(side="right",  fill="y")
+    hscroll.pack(side="bottom", fill="x")
+    canvas = tk.Canvas(wrap, bg=SURFACE, highlightthickness=0,
+                       xscrollcommand=hscroll.set, yscrollcommand=vscroll.set)
+    canvas.pack(fill="both", expand=True)
+    vscroll.config(command=canvas.yview)
+    hscroll.config(command=canvas.xview)
+
+    def render():
+        top.update_idletasks()
+        w = max(int(orig.width  * zoom[0]), 1)
+        h = max(int(orig.height * zoom[0]), 1)
+        photo[0] = ImageTk.PhotoImage(orig.resize((w, h), Image.Resampling.LANCZOS))
+        canvas.delete("all")
+        canvas.create_image(2, 2, image=photo[0], anchor="nw")
+        canvas.configure(scrollregion=(0, 0, w + 4, h + 4))
+        zoom_btn.config(text=f"{zoom[0]*100:.0f}%")
+
+    def fit():
+        top.update_idletasks()
+        cw = max(canvas.winfo_width()  - 4, 100)
+        ch = max(canvas.winfo_height() - 4, 100)
+        zoom[0] = min(cw / orig.width, ch / orig.height)
+        render()
+
+    def zoom_by(factor):
+        zoom[0] = max(ZOOM_MIN, min(zoom[0] * factor, ZOOM_MAX))
+        render()
+
+    def on_wheel(event):
+        if event.num == 4 or (hasattr(event, "delta") and event.delta > 0):
+            zoom_by(ZOOM_STEP)
+        else:
+            zoom_by(1 / ZOOM_STEP)
+
+    canvas.bind("<MouseWheel>", on_wheel)
+    canvas.bind("<Button-4>",   on_wheel)
+    canvas.bind("<Button-5>",   on_wheel)
+
+    # ── Control bar
+    ctrl = tk.Frame(top, bg=BG_ALT, pady=6)
+    ctrl.pack(fill="x", side="bottom")
+
+    tk.Button(ctrl, text="−", command=lambda: zoom_by(1 / ZOOM_STEP),
+              bg=SURFACE, fg=TEXT, relief="flat", padx=12, pady=4,
+              font=("Helvetica", 12), cursor="hand2").pack(side="left", padx=4)
+    zoom_btn = tk.Button(ctrl, text="100%", command=lambda: zoom_by(1.0 / zoom[0]),
+                         bg=SURFACE, fg=TEXT, relief="flat", padx=8, pady=4,
+                         font=("Helvetica", 10), cursor="hand2")
+    zoom_btn.pack(side="left")
+    tk.Button(ctrl, text="+", command=lambda: zoom_by(ZOOM_STEP),
+              bg=SURFACE, fg=TEXT, relief="flat", padx=12, pady=4,
+              font=("Helvetica", 12), cursor="hand2").pack(side="left", padx=4)
+    tk.Button(ctrl, text="Fit", command=fit,
+              bg=OVERLAY, fg=TEXT, relief="flat", padx=10, pady=4,
+              cursor="hand2").pack(side="left", padx=(12, 0))
+
+    tk.Button(ctrl, text="Close  ✕", command=top.destroy,
+              bg=RED, fg=BG_ALT, relief="flat", padx=12, pady=4,
+              font=("Helvetica", 10, "bold"), cursor="hand2"
+              ).pack(side="right", padx=8)
+
+    top.after(60, fit)   # fit after layout settles
+
+
 # ── App ───────────────────────────────────────────────────────────────────────
 
 class ReviewApp(tk.Tk):
@@ -106,19 +286,20 @@ class ReviewApp(tk.Tk):
         super().__init__()
         self.title("Model Reviewer")
         self.configure(bg=BG)
-        # Maximise cross-platform
         try:
             self.state("zoomed")
         except tk.TclError:
             self.geometry(f"{self.winfo_screenwidth()}x{self.winfo_screenheight()}+0+0")
 
-        self.run_dir: Path | None = None
-        self.prompts: list[dict] = []
-        self.current_idx: int = 0
-        self.review_data: dict = {"prompts": {}}
-        self.review_path: Path | None = None
-        self.stats: dict[int, dict] = {}
-        self._img_refs: list = []
+        self.run_dir:     Path | None  = None
+        self.prompts:     list[dict]   = []
+        self.current_idx: int          = 0
+        self.review_data: dict         = {"prompts": {}}
+        self.review_path: Path | None  = None
+        self.stats:       dict[int, dict] = {}
+
+        self._fit_mode: bool  = True
+        self._zoom:     float = 1.0
 
         self._build_ui()
 
@@ -128,7 +309,7 @@ class ReviewApp(tk.Tk):
     # ── UI construction ───────────────────────────────────────────────────────
 
     def _build_ui(self):
-        # ── Top bar ───────────────────────────────────────────────────────────
+        # ── Top bar
         top = tk.Frame(self, bg=BG_ALT, pady=6)
         top.pack(fill="x")
 
@@ -141,7 +322,7 @@ class ReviewApp(tk.Tk):
                   activebackground=OVERLAY, cursor="hand2"
                   ).pack(side="right", padx=12)
 
-        # ── Prompt header ─────────────────────────────────────────────────────
+        # ── Prompt header
         hdr = tk.Frame(self, bg=BG, pady=4)
         hdr.pack(fill="x", padx=12)
 
@@ -153,30 +334,58 @@ class ReviewApp(tk.Tk):
                                     font=("Helvetica", 10, "bold"), padx=10, pady=2)
         self._lbl_badge.pack(side="left", padx=10)
 
-        # ── Metadata ──────────────────────────────────────────────────────────
+        # ── Metadata
         self._lbl_meta = tk.Label(self, text="", fg=SUBTEXT, bg=BG,
                                    font=("Helvetica", 10), justify="left",
                                    anchor="w", wraplength=1600)
-        self._lbl_meta.pack(fill="x", padx=12, pady=(0, 6))
+        self._lbl_meta.pack(fill="x", padx=12, pady=(0, 4))
 
-        # ── Images ────────────────────────────────────────────────────────────
+        # ── Zoom controls
+        zf = tk.Frame(self, bg=BG, pady=3)
+        zf.pack(fill="x", padx=12)
+
+        self._fit_btn = tk.Button(zf, text="Fit  ✓", command=self._toggle_fit,
+                                   bg=BLUE, fg=BG_ALT, relief="flat",
+                                   padx=10, pady=3, font=("Helvetica", 9, "bold"),
+                                   cursor="hand2")
+        self._fit_btn.pack(side="left", padx=(0, 8))
+
+        tk.Button(zf, text="−", command=lambda: self._zoom_by(1 / ZOOM_STEP),
+                  bg=SURFACE, fg=TEXT, relief="flat", padx=10, pady=3,
+                  font=("Helvetica", 11), cursor="hand2").pack(side="left")
+
+        self._lbl_zoom = tk.Label(zf, text="fit", fg=TEXT, bg=SURFACE,
+                                   font=("Helvetica", 9), padx=8, pady=3, width=6)
+        self._lbl_zoom.pack(side="left", padx=2)
+
+        tk.Button(zf, text="+", command=lambda: self._zoom_by(ZOOM_STEP),
+                  bg=SURFACE, fg=TEXT, relief="flat", padx=10, pady=3,
+                  font=("Helvetica", 11), cursor="hand2").pack(side="left")
+
+        tk.Label(zf, text="  scroll wheel to zoom  ·  click image to enlarge",
+                 fg=OVERLAY, bg=BG, font=("Helvetica", 9)).pack(side="left", padx=12)
+
+        # ── Images
         img_frame = tk.Frame(self, bg=BG)
         img_frame.pack(fill="both", expand=True, padx=12)
 
-        def _img_col(parent, title, color):
-            col = tk.Frame(parent, bg=BG)
-            col.pack(side="left", fill="both", expand=True)
-            tk.Label(col, text=title, fg=color, bg=BG,
-                     font=("Helvetica", 11, "bold")).pack(anchor="w", pady=(0, 2))
-            lbl = tk.Label(col, bg=SURFACE, relief="flat", text="—", fg=SUBTEXT)
-            lbl.pack(fill="both", expand=True)
-            return lbl
+        self._ap_panel = ImagePanel(
+            img_frame, "ANTIPATTERN", RED,
+            on_scroll=self._on_panel_scroll,
+            on_click=self._on_image_click,
+        )
+        self._ap_panel.pack(side="left", fill="both", expand=True)
 
-        self._lbl_ap_img  = _img_col(img_frame, "ANTIPATTERN", RED)
         tk.Frame(img_frame, width=2, bg=OVERLAY).pack(side="left", fill="y", padx=8)
-        self._lbl_ref_img = _img_col(img_frame, "REFACTORED",  GREEN)
 
-        # ── Notes ─────────────────────────────────────────────────────────────
+        self._ref_panel = ImagePanel(
+            img_frame, "REFACTORED", GREEN,
+            on_scroll=self._on_panel_scroll,
+            on_click=self._on_image_click,
+        )
+        self._ref_panel.pack(side="left", fill="both", expand=True)
+
+        # ── Notes
         notes_row = tk.Frame(self, bg=BG, pady=6)
         notes_row.pack(fill="x", padx=12)
 
@@ -190,11 +399,10 @@ class ReviewApp(tk.Tk):
         self._notes.pack(side="left", fill="x", expand=True)
         self._notes.bind("<FocusOut>", lambda _: self._persist())
 
-        # ── Bottom bar ────────────────────────────────────────────────────────
+        # ── Bottom bar
         bot = tk.Frame(self, bg=BG_ALT, pady=8)
         bot.pack(fill="x", side="bottom")
 
-        # Status buttons
         sf = tk.Frame(bot, bg=BG_ALT)
         sf.pack(side="left", padx=16)
 
@@ -210,7 +418,6 @@ class ReviewApp(tk.Tk):
                       activebackground=color, cursor="hand2"
                       ).pack(side="left", padx=4)
 
-        # Clear button
         tk.Button(sf, text="Clear Status",
                   command=lambda: self._set_status(None),
                   bg=OVERLAY, fg=TEXT, relief="flat",
@@ -218,7 +425,6 @@ class ReviewApp(tk.Tk):
                   cursor="hand2"
                   ).pack(side="left", padx=(16, 0))
 
-        # Navigation
         nf = tk.Frame(bot, bg=BG_ALT)
         nf.pack(side="right", padx=16)
 
@@ -244,10 +450,45 @@ class ReviewApp(tk.Tk):
                   bg=SURFACE, fg=TEXT, relief="flat", padx=12, pady=5,
                   cursor="hand2").pack(side="left", padx=4)
 
-        # Review summary counter
         self._lbl_summary = tk.Label(bot, text="", fg=SUBTEXT, bg=BG_ALT,
                                       font=("Helvetica", 10))
         self._lbl_summary.pack(side="right", padx=(0, 32))
+
+    # ── Zoom ──────────────────────────────────────────────────────────────────
+
+    def _on_panel_scroll(self, direction: int):
+        """Called by either panel's scroll wheel (+1 = up, -1 = down)."""
+        if direction > 0:
+            self._zoom_by(ZOOM_STEP)
+        else:
+            self._zoom_by(1 / ZOOM_STEP)
+
+    def _zoom_by(self, factor: float):
+        if self._fit_mode:
+            # Leave fit mode, seed zoom from current fit ratio
+            self._fit_mode = False
+            self._fit_btn.config(text="Fit", bg=SURFACE, fg=TEXT)
+        self._zoom = max(ZOOM_MIN, min(self._zoom * factor, ZOOM_MAX))
+        self._lbl_zoom.config(text=f"{self._zoom * 100:.0f}%")
+        self._render_images()
+
+    def _toggle_fit(self):
+        self._fit_mode = not self._fit_mode
+        if self._fit_mode:
+            self._fit_btn.config(text="Fit  ✓", bg=BLUE, fg=BG_ALT)
+            self._lbl_zoom.config(text="fit")
+        else:
+            self._fit_btn.config(text="Fit", bg=SURFACE, fg=TEXT)
+            self._lbl_zoom.config(text=f"{self._zoom * 100:.0f}%")
+        self._render_images()
+
+    def _render_images(self):
+        self._ap_panel.render(self._fit_mode, self._zoom)
+        self._ref_panel.render(self._fit_mode, self._zoom)
+
+    def _on_image_click(self, path: Path | None):
+        if path and path.exists():
+            open_popup(self, path)
 
     # ── Run loading ───────────────────────────────────────────────────────────
 
@@ -257,9 +498,9 @@ class ReviewApp(tk.Tk):
             self._load_run(Path(d))
 
     def _load_run(self, run_dir: Path):
-        self.run_dir    = run_dir
+        self.run_dir     = run_dir
         self.review_path = run_dir / "review.json"
-        self.prompts    = find_prompts(run_dir)
+        self.prompts     = find_prompts(run_dir)
         self.review_data = load_review(self.review_path)
         self.stats       = load_stats(run_dir)
         self.current_idx = 0
@@ -284,66 +525,43 @@ class ReviewApp(tk.Tk):
         num = p["num"]
         key = str(num)
 
-        # Progress label
         self._lbl_progress.config(
             text=f"Prompt {num}  ·  {self.current_idx + 1} of {len(self.prompts)}"
         )
 
-        # Status badge
         review = self.review_data["prompts"].get(key, {})
         status = review.get("status")
         if status:
             self._lbl_badge.config(text=f"  {STATUS_LABELS[status]}  ",
                                     bg=STATUS_COLORS[status], fg=BG_ALT)
         else:
-            self._lbl_badge.config(text="  Not Reviewed  ",
-                                    bg=SURFACE, fg=SUBTEXT)
+            self._lbl_badge.config(text="  Not Reviewed  ", bg=SURFACE, fg=SUBTEXT)
 
-        # Metadata
-        row = self.stats.get(num, {})
-        domain   = row.get("domain_display",
-                           p["domain_slug"].replace("_", " ").title())
-        size     = row.get("size", "—")
-        mode     = row.get("task_mode", "—")
-        ap_codes = row.get("antipattern_codes", "—")
-        counts   = row.get("antipattern_instance_counts", "—")
-        total    = row.get("total_antipattern_instances", "—")
+        row        = self.stats.get(num, {})
+        domain     = row.get("domain_display", p["domain_slug"].replace("_", " ").title())
+        size       = row.get("size", "—")
+        mode       = row.get("task_mode", "—")
+        ap_codes   = row.get("antipattern_codes", "—")
+        counts     = row.get("antipattern_instance_counts", "—")
+        total      = row.get("total_antipattern_instances", "—")
         constructs = row.get("construct_count_reported", "—")
-        reviewed_at = review.get("reviewed_at", "")
-        reviewed_str = f"  ·  Reviewed {reviewed_at[:16]}" if reviewed_at else ""
+        rev_at     = review.get("reviewed_at", "")
+        rev_str    = f"  ·  Reviewed {rev_at[:16]}" if rev_at else ""
 
-        meta = (
+        self._lbl_meta.config(text=(
             f"Domain: {domain}    Size: {size}    Mode: {mode}    "
             f"Antipatterns: {ap_codes}    Instances per AP: {counts}    "
-            f"Total instances: {total}    Constructs: {constructs}"
-            f"{reviewed_str}"
-        )
-        self._lbl_meta.config(text=meta)
+            f"Total instances: {total}    Constructs: {constructs}{rev_str}"
+        ))
 
-        # Images — schedule after layout settles
-        self._img_refs.clear()
-        self.after(50, lambda: self._load_image(self._lbl_ap_img,  p["ap_img"]))
-        self.after(50, lambda: self._load_image(self._lbl_ref_img, p["ref_img"]))
+        self._ap_panel.load(p["ap_img"])
+        self._ref_panel.load(p["ref_img"])
+        self.after(60, self._render_images)
 
-        # Notes
         self._notes.delete("1.0", "end")
         self._notes.insert("1.0", review.get("notes", ""))
 
-        # Summary counter
         self._update_summary()
-
-    def _load_image(self, label: tk.Label, path: Path | None):
-        if path is None or not path.exists():
-            label.config(image="", text="No image", fg=SUBTEXT)
-            return
-        self.update_idletasks()
-        w = max(label.winfo_width()  - 16, 300)
-        h = max(label.winfo_height() - 16, 300)
-        img = Image.open(path)
-        img.thumbnail((w, h), Image.Resampling.LANCZOS)
-        photo = ImageTk.PhotoImage(img)
-        self._img_refs.append(photo)
-        label.config(image=photo, text="")
 
     def _update_summary(self):
         if not self.review_data["prompts"]:
@@ -354,9 +572,9 @@ class ReviewApp(tk.Tk):
             s = v.get("status")
             if s in counts:
                 counts[s] += 1
-        total = len(self.prompts)
+        total    = len(self.prompts)
         reviewed = sum(counts.values())
-        parts = [f"{STATUS_LABELS[k]}: {counts[k]}" for k in STATUS_LABELS]
+        parts    = [f"{STATUS_LABELS[k]}: {counts[k]}" for k in STATUS_LABELS]
         self._lbl_summary.config(
             text=f"Reviewed {reviewed}/{total}    " + "    ".join(parts)
         )
