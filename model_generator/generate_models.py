@@ -881,7 +881,6 @@ def main():
         args.config        = saved["config"]
         args.domains_config = saved["domains_config"]
         sizes             = state["sizes"]
-        ap_usage_counts   = state["ap_usage_counts"]
         completed_prompts = set(state["completed_prompts"])
         failed_prompts    = set(state.get("failed_prompts", []))
         setup_file_logging(run_dir)
@@ -910,6 +909,8 @@ def main():
 
     if args.resume is None:
         ap_usage_counts = {ap["name"]: 0 for ap in all_antipatterns}
+    else:
+        ap_usage_counts = state["ap_usage_counts"]
 
     models_dir   = run_dir / "models"
     training_dir = run_dir / "training_samples"
