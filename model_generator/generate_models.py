@@ -523,7 +523,9 @@ Make them educationally clear examples.
 
 
 def build_user_message(
-    prompt_num: int, size: str, construct_count: int, domain_name: str | None = None
+    prompt_num: int, size: str, construct_count: int,
+    domain_name: str | None = None,
+    reviewer_notes: str | None = None,
 ) -> str:
     lo, hi = SIZE_RANGES[size]
     domain_clause = (
@@ -531,12 +533,18 @@ def build_user_message(
         if domain_name
         else "Select a NEW domain not yet used in this conversation."
     )
-    return (
+    msg = (
         f"Prompt #{prompt_num:03d}: Generate a {size.upper()} use case model "
         f"with exactly {construct_count} constructs "
         f"(valid range for {size}: {lo}–{hi} constructs). "
         f"{domain_clause}"
     )
+    if reviewer_notes:
+        msg += (
+            f"\n\nREVIEWER NOTES (from previous attempt — address these in your output):\n"
+            f"{reviewer_notes}"
+        )
+    return msg
 
 
 # ── Response parser ───────────────────────────────────────────────────────────
@@ -940,17 +948,25 @@ def main():
         logger.info(f"Completed    : {len(completed_prompts)} / {args.num_prompts}")
 
         reprocess_prompt_nums: set[int] = set()
+        reprocess_notes: dict[int, str] = {}
         if args.reprocess_flagged:
             review_path = run_dir / "review.json"
             if review_path.exists():
                 review = json.loads(review_path.read_text(encoding="utf-8"))
                 for k, v in review.get("prompts", {}).items():
                     if v.get("status") in {"bad", "needs-rework"}:
-                        reprocess_prompt_nums.add(int(k))
+                        num = int(k)
+                        reprocess_prompt_nums.add(num)
+                        notes = v.get("notes", "").strip()
+                        if notes:
+                            reprocess_notes[num] = notes
             if reprocess_prompt_nums:
                 logger.info(
                     f"Reprocessing : {len(reprocess_prompt_nums)} flagged prompt(s) "
                     f"→ {sorted(reprocess_prompt_nums)}"
+                )
+                logger.info(
+                    f"With notes   : {len(reprocess_notes)} prompt(s) have reviewer notes"
                 )
                 completed_prompts -= reprocess_prompt_nums
             else:
@@ -966,6 +982,7 @@ def main():
         completed_prompts      = set()
         failed_prompts         = set()
         reprocess_prompt_nums  = set()
+        reprocess_notes        = {}
         state_path             = run_dir / "run_state.json"
 
     cfg              = load_config(args.config)
@@ -1066,13 +1083,18 @@ def main():
                 domain_entry = domain_pool[(i - 1) % len(domain_pool)]
                 domain_name  = domain_entry["name"]
     
-            user_msg = build_user_message(i, size, construct_count, domain_name)
+            user_msg = build_user_message(
+                i, size, construct_count, domain_name,
+                reviewer_notes=reprocess_notes.get(i),
+            )
             messages = [{"role": "user", "content": user_msg}]
     
             logger.info("")
             logger.info(f"{'─'*60}")
             logger.info(f"Prompt {i}/{args.num_prompts}  size={size}  target_constructs={construct_count}")
             logger.info(f"  Antipatterns : {assigned_summary}")
+            if reprocess_notes.get(i):
+                logger.info(f"  Reviewer notes : {reprocess_notes[i]}")
     
             # ── API call ───────────────────────────────────────────────────────────
             _model      = "claude-opus-4-6"
