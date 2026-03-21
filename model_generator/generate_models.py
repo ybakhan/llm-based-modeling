@@ -27,6 +27,8 @@ from pathlib import Path
 from datetime import datetime
 import logging
 import json
+import signal
+import atexit
 
 _console_handler = logging.StreamHandler(sys.stdout)
 _console_handler.setLevel(logging.INFO)
@@ -37,6 +39,83 @@ _console_handler.setFormatter(logging.Formatter(
 logging.getLogger().setLevel(logging.DEBUG)
 logging.getLogger().addHandler(_console_handler)
 logger = logging.getLogger(__name__)
+
+# Shared state written by main() so the atexit handler can always print a summary,
+# even when the process is killed via SIGTERM / debugpy stop button.
+_run_context: dict = {}
+
+
+def _atexit_summary() -> None:
+    ctx = _run_context
+    if not ctx:
+        return
+    run_dir           = ctx["run_dir"]
+    completed_prompts = ctx["completed_prompts"]
+    failed_prompts    = ctx["failed_prompts"]
+    sizes             = ctx["sizes"]
+    args_ns           = ctx["args"]
+    ap_usage_counts   = ctx["ap_usage_counts"]
+    csv_fields        = ctx["csv_fields"]
+    interrupted       = not ctx.get("completed", False)
+
+    if interrupted:
+        logger.warning("")
+        logger.warning(f"{'─'*60}")
+        logger.warning("Run interrupted — partial results saved.")
+    else:
+        logger.info("")
+        logger.info(f"{'─'*60}")
+    size_counts = {s: sizes.count(s) for s in args_ns.sizes}
+    logger.info("Size distribution: " + "  ".join(f"{s}={c}" for s, c in size_counts.items()))
+    logger.info(f"Prompts completed: {len(completed_prompts)} / {args_ns.num_prompts}")
+    if failed_prompts:
+        logger.warning(f"Prompts failed   : {len(failed_prompts)}  →  {sorted(failed_prompts)}")
+    else:
+        logger.info("Prompts failed   : 0")
+    if interrupted:
+        logger.warning(f"Resume with      : --resume {run_dir}")
+
+    # Rebuild stats_combined from per-prompt CSVs
+    ap_rows  = read_csv_rows(run_dir / "stats_antipattern.csv")
+    ref_rows = read_csv_rows(run_dir / "stats_refactored.csv")
+    interleaved = [row for pair in zip(ap_rows, ref_rows) for row in pair]
+    interleaved += ap_rows[len(ref_rows):] + ref_rows[len(ap_rows):]
+    write_csv(run_dir / "stats_combined.csv", interleaved, csv_fields)
+
+    # Antipattern usage
+    logger.info("")
+    logger.info("Antipattern usage across run:")
+    for name, count in ap_usage_counts.items():
+        logger.info(f"  {count:3d}×  {name}")
+
+    # Domain summary
+    all_domains    = [row["domain_display"] for row in ap_rows]
+    unique_domains = list(dict.fromkeys(all_domains))
+    domains_path   = run_dir / "domains.yaml"
+    domains_path.write_text(
+        yaml.dump(
+            {
+                "all_domains":    all_domains,
+                "unique_domains": unique_domains,
+                "total":          len(all_domains),
+                "unique_count":   len(unique_domains),
+            },
+            allow_unicode=True,
+            sort_keys=False,
+            default_flow_style=False,
+        ),
+        encoding="utf-8",
+    )
+    logger.info(f"  domains.yaml  → {domains_path}")
+
+    logger.info("")
+    logger.info(f"{'═'*60}")
+    if interrupted:
+        logger.warning(f"Partial output under: {run_dir}")
+    else:
+        logger.info(f"Done. All output under: {run_dir}")
+    logger.info(f"  models/           → PlantUML + image pairs")
+    logger.info(f"  training_samples/ → .jinja + .yaml training data")
 
 
 def setup_file_logging(run_dir: Path) -> None:
@@ -857,52 +936,60 @@ def main():
 
     # ── Main generation loop ───────────────────────────────────────────────────
 
-    interrupted = False
+    # Populate shared context so _atexit_summary() always has what it needs.
+    _run_context.update({
+        "run_dir":           run_dir,
+        "completed_prompts": completed_prompts,
+        "failed_prompts":    failed_prompts,
+        "sizes":             sizes,
+        "args":              args,
+        "ap_usage_counts":   ap_usage_counts,
+        "csv_fields":        _csv_fields,
+    })
+    atexit.register(_atexit_summary)
 
-    for i, size in enumerate(sizes, start=1):
-        if i in completed_prompts:
-            logger.info(f"Prompt {i}/{args.num_prompts}  [already completed, skipping]")
-            continue
+    # sys.exit() triggers atexit; raising KeyboardInterrupt does not always work
+    # when the process is stopped via debugpy / SIGTERM.
+    def _handle_stop(signum, frame):
+        sys.exit(0)
 
-        lo, hi          = SIZE_RANGES[size]
-        construct_count = random.randint(lo, hi)
+    signal.signal(signal.SIGTERM, _handle_stop)
+    signal.signal(signal.SIGINT,  _handle_stop)
 
-        # Select antipatterns for this prompt and build system prompt
-        assigned      = assign_antipatterns_for_prompt(all_antipatterns, size, ap_usage_counts)
-        system_prompt = build_system_prompt(assigned, args.task_mode)
-
-        assigned_summary = ", ".join(
-            f"{e['antipattern']['name']} ×{e['instance_count']}" for e in assigned
-        )
-
-        domain_name: str | None = None
-        if domain_pool:
-            domain_entry = domain_pool[(i - 1) % len(domain_pool)]
-            domain_name  = domain_entry["name"]
-
-        user_msg = build_user_message(i, size, construct_count, domain_name)
-        messages = [{"role": "user", "content": user_msg}]
-
-        logger.info("")
-        logger.info(f"{'─'*60}")
-        logger.info(f"Prompt {i}/{args.num_prompts}  size={size}  target_constructs={construct_count}")
-        logger.info(f"  Antipatterns : {assigned_summary}")
-
-        # ── API call ───────────────────────────────────────────────────────────
-        _model      = "claude-opus-4-6"
-        _max_tokens = 4096
-        logger.debug(f"  API request  model={_model}  max_tokens={_max_tokens}")
-        try:
-            response = client.messages.create(
-                model=_model,
-                max_tokens=_max_tokens,
-                system=system_prompt,
-                messages=messages,
+    try:
+        for i, size in enumerate(sizes, start=1):
+            if i in completed_prompts:
+                logger.info(f"Prompt {i}/{args.num_prompts}  [already completed, skipping]")
+                continue
+    
+            lo, hi          = SIZE_RANGES[size]
+            construct_count = random.randint(lo, hi)
+    
+            # Select antipatterns for this prompt and build system prompt
+            assigned      = assign_antipatterns_for_prompt(all_antipatterns, size, ap_usage_counts)
+            system_prompt = build_system_prompt(assigned, args.task_mode)
+    
+            assigned_summary = ", ".join(
+                f"{e['antipattern']['name']} ×{e['instance_count']}" for e in assigned
             )
-            raw = response.content[0].text
-        except anthropic.RateLimitError:
-            logger.warning("  Rate-limited by API. Sleeping 30 s then retrying once …")
-            time.sleep(30)
+    
+            domain_name: str | None = None
+            if domain_pool:
+                domain_entry = domain_pool[(i - 1) % len(domain_pool)]
+                domain_name  = domain_entry["name"]
+    
+            user_msg = build_user_message(i, size, construct_count, domain_name)
+            messages = [{"role": "user", "content": user_msg}]
+    
+            logger.info("")
+            logger.info(f"{'─'*60}")
+            logger.info(f"Prompt {i}/{args.num_prompts}  size={size}  target_constructs={construct_count}")
+            logger.info(f"  Antipatterns : {assigned_summary}")
+    
+            # ── API call ───────────────────────────────────────────────────────────
+            _model      = "claude-opus-4-6"
+            _max_tokens = 4096
+            logger.debug(f"  API request  model={_model}  max_tokens={_max_tokens}")
             try:
                 response = client.messages.create(
                     model=_model,
@@ -911,299 +998,253 @@ def main():
                     messages=messages,
                 )
                 raw = response.content[0].text
+            except anthropic.RateLimitError:
+                logger.warning("  Rate-limited by API. Sleeping 30 s then retrying once …")
+                time.sleep(30)
+                try:
+                    response = client.messages.create(
+                        model=_model,
+                        max_tokens=_max_tokens,
+                        system=system_prompt,
+                        messages=messages,
+                    )
+                    raw = response.content[0].text
+                except Exception as exc:
+                    logger.error(f"  Retry failed: {exc}. Skipping prompt {i}.")
+                    failed_prompts.add(i)
+                    continue
             except Exception as exc:
-                logger.error(f"  Retry failed: {exc}. Skipping prompt {i}.")
+                logger.error(f"  API error: {exc}. Skipping prompt {i}.")
+                time.sleep(args.rate_limit)
                 failed_prompts.add(i)
                 continue
-        except Exception as exc:
-            logger.error(f"  API error: {exc}. Skipping prompt {i}.")
-            time.sleep(args.rate_limit)
-            failed_prompts.add(i)
-            continue
-
-        usage = vars(response.usage) if hasattr(response, "usage") else None
-        if usage:
-            logger.debug(
-                f"  API response input_tokens={usage.get('input_tokens')}  "
-                f"output_tokens={usage.get('output_tokens')}"
+    
+            usage = vars(response.usage) if hasattr(response, "usage") else None
+            if usage:
+                logger.debug(
+                    f"  API response input_tokens={usage.get('input_tokens')}  "
+                    f"output_tokens={usage.get('output_tokens')}"
+                )
+    
+            write_audit(run_dir, i, system_prompt, messages, raw, _model, usage)
+    
+            # Update usage counts now that this prompt succeeded
+            for entry in assigned:
+                ap_usage_counts[entry["antipattern"]["name"]] += 1
+    
+            # ── Parse ──────────────────────────────────────────────────────────────
+            parsed         = parse_response(raw)
+            domain         = parsed["domain"] or f"prompt_{i:03d}"
+            domain_display = parsed["domain_display"]
+            gen_at         = datetime.now().isoformat()
+    
+            logger.info(f"  Domain       : {domain_display}")
+            logger.info(f"  V1 constructs: {parsed['construct_count_v1']}")
+            logger.info(f"  V2 constructs: {parsed['construct_count_v2']}")
+            logger.debug(f"  Antipatterns : {parsed['antipattern_names']}")
+            logger.debug(f"  Instances    : {parsed['antipattern_instance_counts']}")
+            logger.debug(f"  V1 PUML parsed: {parsed['antipattern_puml'] is not None}")
+            logger.debug(f"  V2 PUML parsed: {parsed['refactored_puml'] is not None}")
+    
+            if not parsed["antipattern_puml"] or not parsed["refactored_puml"]:
+                logger.warning("  Could not parse both PlantUML blocks — skipping file output for this prompt.")
+                time.sleep(args.rate_limit)
+                continue
+    
+            # ── Directory & file names ─────────────────────────────────────────────
+            dir_name    = f"prompt_{i:03d}_{slugify(domain)}"
+            prompt_dir  = models_dir / dir_name
+            domain_slug = slugify(domain)
+    
+            # ── Raw response ───────────────────────────────────────────────────────
+            write_file(raw, prompt_dir / f"prompt_{i:03d}_response.txt")
+    
+            # ── PlantUML files ─────────────────────────────────────────────────────
+            v1_puml = write_file(parsed["antipattern_puml"], prompt_dir / f"{domain_slug}_antipattern.puml")
+            v2_puml = write_file(parsed["refactored_puml"],  prompt_dir / f"{domain_slug}_refactored.puml")
+    
+            v1_img = convert_to_image(v1_puml, args.plantuml_jar, use_png=args.png)
+            v2_img = convert_to_image(v2_puml, args.plantuml_jar, use_png=args.png)
+    
+            # ── Descriptive statistics ─────────────────────────────────────────────
+            v1_stats = parse_puml_stats(parsed["antipattern_puml"])
+            v2_stats = parse_puml_stats(parsed["refactored_puml"])
+    
+            antipattern_codes = "; ".join(
+                ap_code_lookup.get(ap["name"], ap["name"])
+                for ap in parsed["antipatterns_detected"]
             )
-
-        write_audit(run_dir, i, system_prompt, messages, raw, _model, usage)
-
-        # Update usage counts now that this prompt succeeded
-        for entry in assigned:
-            ap_usage_counts[entry["antipattern"]["name"]] += 1
-
-        # ── Parse ──────────────────────────────────────────────────────────────
-        parsed         = parse_response(raw)
-        domain         = parsed["domain"] or f"prompt_{i:03d}"
-        domain_display = parsed["domain_display"]
-        gen_at         = datetime.now().isoformat()
-
-        logger.info(f"  Domain       : {domain_display}")
-        logger.info(f"  V1 constructs: {parsed['construct_count_v1']}")
-        logger.info(f"  V2 constructs: {parsed['construct_count_v2']}")
-        logger.debug(f"  Antipatterns : {parsed['antipattern_names']}")
-        logger.debug(f"  Instances    : {parsed['antipattern_instance_counts']}")
-        logger.debug(f"  V1 PUML parsed: {parsed['antipattern_puml'] is not None}")
-        logger.debug(f"  V2 PUML parsed: {parsed['refactored_puml'] is not None}")
-
-        if not parsed["antipattern_puml"] or not parsed["refactored_puml"]:
-            logger.warning("  Could not parse both PlantUML blocks — skipping file output for this prompt.")
-            time.sleep(args.rate_limit)
-            continue
-
-        # ── Directory & file names ─────────────────────────────────────────────
-        dir_name    = f"prompt_{i:03d}_{slugify(domain)}"
-        prompt_dir  = models_dir / dir_name
-        domain_slug = slugify(domain)
-
-        # ── Raw response ───────────────────────────────────────────────────────
-        write_file(raw, prompt_dir / f"prompt_{i:03d}_response.txt")
-
-        # ── PlantUML files ─────────────────────────────────────────────────────
-        v1_puml = write_file(parsed["antipattern_puml"], prompt_dir / f"{domain_slug}_antipattern.puml")
-        v2_puml = write_file(parsed["refactored_puml"],  prompt_dir / f"{domain_slug}_refactored.puml")
-
-        v1_img = convert_to_image(v1_puml, args.plantuml_jar, use_png=args.png)
-        v2_img = convert_to_image(v2_puml, args.plantuml_jar, use_png=args.png)
-
-        # ── Descriptive statistics ─────────────────────────────────────────────
-        v1_stats = parse_puml_stats(parsed["antipattern_puml"])
-        v2_stats = parse_puml_stats(parsed["refactored_puml"])
-
-        antipattern_codes = "; ".join(
-            ap_code_lookup.get(ap["name"], ap["name"])
-            for ap in parsed["antipatterns_detected"]
-        )
-        _base = dict(
-            prompt_num=i,
-            domain=domain,
-            domain_display=domain_display,
-            size=size,
-            antipattern_codes=antipattern_codes,
-            antipattern_instance_counts=parsed["antipattern_instance_counts"],
-            total_antipattern_instances=parsed["total_antipattern_instances"],
-            task_mode=args.task_mode,
-            generated_at=gen_at,
-        )
-        ap_stats_row = {
-            **_base,
-            "sample_type":              "antipattern",
-            "construct_count_reported": parsed["construct_count_v1"],
-            **v1_stats,
-            "count_matches_reported":   parsed["construct_count_v1"] == v1_stats["total_parsed"],
-            "puml_file":                str(v1_puml),
-            "img_file":                 str(v1_img),
-        }
-        ref_stats_row = {
-            **_base,
-            "sample_type":              "refactored",
-            "construct_count_reported": parsed["construct_count_v2"],
-            **v2_stats,
-            "count_matches_reported":   parsed["construct_count_v2"] == v2_stats["total_parsed"],
-            "puml_file":                str(v2_puml),
-            "img_file":                 str(v2_img),
-        }
-        append_csv_row(run_dir / "stats_antipattern.csv", ap_stats_row, _csv_fields)
-        append_csv_row(run_dir / "stats_refactored.csv",  ref_stats_row, _csv_fields)
-
-        # ── Training sample – antipattern (negative) ───────────────────────────
-        jinja_ap = write_file(
-            make_jinja_antipattern(
+            _base = dict(
+                prompt_num=i,
+                domain=domain,
+                domain_display=domain_display,
+                size=size,
+                antipattern_codes=antipattern_codes,
+                antipattern_instance_counts=parsed["antipattern_instance_counts"],
+                total_antipattern_instances=parsed["total_antipattern_instances"],
+                task_mode=args.task_mode,
+                generated_at=gen_at,
+            )
+            ap_stats_row = {
+                **_base,
+                "sample_type":              "antipattern",
+                "construct_count_reported": parsed["construct_count_v1"],
+                **v1_stats,
+                "count_matches_reported":   parsed["construct_count_v1"] == v1_stats["total_parsed"],
+                "puml_file":                str(v1_puml),
+                "img_file":                 str(v1_img),
+            }
+            ref_stats_row = {
+                **_base,
+                "sample_type":              "refactored",
+                "construct_count_reported": parsed["construct_count_v2"],
+                **v2_stats,
+                "count_matches_reported":   parsed["construct_count_v2"] == v2_stats["total_parsed"],
+                "puml_file":                str(v2_puml),
+                "img_file":                 str(v2_img),
+            }
+            append_csv_row(run_dir / "stats_antipattern.csv", ap_stats_row, _csv_fields)
+            append_csv_row(run_dir / "stats_refactored.csv",  ref_stats_row, _csv_fields)
+    
+            # ── Training sample – antipattern (negative) ───────────────────────────
+            jinja_ap = write_file(
+                make_jinja_antipattern(
+                    parsed["antipattern_puml"],
+                    parsed["antipatterns_detected"],
+                    parsed["refactoring_rationale"],
+                    args.task_mode,
+                    parsed["refactored_puml"],
+                ),
+                training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.jinja",
+            )
+    
+            ap_answer = make_jinja_antipattern(
                 parsed["antipattern_puml"],
                 parsed["antipatterns_detected"],
                 parsed["refactoring_rationale"],
                 args.task_mode,
                 parsed["refactored_puml"],
-            ),
-            training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.jinja",
-        )
-
-        ap_answer = make_jinja_antipattern(
-            parsed["antipattern_puml"],
-            parsed["antipatterns_detected"],
-            parsed["refactoring_rationale"],
-            args.task_mode,
-            parsed["refactored_puml"],
-        ).split("Answer:\n", 1)[-1].strip()
-
-        _task_instr = _TASK_INSTRUCTION[args.task_mode].replace("\n", " ")
-
-        write_file(
-            yaml.dump(
-                make_yaml_record(
-                    prompt_num=i,
-                    domain=domain,
-                    domain_display=domain_display,
-                    size=size,
-                    antipatterns_detected=parsed["antipatterns_detected"],
-                    refactoring_rationale=parsed["refactoring_rationale"],
-                    construct_count=parsed["construct_count_v1"],
-                    puml=parsed["antipattern_puml"],
-                    expected_output=ap_answer,
-                    sample_type="antipattern",
-                    task_mode=args.task_mode,
-                    puml_path=v1_puml,
-                    img_path=v1_img,
-                    jinja_path=jinja_ap,
-                    generated_at=gen_at,
-                    raw_response=raw,
+            ).split("Answer:\n", 1)[-1].strip()
+    
+            _task_instr = _TASK_INSTRUCTION[args.task_mode].replace("\n", " ")
+    
+            write_file(
+                yaml.dump(
+                    make_yaml_record(
+                        prompt_num=i,
+                        domain=domain,
+                        domain_display=domain_display,
+                        size=size,
+                        antipatterns_detected=parsed["antipatterns_detected"],
+                        refactoring_rationale=parsed["refactoring_rationale"],
+                        construct_count=parsed["construct_count_v1"],
+                        puml=parsed["antipattern_puml"],
+                        expected_output=ap_answer,
+                        sample_type="antipattern",
+                        task_mode=args.task_mode,
+                        puml_path=v1_puml,
+                        img_path=v1_img,
+                        jinja_path=jinja_ap,
+                        generated_at=gen_at,
+                        raw_response=raw,
+                    ),
+                    allow_unicode=True,
+                    sort_keys=False,
+                    default_flow_style=False,
                 ),
-                allow_unicode=True,
-                sort_keys=False,
-                default_flow_style=False,
-            ),
-            training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.yaml",
-        )
-        append_training_record(training_yaml_path, training_jsonl_path, {
-            "sample_id":                f"p{i:03d}_antipattern",
-            "prompt_num":               i,
-            "domain_display":           domain_display,
-            "size":                     size,
-            "antipattern_names":        parsed["antipattern_names"],
-            "antipattern_instance_counts": parsed["antipattern_instance_counts"],
-            "total_antipattern_instances": parsed["total_antipattern_instances"],
-            "sample_type":              "antipattern",
-            "task_mode":                args.task_mode,
-            "generated_at":             gen_at,
-            "input":                    f"{_task_instr}\n\nPlantUML Model:\n{parsed['antipattern_puml']}",
-            "output":                   ap_answer,
-        }, _training_fields)
-
-        # ── Training sample – refactored (positive) ────────────────────────────
-        rf_answer = "No antipattern detected."
-
-        jinja_rf = write_file(
-            make_jinja_refactored(parsed["refactored_puml"], args.task_mode),
-            training_dir / "refactored" / f"prompt_{i:03d}_{domain_slug}_refactored.jinja",
-        )
-
-        write_file(
-            yaml.dump(
-                make_yaml_record(
-                    prompt_num=i,
-                    domain=domain,
-                    domain_display=domain_display,
-                    size=size,
-                    antipatterns_detected=[],
-                    refactoring_rationale=None,
-                    construct_count=parsed["construct_count_v2"],
-                    puml=parsed["refactored_puml"],
-                    expected_output=rf_answer,
-                    sample_type="refactored",
-                    task_mode=args.task_mode,
-                    puml_path=v2_puml,
-                    img_path=v2_img,
-                    jinja_path=jinja_rf,
-                    generated_at=gen_at,
-                    raw_response=raw,
+                training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.yaml",
+            )
+            append_training_record(training_yaml_path, training_jsonl_path, {
+                "sample_id":                f"p{i:03d}_antipattern",
+                "prompt_num":               i,
+                "domain_display":           domain_display,
+                "size":                     size,
+                "antipattern_names":        parsed["antipattern_names"],
+                "antipattern_instance_counts": parsed["antipattern_instance_counts"],
+                "total_antipattern_instances": parsed["total_antipattern_instances"],
+                "sample_type":              "antipattern",
+                "task_mode":                args.task_mode,
+                "generated_at":             gen_at,
+                "input":                    f"{_task_instr}\n\nPlantUML Model:\n{parsed['antipattern_puml']}",
+                "output":                   ap_answer,
+            }, _training_fields)
+    
+            # ── Training sample – refactored (positive) ────────────────────────────
+            rf_answer = "No antipattern detected."
+    
+            jinja_rf = write_file(
+                make_jinja_refactored(parsed["refactored_puml"], args.task_mode),
+                training_dir / "refactored" / f"prompt_{i:03d}_{domain_slug}_refactored.jinja",
+            )
+    
+            write_file(
+                yaml.dump(
+                    make_yaml_record(
+                        prompt_num=i,
+                        domain=domain,
+                        domain_display=domain_display,
+                        size=size,
+                        antipatterns_detected=[],
+                        refactoring_rationale=None,
+                        construct_count=parsed["construct_count_v2"],
+                        puml=parsed["refactored_puml"],
+                        expected_output=rf_answer,
+                        sample_type="refactored",
+                        task_mode=args.task_mode,
+                        puml_path=v2_puml,
+                        img_path=v2_img,
+                        jinja_path=jinja_rf,
+                        generated_at=gen_at,
+                        raw_response=raw,
+                    ),
+                    allow_unicode=True,
+                    sort_keys=False,
+                    default_flow_style=False,
                 ),
-                allow_unicode=True,
-                sort_keys=False,
-                default_flow_style=False,
-            ),
-            training_dir / "refactored" / f"prompt_{i:03d}_{domain_slug}_refactored.yaml",
-        )
-        append_training_record(training_yaml_path, training_jsonl_path, {
-            "sample_id":                f"p{i:03d}_refactored",
-            "prompt_num":               i,
-            "domain_display":           domain_display,
-            "size":                     size,
-            "antipattern_names":        "",
-            "antipattern_instance_counts": "",
-            "total_antipattern_instances": 0,
-            "sample_type":              "refactored",
-            "task_mode":                args.task_mode,
-            "generated_at":             gen_at,
-            "input":                    f"{_task_instr}\n\nPlantUML Model:\n{parsed['refactored_puml']}",
-            "output":                   rf_answer,
-        }, _training_fields)
-
-        # ── Save run state ─────────────────────────────────────────────────────
-        completed_prompts.add(i)
-        save_run_state(state_path, {
-            "args": {
-                "num_prompts":    args.num_prompts,
-                "sizes":          args.sizes,
-                "size_weights":   args.size_weights,
-                "task_mode":      args.task_mode,
-                "config":         args.config,
-                "domains_config": args.domains_config,
-            },
-            "sizes":             sizes,
-            "ap_usage_counts":   ap_usage_counts,
-            "completed_prompts": sorted(completed_prompts),
-            "failed_prompts":    sorted(failed_prompts),
-        })
-
-        # ── Rate limit ─────────────────────────────────────────────────────────
-        if i < args.num_prompts:
-            logger.info(f"  Sleeping {args.rate_limit} s …")
-            try:
+                training_dir / "refactored" / f"prompt_{i:03d}_{domain_slug}_refactored.yaml",
+            )
+            append_training_record(training_yaml_path, training_jsonl_path, {
+                "sample_id":                f"p{i:03d}_refactored",
+                "prompt_num":               i,
+                "domain_display":           domain_display,
+                "size":                     size,
+                "antipattern_names":        "",
+                "antipattern_instance_counts": "",
+                "total_antipattern_instances": 0,
+                "sample_type":              "refactored",
+                "task_mode":                args.task_mode,
+                "generated_at":             gen_at,
+                "input":                    f"{_task_instr}\n\nPlantUML Model:\n{parsed['refactored_puml']}",
+                "output":                   rf_answer,
+            }, _training_fields)
+    
+            # ── Save run state ─────────────────────────────────────────────────────
+            completed_prompts.add(i)
+            save_run_state(state_path, {
+                "args": {
+                    "num_prompts":    args.num_prompts,
+                    "sizes":          args.sizes,
+                    "size_weights":   args.size_weights,
+                    "task_mode":      args.task_mode,
+                    "config":         args.config,
+                    "domains_config": args.domains_config,
+                },
+                "sizes":             sizes,
+                "ap_usage_counts":   ap_usage_counts,
+                "completed_prompts": sorted(completed_prompts),
+                "failed_prompts":    sorted(failed_prompts),
+            })
+    
+            # ── Rate limit ─────────────────────────────────────────────────────────
+            if i < args.num_prompts:
+                logger.info(f"  Sleeping {args.rate_limit} s …")
                 time.sleep(args.rate_limit)
-            except KeyboardInterrupt:
-                interrupted = True
-                break
 
-    # ── Run summary (normal finish or Ctrl-C) ─────────────────────────────────
-    logger.info("")
-    if interrupted:
-        logger.warning(f"{'─'*60}")
-        logger.warning("Run interrupted (Ctrl-C) — partial results saved.")
-    else:
-        logger.info(f"{'─'*60}")
-    size_counts = {s: sizes.count(s) for s in args.sizes}
-    logger.info("Size distribution: " + "  ".join(f"{s}={c}" for s, c in size_counts.items()))
-    logger.info(f"Prompts completed: {len(completed_prompts)} / {args.num_prompts}")
-    if failed_prompts:
-        logger.warning(f"Prompts failed   : {len(failed_prompts)}  →  {sorted(failed_prompts)}")
-    else:
-        logger.info("Prompts failed   : 0")
-    if interrupted:
-        logger.warning(f"Resume with     : --resume {run_dir}")
+    except (KeyboardInterrupt, SystemExit):
+        sys.exit(0)  # triggers atexit → _atexit_summary
 
-    # ── Rebuild stats_combined from per-prompt CSVs ────────────────────────────
-    ap_rows  = read_csv_rows(run_dir / "stats_antipattern.csv")
-    ref_rows = read_csv_rows(run_dir / "stats_refactored.csv")
-    interleaved = [row for pair in zip(ap_rows, ref_rows) for row in pair]
-    interleaved += ap_rows[len(ref_rows):] + ref_rows[len(ap_rows):]
-    write_csv(run_dir / "stats_combined.csv", interleaved, _csv_fields)
-
-    # ── Antipattern usage summary ──────────────────────────────────────────────
-    logger.info("")
-    logger.info("Antipattern usage across run:")
-    for name, count in ap_usage_counts.items():
-        logger.info(f"  {count:3d}×  {name}")
-
-    # ── Domain summary ─────────────────────────────────────────────────────────
-    all_domains    = [row["domain_display"] for row in ap_rows]
-    unique_domains = list(dict.fromkeys(all_domains))
-    domains_path   = run_dir / "domains.yaml"
-    domains_path.write_text(
-        yaml.dump(
-            {
-                "all_domains":    all_domains,
-                "unique_domains": unique_domains,
-                "total":          len(all_domains),
-                "unique_count":   len(unique_domains),
-            },
-            allow_unicode=True,
-            sort_keys=False,
-            default_flow_style=False,
-        ),
-        encoding="utf-8",
-    )
-    logger.info(f"  domains.yaml  → {domains_path}")
-
-    logger.info("")
-    logger.info(f"{'═'*60}")
-    if interrupted:
-        logger.warning(f"Partial output under: {run_dir}")
-    else:
-        logger.info(f"Done. All output under: {run_dir}")
-    logger.info(f"  models/           → PlantUML + image pairs")
-    logger.info(f"  training_samples/ → .jinja + .yaml training data")
+    # Normal completion — mark as done so _atexit_summary knows it wasn't interrupted.
+    _run_context["completed"] = True
 
 
 if __name__ == "__main__":
