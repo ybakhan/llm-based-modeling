@@ -279,7 +279,7 @@ def write_audit(
     return path
 
 
-# ── Prompt builders ───────────────────────────────────────────────────────────
+# ── Prompt builders ────────────��────────────────────────────────────────��─────
 
 def build_system_prompt(assigned_antipatterns: list[dict], task_mode: str) -> str:
     """Build the system prompt for one prompt turn.
@@ -857,6 +857,8 @@ def main():
 
     # ── Main generation loop ───────────────────────────────────────────────────
 
+    interrupted = False
+
     for i, size in enumerate(sizes, start=1):
         if i in completed_prompts:
             logger.info(f"Prompt {i}/{args.num_prompts}  [already completed, skipping]")
@@ -1138,8 +1140,19 @@ def main():
         # ── Rate limit ─────────────────────────────────────────────────────────
         if i < args.num_prompts:
             logger.info(f"  Sleeping {args.rate_limit} s …")
-            time.sleep(args.rate_limit)
+            try:
+                time.sleep(args.rate_limit)
+            except KeyboardInterrupt:
+                interrupted = True
+                break
 
+    # ── Run summary (normal finish or Ctrl-C) ─────────────────────────────────
+    logger.info("")
+    if interrupted:
+        logger.warning(f"{'─'*60}")
+        logger.warning("Run interrupted (Ctrl-C) — partial results saved.")
+    else:
+        logger.info(f"{'─'*60}")
     size_counts = {s: sizes.count(s) for s in args.sizes}
     logger.info("Size distribution: " + "  ".join(f"{s}={c}" for s, c in size_counts.items()))
     logger.info(f"Prompts completed: {len(completed_prompts)} / {args.num_prompts}")
@@ -1147,6 +1160,8 @@ def main():
         logger.warning(f"Prompts failed   : {len(failed_prompts)}  →  {sorted(failed_prompts)}")
     else:
         logger.info("Prompts failed   : 0")
+    if interrupted:
+        logger.warning(f"Resume with     : --resume {run_dir}")
 
     # ── Rebuild stats_combined from per-prompt CSVs ────────────────────────────
     ap_rows  = read_csv_rows(run_dir / "stats_antipattern.csv")
@@ -1183,7 +1198,10 @@ def main():
 
     logger.info("")
     logger.info(f"{'═'*60}")
-    logger.info(f"Done. All output under: {run_dir}")
+    if interrupted:
+        logger.warning(f"Partial output under: {run_dir}")
+    else:
+        logger.info(f"Done. All output under: {run_dir}")
     logger.info(f"  models/           → PlantUML + image pairs")
     logger.info(f"  training_samples/ → .jinja + .yaml training data")
 
