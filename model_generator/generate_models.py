@@ -49,14 +49,15 @@ def _atexit_summary() -> None:
     ctx = _run_context
     if not ctx:
         return
-    run_dir           = ctx["run_dir"]
-    completed_prompts = ctx["completed_prompts"]
-    failed_prompts    = ctx["failed_prompts"]
-    sizes             = ctx["sizes"]
-    args_ns           = ctx["args"]
-    ap_usage_counts   = ctx["ap_usage_counts"]
-    csv_fields        = ctx["csv_fields"]
-    interrupted       = not ctx.get("completed", False)
+    run_dir               = ctx["run_dir"]
+    completed_prompts     = ctx["completed_prompts"]
+    failed_prompts        = ctx["failed_prompts"]
+    reprocess_prompt_nums = ctx.get("reprocess_prompt_nums", set())
+    sizes                 = ctx["sizes"]
+    args_ns               = ctx["args"]
+    ap_usage_counts       = ctx["ap_usage_counts"]
+    csv_fields            = ctx["csv_fields"]
+    interrupted           = not ctx.get("completed", False)
 
     if interrupted:
         logger.warning("")
@@ -68,6 +69,9 @@ def _atexit_summary() -> None:
     size_counts = {s: sizes.count(s) for s in args_ns.sizes}
     logger.info("Size distribution: " + "  ".join(f"{s}={c}" for s, c in size_counts.items()))
     logger.info(f"Prompts completed: {len(completed_prompts)} / {args_ns.num_prompts}")
+    if reprocess_prompt_nums:
+        regenerated = reprocess_prompt_nums & completed_prompts
+        logger.info(f"Regenerated      : {len(regenerated)} / {len(reprocess_prompt_nums)} flagged")
     if failed_prompts:
         logger.warning(f"Prompts failed   : {len(failed_prompts)}  →  {sorted(failed_prompts)}")
     else:
@@ -138,7 +142,7 @@ SIZE_RANGES = {
     "large":  (31, 54),
 }
 
-# ── Antipattern instance caps by size ─────────────────────────────────────────
+# ── Antipattern instance caps by size ────────��────────────���───────────────────
 
 MAX_INSTANCES_BY_SIZE = {
     "small":  1,
@@ -189,6 +193,8 @@ def parse_args():
                    help="Random seed for reproducible size distribution.")
     p.add_argument("--resume",        default=None, metavar="RUN_DIR",
                    help="Resume an interrupted run. Pass the path to the existing run directory.")
+    p.add_argument("--reprocess-flagged", action="store_true", default=False,
+                   help="With --resume: regenerate prompts marked 'bad' or 'needs-rework' in review.json.")
     args = p.parse_args()
     if args.resume is None and args.config is None:
         p.error("--config is required for new runs.")
@@ -829,6 +835,37 @@ def load_run_state(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def remove_csv_rows(path: Path, prompt_nums: set[int], fieldnames: list[str]) -> None:
+    """Rewrite a per-prompt CSV file omitting rows whose prompt_num is in prompt_nums."""
+    rows = [r for r in read_csv_rows(path) if int(r["prompt_num"]) not in prompt_nums]
+    write_csv(path, rows, fieldnames)
+
+
+def remove_training_rows(yaml_path: Path, jsonl_path: Path, prompt_nums: set[int]) -> None:
+    """Rewrite training_samples.yaml and .jsonl omitting records for prompt_nums."""
+    if yaml_path.exists():
+        existing = yaml.safe_load(yaml_path.read_text(encoding="utf-8")) or []
+        kept = [r for r in existing if int(r.get("prompt_num", -1)) not in prompt_nums]
+        yaml_path.write_text(
+            yaml.dump(kept, allow_unicode=True, sort_keys=False, default_flow_style=False),
+            encoding="utf-8",
+        )
+    if jsonl_path.exists():
+        kept_lines = []
+        for line in jsonl_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+                if int(rec.get("prompt_num", -1)) not in prompt_nums:
+                    kept_lines.append(line)
+            except json.JSONDecodeError:
+                kept_lines.append(line)
+        jsonl_path.write_text("\n".join(kept_lines) + ("\n" if kept_lines else ""),
+                               encoding="utf-8")
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
@@ -880,12 +917,30 @@ def main():
         args.task_mode     = saved["task_mode"]
         args.config        = saved["config"]
         args.domains_config = saved["domains_config"]
-        sizes             = state["sizes"]
-        completed_prompts = set(state["completed_prompts"])
-        failed_prompts    = set(state.get("failed_prompts", []))
+        sizes                  = state["sizes"]
+        completed_prompts      = set(state["completed_prompts"])
+        failed_prompts         = set(state.get("failed_prompts", []))
+        reprocess_prompt_nums: set[int] = set()
         setup_file_logging(run_dir)
         logger.info(f"Resuming run : {run_dir}")
-        logger.info(f"Completed    : {sorted(completed_prompts)} / {args.num_prompts}")
+        logger.info(f"Completed    : {len(completed_prompts)} / {args.num_prompts}")
+
+        reprocess_prompt_nums: set[int] = set()
+        if args.reprocess_flagged:
+            review_path = run_dir / "review.json"
+            if review_path.exists():
+                review = json.loads(review_path.read_text(encoding="utf-8"))
+                for k, v in review.get("prompts", {}).items():
+                    if v.get("status") in {"bad", "needs-rework"}:
+                        reprocess_prompt_nums.add(int(k))
+            if reprocess_prompt_nums:
+                logger.info(
+                    f"Reprocessing : {len(reprocess_prompt_nums)} flagged prompt(s) "
+                    f"→ {sorted(reprocess_prompt_nums)}"
+                )
+                completed_prompts -= reprocess_prompt_nums
+            else:
+                logger.info("Reprocessing : no flagged prompts found in review.json")
     else:
         script_dir  = Path(__file__).parent
         output_root = Path(args.output_dir) if args.output_dir else script_dir / "output"
@@ -893,10 +948,11 @@ def main():
         run_dir     = output_root / f"run_{run_ts}"
         run_dir.mkdir(parents=True, exist_ok=True)
         setup_file_logging(run_dir)
-        sizes             = determine_sizes(args.num_prompts, args.sizes, args.size_weights)
-        completed_prompts = set()
-        failed_prompts    = set()
-        state_path        = run_dir / "run_state.json"
+        sizes                  = determine_sizes(args.num_prompts, args.sizes, args.size_weights)
+        completed_prompts      = set()
+        failed_prompts         = set()
+        reprocess_prompt_nums  = set()
+        state_path             = run_dir / "run_state.json"
 
     cfg              = load_config(args.config)
     all_antipatterns = cfg["antipatterns"]
@@ -916,6 +972,22 @@ def main():
     training_dir = run_dir / "training_samples"
     training_yaml_path  = run_dir / "training_samples.yaml"
     training_jsonl_path = run_dir / "training_samples.jsonl"
+
+    # Strip old data for any prompts being reprocessed
+    if reprocess_prompt_nums:
+        # Read counts before removing rows so we can adjust ap_usage_counts
+        prior_ap_rows = [
+            r for r in read_csv_rows(run_dir / "stats_antipattern.csv")
+            if int(r.get("prompt_num", -1)) in reprocess_prompt_nums
+        ]
+        remove_csv_rows(run_dir / "stats_antipattern.csv", reprocess_prompt_nums, _csv_fields)
+        remove_csv_rows(run_dir / "stats_refactored.csv",  reprocess_prompt_nums, _csv_fields)
+        remove_training_rows(training_yaml_path, training_jsonl_path, reprocess_prompt_nums)
+        for row in prior_ap_rows:
+            for name in row.get("antipattern_codes", "").split(", "):
+                name = name.strip()
+                if name in ap_usage_counts:
+                    ap_usage_counts[name] = max(0, ap_usage_counts[name] - 1)
 
     logger.info(f"Output root  : {run_dir}")
     logger.info(f"Antipatterns : {', '.join(ap['name'] for ap in all_antipatterns)}")
@@ -939,13 +1011,14 @@ def main():
 
     # Populate shared context so _atexit_summary() always has what it needs.
     _run_context.update({
-        "run_dir":           run_dir,
-        "completed_prompts": completed_prompts,
-        "failed_prompts":    failed_prompts,
-        "sizes":             sizes,
-        "args":              args,
-        "ap_usage_counts":   ap_usage_counts,
-        "csv_fields":        _csv_fields,
+        "run_dir":               run_dir,
+        "completed_prompts":     completed_prompts,
+        "failed_prompts":        failed_prompts,
+        "reprocess_prompt_nums": reprocess_prompt_nums,
+        "sizes":                 sizes,
+        "args":                  args,
+        "ap_usage_counts":       ap_usage_counts,
+        "csv_fields":            _csv_fields,
     })
     atexit.register(_atexit_summary)
 

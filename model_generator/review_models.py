@@ -1,0 +1,426 @@
+#!/usr/bin/env python3
+"""
+review_models.py
+
+Desktop GUI for reviewing generated antipattern/refactored model pairs.
+Shows both diagrams side by side with metadata, lets you add notes and mark
+each prompt as good / bad / needs-rework.  State is saved to review.json
+inside the run directory and restored on reopen.
+
+Usage:
+    python review_models.py [run_dir]
+    python review_models.py output/run_20260321_004201
+"""
+
+import csv
+import json
+import sys
+import tkinter as tk
+from datetime import datetime
+from pathlib import Path
+from tkinter import filedialog, messagebox, ttk
+
+try:
+    from PIL import Image, ImageTk
+except ImportError:
+    print("Pillow is required: uv add pillow")
+    sys.exit(1)
+
+# ── Palette (Catppuccin Mocha) ────────────────────────────────────────────────
+BG       = "#1e1e2e"
+BG_ALT   = "#181825"
+SURFACE  = "#313244"
+OVERLAY  = "#45475a"
+TEXT     = "#cdd6f4"
+SUBTEXT  = "#a6adc8"
+RED      = "#f38ba8"
+GREEN    = "#a6e3a1"
+YELLOW   = "#f9e2af"
+ORANGE   = "#fab387"
+BLUE     = "#89b4fa"
+
+STATUS_COLORS = {"good": GREEN, "bad": RED, "needs-rework": ORANGE}
+STATUS_LABELS = {"good": "Good", "bad": "Bad", "needs-rework": "Needs Rework"}
+
+
+# ── Data helpers ──────────────────────────────────────────────────────────────
+
+def find_prompts(run_dir: Path) -> list[dict]:
+    models_dir = run_dir / "models"
+    if not models_dir.exists():
+        return []
+    prompts = []
+    for folder in sorted(models_dir.iterdir()):
+        if not folder.is_dir():
+            continue
+        parts = folder.name.split("_", 2)
+        if len(parts) < 2 or parts[0] != "prompt":
+            continue
+        try:
+            num = int(parts[1])
+        except ValueError:
+            continue
+        domain_slug = parts[2] if len(parts) > 2 else ""
+        ap_img = ref_img = None
+        for f in folder.iterdir():
+            if f.suffix.lower() in (".png", ".jpg", ".jpeg"):
+                if "antipattern" in f.name:
+                    ap_img = f
+                elif "refactored" in f.name:
+                    ref_img = f
+        prompts.append({"num": num, "folder": folder,
+                         "domain_slug": domain_slug,
+                         "ap_img": ap_img, "ref_img": ref_img})
+    prompts.sort(key=lambda p: p["num"])
+    return prompts
+
+
+def load_stats(run_dir: Path) -> dict[int, dict]:
+    stats: dict[int, dict] = {}
+    csv_path = run_dir / "stats_antipattern.csv"
+    if not csv_path.exists():
+        return stats
+    with open(csv_path, newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            try:
+                stats[int(row["prompt_num"])] = row
+            except (KeyError, ValueError):
+                pass
+    return stats
+
+
+def load_review(path: Path) -> dict:
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    return {"prompts": {}}
+
+
+def save_review(path: Path, data: dict) -> None:
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+# ── App ───────────────────────────────────────────────────────────────────────
+
+class ReviewApp(tk.Tk):
+    def __init__(self, run_dir: Path | None = None):
+        super().__init__()
+        self.title("Model Reviewer")
+        self.configure(bg=BG)
+        # Maximise cross-platform
+        try:
+            self.state("zoomed")
+        except tk.TclError:
+            self.geometry(f"{self.winfo_screenwidth()}x{self.winfo_screenheight()}+0+0")
+
+        self.run_dir: Path | None = None
+        self.prompts: list[dict] = []
+        self.current_idx: int = 0
+        self.review_data: dict = {"prompts": {}}
+        self.review_path: Path | None = None
+        self.stats: dict[int, dict] = {}
+        self._img_refs: list = []
+
+        self._build_ui()
+
+        if run_dir:
+            self._load_run(run_dir)
+
+    # ── UI construction ───────────────────────────────────────────────────────
+
+    def _build_ui(self):
+        # ── Top bar ───────────────────────────────────────────────────────────
+        top = tk.Frame(self, bg=BG_ALT, pady=6)
+        top.pack(fill="x")
+
+        self._lbl_run = tk.Label(top, text="No run loaded",
+                                  fg=TEXT, bg=BG_ALT, font=("Helvetica", 11, "bold"))
+        self._lbl_run.pack(side="left", padx=12)
+
+        tk.Button(top, text="Open Run…", command=self._open_run,
+                  bg=SURFACE, fg=TEXT, relief="flat", padx=8, pady=3,
+                  activebackground=OVERLAY, cursor="hand2"
+                  ).pack(side="right", padx=12)
+
+        # ── Prompt header ─────────────────────────────────────────────────────
+        hdr = tk.Frame(self, bg=BG, pady=4)
+        hdr.pack(fill="x", padx=12)
+
+        self._lbl_progress = tk.Label(hdr, text="", fg=BLUE, bg=BG,
+                                       font=("Helvetica", 12, "bold"))
+        self._lbl_progress.pack(side="left")
+
+        self._lbl_badge = tk.Label(hdr, text="", fg=BG_ALT, bg=SURFACE,
+                                    font=("Helvetica", 10, "bold"), padx=10, pady=2)
+        self._lbl_badge.pack(side="left", padx=10)
+
+        # ── Metadata ──────────────────────────────────────────────────────────
+        self._lbl_meta = tk.Label(self, text="", fg=SUBTEXT, bg=BG,
+                                   font=("Helvetica", 10), justify="left",
+                                   anchor="w", wraplength=1600)
+        self._lbl_meta.pack(fill="x", padx=12, pady=(0, 6))
+
+        # ── Images ────────────────────────────────────────────────────────────
+        img_frame = tk.Frame(self, bg=BG)
+        img_frame.pack(fill="both", expand=True, padx=12)
+
+        def _img_col(parent, title, color):
+            col = tk.Frame(parent, bg=BG)
+            col.pack(side="left", fill="both", expand=True)
+            tk.Label(col, text=title, fg=color, bg=BG,
+                     font=("Helvetica", 11, "bold")).pack(anchor="w", pady=(0, 2))
+            lbl = tk.Label(col, bg=SURFACE, relief="flat", text="—", fg=SUBTEXT)
+            lbl.pack(fill="both", expand=True)
+            return lbl
+
+        self._lbl_ap_img  = _img_col(img_frame, "ANTIPATTERN", RED)
+        tk.Frame(img_frame, width=2, bg=OVERLAY).pack(side="left", fill="y", padx=8)
+        self._lbl_ref_img = _img_col(img_frame, "REFACTORED",  GREEN)
+
+        # ── Notes ─────────────────────────────────────────────────────────────
+        notes_row = tk.Frame(self, bg=BG, pady=6)
+        notes_row.pack(fill="x", padx=12)
+
+        tk.Label(notes_row, text="Notes:", fg=TEXT, bg=BG,
+                 font=("Helvetica", 10, "bold")).pack(side="left", anchor="n",
+                                                       padx=(0, 6), pady=2)
+        self._notes = tk.Text(notes_row, height=3, bg=SURFACE, fg=TEXT,
+                               insertbackground=TEXT, relief="flat",
+                               font=("Helvetica", 10), wrap="word",
+                               padx=6, pady=4)
+        self._notes.pack(side="left", fill="x", expand=True)
+        self._notes.bind("<FocusOut>", lambda _: self._persist())
+
+        # ── Bottom bar ────────────────────────────────────────────────────────
+        bot = tk.Frame(self, bg=BG_ALT, pady=8)
+        bot.pack(fill="x", side="bottom")
+
+        # Status buttons
+        sf = tk.Frame(bot, bg=BG_ALT)
+        sf.pack(side="left", padx=16)
+
+        tk.Label(sf, text="Mark as:", fg=SUBTEXT, bg=BG_ALT,
+                 font=("Helvetica", 10)).pack(side="left", padx=(0, 8))
+
+        for key, label in STATUS_LABELS.items():
+            color = STATUS_COLORS[key]
+            tk.Button(sf, text=label,
+                      command=lambda k=key: self._set_status(k),
+                      bg=color, fg=BG_ALT, relief="flat",
+                      font=("Helvetica", 10, "bold"), padx=12, pady=5,
+                      activebackground=color, cursor="hand2"
+                      ).pack(side="left", padx=4)
+
+        # Clear button
+        tk.Button(sf, text="Clear Status",
+                  command=lambda: self._set_status(None),
+                  bg=OVERLAY, fg=TEXT, relief="flat",
+                  font=("Helvetica", 10), padx=10, pady=5,
+                  cursor="hand2"
+                  ).pack(side="left", padx=(16, 0))
+
+        # Navigation
+        nf = tk.Frame(bot, bg=BG_ALT)
+        nf.pack(side="right", padx=16)
+
+        tk.Button(nf, text="◀  Prev", command=self._prev,
+                  bg=SURFACE, fg=TEXT, relief="flat", padx=12, pady=5,
+                  cursor="hand2").pack(side="left", padx=4)
+
+        tk.Label(nf, text="Jump to:", fg=SUBTEXT, bg=BG_ALT,
+                 font=("Helvetica", 10)).pack(side="left", padx=(16, 4))
+
+        self._jump_var = tk.StringVar()
+        je = tk.Entry(nf, textvariable=self._jump_var, width=5,
+                      bg=SURFACE, fg=TEXT, insertbackground=TEXT,
+                      relief="flat", font=("Helvetica", 10))
+        je.pack(side="left")
+        je.bind("<Return>", lambda _: self._jump())
+
+        tk.Button(nf, text="Go", command=self._jump,
+                  bg=SURFACE, fg=TEXT, relief="flat", padx=8, pady=5,
+                  cursor="hand2").pack(side="left", padx=4)
+
+        tk.Button(nf, text="Next  ▶", command=self._next,
+                  bg=SURFACE, fg=TEXT, relief="flat", padx=12, pady=5,
+                  cursor="hand2").pack(side="left", padx=4)
+
+        # Review summary counter
+        self._lbl_summary = tk.Label(bot, text="", fg=SUBTEXT, bg=BG_ALT,
+                                      font=("Helvetica", 10))
+        self._lbl_summary.pack(side="right", padx=(0, 32))
+
+    # ── Run loading ───────────────────────────────────────────────────────────
+
+    def _open_run(self):
+        d = filedialog.askdirectory(title="Select run directory")
+        if d:
+            self._load_run(Path(d))
+
+    def _load_run(self, run_dir: Path):
+        self.run_dir    = run_dir
+        self.review_path = run_dir / "review.json"
+        self.prompts    = find_prompts(run_dir)
+        self.review_data = load_review(self.review_path)
+        self.stats       = load_stats(run_dir)
+        self.current_idx = 0
+
+        self._lbl_run.config(text=f"Run: {run_dir.name}")
+        self.title(f"Model Reviewer — {run_dir.name}")
+
+        if not self.prompts:
+            messagebox.showerror("No prompts",
+                                  f"No prompt folders found in\n{run_dir}/models/")
+            return
+
+        self._show_current()
+
+    # ── Display ───────────────────────────────────────────────────────────────
+
+    def _show_current(self):
+        if not self.prompts:
+            return
+
+        p   = self.prompts[self.current_idx]
+        num = p["num"]
+        key = str(num)
+
+        # Progress label
+        self._lbl_progress.config(
+            text=f"Prompt {num}  ·  {self.current_idx + 1} of {len(self.prompts)}"
+        )
+
+        # Status badge
+        review = self.review_data["prompts"].get(key, {})
+        status = review.get("status")
+        if status:
+            self._lbl_badge.config(text=f"  {STATUS_LABELS[status]}  ",
+                                    bg=STATUS_COLORS[status], fg=BG_ALT)
+        else:
+            self._lbl_badge.config(text="  Not Reviewed  ",
+                                    bg=SURFACE, fg=SUBTEXT)
+
+        # Metadata
+        row = self.stats.get(num, {})
+        domain   = row.get("domain_display",
+                           p["domain_slug"].replace("_", " ").title())
+        size     = row.get("size", "—")
+        mode     = row.get("task_mode", "—")
+        ap_codes = row.get("antipattern_codes", "—")
+        counts   = row.get("antipattern_instance_counts", "—")
+        total    = row.get("total_antipattern_instances", "—")
+        constructs = row.get("construct_count_reported", "—")
+        reviewed_at = review.get("reviewed_at", "")
+        reviewed_str = f"  ·  Reviewed {reviewed_at[:16]}" if reviewed_at else ""
+
+        meta = (
+            f"Domain: {domain}    Size: {size}    Mode: {mode}    "
+            f"Antipatterns: {ap_codes}    Instances per AP: {counts}    "
+            f"Total instances: {total}    Constructs: {constructs}"
+            f"{reviewed_str}"
+        )
+        self._lbl_meta.config(text=meta)
+
+        # Images — schedule after layout settles
+        self._img_refs.clear()
+        self.after(50, lambda: self._load_image(self._lbl_ap_img,  p["ap_img"]))
+        self.after(50, lambda: self._load_image(self._lbl_ref_img, p["ref_img"]))
+
+        # Notes
+        self._notes.delete("1.0", "end")
+        self._notes.insert("1.0", review.get("notes", ""))
+
+        # Summary counter
+        self._update_summary()
+
+    def _load_image(self, label: tk.Label, path: Path | None):
+        if path is None or not path.exists():
+            label.config(image="", text="No image", fg=SUBTEXT)
+            return
+        self.update_idletasks()
+        w = max(label.winfo_width()  - 16, 300)
+        h = max(label.winfo_height() - 16, 300)
+        img = Image.open(path)
+        img.thumbnail((w, h), Image.Resampling.LANCZOS)
+        photo = ImageTk.PhotoImage(img)
+        self._img_refs.append(photo)
+        label.config(image=photo, text="")
+
+    def _update_summary(self):
+        if not self.review_data["prompts"]:
+            self._lbl_summary.config(text="")
+            return
+        counts = {k: 0 for k in STATUS_LABELS}
+        for v in self.review_data["prompts"].values():
+            s = v.get("status")
+            if s in counts:
+                counts[s] += 1
+        total = len(self.prompts)
+        reviewed = sum(counts.values())
+        parts = [f"{STATUS_LABELS[k]}: {counts[k]}" for k in STATUS_LABELS]
+        self._lbl_summary.config(
+            text=f"Reviewed {reviewed}/{total}    " + "    ".join(parts)
+        )
+
+    # ── Persistence ───────────────────────────────────────────────────────────
+
+    def _persist(self):
+        if not self.prompts or not self.review_path:
+            return
+        key   = str(self.prompts[self.current_idx]["num"])
+        entry = self.review_data["prompts"].setdefault(key, {})
+        entry["notes"] = self._notes.get("1.0", "end-1c")
+        save_review(self.review_path, self.review_data)
+
+    def _set_status(self, status: str | None):
+        if not self.prompts or not self.review_path:
+            return
+        self._persist()
+        key   = str(self.prompts[self.current_idx]["num"])
+        entry = self.review_data["prompts"].setdefault(key, {})
+        if status is None:
+            entry.pop("status", None)
+            entry.pop("reviewed_at", None)
+        else:
+            entry["status"]      = status
+            entry["reviewed_at"] = datetime.now().isoformat()
+        save_review(self.review_path, self.review_data)
+        self._show_current()
+
+    # ── Navigation ────────────────────────────────────────────────────────────
+
+    def _prev(self):
+        if not self.prompts:
+            return
+        self._persist()
+        self.current_idx = max(0, self.current_idx - 1)
+        self._show_current()
+
+    def _next(self):
+        if not self.prompts:
+            return
+        self._persist()
+        self.current_idx = min(len(self.prompts) - 1, self.current_idx + 1)
+        self._show_current()
+
+    def _jump(self):
+        if not self.prompts:
+            return
+        try:
+            target = int(self._jump_var.get())
+        except ValueError:
+            return
+        for idx, p in enumerate(self.prompts):
+            if p["num"] == target:
+                self._persist()
+                self.current_idx = idx
+                self._show_current()
+                return
+        messagebox.showwarning("Not found", f"Prompt {target} not found in this run.")
+
+
+# ── Entry point ───────────────────────────────────────────────────────────────
+
+if __name__ == "__main__":
+    run_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else None
+    app = ReviewApp(run_dir)
+    app.mainloop()
