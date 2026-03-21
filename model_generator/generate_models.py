@@ -74,8 +74,9 @@ def parse_args():
         description="Generate UML use case model pairs (antipattern + refactored) "
                     "for antipattern detection research and LLM fine-tuning."
     )
-    p.add_argument("--config",        required=True,
-                   help="Path to YAML antipattern/refactoring config file.")
+    p.add_argument("--config",        default=None,
+                   help="Path to YAML antipattern/refactoring config file. "
+                        "Required for new runs; ignored when --resume is used.")
     p.add_argument("--domains-config", default=None,
                    help="Path to YAML domains file (domains.yaml). "
                         "When provided, domains are assigned sequentially from the list. "
@@ -107,7 +108,12 @@ def parse_args():
                    help="Anthropic API key (default: ANTHROPIC_API_KEY env var).")
     p.add_argument("--seed",          type=int, default=None,
                    help="Random seed for reproducible size distribution.")
-    return p.parse_args()
+    p.add_argument("--resume",        default=None, metavar="RUN_DIR",
+                   help="Resume an interrupted run. Pass the path to the existing run directory.")
+    args = p.parse_args()
+    if args.resume is None and args.config is None:
+        p.error("--config is required for new runs.")
+    return args
 
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -696,6 +702,54 @@ def write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
     logger.info(f"    Wrote  {path}")
 
 
+def read_csv_rows(path: Path) -> list[dict]:
+    if not path.exists():
+        return []
+    with open(path, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def append_csv_row(path: Path, row: dict, fieldnames: list[str]) -> None:
+    """Append one row to a CSV, writing the header only when the file is new."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    write_header = not path.exists()
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        if write_header:
+            writer.writeheader()
+        writer.writerow(row)
+
+
+def append_training_record(
+    yaml_path: Path,
+    jsonl_path: Path,
+    record: dict,
+    fields: list[str],
+) -> None:
+    """Append one training record to both training_samples.yaml and .jsonl."""
+    flat = {k: record[k] for k in fields if k in record}
+    yaml_path.parent.mkdir(parents=True, exist_ok=True)
+    existing = []
+    if yaml_path.exists():
+        existing = yaml.safe_load(yaml_path.read_text(encoding="utf-8")) or []
+    existing.append(flat)
+    yaml_path.write_text(
+        yaml.dump(existing, allow_unicode=True, sort_keys=False, default_flow_style=False),
+        encoding="utf-8",
+    )
+    jsonl_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(jsonl_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(flat, ensure_ascii=False) + "\n")
+
+
+def save_run_state(path: Path, state: dict) -> None:
+    path.write_text(json.dumps(state, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+def load_run_state(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
@@ -704,17 +758,8 @@ def main():
     if args.seed is not None:
         random.seed(args.seed)
 
-    cfg              = load_config(args.config)
-    all_antipatterns = cfg["antipatterns"]
-    ap_code_lookup   = {ap["name"]: ap.get("code", ap["name"]) for ap in all_antipatterns}
-
-    domain_pool: list[dict] | None = None
-    if args.domains_config:
-        domain_pool = load_domains(args.domains_config)
-        logger.info(f"Domains      : {len(domain_pool)} loaded from {args.domains_config}")
-
-    # Validate size weights
-    if args.size_weights is not None:
+    # Validate size weights (only for new runs; resume restores these from state)
+    if args.resume is None and args.size_weights is not None:
         if len(args.size_weights) != len(args.sizes):
             logger.error(
                 f"--size-weights has {len(args.size_weights)} value(s) "
@@ -725,16 +770,72 @@ def main():
             logger.error("--size-weights values must be non-negative.")
             sys.exit(1)
 
-    # Output directories
-    script_dir  = Path(__file__).parent
-    output_root = Path(args.output_dir) if args.output_dir else script_dir / "output"
-    run_ts      = datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_dir     = output_root / f"run_{run_ts}"
+    # ── Output directories & run state ────────────────────────────────────────
+    _csv_fields = [
+        "prompt_num", "domain_display", "size",
+        "antipattern_codes", "antipattern_instance_counts", "total_antipattern_instances",
+        "sample_type", "task_mode",
+        "construct_count_reported",
+        "actors", "use_cases", "includes", "extends", "generalizations",
+        "total_parsed", "count_matches_reported",
+    ]
+    _training_fields = [
+        "sample_id", "prompt_num", "domain_display", "size",
+        "antipattern_names", "antipattern_instance_counts", "total_antipattern_instances",
+        "sample_type", "task_mode", "generated_at",
+        "input", "output",
+    ]
+
+    if args.resume:
+        run_dir    = Path(args.resume)
+        state_path = run_dir / "run_state.json"
+        if not state_path.exists():
+            logger.error(f"No run_state.json found in {run_dir}. Cannot resume.")
+            sys.exit(1)
+        state = load_run_state(state_path)
+        saved = state["args"]
+        # Restore run parameters from saved state — CLI values are ignored
+        args.num_prompts   = saved["num_prompts"]
+        args.sizes         = saved["sizes"]
+        args.size_weights  = saved["size_weights"]
+        args.task_mode     = saved["task_mode"]
+        args.config        = saved["config"]
+        args.domains_config = saved["domains_config"]
+        sizes             = state["sizes"]
+        ap_usage_counts   = state["ap_usage_counts"]
+        completed_prompts = set(state["completed_prompts"])
+        failed_prompts    = set(state.get("failed_prompts", []))
+        setup_file_logging(run_dir)
+        logger.info(f"Resuming run : {run_dir}")
+        logger.info(f"Completed    : {sorted(completed_prompts)} / {args.num_prompts}")
+    else:
+        script_dir  = Path(__file__).parent
+        output_root = Path(args.output_dir) if args.output_dir else script_dir / "output"
+        run_ts      = datetime.now().strftime("%Y%m%d_%H%M%S")
+        run_dir     = output_root / f"run_{run_ts}"
+        run_dir.mkdir(parents=True, exist_ok=True)
+        setup_file_logging(run_dir)
+        sizes             = determine_sizes(args.num_prompts, args.sizes, args.size_weights)
+        completed_prompts = set()
+        failed_prompts    = set()
+        state_path        = run_dir / "run_state.json"
+
+    cfg              = load_config(args.config)
+    all_antipatterns = cfg["antipatterns"]
+    ap_code_lookup   = {ap["name"]: ap.get("code", ap["name"]) for ap in all_antipatterns}
+
+    domain_pool: list[dict] | None = None
+    if args.domains_config:
+        domain_pool = load_domains(args.domains_config)
+        logger.info(f"Domains      : {len(domain_pool)} loaded from {args.domains_config}")
+
+    if args.resume is None:
+        ap_usage_counts = {ap["name"]: 0 for ap in all_antipatterns}
+
     models_dir   = run_dir / "models"
     training_dir = run_dir / "training_samples"
-
-    run_dir.mkdir(parents=True, exist_ok=True)
-    setup_file_logging(run_dir)
+    training_yaml_path  = run_dir / "training_samples.yaml"
+    training_jsonl_path = run_dir / "training_samples.jsonl"
 
     logger.info(f"Output root  : {run_dir}")
     logger.info(f"Antipatterns : {', '.join(ap['name'] for ap in all_antipatterns)}")
@@ -754,19 +855,13 @@ def main():
 
     client = anthropic.Anthropic(api_key=api_key)
 
-    # Prepare conversation
-    sizes = determine_sizes(args.num_prompts, args.sizes, args.size_weights)
-
-    # Tracks how many times each antipattern type has been assigned (for balance)
-    ap_usage_counts: dict[str, int] = {ap["name"]: 0 for ap in all_antipatterns}
-
     # ── Main generation loop ───────────────────────────────────────────────────
-    all_domains:   list[str]  = []
-    ap_stats_rows:  list[dict] = []
-    ref_stats_rows: list[dict] = []
-    training_rows:  list[dict] = []
 
     for i, size in enumerate(sizes, start=1):
+        if i in completed_prompts:
+            logger.info(f"Prompt {i}/{args.num_prompts}  [already completed, skipping]")
+            continue
+
         lo, hi          = SIZE_RANGES[size]
         construct_count = random.randint(lo, hi)
 
@@ -816,10 +911,12 @@ def main():
                 raw = response.content[0].text
             except Exception as exc:
                 logger.error(f"  Retry failed: {exc}. Skipping prompt {i}.")
+                failed_prompts.add(i)
                 continue
         except Exception as exc:
             logger.error(f"  API error: {exc}. Skipping prompt {i}.")
             time.sleep(args.rate_limit)
+            failed_prompts.add(i)
             continue
 
         usage = vars(response.usage) if hasattr(response, "usage") else None
@@ -841,7 +938,6 @@ def main():
         domain_display = parsed["domain_display"]
         gen_at         = datetime.now().isoformat()
 
-        all_domains.append(domain_display)
         logger.info(f"  Domain       : {domain_display}")
         logger.info(f"  V1 constructs: {parsed['construct_count_v1']}")
         logger.info(f"  V2 constructs: {parsed['construct_count_v2']}")
@@ -889,7 +985,7 @@ def main():
             task_mode=args.task_mode,
             generated_at=gen_at,
         )
-        ap_stats_rows.append({
+        ap_stats_row = {
             **_base,
             "sample_type":              "antipattern",
             "construct_count_reported": parsed["construct_count_v1"],
@@ -897,8 +993,8 @@ def main():
             "count_matches_reported":   parsed["construct_count_v1"] == v1_stats["total_parsed"],
             "puml_file":                str(v1_puml),
             "img_file":                 str(v1_img),
-        })
-        ref_stats_rows.append({
+        }
+        ref_stats_row = {
             **_base,
             "sample_type":              "refactored",
             "construct_count_reported": parsed["construct_count_v2"],
@@ -906,7 +1002,9 @@ def main():
             "count_matches_reported":   parsed["construct_count_v2"] == v2_stats["total_parsed"],
             "puml_file":                str(v2_puml),
             "img_file":                 str(v2_img),
-        })
+        }
+        append_csv_row(run_dir / "stats_antipattern.csv", ap_stats_row, _csv_fields)
+        append_csv_row(run_dir / "stats_refactored.csv",  ref_stats_row, _csv_fields)
 
         # ── Training sample – antipattern (negative) ───────────────────────────
         jinja_ap = write_file(
@@ -956,7 +1054,7 @@ def main():
             ),
             training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.yaml",
         )
-        training_rows.append({
+        append_training_record(training_yaml_path, training_jsonl_path, {
             "sample_id":                f"p{i:03d}_antipattern",
             "prompt_num":               i,
             "domain_display":           domain_display,
@@ -969,7 +1067,7 @@ def main():
             "generated_at":             gen_at,
             "input":                    f"{_task_instr}\n\nPlantUML Model:\n{parsed['antipattern_puml']}",
             "output":                   ap_answer,
-        })
+        }, _training_fields)
 
         # ── Training sample – refactored (positive) ────────────────────────────
         rf_answer = "No antipattern detected."
@@ -1005,7 +1103,7 @@ def main():
             ),
             training_dir / "refactored" / f"prompt_{i:03d}_{domain_slug}_refactored.yaml",
         )
-        training_rows.append({
+        append_training_record(training_yaml_path, training_jsonl_path, {
             "sample_id":                f"p{i:03d}_refactored",
             "prompt_num":               i,
             "domain_display":           domain_display,
@@ -1018,6 +1116,23 @@ def main():
             "generated_at":             gen_at,
             "input":                    f"{_task_instr}\n\nPlantUML Model:\n{parsed['refactored_puml']}",
             "output":                   rf_answer,
+        }, _training_fields)
+
+        # ── Save run state ─────────────────────────────────────────────────────
+        completed_prompts.add(i)
+        save_run_state(state_path, {
+            "args": {
+                "num_prompts":    args.num_prompts,
+                "sizes":          args.sizes,
+                "size_weights":   args.size_weights,
+                "task_mode":      args.task_mode,
+                "config":         args.config,
+                "domains_config": args.domains_config,
+            },
+            "sizes":             sizes,
+            "ap_usage_counts":   ap_usage_counts,
+            "completed_prompts": sorted(completed_prompts),
+            "failed_prompts":    sorted(failed_prompts),
         })
 
         # ── Rate limit ─────────────────────────────────────────────────────────
@@ -1027,41 +1142,18 @@ def main():
 
     size_counts = {s: sizes.count(s) for s in args.sizes}
     logger.info("Size distribution: " + "  ".join(f"{s}={c}" for s, c in size_counts.items()))
+    logger.info(f"Prompts completed: {len(completed_prompts)} / {args.num_prompts}")
+    if failed_prompts:
+        logger.warning(f"Prompts failed   : {len(failed_prompts)}  →  {sorted(failed_prompts)}")
+    else:
+        logger.info("Prompts failed   : 0")
 
-    # ── CSV statistics output ──────────────────────────────────────────────────
-    _csv_fields = [
-        "prompt_num", "domain_display", "size",
-        "antipattern_codes", "antipattern_instance_counts", "total_antipattern_instances",
-        "sample_type", "task_mode",
-        "construct_count_reported",
-        "actors", "use_cases", "includes", "extends", "generalizations",
-        "total_parsed", "count_matches_reported",
-    ]
-    write_csv(run_dir / "stats_antipattern.csv", ap_stats_rows,  _csv_fields)
-    write_csv(run_dir / "stats_refactored.csv",  ref_stats_rows, _csv_fields)
-    interleaved = [row for pair in zip(ap_stats_rows, ref_stats_rows) for row in pair]
-    interleaved += ap_stats_rows[len(ref_stats_rows):] + ref_stats_rows[len(ap_stats_rows):]
-    write_csv(run_dir / "stats_combined.csv",    interleaved, _csv_fields)
-
-    _training_fields = [
-        "sample_id", "prompt_num", "domain_display", "size",
-        "antipattern_names", "antipattern_instance_counts", "total_antipattern_instances",
-        "sample_type", "task_mode", "generated_at",
-        "input", "output",
-    ]
-    training_yaml_rows = [{k: row[k] for k in _training_fields if k in row} for row in training_rows]
-    training_yaml_path = run_dir / "training_samples.yaml"
-    training_yaml_path.write_text(
-        yaml.dump(training_yaml_rows, allow_unicode=True, sort_keys=False, default_flow_style=False),
-        encoding="utf-8",
-    )
-    logger.info(f"    Wrote  {training_yaml_path}")
-
-    training_jsonl_path = run_dir / "training_samples.jsonl"
-    with open(training_jsonl_path, "w", encoding="utf-8") as f:
-        for row in training_yaml_rows:
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
-    logger.info(f"    Wrote  {training_jsonl_path}")
+    # ── Rebuild stats_combined from per-prompt CSVs ────────────────────────────
+    ap_rows  = read_csv_rows(run_dir / "stats_antipattern.csv")
+    ref_rows = read_csv_rows(run_dir / "stats_refactored.csv")
+    interleaved = [row for pair in zip(ap_rows, ref_rows) for row in pair]
+    interleaved += ap_rows[len(ref_rows):] + ref_rows[len(ap_rows):]
+    write_csv(run_dir / "stats_combined.csv", interleaved, _csv_fields)
 
     # ── Antipattern usage summary ──────────────────────────────────────────────
     logger.info("")
@@ -1070,6 +1162,7 @@ def main():
         logger.info(f"  {count:3d}×  {name}")
 
     # ── Domain summary ─────────────────────────────────────────────────────────
+    all_domains    = [row["domain_display"] for row in ap_rows]
     unique_domains = list(dict.fromkeys(all_domains))
     domains_path   = run_dir / "domains.yaml"
     domains_path.write_text(
