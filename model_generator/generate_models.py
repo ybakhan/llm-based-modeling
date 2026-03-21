@@ -494,8 +494,13 @@ Example structure:
     usecase "Browse Products" as UC1
     usecase "Place Order" as UC2
   }}}}
-  Customer --> UC1
-  Customer --> UC2
+  Customer -- UC1
+  Customer -- UC2
+
+═══ ASSOCIATION RULE ═════════════════════════════════════════════════════════════
+Actor-to-use-case associations MUST be undirected lines (--), NOT directed arrows (-->).
+  CORRECT:  Customer -- UC1
+  WRONG:    Customer --> UC1
 
 ═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
 1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
