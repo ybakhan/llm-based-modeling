@@ -76,6 +76,10 @@ def parse_args():
     )
     p.add_argument("--config",        required=True,
                    help="Path to YAML antipattern/refactoring config file.")
+    p.add_argument("--domains-config", default=None,
+                   help="Path to YAML domains file (domains.yaml). "
+                        "When provided, domains are assigned sequentially from the list. "
+                        "When omitted, Claude selects domains freely.")
     p.add_argument("--plantuml-jar",  required=True,
                    help="Path to plantuml.jar for image conversion.")
     p.add_argument("--png", action="store_true",
@@ -111,6 +115,13 @@ def parse_args():
 def load_config(path: str) -> dict:
     with open(path) as f:
         return yaml.safe_load(f)
+
+
+def load_domains(path: str) -> list[dict]:
+    """Load the ordered domain list from a domains YAML file."""
+    with open(path) as f:
+        data = yaml.safe_load(f)
+    return data["domains"]
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -343,10 +354,9 @@ model for the specified domain and construct count.
 
   TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
 
-═══ DOMAIN DIVERSITY RULE ═══════════════════════════════════════════════════════
-Track every domain used in this conversation. NEVER repeat a domain.
-Choose realistic, distinct application domains (e.g. food delivery, e-learning,
-hospital management, smart home, online banking, …).
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
 
 ═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
 Follow this template EXACTLY — including the marker lines.
@@ -396,7 +406,7 @@ Example structure:
   Customer --> UC1
   Customer --> UC2
 
-═══ QUALITY RULES ════════════════════════════════════════════════════════════════
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
 1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
 2. Version 2 MUST be a correct, fully refactored model with no antipattern.
 3. The construct count in each version must match CONSTRUCT_COUNT exactly.
@@ -407,13 +417,20 @@ Make them educationally clear examples.
 """
 
 
-def build_user_message(prompt_num: int, size: str, construct_count: int) -> str:
+def build_user_message(
+    prompt_num: int, size: str, construct_count: int, domain_name: str | None = None
+) -> str:
     lo, hi = SIZE_RANGES[size]
+    domain_clause = (
+        f"Domain: {domain_name}."
+        if domain_name
+        else "Select a NEW domain not yet used in this conversation."
+    )
     return (
         f"Prompt #{prompt_num:03d}: Generate a {size.upper()} use case model "
         f"with exactly {construct_count} constructs "
         f"(valid range for {size}: {lo}–{hi} constructs). "
-        f"Select a NEW domain not yet used in this conversation."
+        f"{domain_clause}"
     )
 
 
@@ -691,6 +708,11 @@ def main():
     all_antipatterns = cfg["antipatterns"]
     ap_code_lookup   = {ap["name"]: ap.get("code", ap["name"]) for ap in all_antipatterns}
 
+    domain_pool: list[dict] | None = None
+    if args.domains_config:
+        domain_pool = load_domains(args.domains_config)
+        logger.info(f"Domains      : {len(domain_pool)} loaded from {args.domains_config}")
+
     # Validate size weights
     if args.size_weights is not None:
         if len(args.size_weights) != len(args.sizes):
@@ -733,8 +755,7 @@ def main():
     client = anthropic.Anthropic(api_key=api_key)
 
     # Prepare conversation
-    sizes         = determine_sizes(args.num_prompts, args.sizes, args.size_weights)
-    conversation: list[dict] = []          # multi-turn message history
+    sizes = determine_sizes(args.num_prompts, args.sizes, args.size_weights)
 
     # Tracks how many times each antipattern type has been assigned (for balance)
     ap_usage_counts: dict[str, int] = {ap["name"]: 0 for ap in all_antipatterns}
@@ -757,28 +778,29 @@ def main():
             f"{e['antipattern']['name']} ×{e['instance_count']}" for e in assigned
         )
 
-        user_msg = build_user_message(i, size, construct_count)
+        domain_name: str | None = None
+        if domain_pool:
+            domain_entry = domain_pool[(i - 1) % len(domain_pool)]
+            domain_name  = domain_entry["name"]
+
+        user_msg = build_user_message(i, size, construct_count, domain_name)
+        messages = [{"role": "user", "content": user_msg}]
 
         logger.info("")
         logger.info(f"{'─'*60}")
         logger.info(f"Prompt {i}/{args.num_prompts}  size={size}  target_constructs={construct_count}")
         logger.info(f"  Antipatterns : {assigned_summary}")
 
-        conversation.append({"role": "user", "content": user_msg})
-
         # ── API call ───────────────────────────────────────────────────────────
         _model      = "claude-opus-4-6"
         _max_tokens = 4096
-        logger.debug(
-            f"  API request  model={_model}  max_tokens={_max_tokens}"
-            f"  messages_in_history={len(conversation)}"
-        )
+        logger.debug(f"  API request  model={_model}  max_tokens={_max_tokens}")
         try:
             response = client.messages.create(
                 model=_model,
                 max_tokens=_max_tokens,
                 system=system_prompt,
-                messages=conversation,
+                messages=messages,
             )
             raw = response.content[0].text
         except anthropic.RateLimitError:
@@ -789,16 +811,14 @@ def main():
                     model=_model,
                     max_tokens=_max_tokens,
                     system=system_prompt,
-                    messages=conversation,
+                    messages=messages,
                 )
                 raw = response.content[0].text
             except Exception as exc:
                 logger.error(f"  Retry failed: {exc}. Skipping prompt {i}.")
-                conversation.pop()
                 continue
         except Exception as exc:
             logger.error(f"  API error: {exc}. Skipping prompt {i}.")
-            conversation.pop()
             time.sleep(args.rate_limit)
             continue
 
@@ -809,9 +829,7 @@ def main():
                 f"output_tokens={usage.get('output_tokens')}"
             )
 
-        write_audit(run_dir, i, system_prompt, list(conversation), raw, _model, usage)
-
-        conversation.append({"role": "assistant", "content": raw})
+        write_audit(run_dir, i, system_prompt, messages, raw, _model, usage)
 
         # Update usage counts now that this prompt succeeded
         for entry in assigned:
@@ -1007,6 +1025,9 @@ def main():
             logger.info(f"  Sleeping {args.rate_limit} s …")
             time.sleep(args.rate_limit)
 
+    size_counts = {s: sizes.count(s) for s in args.sizes}
+    logger.info("Size distribution: " + "  ".join(f"{s}={c}" for s, c in size_counts.items()))
+
     # ── CSV statistics output ──────────────────────────────────────────────────
     _csv_fields = [
         "prompt_num", "domain_display", "size",
@@ -1018,7 +1039,9 @@ def main():
     ]
     write_csv(run_dir / "stats_antipattern.csv", ap_stats_rows,  _csv_fields)
     write_csv(run_dir / "stats_refactored.csv",  ref_stats_rows, _csv_fields)
-    write_csv(run_dir / "stats_combined.csv",    ap_stats_rows + ref_stats_rows, _csv_fields)
+    interleaved = [row for pair in zip(ap_stats_rows, ref_stats_rows) for row in pair]
+    interleaved += ap_stats_rows[len(ref_stats_rows):] + ref_stats_rows[len(ap_stats_rows):]
+    write_csv(run_dir / "stats_combined.csv",    interleaved, _csv_fields)
 
     _training_fields = [
         "sample_id", "prompt_num", "domain_display", "size",
