@@ -502,6 +502,15 @@ Actor-to-use-case associations MUST be undirected lines (--), NOT directed arrow
   CORRECT:  Customer -- UC1
   WRONG:    Customer --> UC1
 
+═══ REFACTORING SCOPE RULE ═══════════════════════════════════════════════════════
+Version 2 MUST be derived strictly from Version 1:
+  • You MAY remove constructs (use cases, actors, relationships) as required by the refactoring.
+  • You MAY add constructs ONLY if the specific antipattern's refactoring inherently requires it
+    (e.g. when fixing a3 "Functional Decomposition: Using the extend relationship", the refactoring
+    splits one extension use case into multiple — those new use cases are required by the fix).
+  • You MUST NOT invent new use cases or actors that are unrelated to the refactoring.
+    Enriching the domain model with extra functionality is strictly forbidden.
+
 ═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
 1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
 2. Version 2 MUST be a correct, fully refactored model with no antipattern.
