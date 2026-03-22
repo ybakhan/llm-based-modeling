@@ -923,9 +923,8 @@ def main():
         "prompt_num", "domain_display", "size",
         "antipattern_codes", "antipattern_instance_counts", "total_antipattern_instances",
         "sample_type", "task_mode",
-        "construct_count_reported",
         "actors", "use_cases", "includes", "extends", "generalizations",
-        "total_parsed", "count_matches_reported",
+        "total_parsed",
     ]
     _training_fields = [
         "sample_id", "prompt_num", "domain_display", "size",
@@ -1208,18 +1207,14 @@ def main():
             ap_stats_row = {
                 **_base,
                 "sample_type":              "antipattern",
-                "construct_count_reported": parsed["construct_count_v1"],
                 **v1_stats,
-                "count_matches_reported":   parsed["construct_count_v1"] == v1_stats["total_parsed"],
                 "puml_file":                str(v1_puml),
                 "img_file":                 str(v1_img),
             }
             ref_stats_row = {
                 **_base,
                 "sample_type":              "refactored",
-                "construct_count_reported": parsed["construct_count_v2"],
                 **v2_stats,
-                "count_matches_reported":   parsed["construct_count_v2"] == v2_stats["total_parsed"],
                 "puml_file":                str(v2_puml),
                 "img_file":                 str(v2_img),
             }

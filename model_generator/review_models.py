@@ -561,14 +561,14 @@ class ReviewApp(tk.Tk):
         ap_codes   = row.get("antipattern_codes", "—")
         counts     = row.get("antipattern_instance_counts", "—")
         total      = row.get("total_antipattern_instances", "—")
-        constructs = row.get("construct_count_reported", "—")
+
         rev_at     = review.get("reviewed_at", "")
         rev_str    = f"  ·  Reviewed {rev_at[:16]}" if rev_at else ""
 
         self._lbl_meta.config(text=(
             f"Domain: {domain}    Size: {size}    Mode: {mode}    "
             f"Antipatterns: {ap_codes}    Instances per AP: {counts}    "
-            f"Total instances: {total}    Constructs: {constructs}{rev_str}"
+            f"Total instances: {total}{rev_str}"
         ))
 
         self._ap_panel.load(p["ap_img"])
