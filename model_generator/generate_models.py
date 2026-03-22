@@ -79,11 +79,20 @@ def _atexit_summary() -> None:
     if interrupted:
         logger.warning(f"Resume with      : --resume {run_dir}")
 
-    # Rebuild stats_combined from per-prompt CSVs
-    ap_rows  = read_csv_rows(run_dir / "stats_antipattern.csv")
-    ref_rows = read_csv_rows(run_dir / "stats_refactored.csv")
-    interleaved = [row for pair in zip(ap_rows, ref_rows) for row in pair]
-    interleaved += ap_rows[len(ref_rows):] + ref_rows[len(ap_rows):]
+    # Rebuild stats_combined from per-prompt CSVs, sorted by prompt_num
+    ap_rows  = sorted(read_csv_rows(run_dir / "stats_antipattern.csv"),
+                      key=lambda r: int(r.get("prompt_num", 0)))
+    ref_rows = sorted(read_csv_rows(run_dir / "stats_refactored.csv"),
+                      key=lambda r: int(r.get("prompt_num", 0)))
+    ap_by_num  = {int(r["prompt_num"]): r for r in ap_rows}
+    ref_by_num = {int(r["prompt_num"]): r for r in ref_rows}
+    all_nums   = sorted(ap_by_num.keys() | ref_by_num.keys())
+    interleaved = []
+    for n in all_nums:
+        if n in ap_by_num:
+            interleaved.append(ap_by_num[n])
+        if n in ref_by_num:
+            interleaved.append(ref_by_num[n])
     write_csv(run_dir / "stats_combined.csv", interleaved, csv_fields)
 
     # Antipattern usage
