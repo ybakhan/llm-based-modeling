@@ -1,0 +1,21 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Inspector" as Inspector
+actor "Quality Manager" as QM
+
+rectangle "Quality Control System" {
+  usecase "Perform Inspection" as UC1
+  usecase "Record Measurements" as UC2
+  usecase "Generate Quality Report" as UC3
+  usecase "Define Acceptance Criteria" as UC4
+  usecase "Flag Defective Item" as UC5
+}
+
+Inspector -- UC1
+UC1 ..> UC2 : <<include>>
+Inspector -- UC5
+QM -- UC3
+QM -- UC4
+
+@enduml

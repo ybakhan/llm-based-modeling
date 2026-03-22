@@ -1,0 +1,103 @@
+
+
+DOMAIN: vending_machine_management_system
+DOMAIN_DISPLAY: Vending Machine Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Purchase Product, Validate Payment, include relationship from Purchase Product to Validate Payment
+EXPLANATION: "Validate Payment" is an inclusion use case included only by "Purchase Product". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step of purchasing rather than a complete, independently valuable service. This is functional decomposition — breaking "Purchase Product" into procedural steps via include.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Restock Machine, Verify Inventory Levels, include relationship from Restock Machine to Verify Inventory Levels
+EXPLANATION: "Verify Inventory Levels" is an inclusion use case included only by "Restock Machine". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents an internal procedural step of restocking rather than a standalone service observable to any user. This is functional decomposition of the restocking process.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Generate Sales Report, Aggregate Transaction Data, include relationship from Generate Sales Report to Aggregate Transaction Data
+EXPLANATION: "Aggregate Transaction Data" is an inclusion use case included only by "Generate Sales Report". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It is a sub-function of report generation, not a complete service to any actor. This is functional decomposition of the reporting process.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Payment", "Verify Inventory Levels", and "Aggregate Transaction Data" — each represent internal procedural steps that are included by exactly one base use case and are not connected to any actor or other relationship. They must be merged into their respective base use cases: "Validate Payment" is absorbed into "Purchase Product", "Verify Inventory Levels" is absorbed into "Restock Machine", and "Aggregate Transaction Data" is absorbed into "Generate Sales Report". This removes 3 use cases and 3 include relationships (6 constructs total), reducing the count from 24 to 18.
+
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Technician" as Technician
+actor "Manager" as Manager
+
+rectangle "Vending Machine Management System" {
+    usecase "Purchase Product" as UC1
+    usecase "Validate Payment" as UC2
+    usecase "Browse Products" as UC3
+    usecase "Restock Machine" as UC4
+    usecase "Verify Inventory Levels" as UC5
+    usecase "Perform Maintenance" as UC6
+    usecase "Generate Sales Report" as UC7
+    usecase "Aggregate Transaction Data" as UC8
+    usecase "Configure Pricing" as UC9
+    usecase "Monitor Machine Status" as UC10
+    usecase "Request Refund" as UC11
+    usecase "Manage Machine Locations" as UC12
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC11
+Technician -- UC4
+Technician -- UC6
+Manager -- UC7
+Manager -- UC9
+Manager -- UC10
+Manager -- UC12
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 18
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Customer" as Customer
+actor "Technician" as Technician
+actor "Manager" as Manager
+
+rectangle "Vending Machine Management System" {
+    usecase "Purchase Product" as UC1
+    usecase "Browse Products" as UC3
+    usecase "Restock Machine" as UC4
+    usecase "Perform Maintenance" as UC6
+    usecase "Generate Sales Report" as UC7
+    usecase "Configure Pricing" as UC9
+    usecase "Monitor Machine Status" as UC10
+    usecase "Request Refund" as UC11
+    usecase "Manage Machine Locations" as UC12
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC11
+Technician -- UC4
+Technician -- UC6
+Manager -- UC7
+Manager -- UC9
+Manager -- UC10
+Manager -- UC12
+@enduml
+```

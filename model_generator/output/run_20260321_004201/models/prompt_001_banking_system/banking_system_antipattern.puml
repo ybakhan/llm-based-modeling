@@ -1,0 +1,24 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Customer" as Customer
+actor "Bank Teller" as Teller
+
+rectangle "Banking System" {
+  usecase "Check Balance" as UC1
+  usecase "Withdraw Cash" as UC2
+  usecase "Deposit Funds" as UC3
+  usecase "Transfer Funds" as UC4
+  usecase "View Transaction History" as UC5
+  usecase "Validate Account Number" as UC6
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC4
+Customer -- UC5
+Teller -- UC3
+
+UC4 ..> UC6 : <<include>>
+
+@enduml

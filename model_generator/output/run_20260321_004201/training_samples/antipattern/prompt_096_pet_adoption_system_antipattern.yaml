@@ -1,0 +1,108 @@
+metadata:
+  prompt_number: 96
+  domain: pet_adoption_system
+  domain_display: Pet Adoption System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Submit Adoption Application, Validate Applicant Address
+      explanation: '"Validate Applicant Address" is an inclusion use case included
+        only by "Submit Adoption Application". It is not associated with any actor,
+        is not included by any other use case, does not include or extend any use
+        case, is not extended by any use case, and has no generalization relationships.
+        It represents a sub-step (address validation) that is not a complete service
+        observable to any user — it is a functional decomposition of the application
+        submission process.'
+    - constructs_involved: Schedule Home Visit, Check Availability Slot
+      explanation: '"Check Availability Slot" is an inclusion use case included only
+        by "Schedule Home Visit". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Checking an availability
+        slot is an internal sub-step of scheduling, not a standalone service providing
+        an observable result to any actor.'
+    - constructs_involved: Process Adoption Fee, Generate Payment Receipt
+      explanation: '"Generate Payment Receipt" is an inclusion use case included only
+        by "Process Adoption Fee". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Generating a receipt
+        is a decomposed sub-function of fee processing, not a complete service offered
+        to any actor on its own.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 30
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:37:48.583335'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_096_pet_adoption_system/pet_adoption_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_096_pet_adoption_system/pet_adoption_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_096_pet_adoption_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Adopter\"\
+    \ as Adopter\nactor \"Shelter Staff\" as Staff\nactor \"Veterinarian\" as Vet\n\
+    actor \"Administrator\" as Admin\n\nrectangle \"Pet Adoption System\" {\n  usecase\
+    \ \"Browse Available Pets\" as UC1\n  usecase \"Search Pets by Criteria\" as UC2\n\
+    \  usecase \"View Pet Profile\" as UC3\n  usecase \"Submit Adoption Application\"\
+    \ as UC4\n  usecase \"Validate Applicant Address\" as UC5\n  usecase \"Review\
+    \ Application\" as UC6\n  usecase \"Schedule Home Visit\" as UC7\n  usecase \"\
+    Check Availability Slot\" as UC8\n  usecase \"Process Adoption Fee\" as UC9\n\
+    \  usecase \"Generate Payment Receipt\" as UC10\n  usecase \"Register New Pet\"\
+    \ as UC11\n  usecase \"Update Pet Medical Records\" as UC12\n  usecase \"Perform\
+    \ Health Checkup\" as UC13\n  usecase \"Manage User Accounts\" as UC14\n  usecase\
+    \ \"Generate Adoption Reports\" as UC15\n}\n\nAdopter --> UC1\nAdopter --> UC2\n\
+    Adopter --> UC3\nAdopter --> UC4\nAdopter --> UC9\nStaff --> UC6\nStaff --> UC7\n\
+    Staff --> UC11\nVet --> UC12\nVet --> UC13\nAdmin --> UC14\nAdmin --> UC15\n\n\
+    UC4 ..> UC5 : <<include>>\nUC7 ..> UC8 : <<include>>\nUC9 ..> UC10 : <<include>>\n\
+    \nUC1 <.. UC2 : <<extend>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Submit Adoption Application, Validate Applicant\
+    \ Address\n   Instance 1: Explanation: \"Validate Applicant Address\" is an inclusion\
+    \ use case included only by \"Submit Adoption Application\". It is not associated\
+    \ with any actor, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ It represents a sub-step (address validation) that is not a complete service\
+    \ observable to any user — it is a functional decomposition of the application\
+    \ submission process.\n\n   Instance 2: Constructs Involved: Schedule Home Visit,\
+    \ Check Availability Slot\n   Instance 2: Explanation: \"Check Availability Slot\"\
+    \ is an inclusion use case included only by \"Schedule Home Visit\". It is not\
+    \ associated with any actor, is not included by any other use case, does not include\
+    \ or extend any use case, is not extended by any use case, and has no generalization\
+    \ relationships. Checking an availability slot is an internal sub-step of scheduling,\
+    \ not a standalone service providing an observable result to any actor.\n\n  \
+    \ Instance 3: Constructs Involved: Process Adoption Fee, Generate Payment Receipt\n\
+    \   Instance 3: Explanation: \"Generate Payment Receipt\" is an inclusion use\
+    \ case included only by \"Process Adoption Fee\". It is not associated with any\
+    \ actor, is not included by any other use case, does not include or extend any\
+    \ use case, is not extended by any use case, and has no generalization relationships.\
+    \ Generating a receipt is a decomposed sub-function of fee processing, not a complete\
+    \ service offered to any actor on its own."
+raw_response_excerpt: '
+
+
+  DOMAIN: pet_adoption_system
+
+  DOMAIN_DISPLAY: Pet Adoption System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Adoption Application, Validate Applicant Address
+
+  EXPLANATION: "Validate Applicant Address" is an inclusion use case included only
+  by "Submit Adoption Application". It is not associated with any actor, is not included
+  by any other use case, does not include or extend any use case, is not extended
+  by any use case, and has no gen …[truncated]'

@@ -1,0 +1,55 @@
+metadata:
+  prompt_number: 43
+  domain: weather_forecasting_service
+  domain_display: Weather Forecasting Service
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 11
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:16:04.024169'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_043_weather_forecasting_service/weather_forecasting_service_refactored.puml
+    image: output/run_20260321_004201/models/prompt_043_weather_forecasting_service/weather_forecasting_service_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_043_weather_forecasting_service_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"End User\" as EU\n\
+    actor \"Meteorologist\" as MET\nactor \"System Administrator\" as SA\n\nrectangle\
+    \ \"Weather Forecasting Service\" {\n  usecase \"View Weather Forecast\" as UC1\n\
+    \  usecase \"Set Location Preferences\" as UC3\n  usecase \"Publish Forecast\"\
+    \ as UC4\n  usecase \"Manage Weather Stations\" as UC5\n  usecase \"Subscribe\
+    \ to Alerts\" as UC6\n  usecase \"Configure Alert Thresholds\" as UC7\n}\n\nEU\
+    \ --> UC1\nEU --> UC3\nEU --> UC6\nMET --> UC4\nSA --> UC5\nUC7 ..|> UC6 : <<extend>>\n\
+    \n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: weather_forecasting_service
+
+  DOMAIN_DISPLAY: Weather Forecasting Service
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: View Weather Forecast, Fetch Forecast Data
+
+  EXPLANATION: The use case "Fetch Forecast Data" is an inclusion use case that is
+  included by only one use case ("View Weather Forecast"). "Fetch Forecast Data" is
+  not associated with any actor directly, does not include or extend any other use
+  case, is not extended by any use  …[truncated]'

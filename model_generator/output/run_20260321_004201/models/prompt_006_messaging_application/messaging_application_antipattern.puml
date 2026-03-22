@@ -1,0 +1,25 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Registered User" as User
+actor "Administrator" as Admin
+
+rectangle "Messaging Application" {
+  usecase "Register Account" as UC1
+  usecase "Send Message" as UC2
+  usecase "View Conversations" as UC3
+  usecase "Delete Message" as UC4
+  usecase "Validate Message Content" as UC5
+  usecase "Manage Users" as UC6
+  usecase "Block User" as UC7
+}
+
+User -- UC1
+User -- UC2
+User -- UC3
+User -- UC4
+User -- UC7
+Admin -- UC6
+
+UC2 ..> UC5 : <<include>>
+@enduml

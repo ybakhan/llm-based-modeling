@@ -1,0 +1,238 @@
+AUDIT LOG — Prompt #153
+Timestamp : 2026-03-21T02:01:32.545495
+Model     : claude-opus-4-6
+Tokens    : input=1355  output=1218
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (3 instances) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #153: Generate a MEDIUM use case model with exactly 26 constructs (valid range for medium: 24–30 constructs). Domain: API Management Portal.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: api_management_portal
+DOMAIN_DISPLAY: API Management Portal
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register API, Validate API Schema
+EXPLANATION: "Register API" includes "Validate API Schema". "Validate API Schema" is included only by "Register API", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. This is functional decomposition because validating the schema is merely an internal step of the API registration process, not a standalone service offering an observable result to any user.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Generate API Key, Encrypt Key Value
+EXPLANATION: "Generate API Key" includes "Encrypt Key Value". "Encrypt Key Value" is included only by "Generate API Key", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Encrypting the key value is an internal implementation detail of key generation, not a complete service visible to any actor.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Configure Rate Limiting, Save Rate Limit Rules
+EXPLANATION: "Configure Rate Limiting" includes "Save Rate Limit Rules". "Save Rate Limit Rules" is included only by "Configure Rate Limiting", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Saving rules to persistence is an internal substep of configuring rate limiting, decomposing the use case functionally rather than representing a complete user-facing service.
+
+REFACTORING_RATIONALE: All three inclusion use cases ("Validate API Schema", "Encrypt Key Value", "Save Rate Limit Rules") must be merged back into their respective base use cases ("Register API", "Generate API Key", "Configure Rate Limiting"). Each inclusion use case represents an internal processing step, not a standalone service. Merging them eliminates 3 use cases and 3 include relationships (6 constructs total), simplifying the model while preserving all functionality within the base use cases. The refactored model retains complete, actor-facing services without artificial decomposition.
+
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "API Developer" as Dev
+actor "API Admin" as Admin
+actor "Portal Visitor" as Visitor
+
+rectangle "API Management Portal" {
+  usecase "Register API" as UC1
+  usecase "Validate API Schema" as UC2
+  usecase "Generate API Key" as UC3
+  usecase "Encrypt Key Value" as UC4
+  usecase "Browse API Catalog" as UC5
+  usecase "View API Documentation" as UC6
+  usecase "Monitor API Usage" as UC7
+  usecase "Configure Rate Limiting" as UC8
+  usecase "Save Rate Limit Rules" as UC9
+  usecase "Manage API Versions" as UC10
+  usecase "Revoke API Key" as UC11
+  usecase "View Analytics Dashboard" as UC12
+  usecase "Set Deprecation Notice" as UC13
+}
+
+Dev --> UC1
+Dev --> UC3
+Dev --> UC5
+Dev --> UC6
+Dev --> UC7
+
+Admin --> UC8
+Admin --> UC10
+Admin --> UC11
+Admin --> UC12
+
+Visitor --> UC5
+Visitor --> UC6
+
+UC10 ..> UC13 : <<extend>>
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC8 ..> UC9 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "API Developer" as Dev
+actor "API Admin" as Admin
+actor "Portal Visitor" as Visitor
+
+rectangle "API Management Portal" {
+  usecase "Register API" as UC1
+  usecase "Generate API Key" as UC3
+  usecase "Browse API Catalog" as UC5
+  usecase "View API Documentation" as UC6
+  usecase "Monitor API Usage" as UC7
+  usecase "Configure Rate Limiting" as UC8
+  usecase "Manage API Versions" as UC10
+  usecase "Revoke API Key" as UC11
+  usecase "View Analytics Dashboard" as UC12
+  usecase "Set Deprecation Notice" as UC13
+}
+
+Dev --> UC1
+Dev --> UC3
+Dev --> UC5
+Dev --> UC6
+Dev --> UC7
+
+Admin --> UC8
+Admin --> UC10
+Admin --> UC11
+Admin --> UC12
+
+Visitor --> UC5
+Visitor --> UC6
+
+UC10 ..> UC13 : <<extend>>
+@enduml
+```

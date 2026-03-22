@@ -1,0 +1,118 @@
+metadata:
+  prompt_number: 142
+  domain: swimming_pool_booking_system
+  domain_display: Swimming Pool Booking System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Book Lane, Validate Membership Status, include relationship
+        from Book Lane to Validate Membership Status
+      explanation: '"Validate Membership Status" is an inclusion use case included
+        only by "Book Lane". It is not associated with any actor, not included by
+        any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        a sub-step (checking membership validity) decomposed out of "Book Lane" rather
+        than a complete, independently valuable service. This is functional decomposition
+        of the booking process into an artificial sub-function.'
+    - constructs_involved: Register for Swimming Lesson, Check Schedule Availability,
+        include relationship from Register for Swimming Lesson to Check Schedule Availability
+      explanation: '"Check Schedule Availability" is an inclusion use case included
+        only by "Register for Swimming Lesson". It is not associated with any actor,
+        not included by any other use case, does not include or extend any other use
+        case, is not extended by any use case, and has no generalization relationships.
+        It represents a procedural sub-step (looking up available lesson times) rather
+        than a standalone service offering an observable result to any user. This
+        is functional decomposition of the registration process.'
+    - constructs_involved: Process Payment, Generate Payment Receipt, include relationship
+        from Process Payment to Generate Payment Receipt
+      explanation: '"Generate Payment Receipt" is an inclusion use case included only
+        by "Process Payment". It is not associated with any actor, not included by
+        any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. Generating
+        a receipt is a sub-step of payment processing decomposed into its own use
+        case, rather than a complete service providing an observable result to a user.
+        This is functional decomposition of the payment flow.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 30
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:57:17.235502'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_142_swimming_pool_booking_system/swimming_pool_booking_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_142_swimming_pool_booking_system/swimming_pool_booking_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_142_swimming_pool_booking_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Member\"\
+    \ as Member\nactor \"Guest\" as Guest\nactor \"Lifeguard\" as Lifeguard\nactor\
+    \ \"Administrator\" as Admin\nactor \"Payment Gateway\" as PGW\n\nrectangle \"\
+    Swimming Pool Booking System\" {\n  usecase \"Book Lane\" as UC1\n  usecase \"\
+    Validate Membership Status\" as UC2\n  usecase \"Cancel Booking\" as UC3\n  usecase\
+    \ \"Register for Swimming Lesson\" as UC4\n  usecase \"Check Schedule Availability\"\
+    \ as UC5\n  usecase \"View Pool Schedule\" as UC6\n  usecase \"Process Payment\"\
+    \ as UC7\n  usecase \"Generate Payment Receipt\" as UC8\n  usecase \"Manage Pool\
+    \ Timetable\" as UC9\n  usecase \"Report Incident\" as UC10\n  usecase \"Purchase\
+    \ Day Pass\" as UC11\n  usecase \"View Booking History\" as UC12\n  usecase \"\
+    Manage Member Accounts\" as UC13\n}\n\nMember --> UC1\nMember --> UC3\nMember\
+    \ --> UC4\nMember --> UC6\nMember --> UC7\nMember --> UC12\n\nGuest --> UC6\n\
+    Guest --> UC11\n\nLifeguard --> UC10\n\nAdmin --> UC9\nAdmin --> UC13\n\nUC7 -->\
+    \ PGW\n\nUC1 ..> UC2 : <<include>>\nUC4 ..> UC5 : <<include>>\nUC7 ..> UC8 : <<include>>\n\
+    \nUC11 ..> UC7 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Book Lane, Validate Membership Status, include\
+    \ relationship from Book Lane to Validate Membership Status\n   Instance 1: Explanation:\
+    \ \"Validate Membership Status\" is an inclusion use case included only by \"\
+    Book Lane\". It is not associated with any actor, not included by any other use\
+    \ case, does not include or extend any other use case, is not extended by any\
+    \ use case, and has no generalization relationships. It represents a sub-step\
+    \ (checking membership validity) decomposed out of \"Book Lane\" rather than a\
+    \ complete, independently valuable service. This is functional decomposition of\
+    \ the booking process into an artificial sub-function.\n\n   Instance 2: Constructs\
+    \ Involved: Register for Swimming Lesson, Check Schedule Availability, include\
+    \ relationship from Register for Swimming Lesson to Check Schedule Availability\n\
+    \   Instance 2: Explanation: \"Check Schedule Availability\" is an inclusion use\
+    \ case included only by \"Register for Swimming Lesson\". It is not associated\
+    \ with any actor, not included by any other use case, does not include or extend\
+    \ any other use case, is not extended by any use case, and has no generalization\
+    \ relationships. It represents a procedural sub-step (looking up available lesson\
+    \ times) rather than a standalone service offering an observable result to any\
+    \ user. This is functional decomposition of the registration process.\n\n   Instance\
+    \ 3: Constructs Involved: Process Payment, Generate Payment Receipt, include relationship\
+    \ from Process Payment to Generate Payment Receipt\n   Instance 3: Explanation:\
+    \ \"Generate Payment Receipt\" is an inclusion use case included only by \"Process\
+    \ Payment\". It is not associated with any actor, not included by any other use\
+    \ case, does not include or extend any other use case, is not extended by any\
+    \ use case, and has no generalization relationships. Generating a receipt is a\
+    \ sub-step of payment processing decomposed into its own use case, rather than\
+    \ a complete service providing an observable result to a user. This is functional\
+    \ decomposition of the payment flow."
+raw_response_excerpt: '
+
+
+  DOMAIN: swimming_pool_booking_system
+
+  DOMAIN_DISPLAY: Swimming Pool Booking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Lane, Validate Membership Status, include relationship
+  from Book Lane to Validate Membership Status
+
+  EXPLANATION: "Validate Membership Status" is an inclusion use case included only
+  by "Book Lane". It is not associated with any actor, not included by any other use
+  case, does not include or extend any other use c …[truncated]'

@@ -1,0 +1,117 @@
+
+
+DOMAIN: investment_portfolio_system
+DOMAIN_DISPLAY: Investment Portfolio System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Buy Securities, Validate Funds Availability, include relationship from Buy Securities to Validate Funds Availability
+EXPLANATION: "Validate Funds Availability" is an inclusion use case included only by "Buy Securities". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (checking if funds are sufficient) rather than a complete service observable to a user, making this a functional decomposition of the "Buy Securities" use case.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Generate Portfolio Report, Fetch Historical Data, include relationship from Generate Portfolio Report to Fetch Historical Data
+EXPLANATION: "Fetch Historical Data" is an inclusion use case included only by "Generate Portfolio Report". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal data retrieval step rather than a complete user-facing service, making this a functional decomposition of "Generate Portfolio Report".
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Rebalance Portfolio, Calculate Target Allocation, include relationship from Rebalance Portfolio to Calculate Target Allocation
+EXPLANATION: "Calculate Target Allocation" is an inclusion use case included only by "Rebalance Portfolio". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal computation step rather than a standalone service providing an observable result to any user, making this a functional decomposition of "Rebalance Portfolio".
+
+REFACTORING_RATIONALE: Each of the three decomposed inclusion use cases ("Validate Funds Availability", "Fetch Historical Data", "Calculate Target Allocation") must be merged back into their respective base use cases ("Buy Securities", "Generate Portfolio Report", "Rebalance Portfolio"). These inclusion use cases each represent internal processing steps that do not provide a complete, independently observable service to any actor. By absorbing them, we eliminate 3 use cases and 3 include relationships (removing 6 constructs), resulting in a cleaner model where each use case represents a complete service. The base use cases' descriptions would incorporate the merged behavior (e.g., "Buy Securities" now internally validates funds, "Generate Portfolio Report" internally fetches historical data, and "Rebalance Portfolio" internally calculates target allocations).
+
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Investor" as Investor
+actor "Financial Advisor" as Advisor
+actor "System Administrator" as Admin
+
+rectangle "Investment Portfolio System" {
+  usecase "Create Portfolio" as UC1
+  usecase "Buy Securities" as UC2
+  usecase "Sell Securities" as UC3
+  usecase "View Portfolio Holdings" as UC4
+  usecase "Generate Portfolio Report" as UC5
+  usecase "Rebalance Portfolio" as UC6
+  usecase "Set Risk Profile" as UC7
+  usecase "Manage User Accounts" as UC8
+  usecase "Monitor Market Alerts" as UC9
+  usecase "Validate Funds Availability" as UC10
+  usecase "Fetch Historical Data" as UC11
+  usecase "Calculate Target Allocation" as UC12
+  usecase "Transfer Funds" as UC13
+}
+
+Investor --> UC1
+Investor --> UC2
+Investor --> UC3
+Investor --> UC4
+Investor --> UC9
+Investor --> UC13
+
+Advisor --> UC5
+Advisor --> UC6
+Advisor --> UC7
+Advisor --> UC4
+
+Admin --> UC8
+
+UC2 ..> UC10 : <<include>>
+UC5 ..> UC11 : <<include>>
+UC6 ..> UC12 : <<include>>
+
+UC3 .> UC2 : <<extend>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Investor" as Investor
+actor "Financial Advisor" as Advisor
+actor "System Administrator" as Admin
+
+rectangle "Investment Portfolio System" {
+  usecase "Create Portfolio" as UC1
+  usecase "Buy Securities" as UC2
+  usecase "Sell Securities" as UC3
+  usecase "View Portfolio Holdings" as UC4
+  usecase "Generate Portfolio Report" as UC5
+  usecase "Rebalance Portfolio" as UC6
+  usecase "Set Risk Profile" as UC7
+  usecase "Manage User Accounts" as UC8
+  usecase "Monitor Market Alerts" as UC9
+  usecase "Transfer Funds" as UC13
+}
+
+Investor --> UC1
+Investor --> UC2
+Investor --> UC3
+Investor --> UC4
+Investor --> UC9
+Investor --> UC13
+
+Advisor --> UC5
+Advisor --> UC6
+Advisor --> UC7
+Advisor --> UC4
+
+Admin --> UC8
+
+UC3 .> UC2 : <<extend>>
+@enduml
+```

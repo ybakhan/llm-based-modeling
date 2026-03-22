@@ -1,0 +1,109 @@
+
+
+DOMAIN: museum_ticketing_system
+DOMAIN_DISPLAY: Museum Ticketing System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Purchase Ticket, Calculate Price, <<include>> from Purchase Ticket to Calculate Price
+EXPLANATION: "Calculate Price" is an inclusion use case included only by "Purchase Ticket". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step of purchasing rather than a complete service observable to an actor, making it a functional decomposition.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Purchase Ticket, Generate Receipt, <<include>> from Purchase Ticket to Generate Receipt
+EXPLANATION: "Generate Receipt" is an inclusion use case included only by "Purchase Ticket". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step of the purchase process rather than a standalone service, making it a functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Scan Ticket at Entry, Check Ticket Validity, <<include>> from Scan Ticket at Entry to Check Ticket Validity
+EXPLANATION: "Check Ticket Validity" is an inclusion use case included only by "Scan Ticket at Entry". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step of the scanning process rather than a complete service, making it a functional decomposition.
+
+REFACTORING_RATIONALE: All three functional decomposition instances must be resolved by merging the isolated inclusion use cases into their respective base use cases. (1) "Calculate Price" must be merged into "Purchase Ticket" since price calculation is an internal step of purchasing — removing the use case and its include relationship. (2) "Generate Receipt" must be merged into "Purchase Ticket" since receipt generation is an internal step of purchasing — removing the use case and its include relationship. (3) "Check Ticket Validity" must be merged into "Scan Ticket at Entry" since validity checking is an internal step of scanning — removing the use case and its include relationship. This eliminates 3 use cases and 3 include relationships, reducing the construct count by 6.
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Visitor" as Visitor
+actor "Museum Staff" as Staff
+actor "Manager" as Manager
+actor "Payment Gateway" as Gateway
+
+rectangle "Museum Ticketing System" {
+  usecase "Browse Exhibitions" as UC1
+  usecase "Purchase Ticket" as UC2
+  usecase "Calculate Price" as UC3
+  usecase "Generate Receipt" as UC4
+  usecase "Cancel Ticket" as UC5
+  usecase "Apply Discount" as UC6
+  usecase "Scan Ticket at Entry" as UC7
+  usecase "Check Ticket Validity" as UC8
+  usecase "View Sales Report" as UC9
+  usecase "Manage Exhibition Schedule" as UC10
+  usecase "Process Payment" as UC11
+  usecase "Book Group Visit" as UC12
+}
+
+Visitor -- UC1
+Visitor -- UC2
+Visitor -- UC5
+Visitor -- UC12
+Staff -- UC7
+Manager -- UC9
+Manager -- UC10
+Gateway -- UC11
+
+UC2 ..> UC3 : <<include>>
+UC2 ..> UC4 : <<include>>
+UC2 ..> UC11 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC2 ..> UC6 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Visitor" as Visitor
+actor "Museum Staff" as Staff
+actor "Manager" as Manager
+actor "Payment Gateway" as Gateway
+
+rectangle "Museum Ticketing System" {
+  usecase "Browse Exhibitions" as UC1
+  usecase "Purchase Ticket" as UC2
+  usecase "Cancel Ticket" as UC5
+  usecase "Apply Discount" as UC6
+  usecase "Scan Ticket at Entry" as UC7
+  usecase "View Sales Report" as UC9
+  usecase "Manage Exhibition Schedule" as UC10
+  usecase "Process Payment" as UC11
+  usecase "Book Group Visit" as UC12
+}
+
+Visitor -- UC1
+Visitor -- UC2
+Visitor -- UC5
+Visitor -- UC12
+Staff -- UC7
+Manager -- UC9
+Manager -- UC10
+Gateway -- UC11
+
+UC2 ..> UC11 : <<include>>
+UC2 ..> UC6 : <<extend>>
+
+@enduml
+```

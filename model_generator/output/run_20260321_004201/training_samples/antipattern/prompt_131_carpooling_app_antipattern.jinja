@@ -1,0 +1,61 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Rider" as Rider
+actor "Driver" as Driver
+actor "Admin" as Admin
+
+rectangle "Carpooling App" {
+  usecase "Register Account" as UC1
+  usecase "Search Rides" as UC2
+  usecase "Validate Search Criteria" as UC3
+  usecase "Book Ride" as UC4
+  usecase "Calculate Fare Split" as UC5
+  usecase "Rate Driver" as UC6
+  usecase "Create Ride Offer" as UC7
+  usecase "Validate Route Details" as UC8
+  usecase "Manage Ride Requests" as UC9
+  usecase "View Ride History" as UC10
+  usecase "Process Payment" as UC11
+  usecase "Manage Users" as UC12
+  usecase "View Reports" as UC13
+}
+
+Rider --> UC1
+Rider --> UC2
+Rider --> UC4
+Rider --> UC6
+Rider --> UC10
+Rider --> UC11
+
+Driver --> UC1
+Driver --> UC7
+Driver --> UC9
+Driver --> UC10
+
+Admin --> UC12
+Admin --> UC13
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Search Rides, Validate Search Criteria, include (Search Rides → Validate Search Criteria)
+   Instance 1: Explanation: "Validate Search Criteria" is an inclusion use case included only by "Search Rides". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step (input validation) of searching for rides rather than a complete, independently meaningful service observable to a user. This is functional decomposition of the "Search Rides" use case.
+
+   Instance 2: Constructs Involved: Book Ride, Calculate Fare Split, include (Book Ride → Calculate Fare Split)
+   Instance 2: Explanation: "Calculate Fare Split" is an inclusion use case included only by "Book Ride". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal computation step within the booking process rather than a standalone service with an observable result to a user. This is functional decomposition of the "Book Ride" use case.
+
+   Instance 3: Constructs Involved: Create Ride Offer, Validate Route Details, include (Create Ride Offer → Validate Route Details)
+   Instance 3: Explanation: "Validate Route Details" is an inclusion use case included only by "Create Ride Offer". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal validation sub-step rather than a complete service. This is functional decomposition of the "Create Ride Offer" use case.

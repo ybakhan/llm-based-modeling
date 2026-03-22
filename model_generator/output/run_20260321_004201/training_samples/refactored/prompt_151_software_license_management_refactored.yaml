@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 151
+  domain: software_license_management
+  domain_display: Software License Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:44:28.416222'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_151_software_license_management/software_license_management_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_151_software_license_management/software_license_management_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_151_software_license_management_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"License Admin\" as Admin\nactor \"Compliance Officer\" as Officer\nactor\
+    \ \"End User\" as EndUser\nactor \"Notification Service\" as NotifSvc\n\nrectangle\
+    \ \"Software License Management System\" {\n  usecase \"Register Software Product\"\
+    \ as UC1\n  usecase \"Assign License\" as UC2\n  usecase \"Revoke License\" as\
+    \ UC4\n  usecase \"Renew License\" as UC5\n  usecase \"View Assigned Licenses\"\
+    \ as UC7\n  usecase \"Request License\" as UC8\n  usecase \"Generate Compliance\
+    \ Report\" as UC9\n  usecase \"Notify Expiring Licenses\" as UC11\n  usecase \"\
+    Track License Usage\" as UC12\n}\n\nAdmin -- UC1\nAdmin -- UC2\nAdmin -- UC4\n\
+    Admin -- UC5\nAdmin -- UC12\n\nEndUser -- UC7\nEndUser -- UC8\n\nOfficer -- UC9\n\
+    \nNotifSvc -- UC11\n\nUC11 ..> UC5 : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: software_license_management
+
+  DOMAIN_DISPLAY: Software License Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Assign License, Validate User Eligibility, include relationship
+  from Assign License to Validate User Eligibility
+
+  EXPLANATION: "Validate User Eligibility" is an inclusion use case included only
+  by "Assign License". It is not associated with any actor, not included by any other
+  use case, and does not include, ext …[truncated]'

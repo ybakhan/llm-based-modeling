@@ -1,0 +1,43 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Program Director" as PD
+actor "Broadcast Engineer" as BE
+actor "Content Manager" as CM
+actor "Advertiser" as AD
+
+rectangle "Broadcasting Management System" {
+  usecase "Schedule Broadcast" as UC1
+  usecase "Manage Content Library" as UC3
+  usecase "Start Live Transmission" as UC5
+  usecase "Monitor Signal Quality" as UC7
+  usecase "Generate Broadcast Report" as UC8
+  usecase "Manage Ad Placements" as UC9
+  usecase "Review Program Ratings" as UC10
+  usecase "Manage Channel Lineup" as UC11
+  usecase "Archive Broadcast" as UC12
+
+  UC9 ..> UC1 : <<extend>>
+}
+
+PD -- UC1
+PD -- UC10
+PD -- UC11
+CM -- UC3
+CM -- UC12
+BE -- UC5
+BE -- UC7
+BE -- UC8
+AD -- UC9
+
+@enduml
+
+
+Answer:
+No antipattern detected.

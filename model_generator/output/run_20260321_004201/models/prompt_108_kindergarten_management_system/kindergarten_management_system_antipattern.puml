@@ -1,0 +1,40 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Administrator" as Admin
+actor "Teacher" as Teacher
+actor "Parent" as Parent
+
+rectangle "Kindergarten Management System" {
+  usecase "Enroll Child" as UC1
+  usecase "Validate Child Age" as UC2
+  usecase "Manage Class Schedule" as UC3
+  usecase "Record Attendance" as UC4
+  usecase "Log Arrival Time" as UC5
+  usecase "Send Notifications" as UC6
+  usecase "View Child Progress" as UC7
+  usecase "Generate Report" as UC8
+  usecase "Compile Statistics" as UC9
+  usecase "Manage Staff" as UC10
+  usecase "Process Payments" as UC11
+  usecase "Update Child Profile" as UC12
+  usecase "Plan Activities" as UC13
+}
+
+Admin -- UC1
+Admin -- UC3
+Admin -- UC8
+Admin -- UC10
+Admin -- UC11
+Teacher -- UC4
+Teacher -- UC6
+Teacher -- UC7
+Teacher -- UC13
+Parent -- UC7
+Parent -- UC12
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC8 ..> UC9 : <<include>>
+@enduml

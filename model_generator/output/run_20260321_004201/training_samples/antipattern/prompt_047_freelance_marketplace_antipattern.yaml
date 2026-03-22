@@ -1,0 +1,115 @@
+metadata:
+  prompt_number: 47
+  domain: freelance_marketplace
+  domain_display: Freelance Marketplace
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Post Job, Validate Job Details, include (Post Job → Validate
+        Job Details)
+      explanation: '"Validate Job Details" is an inclusion use case included only
+        by "Post Job". It is not associated with any actor, not included by any other
+        use case, does not include or extend any use case, is not extended by any
+        use case, and has no generalization relationships. It represents a sub-step
+        (validation) of posting a job rather than a complete, independently valuable
+        service. This is functional decomposition of "Post Job" into an artificial
+        sub-function.'
+    - constructs_involved: Submit Proposal, Upload Portfolio Samples, include (Submit
+        Proposal → Upload Portfolio Samples)
+      explanation: '"Upload Portfolio Samples" is an inclusion use case included only
+        by "Submit Proposal". It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Uploading portfolio
+        samples is a sub-step of submitting a proposal, not a standalone service delivering
+        an observable result to any actor. This decomposes "Submit Proposal" into
+        an internal procedure.'
+    - constructs_involved: Process Payment, Calculate Service Fee, include (Process
+        Payment → Calculate Service Fee)
+      explanation: '"Calculate Service Fee" is an inclusion use case included only
+        by "Process Payment". It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Fee calculation
+        is an internal computation step within payment processing, not a complete
+        service observable to a user. This is functional decomposition of the payment
+        process.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:18:12.689550'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_047_freelance_marketplace/freelance_marketplace_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_047_freelance_marketplace/freelance_marketplace_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_047_freelance_marketplace_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Client\"\
+    \ as Client\nactor \"Freelancer\" as Freelancer\nactor \"Admin\" as Admin\n\n\
+    rectangle \"Freelance Marketplace\" {\n    usecase \"Post Job\" as UC1\n    usecase\
+    \ \"Validate Job Details\" as UC2\n    usecase \"Browse Jobs\" as UC3\n    usecase\
+    \ \"Submit Proposal\" as UC4\n    usecase \"Upload Portfolio Samples\" as UC5\n\
+    \    usecase \"Accept Proposal\" as UC6\n    usecase \"Process Payment\" as UC7\n\
+    \    usecase \"Calculate Service Fee\" as UC8\n    usecase \"Leave Review\" as\
+    \ UC9\n    usecase \"Manage Disputes\" as UC10\n    usecase \"Track Milestone\"\
+    \ as UC11\n    usecase \"Send Message\" as UC12\n    usecase \"Manage User Accounts\"\
+    \ as UC13\n}\n\nClient --> UC1\nClient --> UC3\nClient --> UC6\nClient --> UC7\n\
+    Client --> UC9\nClient --> UC11\nClient --> UC12\nFreelancer --> UC3\nFreelancer\
+    \ --> UC4\nFreelancer --> UC9\nFreelancer --> UC11\nFreelancer --> UC12\nAdmin\
+    \ --> UC10\nAdmin --> UC13\n\nUC1 ..> UC2 : <<include>>\nUC4 ..> UC5 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Post Job, Validate Job Details, include\
+    \ (Post Job → Validate Job Details)\n   Instance 1: Explanation: \"Validate Job\
+    \ Details\" is an inclusion use case included only by \"Post Job\". It is not\
+    \ associated with any actor, not included by any other use case, does not include\
+    \ or extend any use case, is not extended by any use case, and has no generalization\
+    \ relationships. It represents a sub-step (validation) of posting a job rather\
+    \ than a complete, independently valuable service. This is functional decomposition\
+    \ of \"Post Job\" into an artificial sub-function.\n\n   Instance 2: Constructs\
+    \ Involved: Submit Proposal, Upload Portfolio Samples, include (Submit Proposal\
+    \ → Upload Portfolio Samples)\n   Instance 2: Explanation: \"Upload Portfolio\
+    \ Samples\" is an inclusion use case included only by \"Submit Proposal\". It\
+    \ is not associated with any actor, not included by any other use case, does not\
+    \ include or extend any use case, is not extended by any use case, and has no\
+    \ generalization relationships. Uploading portfolio samples is a sub-step of submitting\
+    \ a proposal, not a standalone service delivering an observable result to any\
+    \ actor. This decomposes \"Submit Proposal\" into an internal procedure.\n\n \
+    \  Instance 3: Constructs Involved: Process Payment, Calculate Service Fee, include\
+    \ (Process Payment → Calculate Service Fee)\n   Instance 3: Explanation: \"Calculate\
+    \ Service Fee\" is an inclusion use case included only by \"Process Payment\"\
+    . It is not associated with any actor, not included by any other use case, does\
+    \ not include or extend any use case, is not extended by any use case, and has\
+    \ no generalization relationships. Fee calculation is an internal computation\
+    \ step within payment processing, not a complete service observable to a user.\
+    \ This is functional decomposition of the payment process."
+raw_response_excerpt: '
+
+
+  DOMAIN: freelance_marketplace
+
+  DOMAIN_DISPLAY: Freelance Marketplace
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Post Job, Validate Job Details, include (Post Job → Validate
+  Job Details)
+
+  EXPLANATION: "Validate Job Details" is an inclusion use case included only by "Post
+  Job". It is not associated with any actor, not included by any other use case, does
+  not include or extend any use case, is not extended by any use case, and has no
+  generaliz …[truncated]'

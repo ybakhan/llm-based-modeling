@@ -1,0 +1,116 @@
+
+
+DOMAIN: medical_imaging_system
+DOMAIN_DISPLAY: Medical Imaging System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Upload DICOM Image, Validate DICOM Format, include relationship from "Upload DICOM Image" to "Validate DICOM Format"
+EXPLANATION: "Validate DICOM Format" is an inclusion use case included only by "Upload DICOM Image." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (format validation) of uploading an image rather than a complete, independently valuable service — a textbook functional decomposition of the upload process.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Generate Diagnostic Report, Compile Report Sections, include relationship from "Generate Diagnostic Report" to "Compile Report Sections"
+EXPLANATION: "Compile Report Sections" is an inclusion use case included only by "Generate Diagnostic Report." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It decomposes the report generation process into a sub-task rather than offering a standalone observable result to any user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Perform Image Analysis, Apply Enhancement Filters, include relationship from "Perform Image Analysis" to "Apply Enhancement Filters"
+EXPLANATION: "Apply Enhancement Filters" is an inclusion use case included only by "Perform Image Analysis." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Applying filters is an internal processing step within analysis, not a complete service yielding an observable result to an actor.
+
+REFACTORING_RATIONALE: Each of the three decomposed inclusion use cases ("Validate DICOM Format," "Compile Report Sections," "Apply Enhancement Filters") must be merged back into their respective base use cases ("Upload DICOM Image," "Generate Diagnostic Report," "Perform Image Analysis"). This eliminates 3 inclusion use cases and 3 include relationships (6 constructs total), because each inclusion use case serves only as a sub-step of a single base use case without providing independent value to any actor. The behavior they represent becomes internal steps within the base use cases, preserving functionality while restoring proper use case granularity.
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+left to right direction
+
+actor "Radiologist" as Radiologist
+actor "Technician" as Technician
+actor "Referring Physician" as Physician
+actor "System Administrator" as Admin
+
+rectangle "Medical Imaging System" {
+  usecase "Upload DICOM Image" as UC1
+  usecase "Validate DICOM Format" as UC2
+  usecase "Perform Image Analysis" as UC3
+  usecase "Apply Enhancement Filters" as UC4
+  usecase "Generate Diagnostic Report" as UC5
+  usecase "Compile Report Sections" as UC6
+  usecase "View Patient Images" as UC7
+  usecase "Search Image Archive" as UC8
+  usecase "Annotate Image" as UC9
+  usecase "Share Report with Physician" as UC10
+  usecase "Manage User Accounts" as UC11
+  usecase "Monitor System Storage" as UC12
+  usecase "Request Second Opinion" as UC13
+
+  UC1 ..> UC2 : <<include>>
+  UC3 ..> UC4 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC13 ..> UC7 : <<include>>
+}
+
+Technician --> UC1
+Radiologist --> UC3
+Radiologist --> UC5
+Radiologist --> UC7
+Radiologist --> UC9
+Radiologist --> UC13
+Physician --> UC8
+Physician --> UC10
+Admin --> UC11
+Admin --> UC12
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+left to right direction
+
+actor "Radiologist" as Radiologist
+actor "Technician" as Technician
+actor "Referring Physician" as Physician
+actor "System Administrator" as Admin
+
+rectangle "Medical Imaging System" {
+  usecase "Upload DICOM Image" as UC1
+  usecase "Perform Image Analysis" as UC3
+  usecase "Generate Diagnostic Report" as UC5
+  usecase "View Patient Images" as UC7
+  usecase "Search Image Archive" as UC8
+  usecase "Annotate Image" as UC9
+  usecase "Share Report with Physician" as UC10
+  usecase "Manage User Accounts" as UC11
+  usecase "Monitor System Storage" as UC12
+  usecase "Request Second Opinion" as UC13
+
+  UC13 ..> UC7 : <<include>>
+}
+
+Technician --> UC1
+Radiologist --> UC3
+Radiologist --> UC5
+Radiologist --> UC7
+Radiologist --> UC9
+Radiologist --> UC13
+Physician --> UC8
+Physician --> UC10
+Admin --> UC11
+Admin --> UC12
+
+@enduml
+```

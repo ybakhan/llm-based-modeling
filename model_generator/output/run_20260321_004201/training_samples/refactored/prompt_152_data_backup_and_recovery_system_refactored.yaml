@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 152
+  domain: data_backup_and_recovery_system
+  domain_display: Data Backup and Recovery System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 21
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:01:10.228858'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_152_data_backup_and_recovery_system/data_backup_and_recovery_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_152_data_backup_and_recovery_system/data_backup_and_recovery_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_152_data_backup_and_recovery_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"System Administrator\"\
+    \ as Admin\nactor \"End User\" as User\nactor \"Monitoring Service\" as Monitor\n\
+    \nrectangle \"Data Backup and Recovery System\" {\n  usecase \"Schedule Backup\"\
+    \ as UC1\n  usecase \"Perform Full Backup\" as UC3\n  usecase \"Perform Incremental\
+    \ Backup\" as UC5\n  usecase \"Restore Data\" as UC6\n  usecase \"View Backup\
+    \ History\" as UC8\n  usecase \"Configure Retention Policy\" as UC9\n  usecase\
+    \ \"Monitor Backup Status\" as UC10\n  usecase \"Generate Backup Report\" as UC11\n\
+    \  usecase \"Manage Storage Locations\" as UC12\n  usecase \"Request File Recovery\"\
+    \ as UC13\n}\n\nAdmin --> UC1\nAdmin --> UC3\nAdmin --> UC5\nAdmin --> UC9\nAdmin\
+    \ --> UC12\nAdmin --> UC6\n\nUser --> UC8\nUser --> UC13\n\nMonitor --> UC10\n\
+    Monitor --> UC11\n\nUC13 ..> UC6 : <<include>>\nUC10 .> UC11 : <<extend>>\n\n\
+    @enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: data_backup_and_recovery_system
+
+  DOMAIN_DISPLAY: Data Backup and Recovery System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Backup, Validate Backup Schedule
+
+  EXPLANATION: "Validate Backup Schedule" is an inclusion use case included only by
+  "Schedule Backup". It is not associated with any actor, is not included by any other
+  use case, does not include or extend any use case, is not extended by any use case,
+  and has no general …[truncated]'

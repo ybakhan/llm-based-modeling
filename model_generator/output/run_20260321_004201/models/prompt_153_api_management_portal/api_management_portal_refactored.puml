@@ -1,0 +1,36 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "API Developer" as Dev
+actor "API Admin" as Admin
+actor "Portal Visitor" as Visitor
+
+rectangle "API Management Portal" {
+  usecase "Register API" as UC1
+  usecase "Generate API Key" as UC3
+  usecase "Browse API Catalog" as UC5
+  usecase "View API Documentation" as UC6
+  usecase "Monitor API Usage" as UC7
+  usecase "Configure Rate Limiting" as UC8
+  usecase "Manage API Versions" as UC10
+  usecase "Revoke API Key" as UC11
+  usecase "View Analytics Dashboard" as UC12
+  usecase "Set Deprecation Notice" as UC13
+}
+
+Dev -- UC1
+Dev -- UC3
+Dev -- UC5
+Dev -- UC6
+Dev -- UC7
+
+Admin -- UC8
+Admin -- UC10
+Admin -- UC11
+Admin -- UC12
+
+Visitor -- UC5
+Visitor -- UC6
+
+UC10 ..> UC13 : <<extend>>
+@enduml

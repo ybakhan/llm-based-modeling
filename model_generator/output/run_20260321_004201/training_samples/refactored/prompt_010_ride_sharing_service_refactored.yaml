@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 10
+  domain: ride_sharing_service
+  domain_display: Ride Sharing Service
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 8
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:22:00.959946'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_010_ride_sharing_service/ride_sharing_service_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_010_ride_sharing_service/ride_sharing_service_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_010_ride_sharing_service_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Rider\" as Rider\n\
+    actor \"Driver\" as Driver\n\nrectangle \"Ride Sharing Service\" {\n  usecase\
+    \ \"Request Ride\" as UC1\n  usecase \"Accept Ride\" as UC3\n  usecase \"Rate\
+    \ Driver\" as UC4\n  usecase \"View Ride History\" as UC5\n  usecase \"Update\
+    \ Location\" as UC6\n}\n\nRider --> UC1\nRider --> UC4\nRider --> UC5\nDriver\
+    \ --> UC3\nDriver --> UC6\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: ride_sharing_service
+
+  DOMAIN_DISPLAY: Ride Sharing Service
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Request Ride, Calculate Fare
+
+  EXPLANATION: The use case "Calculate Fare" is an inclusion use case that is included
+  by only one use case ("Request Ride"). "Calculate Fare" is not associated with any
+  actor directly — no actor interacts with it. It does not include or extend any other
+  use case, is not extended by any use case, and is ne …[truncated]'

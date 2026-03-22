@@ -1,0 +1,26 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Farmer" as Farmer
+actor "Farm Manager" as Manager
+
+rectangle "Farm Management System" {
+  usecase "Manage Livestock" as UC1
+  usecase "Record Harvest" as UC2
+  usecase "Validate Crop Data" as UC3
+  usecase "Schedule Irrigation" as UC4
+  usecase "Monitor Soil Health" as UC5
+  usecase "View Farm Dashboard" as UC6
+  usecase "Manage Field Plots" as UC7
+}
+
+Farmer -- UC1
+Farmer -- UC2
+Farmer -- UC4
+Manager -- UC5
+Manager -- UC6
+Manager -- UC7
+
+UC2 ..> UC3 : <<include>>
+@enduml

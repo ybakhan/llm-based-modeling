@@ -1,0 +1,65 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Clerk" as Clerk
+actor "Judge" as Judge
+actor "Attorney" as Attorney
+actor "Administrator" as Admin
+
+rectangle "Court Case Management System" {
+  usecase "File New Case" as UC1
+  usecase "Validate Case Details" as UC2
+  usecase "Assign Judge to Case" as UC3
+  usecase "Schedule Hearing" as UC4
+  usecase "Check Court Availability" as UC5
+  usecase "Record Hearing Outcome" as UC6
+  usecase "Issue Court Order" as UC7
+  usecase "Generate Order Document" as UC8
+  usecase "View Case History" as UC9
+  usecase "Submit Evidence" as UC10
+  usecase "Manage User Accounts" as UC11
+  usecase "Generate Case Report" as UC12
+  usecase "Request Adjournment" as UC13
+}
+
+Clerk --> UC1
+Clerk --> UC3
+Clerk --> UC4
+Clerk --> UC9
+Clerk --> UC12
+
+Judge --> UC6
+Judge --> UC7
+Judge --> UC9
+
+Attorney --> UC10
+Attorney --> UC9
+Attorney --> UC13
+
+Admin --> UC11
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+UC4 ..> UC13 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: File New Case, Validate Case Details, include (File New Case → Validate Case Details)
+   Instance 1: Explanation: "Validate Case Details" is an inclusion use case included only by "File New Case." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal sub-step (validation) rather than a complete, independently observable service to any actor. This is functional decomposition of "File New Case" into a procedural sub-task.
+
+   Instance 2: Constructs Involved: Schedule Hearing, Check Court Availability, include (Schedule Hearing → Check Court Availability)
+   Instance 2: Explanation: "Check Court Availability" is an inclusion use case included only by "Schedule Hearing." It has no direct association with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and participates in no generalization. Checking availability is an internal procedural step of scheduling, not a standalone service — a classic functional decomposition.
+
+   Instance 3: Constructs Involved: Issue Court Order, Generate Order Document, include (Issue Court Order → Generate Order Document)
+   Instance 3: Explanation: "Generate Order Document" is included only by "Issue Court Order." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating the document is an internal sub-step of issuing an order, not an independent, observable service to a user — thus it constitutes functional decomposition.

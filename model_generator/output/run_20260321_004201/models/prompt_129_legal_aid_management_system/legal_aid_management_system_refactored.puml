@@ -1,0 +1,32 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Applicant" as Applicant
+actor "Case Manager" as CaseManager
+actor "Attorney" as Attorney
+actor "Administrator" as Admin
+
+rectangle "Legal Aid Management System" {
+  usecase "Submit Application" as UC1
+  usecase "Review Application" as UC3
+  usecase "Assign Attorney" as UC4
+  usecase "Manage Case Documents" as UC6
+  usecase "Conduct Client Consultation" as UC7
+  usecase "Track Case Progress" as UC8
+  usecase "Close Case" as UC9
+  usecase "Manage User Accounts" as UC11
+  usecase "Generate Statistics Report" as UC12
+  usecase "Request Case Update" as UC13
+}
+
+Applicant -- UC1
+Applicant -- UC13
+CaseManager -- UC3
+CaseManager -- UC4
+CaseManager -- UC8
+CaseManager -- UC9
+Attorney -- UC6
+Attorney -- UC7
+Admin -- UC11
+Admin -- UC12
+@enduml

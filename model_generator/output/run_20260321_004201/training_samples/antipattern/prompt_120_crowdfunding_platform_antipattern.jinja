@@ -1,0 +1,56 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Project Creator" as Creator
+actor "Backer" as Backer
+actor "Administrator" as Admin
+actor "Payment Gateway" as PG
+
+rectangle "Crowdfunding Platform" {
+  usecase "Create Campaign" as UC1
+  usecase "Upload Campaign Media" as UC2
+  usecase "Manage Campaign Updates" as UC3
+  usecase "Withdraw Funds" as UC4
+  usecase "Validate Bank Account" as UC5
+  usecase "Browse Campaigns" as UC6
+  usecase "Back Project" as UC7
+  usecase "Process Payment Details" as UC8
+  usecase "Track Pledges" as UC9
+  usecase "Review Flagged Campaigns" as UC10
+  usecase "Generate Platform Reports" as UC11
+  usecase "Authorize Transaction" as UC12
+}
+
+Creator --> UC1
+Creator --> UC3
+Creator --> UC4
+Backer --> UC6
+Backer --> UC7
+Backer --> UC9
+Admin --> UC10
+Admin --> UC11
+PG --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC12 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Create Campaign, Upload Campaign Media, include (Create Campaign → Upload Campaign Media)
+   Instance 1: Explanation: "Upload Campaign Media" is an inclusion use case included only by "Create Campaign." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step of campaign creation rather than a complete, independently valuable service. This is functional decomposition of "Create Campaign" into a procedural step.
+
+   Instance 2: Constructs Involved: Back Project, Process Payment Details, include (Back Project → Process Payment Details)
+   Instance 2: Explanation: "Process Payment Details" is an inclusion use case included only by "Back Project." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal payment processing step rather than a standalone service observable to a user. This is functional decomposition of "Back Project" into a procedural sub-task.
+
+   Instance 3: Constructs Involved: Withdraw Funds, Validate Bank Account, include (Withdraw Funds → Validate Bank Account)
+   Instance 3: Explanation: "Validate Bank Account" is an inclusion use case included only by "Withdraw Funds." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal validation step rather than a complete service. This is functional decomposition of "Withdraw Funds" into a procedural sub-step.

@@ -1,0 +1,112 @@
+metadata:
+  prompt_number: 50
+  domain: employee_performance_review_system
+  domain_display: Employee Performance Review System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Conduct Review Meeting, Load Employee History
+      explanation: '"Load Employee History" is an inclusion use case included only
+        by "Conduct Review Meeting". It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Loading employee
+        history is a substep of conducting a review meeting and does not provide a
+        complete, observable service to any actor on its own. This is functional decomposition
+        — breaking the "Conduct Review Meeting" service into an artificial sub-function.'
+    - constructs_involved: Set Performance Goals, Validate Goal Criteria
+      explanation: '"Validate Goal Criteria" is an inclusion use case included only
+        by "Set Performance Goals". It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Validating goal
+        criteria is merely an internal step of setting performance goals and does
+        not represent a complete service observable by any user. This constitutes
+        functional decomposition of the goal-setting process.'
+    - constructs_involved: Submit Self-Assessment, Calculate Self-Score
+      explanation: '"Calculate Self-Score" is an inclusion use case included only
+        by "Submit Self-Assessment". It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Calculating a self-score
+        is an internal computation substep of submitting a self-assessment and does
+        not deliver a standalone, observable result to any actor. This is functional
+        decomposition of the self-assessment submission.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:19:17.356946'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_050_employee_performance_review_system/employee_performance_review_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_050_employee_performance_review_system/employee_performance_review_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_050_employee_performance_review_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Manager\"\
+    \ as Manager\nactor \"Employee\" as Employee\nactor \"HR Administrator\" as HRAdmin\n\
+    \nrectangle \"Employee Performance Review System\" {\n  usecase \"Conduct Review\
+    \ Meeting\" as UC1\n  usecase \"Load Employee History\" as UC2\n  usecase \"Set\
+    \ Performance Goals\" as UC3\n  usecase \"Validate Goal Criteria\" as UC4\n  usecase\
+    \ \"Submit Self-Assessment\" as UC5\n  usecase \"Calculate Self-Score\" as UC6\n\
+    \  usecase \"Approve Final Rating\" as UC7\n  usecase \"Generate Performance Report\"\
+    \ as UC8\n  usecase \"View Review Dashboard\" as UC9\n  usecase \"Manage Review\
+    \ Cycles\" as UC10\n  usecase \"Escalate Disputed Review\" as UC11\n  usecase\
+    \ \"Provide Peer Feedback\" as UC12\n  usecase \"Request Calibration Session\"\
+    \ as UC13\n}\n\nManager --> UC1\nManager --> UC3\nManager --> UC7\nManager -->\
+    \ UC9\n\nEmployee --> UC5\nEmployee --> UC9\nEmployee --> UC12\n\nHRAdmin -->\
+    \ UC8\nHRAdmin --> UC10\nHRAdmin --> UC13\n\nUC1 ..> UC2 : <<include>>\nUC3 ..>\
+    \ UC4 : <<include>>\nUC5 ..> UC6 : <<include>>\n\nUC11 .> UC1 : <<extend>>\n}\n\
+    \n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Conduct Review Meeting, Load Employee History\n\
+    \   Instance 1: Explanation: \"Load Employee History\" is an inclusion use case\
+    \ included only by \"Conduct Review Meeting\". It is not associated with any actor,\
+    \ not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. Loading\
+    \ employee history is a substep of conducting a review meeting and does not provide\
+    \ a complete, observable service to any actor on its own. This is functional decomposition\
+    \ — breaking the \"Conduct Review Meeting\" service into an artificial sub-function.\n\
+    \n   Instance 2: Constructs Involved: Set Performance Goals, Validate Goal Criteria\n\
+    \   Instance 2: Explanation: \"Validate Goal Criteria\" is an inclusion use case\
+    \ included only by \"Set Performance Goals\". It is not associated with any actor,\
+    \ not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. Validating\
+    \ goal criteria is merely an internal step of setting performance goals and does\
+    \ not represent a complete service observable by any user. This constitutes functional\
+    \ decomposition of the goal-setting process.\n\n   Instance 3: Constructs Involved:\
+    \ Submit Self-Assessment, Calculate Self-Score\n   Instance 3: Explanation: \"\
+    Calculate Self-Score\" is an inclusion use case included only by \"Submit Self-Assessment\"\
+    . It is not associated with any actor, not included by any other use case, does\
+    \ not include or extend any use case, is not extended by any use case, and has\
+    \ no generalization relationships. Calculating a self-score is an internal computation\
+    \ substep of submitting a self-assessment and does not deliver a standalone, observable\
+    \ result to any actor. This is functional decomposition of the self-assessment\
+    \ submission."
+raw_response_excerpt: '
+
+
+  DOMAIN: employee_performance_review_system
+
+  DOMAIN_DISPLAY: Employee Performance Review System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Conduct Review Meeting, Load Employee History
+
+  EXPLANATION: "Load Employee History" is an inclusion use case included only by "Conduct
+  Review Meeting". It is not associated with any actor, not included by any other
+  use case, does not include or extend any use case, is not extended by any use case,
+  and has …[truncated]'

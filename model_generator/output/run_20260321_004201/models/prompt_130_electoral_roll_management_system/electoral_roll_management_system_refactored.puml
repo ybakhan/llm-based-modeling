@@ -1,0 +1,35 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Election Officer" as EO
+actor "Voter" as V
+actor "System Administrator" as SA
+
+rectangle "Electoral Roll Management System" {
+  usecase "Register Voter" as UC1
+  usecase "Update Voter Record" as UC2
+  usecase "Remove Voter" as UC3
+  usecase "Search Electoral Roll" as UC4
+  usecase "Generate Voter List" as UC5
+  usecase "View Registration Status" as UC6
+  usecase "Submit Registration Application" as UC7
+  usecase "Manage Polling Districts" as UC8
+  usecase "Audit Electoral Roll" as UC9
+  usecase "Export Roll Data" as UC10
+  usecase "Manage User Accounts" as UC11
+}
+
+EO -- UC1
+EO -- UC2
+EO -- UC3
+EO -- UC4
+EO -- UC5
+EO -- UC9
+
+V -- UC6
+V -- UC7
+
+SA -- UC8
+SA -- UC10
+SA -- UC11
+@enduml

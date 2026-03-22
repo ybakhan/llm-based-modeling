@@ -1,0 +1,116 @@
+metadata:
+  prompt_number: 51
+  domain: public_transport_system
+  domain_display: Public Transport System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Plan Journey, Validate Route Availability, include (Plan
+        Journey → Validate Route Availability)
+      explanation: '"Validate Route Availability" is an inclusion use case included
+        only by "Plan Journey". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        decomposed sub-step (checking if a route exists) rather than a complete, independently
+        valuable service observable to a user. This is functional decomposition of
+        "Plan Journey" into an artificially separated fragment.'
+    - constructs_involved: Purchase Ticket, Calculate Fare, include (Purchase Ticket
+        → Calculate Fare)
+      explanation: '"Calculate Fare" is an inclusion use case included only by "Purchase
+        Ticket". It is not associated with any actor, is not included by any other
+        use case, does not include or extend any use case, is not extended by any
+        use case, and has no generalization relationships. Fare calculation is a sub-step
+        of purchasing a ticket and does not represent a standalone service with an
+        observable result for any actor. This is functional decomposition of "Purchase
+        Ticket" into an internal processing fragment.'
+    - constructs_involved: Register Account, Send Confirmation Email, include (Register
+        Account → Send Confirmation Email)
+      explanation: '"Send Confirmation Email" is an inclusion use case included only
+        by "Register Account". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Sending a confirmation
+        email is an internal implementation step of registration, not a complete service
+        yielding an independent observable result to a user. This is functional decomposition
+        of "Register Account" into a technical sub-task.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 28
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:19:40.992353'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_051_public_transport_system/public_transport_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_051_public_transport_system/public_transport_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_051_public_transport_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Passenger\n\
+    actor Driver\nactor Administrator\n\nrectangle \"Public Transport System\" {\n\
+    \  usecase \"Plan Journey\" as UC1\n  usecase \"Validate Route Availability\"\
+    \ as UC2\n  usecase \"Purchase Ticket\" as UC3\n  usecase \"Calculate Fare\" as\
+    \ UC4\n  usecase \"View Live Schedule\" as UC5\n  usecase \"Register Account\"\
+    \ as UC6\n  usecase \"Send Confirmation Email\" as UC7\n  usecase \"Report Delay\"\
+    \ as UC8\n  usecase \"Track Vehicle Location\" as UC9\n  usecase \"Manage Routes\"\
+    \ as UC10\n  usecase \"View Passenger Statistics\" as UC11\n  usecase \"Request\
+    \ Refund\" as UC12\n  usecase \"Rate Service\" as UC13\n  usecase \"Apply Discount\"\
+    \ as UC14\n}\n\nPassenger --> UC1\nPassenger --> UC3\nPassenger --> UC5\nPassenger\
+    \ --> UC6\nPassenger --> UC12\nPassenger --> UC13\n\nDriver --> UC8\nDriver -->\
+    \ UC9\n\nAdministrator --> UC10\nAdministrator --> UC11\n\nUC1 ..> UC2 : <<include>>\n\
+    UC3 ..> UC4 : <<include>>\nUC6 ..> UC7 : <<include>>\nUC3 ..> UC14 : <<extend>>\n\
+    \n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Plan Journey, Validate Route Availability,\
+    \ include (Plan Journey → Validate Route Availability)\n   Instance 1: Explanation:\
+    \ \"Validate Route Availability\" is an inclusion use case included only by \"\
+    Plan Journey\". It is not associated with any actor, is not included by any other\
+    \ use case, does not include or extend any use case, is not extended by any use\
+    \ case, and has no generalization relationships. It represents a decomposed sub-step\
+    \ (checking if a route exists) rather than a complete, independently valuable\
+    \ service observable to a user. This is functional decomposition of \"Plan Journey\"\
+    \ into an artificially separated fragment.\n\n   Instance 2: Constructs Involved:\
+    \ Purchase Ticket, Calculate Fare, include (Purchase Ticket → Calculate Fare)\n\
+    \   Instance 2: Explanation: \"Calculate Fare\" is an inclusion use case included\
+    \ only by \"Purchase Ticket\". It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. Fare calculation is\
+    \ a sub-step of purchasing a ticket and does not represent a standalone service\
+    \ with an observable result for any actor. This is functional decomposition of\
+    \ \"Purchase Ticket\" into an internal processing fragment.\n\n   Instance 3:\
+    \ Constructs Involved: Register Account, Send Confirmation Email, include (Register\
+    \ Account → Send Confirmation Email)\n   Instance 3: Explanation: \"Send Confirmation\
+    \ Email\" is an inclusion use case included only by \"Register Account\". It is\
+    \ not associated with any actor, is not included by any other use case, does not\
+    \ include or extend any use case, is not extended by any use case, and has no\
+    \ generalization relationships. Sending a confirmation email is an internal implementation\
+    \ step of registration, not a complete service yielding an independent observable\
+    \ result to a user. This is functional decomposition of \"Register Account\" into\
+    \ a technical sub-task."
+raw_response_excerpt: '
+
+
+  DOMAIN: public_transport_system
+
+  DOMAIN_DISPLAY: Public Transport System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Plan Journey, Validate Route Availability, include (Plan Journey
+  → Validate Route Availability)
+
+  EXPLANATION: "Validate Route Availability" is an inclusion use case included only
+  by "Plan Journey". It is not associated with any actor, is not included by any other
+  use case, does not include or extend any use case, is not extend …[truncated]'

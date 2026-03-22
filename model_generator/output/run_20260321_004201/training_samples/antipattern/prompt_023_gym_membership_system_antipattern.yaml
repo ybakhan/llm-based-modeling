@@ -1,0 +1,112 @@
+metadata:
+  prompt_number: 23
+  domain: gym_membership_system
+  domain_display: Gym Membership System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Register Membership, Validate Personal Details, include
+        (Register Membership → Validate Personal Details)
+      explanation: '"Validate Personal Details" is an inclusion use case included
+        only by "Register Membership." It is not associated with any actor, is not
+        included by any other use case, does not include or extend any other use case,
+        is not extended by any use case, and is not part of any generalization hierarchy.
+        It represents a sub-step (validating input data) rather than a complete, standalone
+        service observable to any actor. This is functional decomposition of "Register
+        Membership" into an artificial sub-function.'
+    - constructs_involved: Book Class, Check Class Availability, include (Book Class
+        → Check Class Availability)
+      explanation: '"Check Class Availability" is an inclusion use case included only
+        by "Book Class." It is not associated with any actor, is not included by any
+        other use case, does not include or extend any other use case, is not extended
+        by any use case, and is not part of any generalization hierarchy. Checking
+        availability is merely an internal step of booking a class, not a complete
+        service yielding an observable result to a user. This is functional decomposition.'
+    - constructs_involved: Process Payment, Calculate Total Amount, include (Process
+        Payment → Calculate Total Amount)
+      explanation: '"Calculate Total Amount" is an inclusion use case included only
+        by "Process Payment." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and is not part of any generalization hierarchy.
+        Calculating a total is an internal computational step of payment processing,
+        not a standalone service. This constitutes functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 30
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:53:52.951014'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_023_gym_membership_system/gym_membership_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_023_gym_membership_system/gym_membership_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_023_gym_membership_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Member\nactor\
+    \ Trainer\nactor Administrator\nactor \"Payment Gateway\" as PG\n\nrectangle \"\
+    Gym Membership System\" {\n  usecase \"Register Membership\" as UC1\n  usecase\
+    \ \"Validate Personal Details\" as UC1a\n  usecase \"Renew Membership\" as UC2\n\
+    \  usecase \"Cancel Membership\" as UC3\n  usecase \"Book Class\" as UC4\n  usecase\
+    \ \"Check Class Availability\" as UC4a\n  usecase \"View Schedule\" as UC5\n \
+    \ usecase \"Process Payment\" as UC6\n  usecase \"Calculate Total Amount\" as\
+    \ UC6a\n  usecase \"Manage Class Schedule\" as UC7\n  usecase \"Track Attendance\"\
+    \ as UC8\n  usecase \"Generate Reports\" as UC9\n  usecase \"Update Member Profile\"\
+    \ as UC10\n  usecase \"Apply Discount\" as UC11\n}\n\nMember --> UC1\nMember -->\
+    \ UC2\nMember --> UC3\nMember --> UC4\nMember --> UC5\nMember --> UC10\nTrainer\
+    \ --> UC7\nTrainer --> UC8\nAdministrator --> UC9\nAdministrator --> UC3\nPG -->\
+    \ UC6\n\nUC1 ..> UC1a : <<include>>\nUC4 ..> UC4a : <<include>>\nUC6 ..> UC6a\
+    \ : <<include>>\nUC2 ..> UC6 : <<include>>\nUC11 ..> UC6 : <<extend>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Register Membership, Validate Personal Details,\
+    \ include (Register Membership → Validate Personal Details)\n   Instance 1: Explanation:\
+    \ \"Validate Personal Details\" is an inclusion use case included only by \"Register\
+    \ Membership.\" It is not associated with any actor, is not included by any other\
+    \ use case, does not include or extend any other use case, is not extended by\
+    \ any use case, and is not part of any generalization hierarchy. It represents\
+    \ a sub-step (validating input data) rather than a complete, standalone service\
+    \ observable to any actor. This is functional decomposition of \"Register Membership\"\
+    \ into an artificial sub-function.\n\n   Instance 2: Constructs Involved: Book\
+    \ Class, Check Class Availability, include (Book Class → Check Class Availability)\n\
+    \   Instance 2: Explanation: \"Check Class Availability\" is an inclusion use\
+    \ case included only by \"Book Class.\" It is not associated with any actor, is\
+    \ not included by any other use case, does not include or extend any other use\
+    \ case, is not extended by any use case, and is not part of any generalization\
+    \ hierarchy. Checking availability is merely an internal step of booking a class,\
+    \ not a complete service yielding an observable result to a user. This is functional\
+    \ decomposition.\n\n   Instance 3: Constructs Involved: Process Payment, Calculate\
+    \ Total Amount, include (Process Payment → Calculate Total Amount)\n   Instance\
+    \ 3: Explanation: \"Calculate Total Amount\" is an inclusion use case included\
+    \ only by \"Process Payment.\" It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any other use case, is not\
+    \ extended by any use case, and is not part of any generalization hierarchy. Calculating\
+    \ a total is an internal computational step of payment processing, not a standalone\
+    \ service. This constitutes functional decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: gym_membership_system
+
+  DOMAIN_DISPLAY: Gym Membership System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Membership, Validate Personal Details, include (Register
+  Membership → Validate Personal Details)
+
+  EXPLANATION: "Validate Personal Details" is an inclusion use case included only
+  by "Register Membership." It is not associated with any actor, is not included by
+  any other use case, does not include or extend any other use ca …[truncated]'

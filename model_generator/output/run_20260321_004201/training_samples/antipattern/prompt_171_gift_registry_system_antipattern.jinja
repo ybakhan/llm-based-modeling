@@ -1,0 +1,37 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Registrant" as A1
+actor "Gift Buyer" as A2
+actor "Store Admin" as A3
+
+rectangle "Gift Registry System" {
+  usecase "Browse Registries" as UC1
+  usecase "Create Registry" as UC2
+  usecase "Select Registry Theme" as UC3
+  usecase "Add Gift to Registry" as UC4
+  usecase "Purchase Gift" as UC5
+  usecase "Manage Store Catalog" as UC6
+}
+
+A1 --> UC1
+A1 --> UC2
+UC2 ..> UC3 : <<include>>
+A1 --> UC4
+A2 --> UC1
+A2 --> UC5
+A3 --> UC6
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Create Registry (UC2), Select Registry Theme (UC3), include relationship from UC2 to UC3
+   Explanation: "Select Registry Theme" (UC3) is an inclusion use case that is included by only one use case ("Create Registry" / UC2). UC3 is not associated with any actor directly, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a sub-step of registry creation rather than a complete, independently valuable service to any actor. This is functional decomposition — the act of creating a registry has been artificially split so that "Select Registry Theme" is broken out as a separate use case with no standalone value.

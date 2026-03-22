@@ -1,0 +1,19 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "User" as User
+actor "Moderator" as Moderator
+
+rectangle "Social Media Platform" {
+  usecase "Create Post" as UC1
+  usecase "View Feed" as UC3
+  usecase "Send Message" as UC4
+  usecase "Remove Post" as UC5
+}
+
+User -- UC1
+User -- UC3
+User -- UC4
+Moderator -- UC5
+
+@enduml

@@ -1,0 +1,110 @@
+
+
+DOMAIN: driving_school_management_system
+DOMAIN_DISPLAY: Driving School Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Schedule Driving Lesson, Check Instructor Availability, include relationship from "Schedule Driving Lesson" to "Check Instructor Availability"
+EXPLANATION: "Check Instructor Availability" is an inclusion use case included only by "Schedule Driving Lesson." It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed sub-step (checking availability) rather than a complete service observable to an actor, making this a clear instance of functional decomposition via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Payment, Validate Payment Details, include relationship from "Process Payment" to "Validate Payment Details"
+EXPLANATION: "Validate Payment Details" is an inclusion use case included only by "Process Payment." It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Validating payment details is a decomposed internal step of processing a payment, not a standalone service yielding an observable result to any user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Register Student, Verify Student Documents, include relationship from "Register Student" to "Verify Student Documents"
+EXPLANATION: "Verify Student Documents" is an inclusion use case included only by "Register Student." It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Document verification is a decomposed procedural step within student registration, not a complete service providing an observable result to an actor.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases — "Check Instructor Availability," "Validate Payment Details," and "Verify Student Documents" — must be merged back into their respective base use cases ("Schedule Driving Lesson," "Process Payment," and "Register Student"). Each inclusion use case is only included by one base use case, is not connected to any actor, and does not participate in any other relationship. They represent internal procedural steps, not standalone services. Removing these three inclusion use cases and their three include relationships eliminates 6 constructs, resulting in a cleaner model where each base use case encapsulates its full behavior as a complete service to the actor.
+
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Student" as Student
+actor "Instructor" as Instructor
+actor "Administrator" as Admin
+actor "Cashier" as Cashier
+
+rectangle "Driving School Management System" {
+  usecase "Register Student" as UC1
+  usecase "Verify Student Documents" as UC2
+  usecase "Schedule Driving Lesson" as UC3
+  usecase "Check Instructor Availability" as UC4
+  usecase "Record Lesson Outcome" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Validate Payment Details" as UC7
+  usecase "Take Theory Exam" as UC8
+  usecase "Take Practical Exam" as UC9
+  usecase "Manage Instructor Roster" as UC10
+  usecase "Generate Progress Report" as UC11
+  usecase "View Schedule" as UC12
+
+  UC1 ..> UC2 : <<include>>
+  UC3 ..> UC4 : <<include>>
+  UC6 ..> UC7 : <<include>>
+  UC8 ..> UC3 : <<extend>>
+}
+
+Admin --> UC1
+Admin --> UC3
+Admin --> UC10
+Admin --> UC11
+Instructor --> UC5
+Instructor --> UC12
+Student --> UC8
+Student --> UC9
+Student --> UC12
+Cashier --> UC6
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Student" as Student
+actor "Instructor" as Instructor
+actor "Administrator" as Admin
+actor "Cashier" as Cashier
+
+rectangle "Driving School Management System" {
+  usecase "Register Student" as UC1
+  usecase "Schedule Driving Lesson" as UC3
+  usecase "Record Lesson Outcome" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Take Theory Exam" as UC8
+  usecase "Take Practical Exam" as UC9
+  usecase "Manage Instructor Roster" as UC10
+  usecase "Generate Progress Report" as UC11
+  usecase "View Schedule" as UC12
+
+  UC8 ..> UC3 : <<extend>>
+}
+
+Admin --> UC1
+Admin --> UC3
+Admin --> UC10
+Admin --> UC11
+Instructor --> UC5
+Instructor --> UC12
+Student --> UC8
+Student --> UC9
+Student --> UC12
+Cashier --> UC6
+
+@enduml
+```

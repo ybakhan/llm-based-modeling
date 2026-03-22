@@ -1,0 +1,248 @@
+AUDIT LOG — Prompt #188
+Timestamp : 2026-03-21T02:14:15.131671
+Model     : claude-opus-4-6
+Tokens    : input=1357  output=1544
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (3 instances) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #188: Generate a MEDIUM use case model with exactly 30 constructs (valid range for medium: 24–30 constructs). Domain: Industrial Safety Reporting System.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: industrial_safety_reporting_system
+DOMAIN_DISPLAY: Industrial Safety Reporting System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Submit Incident Report, Validate Report Fields, include relationship from "Submit Incident Report" to "Validate Report Fields"
+EXPLANATION: "Validate Report Fields" is an inclusion use case included only by "Submit Incident Report". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (field validation) of the incident submission process rather than a complete, independently observable service. This is functional decomposition — breaking "Submit Incident Report" into procedural steps via include.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Conduct Safety Inspection, Generate Inspection Checklist, include relationship from "Conduct Safety Inspection" to "Generate Inspection Checklist"
+EXPLANATION: "Generate Inspection Checklist" is included only by "Conduct Safety Inspection". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a checklist is an internal procedural step of conducting an inspection, not a standalone service delivering an observable result to any user. This constitutes functional decomposition via the include relationship.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Investigate Incident, Collect Evidence Data, include relationship from "Investigate Incident" to "Collect Evidence Data"
+EXPLANATION: "Collect Evidence Data" is included only by "Investigate Incident". It has no actor association, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Collecting evidence is an internal sub-task of the investigation process, not an independently valuable service for any actor. This is a clear case of functional decomposition through the include relationship.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Report Fields", "Generate Inspection Checklist", and "Collect Evidence Data" — each represent internal procedural steps decomposed from their respective base use cases. Each is included by exactly one use case, has no actor association, and participates in no other relationships. Per the Drop Functional Decomposition refactoring: (1) Merge "Validate Report Fields" into "Submit Incident Report", eliminating 1 use case and 1 include. (2) Merge "Generate Inspection Checklist" into "Conduct Safety Inspection", eliminating 1 use case and 1 include. (3) Merge "Collect Evidence Data" into "Investigate Incident", eliminating 1 use case and 1 include. This removes 3 use cases and 3 include relationships (6 constructs total), resulting in a cleaner model where each use case delivers a complete, observable service.
+CONSTRUCT_COUNT: 30
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+left to right direction
+
+actor "Safety Officer" as SO
+actor "Plant Worker" as PW
+actor "Safety Manager" as SM
+actor "Regulatory Authority" as RA
+
+rectangle "Industrial Safety Reporting System" {
+  usecase "Submit Incident Report" as UC1
+  usecase "Validate Report Fields" as UC2
+  usecase "View Incident History" as UC3
+  usecase "Conduct Safety Inspection" as UC4
+  usecase "Generate Inspection Checklist" as UC5
+  usecase "Investigate Incident" as UC6
+  usecase "Collect Evidence Data" as UC7
+  usecase "Assign Corrective Action" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Review Safety Metrics Dashboard" as UC10
+  usecase "Escalate Critical Incident" as UC11
+  usecase "Track Corrective Action Status" as UC12
+  usecase "Export Regulatory Filing" as UC13
+  usecase "Log Near-Miss Event" as UC14
+  usecase "Notify Stakeholders" as UC15
+}
+
+PW --> UC1
+PW --> UC14
+SO --> UC1
+SO --> UC3
+SO --> UC4
+SO --> UC6
+SO --> UC8
+SO --> UC12
+SM --> UC9
+SM --> UC10
+SM --> UC11
+RA --> UC13
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC11 ..> UC15 : <<include>>
+UC1 ..> UC15 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+left to right direction
+
+actor "Safety Officer" as SO
+actor "Plant Worker" as PW
+actor "Safety Manager" as SM
+actor "Regulatory Authority" as RA
+
+rectangle "Industrial Safety Reporting System" {
+  usecase "Submit Incident Report" as UC1
+  usecase "View Incident History" as UC3
+  usecase "Conduct Safety Inspection" as UC4
+  usecase "Investigate Incident" as UC6
+  usecase "Assign Corrective Action" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Review Safety Metrics Dashboard" as UC10
+  usecase "Escalate Critical Incident" as UC11
+  usecase "Track Corrective Action Status" as UC12
+  usecase "Export Regulatory Filing" as UC13
+  usecase "Log Near-Miss Event" as UC14
+  usecase "Notify Stakeholders" as UC15
+}
+
+PW --> UC1
+PW --> UC14
+SO --> UC1
+SO --> UC3
+SO --> UC4
+SO --> UC6
+SO --> UC8
+SO --> UC12
+SM --> UC9
+SM --> UC10
+SM --> UC11
+RA --> UC13
+
+UC11 ..> UC15 : <<include>>
+UC1 ..> UC15 : <<include>>
+
+@enduml
+```

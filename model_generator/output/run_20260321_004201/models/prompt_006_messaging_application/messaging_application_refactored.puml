@@ -1,0 +1,22 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Registered User" as User
+actor "Administrator" as Admin
+
+rectangle "Messaging Application" {
+  usecase "Register Account" as UC1
+  usecase "Send Message" as UC2
+  usecase "View Conversations" as UC3
+  usecase "Delete Message" as UC4
+  usecase "Manage Users" as UC6
+  usecase "Block User" as UC7
+}
+
+User -- UC1
+User -- UC2
+User -- UC3
+User -- UC4
+User -- UC7
+Admin -- UC6
+@enduml

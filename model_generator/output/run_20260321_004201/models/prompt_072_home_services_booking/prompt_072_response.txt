@@ -1,0 +1,74 @@
+
+
+DOMAIN: home_services_booking
+DOMAIN_DISPLAY: Home Services Booking
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Service (UC2), Select Time Slot (UC4), UC2 --include--> UC4
+EXPLANATION: "Select Time Slot" (UC4) is an inclusion use case that is included by only one use case ("Book Service" / UC2). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Select Time Slot" does not represent a complete, independently valuable service to any actor — it is merely a decomposed step of the booking process. This constitutes the Functional Decomposition antipattern via the include relationship.
+
+REFACTORING_RATIONALE: The inclusion use case "Select Time Slot" (UC4) must be merged back into its sole base use case "Book Service" (UC2). Since selecting a time slot is an internal step of booking a service and provides no standalone observable result to any actor, it should not exist as a separate use case. The include relationship between UC2 and UC4 must also be removed. This reduces the model by one use case and one include relationship, yielding a cleaner model where "Book Service" encapsulates the full booking behavior including time slot selection.
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Homeowner as A1
+actor "Service Provider" as A2
+
+rectangle "Home Services Booking System" {
+  usecase "Browse Services" as UC1
+  usecase "Book Service" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "Select Time Slot" as UC4
+  usecase "View Booking Details" as UC5
+  usecase "Update Availability" as UC6
+}
+
+A1 -- UC1
+A1 -- UC2
+A1 -- UC3
+A1 -- UC5
+A2 -- UC5
+A2 -- UC6
+
+UC2 ..> UC4 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 9
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Homeowner as A1
+actor "Service Provider" as A2
+
+rectangle "Home Services Booking System" {
+  usecase "Browse Services" as UC1
+  usecase "Book Service" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "View Booking Details" as UC5
+  usecase "Update Availability" as UC6
+}
+
+A1 -- UC1
+A1 -- UC2
+A1 -- UC3
+A1 -- UC5
+A2 -- UC5
+A2 -- UC6
+
+@enduml
+```

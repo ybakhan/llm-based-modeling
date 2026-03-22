@@ -1,0 +1,117 @@
+
+
+DOMAIN: data_backup_and_recovery_system
+DOMAIN_DISPLAY: Data Backup and Recovery System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Schedule Backup, Validate Backup Schedule
+EXPLANATION: "Validate Backup Schedule" is an inclusion use case included only by "Schedule Backup". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It decomposes a validation step out of "Schedule Backup" rather than representing a complete, independently valuable service to any actor.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Perform Full Backup, Compress Backup Data
+EXPLANATION: "Compress Backup Data" is an inclusion use case included only by "Perform Full Backup". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a functional sub-step (compression) extracted from the backup process rather than a standalone service observable to a user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Restore Data, Verify Data Integrity
+EXPLANATION: "Verify Data Integrity" is an inclusion use case included only by "Restore Data". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It decomposes an internal verification step from the restoration process and does not provide a complete, independent service to any actor.
+
+REFACTORING_RATIONALE: The three inclusion use cases — "Validate Backup Schedule", "Compress Backup Data", and "Verify Data Integrity" — must each be merged back into their respective base use cases ("Schedule Backup", "Perform Full Backup", and "Restore Data"). Each inclusion use case is included by only one base use case, is not connected to any actor, and has no other relationships, meaning it serves only as a decomposed sub-step. Removing these three use cases and their three include relationships (6 constructs total) consolidates the functional behavior into the base use cases, yielding a cleaner model where every use case represents a complete service observable to an actor.
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "System Administrator" as Admin
+actor "End User" as User
+actor "Monitoring Service" as Monitor
+
+rectangle "Data Backup and Recovery System" {
+  usecase "Schedule Backup" as UC1
+  usecase "Validate Backup Schedule" as UC2
+  usecase "Perform Full Backup" as UC3
+  usecase "Compress Backup Data" as UC4
+  usecase "Perform Incremental Backup" as UC5
+  usecase "Restore Data" as UC6
+  usecase "Verify Data Integrity" as UC7
+  usecase "View Backup History" as UC8
+  usecase "Configure Retention Policy" as UC9
+  usecase "Monitor Backup Status" as UC10
+  usecase "Generate Backup Report" as UC11
+  usecase "Manage Storage Locations" as UC12
+  usecase "Request File Recovery" as UC13
+}
+
+Admin --> UC1
+Admin --> UC3
+Admin --> UC5
+Admin --> UC9
+Admin --> UC12
+Admin --> UC6
+
+User --> UC8
+User --> UC13
+
+Monitor --> UC10
+Monitor --> UC11
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+UC13 ..> UC6 : <<include>>
+UC10 .> UC11 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "System Administrator" as Admin
+actor "End User" as User
+actor "Monitoring Service" as Monitor
+
+rectangle "Data Backup and Recovery System" {
+  usecase "Schedule Backup" as UC1
+  usecase "Perform Full Backup" as UC3
+  usecase "Perform Incremental Backup" as UC5
+  usecase "Restore Data" as UC6
+  usecase "View Backup History" as UC8
+  usecase "Configure Retention Policy" as UC9
+  usecase "Monitor Backup Status" as UC10
+  usecase "Generate Backup Report" as UC11
+  usecase "Manage Storage Locations" as UC12
+  usecase "Request File Recovery" as UC13
+}
+
+Admin --> UC1
+Admin --> UC3
+Admin --> UC5
+Admin --> UC9
+Admin --> UC12
+Admin --> UC6
+
+User --> UC8
+User --> UC13
+
+Monitor --> UC10
+Monitor --> UC11
+
+UC13 ..> UC6 : <<include>>
+UC10 .> UC11 : <<extend>>
+
+@enduml
+```

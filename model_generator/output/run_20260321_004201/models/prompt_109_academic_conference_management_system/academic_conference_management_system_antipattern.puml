@@ -1,0 +1,38 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Author" as Author
+actor "Reviewer" as Reviewer
+actor "Program Chair" as ProgramChair
+actor "Attendee" as Attendee
+
+rectangle "Academic Conference Management System" {
+  usecase "Submit Paper" as UC1
+  usecase "Validate Paper Format" as UC2
+  usecase "Review Paper" as UC3
+  usecase "Assign Reviewers" as UC4
+  usecase "Check Reviewer Expertise" as UC5
+  usecase "Manage Conference Schedule" as UC6
+  usecase "Register for Conference" as UC7
+  usecase "Process Payment" as UC8
+  usecase "View Accepted Papers" as UC9
+  usecase "Submit Camera Ready" as UC10
+  usecase "Send Notifications" as UC11
+  usecase "View Schedule" as UC12
+}
+
+Author -- UC1
+Author -- UC10
+Reviewer -- UC3
+ProgramChair -- UC4
+ProgramChair -- UC6
+ProgramChair -- UC11
+Attendee -- UC7
+Attendee -- UC9
+Attendee -- UC12
+
+UC1 ..> UC2 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC4 ..> UC5 : <<include>>
+
+@enduml

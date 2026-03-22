@@ -1,0 +1,125 @@
+
+
+DOMAIN: software_license_management_system
+DOMAIN_DISPLAY: Software License Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Purchase License, Validate Payment Details, include (Purchase License → Validate Payment Details)
+EXPLANATION: "Validate Payment Details" is an inclusion use case included only by "Purchase License." It is not associated with any actor directly, is not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. It represents a sub-step (payment validation) of purchasing a license rather than a complete, independently observable service to any actor. This is functional decomposition of "Purchase License" into a procedural step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Generate Compliance Report, Fetch License Data, include (Generate Compliance Report → Fetch License Data)
+EXPLANATION: "Fetch License Data" is an inclusion use case included only by "Generate Compliance Report." It has no direct actor association, is not included by any other use case, and does not participate in any other relationship (include, extend, or generalization). It represents an internal data retrieval step rather than a complete service observable to a user. This is functional decomposition of "Generate Compliance Report" into a procedural sub-function.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Assign License to User, Check License Availability, include (Assign License to User → Check License Availability)
+EXPLANATION: "Check License Availability" is an inclusion use case included only by "Assign License to User." It is not associated with any actor, not included by any other use case, and has no other relationships. It represents an internal verification step of the assignment process rather than a standalone service delivering an observable result to an actor. This is functional decomposition of the assignment workflow.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Payment Details," "Fetch License Data," "Check License Availability") is included by exactly one base use case, has no actor association, and participates in no other relationships. They represent internal procedural steps, not independently valuable services. Per the "Drop Functional Decomposition" refactoring, each inclusion use case and its corresponding <<include>> relationship must be removed, and the behavior must be merged into the respective base use case: "Validate Payment Details" merges into "Purchase License," "Fetch License Data" merges into "Generate Compliance Report," and "Check License Availability" merges into "Assign License to User." This eliminates 3 use cases and 3 include relationships (6 constructs), reducing the count from 30 to 24.
+
+CONSTRUCT_COUNT: 30
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "License Administrator" as Admin
+actor "End User" as EndUser
+actor "Compliance Auditor" as Auditor
+actor "Vendor" as Vendor
+
+rectangle "Software License Management System" {
+  usecase "Purchase License" as UC1
+  usecase "Validate Payment Details" as UC2
+  usecase "Renew License" as UC3
+  usecase "Assign License to User" as UC4
+  usecase "Check License Availability" as UC5
+  usecase "Revoke License" as UC6
+  usecase "View Assigned Licenses" as UC7
+  usecase "Request License" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Fetch License Data" as UC10
+  usecase "Monitor License Expiry" as UC11
+  usecase "Manage License Keys" as UC12
+  usecase "View License Catalog" as UC13
+  usecase "Notify Expiring Licenses" as UC14
+}
+
+Admin --> UC1
+Admin --> UC3
+Admin --> UC4
+Admin --> UC6
+Admin --> UC11
+Admin --> UC12
+
+EndUser --> UC7
+EndUser --> UC8
+EndUser --> UC13
+
+Auditor --> UC9
+
+Vendor --> UC1
+
+UC1 ..> UC2 : <<include>>
+UC9 ..> UC10 : <<include>>
+UC4 ..> UC5 : <<include>>
+
+UC11 ..> UC14 : <<include>>
+UC3 ..> UC14 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "License Administrator" as Admin
+actor "End User" as EndUser
+actor "Compliance Auditor" as Auditor
+actor "Vendor" as Vendor
+
+rectangle "Software License Management System" {
+  usecase "Purchase License" as UC1
+  usecase "Renew License" as UC3
+  usecase "Assign License to User" as UC4
+  usecase "Revoke License" as UC6
+  usecase "View Assigned Licenses" as UC7
+  usecase "Request License" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Monitor License Expiry" as UC11
+  usecase "Manage License Keys" as UC12
+  usecase "View License Catalog" as UC13
+  usecase "Notify Expiring Licenses" as UC14
+}
+
+Admin --> UC1
+Admin --> UC3
+Admin --> UC4
+Admin --> UC6
+Admin --> UC11
+Admin --> UC12
+
+EndUser --> UC7
+EndUser --> UC8
+EndUser --> UC13
+
+Auditor --> UC9
+
+Vendor --> UC1
+
+UC11 ..> UC14 : <<include>>
+UC3 ..> UC14 : <<extend>>
+
+@enduml
+```

@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 18
+  domain: pharmacy_management_system
+  domain_display: Pharmacy Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:49:58.175706'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_018_pharmacy_management_system/pharmacy_management_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_018_pharmacy_management_system/pharmacy_management_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_018_pharmacy_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Pharmacist\" as Pharmacist\nactor \"Customer\" as Customer\nactor \"Pharmacy\
+    \ Manager\" as Manager\n\nrectangle \"Pharmacy Management System\" {\n    usecase\
+    \ \"Fill Prescription\" as UC1\n    usecase \"Process Payment\" as UC4\n    usecase\
+    \ \"Manage Inventory\" as UC6\n    usecase \"Register Customer\" as UC7\n    usecase\
+    \ \"View Prescription History\" as UC8\n    usecase \"Order Medication Refill\"\
+    \ as UC9\n    usecase \"Generate Sales Report\" as UC10\n    usecase \"Manage\
+    \ Supplier Orders\" as UC11\n    usecase \"Update Drug Catalog\" as UC12\n}\n\n\
+    Pharmacist --> UC1\nPharmacist --> UC4\nPharmacist --> UC6\nPharmacist --> UC7\n\
+    Customer --> UC8\nCustomer --> UC9\nManager --> UC10\nManager --> UC11\nManager\
+    \ --> UC12\n\nUC9 ..> UC1 : <<include>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: pharmacy_management_system
+
+  DOMAIN_DISPLAY: Pharmacy Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Fill Prescription, Verify Patient Insurance, include relationship
+  from Fill Prescription to Verify Patient Insurance
+
+  EXPLANATION: "Verify Patient Insurance" is an inclusion use case included only by
+  "Fill Prescription." It is not associated with any actor, is not included by any
+  other use case, does not include or exten …[truncated]'

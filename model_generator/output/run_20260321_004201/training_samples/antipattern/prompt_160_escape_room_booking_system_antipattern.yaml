@@ -1,0 +1,115 @@
+metadata:
+  prompt_number: 160
+  domain: escape_room_booking_system
+  domain_display: Escape Room Booking System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Book Escape Room, Validate Time Slot, include (Book Escape
+        Room → Validate Time Slot)
+      explanation: '"Validate Time Slot" is an inclusion use case included only by
+        "Book Escape Room." It is not associated with any actor, not included by any
+        other use case, and does not include, extend, generalize, or get extended
+        by any other use case. It represents a sub-step (checking slot availability)
+        rather than a complete, independently valuable service to any actor. This
+        is functional decomposition of the booking process into an internal validation
+        step.'
+    - constructs_involved: Process Payment, Calculate Total Price, include (Process
+        Payment → Calculate Total Price)
+      explanation: '"Calculate Total Price" is an inclusion use case included only
+        by "Process Payment." It is not associated with any actor, not included by
+        any other use case, and does not include, extend, generalize, or get extended
+        by any other use case. Calculating the total price is an internal computational
+        step within payment processing, not a standalone service offering an observable
+        result to a user. This is functional decomposition of payment into a pricing
+        sub-function.'
+    - constructs_involved: Register Account, Send Verification Email, include (Register
+        Account → Send Verification Email)
+      explanation: '"Send Verification Email" is an inclusion use case included only
+        by "Register Account." It is not associated with any actor, not included by
+        any other use case, and does not include, extend, generalize, or get extended
+        by any other use case. Sending a verification email is an internal system
+        step within registration, not a complete service with an observable result
+        for an actor. This is functional decomposition of the registration workflow.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 30
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:04:04.218660'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_160_escape_room_booking_system/escape_room_booking_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_160_escape_room_booking_system/escape_room_booking_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_160_escape_room_booking_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Customer\" as Customer\nactor \"Admin\" as Admin\nactor \"Payment Gateway\"\
+    \ as PayGW\n\nrectangle \"Escape Room Booking System\" {\n  usecase \"Register\
+    \ Account\" as UC1\n  usecase \"Send Verification Email\" as UC2\n  usecase \"\
+    Browse Escape Rooms\" as UC3\n  usecase \"View Room Details\" as UC4\n  usecase\
+    \ \"Book Escape Room\" as UC5\n  usecase \"Validate Time Slot\" as UC6\n  usecase\
+    \ \"Process Payment\" as UC7\n  usecase \"Calculate Total Price\" as UC8\n  usecase\
+    \ \"Cancel Booking\" as UC9\n  usecase \"View Booking History\" as UC10\n  usecase\
+    \ \"Leave Review\" as UC11\n  usecase \"Manage Rooms\" as UC12\n  usecase \"View\
+    \ Booking Reports\" as UC13\n  usecase \"Apply Promo Code\" as UC14\n  usecase\
+    \ \"Manage Customer Accounts\" as UC15\n}\n\nCustomer --> UC1\nCustomer --> UC3\n\
+    Customer --> UC4\nCustomer --> UC5\nCustomer --> UC7\nCustomer --> UC9\nCustomer\
+    \ --> UC10\nCustomer --> UC11\nCustomer --> UC14\n\nAdmin --> UC12\nAdmin -->\
+    \ UC13\nAdmin --> UC15\n\nPayGW --> UC7\n\nUC1 ..> UC2 : <<include>>\nUC5 ..>\
+    \ UC6 : <<include>>\nUC7 ..> UC8 : <<include>>\n\nUC5 ..> UC7 : <<include>>\n\
+    UC3 ..> UC4 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Book Escape Room, Validate Time Slot, include\
+    \ (Book Escape Room → Validate Time Slot)\n   Instance 1: Explanation: \"Validate\
+    \ Time Slot\" is an inclusion use case included only by \"Book Escape Room.\"\
+    \ It is not associated with any actor, not included by any other use case, and\
+    \ does not include, extend, generalize, or get extended by any other use case.\
+    \ It represents a sub-step (checking slot availability) rather than a complete,\
+    \ independently valuable service to any actor. This is functional decomposition\
+    \ of the booking process into an internal validation step.\n\n   Instance 2: Constructs\
+    \ Involved: Process Payment, Calculate Total Price, include (Process Payment →\
+    \ Calculate Total Price)\n   Instance 2: Explanation: \"Calculate Total Price\"\
+    \ is an inclusion use case included only by \"Process Payment.\" It is not associated\
+    \ with any actor, not included by any other use case, and does not include, extend,\
+    \ generalize, or get extended by any other use case. Calculating the total price\
+    \ is an internal computational step within payment processing, not a standalone\
+    \ service offering an observable result to a user. This is functional decomposition\
+    \ of payment into a pricing sub-function.\n\n   Instance 3: Constructs Involved:\
+    \ Register Account, Send Verification Email, include (Register Account → Send\
+    \ Verification Email)\n   Instance 3: Explanation: \"Send Verification Email\"\
+    \ is an inclusion use case included only by \"Register Account.\" It is not associated\
+    \ with any actor, not included by any other use case, and does not include, extend,\
+    \ generalize, or get extended by any other use case. Sending a verification email\
+    \ is an internal system step within registration, not a complete service with\
+    \ an observable result for an actor. This is functional decomposition of the registration\
+    \ workflow."
+raw_response_excerpt: '
+
+
+  DOMAIN: escape_room_booking_system
+
+  DOMAIN_DISPLAY: Escape Room Booking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Escape Room, Validate Time Slot, include (Book Escape
+  Room → Validate Time Slot)
+
+  EXPLANATION: "Validate Time Slot" is an inclusion use case included only by "Book
+  Escape Room." It is not associated with any actor, not included by any other use
+  case, and does not include, extend, generalize, or get extended by any o …[truncated]'

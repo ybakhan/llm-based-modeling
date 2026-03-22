@@ -1,0 +1,70 @@
+
+
+DOMAIN: military_personnel_management_system
+DOMAIN_DISPLAY: Military Personnel Management System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Assign Personnel to Unit, Validate Security Clearance
+EXPLANATION: The use case "Validate Security Clearance" is an inclusion use case that is included by only one use case ("Assign Personnel to Unit"). It is not associated with any actor directly, does not include or extend any other use case, is not extended by any other use case, and is not involved in any generalization. "Validate Security Clearance" does not provide a complete, standalone service to any actor — it is merely a decomposed sub-step of the assignment process. This constitutes the Functional Decomposition antipattern because the base use case's behavior has been artificially broken into a fragment that has no independent value to any user.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Security Clearance" must be merged back into "Assign Personnel to Unit" because it serves no independent purpose and is only included by that single use case. Removing "Validate Security Clearance" and the corresponding <<include>> relationship eliminates the functional decomposition, reducing the model by 1 use case and 1 include relationship. The security clearance validation logic becomes an internal step within "Assign Personnel to Unit," which is the proper level of abstraction for a use case model.
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "HR Officer" as HR
+actor "Unit Commander" as CMD
+
+rectangle "Military Personnel Management System" {
+  usecase "Register New Personnel" as UC1
+  usecase "Assign Personnel to Unit" as UC2
+  usecase "View Personnel Records" as UC3
+  usecase "Process Discharge" as UC4
+  usecase "Validate Security Clearance" as UC5
+}
+
+HR --> UC1
+HR --> UC2
+HR --> UC4
+CMD --> UC3
+CMD --> UC2
+
+UC2 ..> UC5 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 9
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "HR Officer" as HR
+actor "Unit Commander" as CMD
+
+rectangle "Military Personnel Management System" {
+  usecase "Register New Personnel" as UC1
+  usecase "Assign Personnel to Unit" as UC2
+  usecase "View Personnel Records" as UC3
+  usecase "Process Discharge" as UC4
+}
+
+HR --> UC1
+HR --> UC2
+HR --> UC4
+CMD --> UC3
+CMD --> UC2
+
+@enduml
+```

@@ -1,0 +1,36 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Researcher" as Researcher
+actor "Grant Reviewer" as Reviewer
+actor "Department Head" as DeptHead
+
+rectangle "Research Grant Management System" {
+  usecase "Submit Grant Proposal" as UC1
+  usecase "Validate Budget Details" as UC2
+  usecase "Review Grant Application" as UC3
+  usecase "Approve Grant" as UC4
+  usecase "Track Grant Status" as UC5
+  usecase "Generate Grant Report" as UC6
+}
+
+Researcher --> UC1
+UC1 ..> UC2 : <<include>>
+Reviewer --> UC3
+DeptHead --> UC4
+Researcher --> UC5
+DeptHead --> UC6
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Submit Grant Proposal, Validate Budget Details, include relationship from "Submit Grant Proposal" to "Validate Budget Details"
+   Explanation: The use case "Validate Budget Details" is an inclusion use case that is included by only one use case ("Submit Grant Proposal"). It is not associated with any actor directly, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. "Validate Budget Details" does not represent a complete service offering an observable result to any user — it is merely a decomposed sub-step of the proposal submission process. This constitutes the Functional Decomposition antipattern because the base use case's internal behavior has been artificially broken out into a separate inclusion use case that serves no independent purpose.

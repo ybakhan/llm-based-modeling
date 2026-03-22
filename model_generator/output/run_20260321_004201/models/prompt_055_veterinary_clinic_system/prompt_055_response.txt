@@ -1,0 +1,101 @@
+
+
+DOMAIN: veterinary_clinic_system
+DOMAIN_DISPLAY: Veterinary Clinic System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Conduct Examination, Check Vital Signs, include relationship from Conduct Examination to Check Vital Signs
+EXPLANATION: "Check Vital Signs" is an inclusion use case included only by "Conduct Examination". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by or generalized with any use case. It represents a sub-step of the examination rather than a complete service observable to an actor, making this a functional decomposition antipattern.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Conduct Examination, Prescribe Medication, include relationship from Conduct Examination to Prescribe Medication
+EXPLANATION: "Prescribe Medication" is an inclusion use case included only by "Conduct Examination". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by or generalized with any use case. It represents a sub-step of the examination process rather than a standalone service, making this a functional decomposition antipattern.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Payment, Generate Invoice, include relationship from Process Payment to Generate Invoice
+EXPLANATION: "Generate Invoice" is an inclusion use case included only by "Process Payment". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by or generalized with any use case. It represents a decomposed sub-step of payment processing rather than a complete service to any actor, making this a functional decomposition antipattern.
+
+REFACTORING_RATIONALE: All three functional decomposition instances must be resolved by merging the orphan inclusion use cases into their respective base use cases. (1) "Check Vital Signs" must be merged into "Conduct Examination" since it is only a sub-step of that use case with no independent actor or reuse. (2) "Prescribe Medication" must also be merged into "Conduct Examination" since it too is only a sub-step with no independent actor or reuse. (3) "Generate Invoice" must be merged into "Process Payment" since it is only a sub-step with no independent actor or reuse. This removes 3 use cases and 3 include relationships (6 constructs total), reducing the model from 26 to 20 constructs while preserving all meaningful services.
+
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Veterinarian" as Vet
+actor "Receptionist" as Recep
+actor "Pet Owner" as Owner
+
+rectangle "Veterinary Clinic System" {
+    usecase "Register Pet" as UC1
+    usecase "Schedule Appointment" as UC2
+    usecase "Conduct Examination" as UC3
+    usecase "Check Vital Signs" as UC4
+    usecase "Prescribe Medication" as UC5
+    usecase "View Medical Records" as UC6
+    usecase "Process Payment" as UC7
+    usecase "Generate Invoice" as UC8
+    usecase "Manage Vaccinations" as UC9
+    usecase "Cancel Appointment" as UC10
+}
+
+Owner -- UC1
+Owner -- UC2
+Owner -- UC6
+Owner -- UC10
+Recep -- UC2
+Recep -- UC7
+Recep -- UC1
+Vet -- UC3
+Vet -- UC9
+Vet -- UC6
+
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Veterinarian" as Vet
+actor "Receptionist" as Recep
+actor "Pet Owner" as Owner
+
+rectangle "Veterinary Clinic System" {
+    usecase "Register Pet" as UC1
+    usecase "Schedule Appointment" as UC2
+    usecase "Conduct Examination" as UC3
+    usecase "View Medical Records" as UC6
+    usecase "Process Payment" as UC7
+    usecase "Manage Vaccinations" as UC9
+    usecase "Cancel Appointment" as UC10
+}
+
+Owner -- UC1
+Owner -- UC2
+Owner -- UC6
+Owner -- UC10
+Recep -- UC2
+Recep -- UC7
+Recep -- UC1
+Vet -- UC3
+Vet -- UC9
+Vet -- UC6
+@enduml
+```

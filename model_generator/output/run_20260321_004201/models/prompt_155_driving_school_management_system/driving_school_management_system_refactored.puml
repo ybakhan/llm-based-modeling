@@ -1,0 +1,34 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Student" as Student
+actor "Instructor" as Instructor
+actor "Administrator" as Admin
+actor "Cashier" as Cashier
+
+rectangle "Driving School Management System" {
+  usecase "Register Student" as UC1
+  usecase "Schedule Driving Lesson" as UC3
+  usecase "Record Lesson Outcome" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Take Theory Exam" as UC8
+  usecase "Take Practical Exam" as UC9
+  usecase "Manage Instructor Roster" as UC10
+  usecase "Generate Progress Report" as UC11
+  usecase "View Schedule" as UC12
+
+  UC8 ..> UC3 : <<extend>>
+}
+
+Admin -- UC1
+Admin -- UC3
+Admin -- UC10
+Admin -- UC11
+Instructor -- UC5
+Instructor -- UC12
+Student -- UC8
+Student -- UC9
+Student -- UC12
+Cashier -- UC6
+
+@enduml

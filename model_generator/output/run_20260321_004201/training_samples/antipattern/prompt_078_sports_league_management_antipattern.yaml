@@ -1,0 +1,114 @@
+metadata:
+  prompt_number: 78
+  domain: sports_league_management
+  domain_display: Sports League Management
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Register Team, Validate Team Roster, include relationship
+        from Register Team to Validate Team Roster
+      explanation: '"Validate Team Roster" is an inclusion use case included only
+        by "Register Team." It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. It represents a sub-step
+        (roster validation) of the registration process rather than a complete, independently
+        valuable service observable to an actor. This is functional decomposition
+        of "Register Team" into a procedural step.'
+    - constructs_involved: Schedule Match, Check Venue Availability, include relationship
+        from Schedule Match to Check Venue Availability
+      explanation: '"Check Venue Availability" is an inclusion use case included only
+        by "Schedule Match." It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Checking venue availability
+        is an internal step of scheduling a match, not a standalone service that delivers
+        an observable result to any user. This is functional decomposition of "Schedule
+        Match."'
+    - constructs_involved: Record Match Result, Calculate Updated Standings, include
+        relationship from Record Match Result to Calculate Updated Standings
+      explanation: '"Calculate Updated Standings" is an inclusion use case included
+        only by "Record Match Result." It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Calculating standings
+        is a computational sub-step triggered after recording a result, not a complete
+        service to an actor. This is functional decomposition of "Record Match Result."'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:31:07.586608'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_078_sports_league_management/sports_league_management_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_078_sports_league_management/sports_league_management_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_078_sports_league_management_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"League Administrator\"\
+    \ as Admin\nactor \"Team Manager\" as TM\nactor \"Referee\" as Ref\nactor \"Fan\"\
+    \ as Fan\n\nrectangle \"Sports League Management System\" {\n  usecase \"Register\
+    \ Team\" as UC1\n  usecase \"Validate Team Roster\" as UC1a\n  usecase \"Schedule\
+    \ Match\" as UC2\n  usecase \"Check Venue Availability\" as UC2a\n  usecase \"\
+    Record Match Result\" as UC3\n  usecase \"Calculate Updated Standings\" as UC3a\n\
+    \  usecase \"Manage Player Transfers\" as UC4\n  usecase \"View League Standings\"\
+    \ as UC5\n  usecase \"Assign Referee to Match\" as UC6\n  usecase \"Submit Match\
+    \ Report\" as UC7\n  usecase \"View Match Schedule\" as UC8\n  usecase \"Manage\
+    \ Season\" as UC9\n  usecase \"Register Player\" as UC10\n  usecase \"Process\
+    \ Disciplinary Action\" as UC11\n}\n\nAdmin --> UC1\nAdmin --> UC2\nAdmin -->\
+    \ UC3\nAdmin --> UC6\nAdmin --> UC9\nAdmin --> UC11\nTM --> UC4\nTM --> UC10\n\
+    TM --> UC8\nRef --> UC7\nRef --> UC8\nFan --> UC5\nFan --> UC8\n\nUC1 ..> UC1a\
+    \ : <<include>>\nUC2 ..> UC2a : <<include>>\nUC3 ..> UC3a : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Register Team, Validate Team Roster, include\
+    \ relationship from Register Team to Validate Team Roster\n   Instance 1: Explanation:\
+    \ \"Validate Team Roster\" is an inclusion use case included only by \"Register\
+    \ Team.\" It is not associated with any actor, not included by any other use case,\
+    \ does not include or extend any use case, is not extended by any use case, and\
+    \ has no generalization relationships. It represents a sub-step (roster validation)\
+    \ of the registration process rather than a complete, independently valuable service\
+    \ observable to an actor. This is functional decomposition of \"Register Team\"\
+    \ into a procedural step.\n\n   Instance 2: Constructs Involved: Schedule Match,\
+    \ Check Venue Availability, include relationship from Schedule Match to Check\
+    \ Venue Availability\n   Instance 2: Explanation: \"Check Venue Availability\"\
+    \ is an inclusion use case included only by \"Schedule Match.\" It is not associated\
+    \ with any actor, not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ Checking venue availability is an internal step of scheduling a match, not a\
+    \ standalone service that delivers an observable result to any user. This is functional\
+    \ decomposition of \"Schedule Match.\"\n\n   Instance 3: Constructs Involved:\
+    \ Record Match Result, Calculate Updated Standings, include relationship from\
+    \ Record Match Result to Calculate Updated Standings\n   Instance 3: Explanation:\
+    \ \"Calculate Updated Standings\" is an inclusion use case included only by \"\
+    Record Match Result.\" It is not associated with any actor, not included by any\
+    \ other use case, does not include or extend any use case, is not extended by\
+    \ any use case, and has no generalization relationships. Calculating standings\
+    \ is a computational sub-step triggered after recording a result, not a complete\
+    \ service to an actor. This is functional decomposition of \"Record Match Result.\""
+raw_response_excerpt: '
+
+
+  DOMAIN: sports_league_management
+
+  DOMAIN_DISPLAY: Sports League Management
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Team, Validate Team Roster, include relationship from
+  Register Team to Validate Team Roster
+
+  EXPLANATION: "Validate Team Roster" is an inclusion use case included only by "Register
+  Team." It is not associated with any actor, not included by any other use case,
+  does not include or extend any use case, is not extended …[truncated]'

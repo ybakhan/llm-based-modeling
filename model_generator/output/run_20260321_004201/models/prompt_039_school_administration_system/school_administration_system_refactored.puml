@@ -1,0 +1,20 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Registrar" as Registrar
+actor "Teacher" as Teacher
+actor "Principal" as Principal
+
+rectangle "School Administration System" {
+  usecase "Manage Class Schedule" as UC1
+  usecase "Enroll Student" as UC2
+  usecase "Record Grades" as UC4
+  usecase "Generate Report Card" as UC5
+}
+
+Registrar -- UC1
+Registrar -- UC2
+Teacher -- UC4
+Principal -- UC5
+
+@enduml

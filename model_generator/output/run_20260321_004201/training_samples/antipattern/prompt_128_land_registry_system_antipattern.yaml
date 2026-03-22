@@ -1,0 +1,105 @@
+metadata:
+  prompt_number: 128
+  domain: land_registry_system
+  domain_display: Land Registry System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Register Property, Validate Property Documents
+      explanation: '"Register Property" includes "Validate Property Documents", but
+        "Validate Property Documents" is only included by "Register Property", is
+        not associated with any actor, does not include or extend any other use case,
+        is not extended by any use case, and is not involved in any generalization.
+        This is functional decomposition — a step of property registration has been
+        broken out as a separate use case that provides no independent service to
+        any actor.'
+    - constructs_involved: Transfer Ownership, Verify Ownership Chain
+      explanation: '"Transfer Ownership" includes "Verify Ownership Chain", but "Verify
+        Ownership Chain" is only included by "Transfer Ownership", is not associated
+        with any actor, does not include or extend any other use case, is not extended
+        by any use case, and is not involved in any generalization. This is functional
+        decomposition — verifying the ownership chain is merely an internal step of
+        the transfer process, not a standalone service.'
+    - constructs_involved: Process Mortgage Registration, Record Lien Details
+      explanation: '"Process Mortgage Registration" includes "Record Lien Details",
+        but "Record Lien Details" is only included by "Process Mortgage Registration",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not involved in any generalization.
+        This is functional decomposition — recording lien details is an internal substep
+        of mortgage registration, not a complete service offered to any user.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:42:34.651674'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_128_land_registry_system/land_registry_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_128_land_registry_system/land_registry_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_128_land_registry_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Land Owner\" as LO\nactor \"Buyer\" as BU\nactor \"Notary\" as NO\n\
+    actor \"Bank Officer\" as BO\nactor \"Registry Clerk\" as RC\n\nrectangle \"Land\
+    \ Registry System\" {\n  usecase \"Register Property\" as UC1\n  usecase \"Validate\
+    \ Property Documents\" as UC2\n  usecase \"Transfer Ownership\" as UC3\n  usecase\
+    \ \"Verify Ownership Chain\" as UC4\n  usecase \"Search Land Records\" as UC5\n\
+    \  usecase \"Process Mortgage Registration\" as UC6\n  usecase \"Record Lien Details\"\
+    \ as UC7\n  usecase \"Issue Title Certificate\" as UC8\n  usecase \"Update Cadastral\
+    \ Map\" as UC9\n  usecase \"Generate Ownership Report\" as UC10\n}\n\nLO -- UC1\n\
+    LO -- UC3\nBU -- UC3\nBU -- UC5\nNO -- UC3\nNO -- UC8\nBO -- UC6\nRC -- UC1\n\
+    RC -- UC9\nRC -- UC10\n\nUC1 ..> UC2 : <<include>>\nUC3 ..> UC4 : <<include>>\n\
+    UC6 ..> UC7 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Register Property, Validate Property Documents\n\
+    \   Instance 1: Explanation: \"Register Property\" includes \"Validate Property\
+    \ Documents\", but \"Validate Property Documents\" is only included by \"Register\
+    \ Property\", is not associated with any actor, does not include or extend any\
+    \ other use case, is not extended by any use case, and is not involved in any\
+    \ generalization. This is functional decomposition — a step of property registration\
+    \ has been broken out as a separate use case that provides no independent service\
+    \ to any actor.\n\n   Instance 2: Constructs Involved: Transfer Ownership, Verify\
+    \ Ownership Chain\n   Instance 2: Explanation: \"Transfer Ownership\" includes\
+    \ \"Verify Ownership Chain\", but \"Verify Ownership Chain\" is only included\
+    \ by \"Transfer Ownership\", is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not involved\
+    \ in any generalization. This is functional decomposition — verifying the ownership\
+    \ chain is merely an internal step of the transfer process, not a standalone service.\n\
+    \n   Instance 3: Constructs Involved: Process Mortgage Registration, Record Lien\
+    \ Details\n   Instance 3: Explanation: \"Process Mortgage Registration\" includes\
+    \ \"Record Lien Details\", but \"Record Lien Details\" is only included by \"\
+    Process Mortgage Registration\", is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not involved\
+    \ in any generalization. This is functional decomposition — recording lien details\
+    \ is an internal substep of mortgage registration, not a complete service offered\
+    \ to any user."
+raw_response_excerpt: '
+
+
+  DOMAIN: land_registry_system
+
+  DOMAIN_DISPLAY: Land Registry System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Property, Validate Property Documents
+
+  EXPLANATION: "Register Property" includes "Validate Property Documents", but "Validate
+  Property Documents" is only included by "Register Property", is not associated with
+  any actor, does not include or extend any other use case, is not extended by any
+  use case, and is not involved in a …[truncated]'

@@ -1,0 +1,52 @@
+metadata:
+  prompt_number: 185
+  domain: quality_control_system
+  domain_display: Quality Control System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 8
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:48:23.657729'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_185_quality_control_system/quality_control_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_185_quality_control_system/quality_control_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_185_quality_control_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Inspector\" as Inspector\n\
+    actor \"Quality Manager\" as QM\n\nrectangle \"Quality Control System\" {\n  usecase\
+    \ \"Perform Inspection\" as UC1\n  usecase \"Generate Quality Report\" as UC3\n\
+    \  usecase \"Define Acceptance Criteria\" as UC4\n  usecase \"Flag Defective Item\"\
+    \ as UC5\n}\n\nInspector -- UC1\nInspector -- UC5\nQM -- UC3\nQM -- UC4\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: quality_control_system
+
+  DOMAIN_DISPLAY: Quality Control System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Perform Inspection, Record Measurements
+
+  EXPLANATION: The use case "Record Measurements" is an inclusion use case that is
+  included by only one use case ("Perform Inspection"). "Record Measurements" is not
+  associated with any actor directly, does not include or extend any other use case,
+  is not extended by any use case, and is not …[truncated]'

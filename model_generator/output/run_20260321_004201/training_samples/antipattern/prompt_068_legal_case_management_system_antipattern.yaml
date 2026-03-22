@@ -1,0 +1,112 @@
+metadata:
+  prompt_number: 68
+  domain: legal_case_management_system
+  domain_display: Legal Case Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Open New Case, Validate Client Identity, include relationship
+        from Open New Case to Validate Client Identity
+      explanation: '"Validate Client Identity" is an inclusion use case included only
+        by "Open New Case". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. It represents a sub-step (identity validation)
+        rather than a complete, standalone service observable to an actor — a classic
+        functional decomposition of "Open New Case."'
+    - constructs_involved: File Court Document, Generate Filing Reference, include
+        relationship from File Court Document to Generate Filing Reference
+      explanation: '"Generate Filing Reference" is an inclusion use case included
+        only by "File Court Document". It is not associated with any actor, does not
+        include or extend any other use case, is not extended by any use case, and
+        is not part of any generalization. Generating a filing reference is an internal
+        sub-step of filing a document, not a complete service offered to any user
+        — this is functional decomposition.'
+    - constructs_involved: Schedule Hearing, Check Court Availability, include relationship
+        from Schedule Hearing to Check Court Availability
+      explanation: '"Check Court Availability" is an inclusion use case included only
+        by "Schedule Hearing". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. Checking availability is an internal procedural
+        step within scheduling, not a standalone service — functional decomposition
+        of "Schedule Hearing."'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 30
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:54:49.920335'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_068_legal_case_management_system/legal_case_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_068_legal_case_management_system/legal_case_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_068_legal_case_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Attorney\"\
+    \ as Attorney\nactor \"Paralegal\" as Paralegal\nactor \"Client\" as Client\n\
+    actor \"Judge\" as Judge\n\nrectangle \"Legal Case Management System\" {\n  usecase\
+    \ \"Open New Case\" as UC1\n  usecase \"Validate Client Identity\" as UC2\n  usecase\
+    \ \"Search Cases\" as UC3\n  usecase \"File Court Document\" as UC4\n  usecase\
+    \ \"Generate Filing Reference\" as UC5\n  usecase \"Schedule Hearing\" as UC6\n\
+    \  usecase \"Check Court Availability\" as UC7\n  usecase \"Record Case Notes\"\
+    \ as UC8\n  usecase \"Assign Attorney to Case\" as UC9\n  usecase \"Track Billing\
+    \ Hours\" as UC10\n  usecase \"View Case Status\" as UC11\n  usecase \"Send Client\
+    \ Notification\" as UC12\n  usecase \"Close Case\" as UC13\n  usecase \"Generate\
+    \ Case Report\" as UC14\n}\n\nAttorney -- UC1\nAttorney -- UC3\nAttorney -- UC4\n\
+    Attorney -- UC6\nAttorney -- UC8\nAttorney -- UC10\nAttorney -- UC13\nAttorney\
+    \ -- UC14\n\nParalegal -- UC3\nParalegal -- UC9\nParalegal -- UC12\nParalegal\
+    \ -- UC8\n\nClient -- UC11\n\nJudge -- UC6\n\nUC1 ..> UC2 : <<include>>\nUC4 ..>\
+    \ UC5 : <<include>>\nUC6 ..> UC7 : <<include>>\nUC13 ..> UC12 : <<include>>\n\n\
+    @enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Open New Case, Validate Client Identity,\
+    \ include relationship from Open New Case to Validate Client Identity\n   Instance\
+    \ 1: Explanation: \"Validate Client Identity\" is an inclusion use case included\
+    \ only by \"Open New Case\". It is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. It represents a sub-step (identity validation) rather\
+    \ than a complete, standalone service observable to an actor — a classic functional\
+    \ decomposition of \"Open New Case.\"\n\n   Instance 2: Constructs Involved: File\
+    \ Court Document, Generate Filing Reference, include relationship from File Court\
+    \ Document to Generate Filing Reference\n   Instance 2: Explanation: \"Generate\
+    \ Filing Reference\" is an inclusion use case included only by \"File Court Document\"\
+    . It is not associated with any actor, does not include or extend any other use\
+    \ case, is not extended by any use case, and is not part of any generalization.\
+    \ Generating a filing reference is an internal sub-step of filing a document,\
+    \ not a complete service offered to any user — this is functional decomposition.\n\
+    \n   Instance 3: Constructs Involved: Schedule Hearing, Check Court Availability,\
+    \ include relationship from Schedule Hearing to Check Court Availability\n   Instance\
+    \ 3: Explanation: \"Check Court Availability\" is an inclusion use case included\
+    \ only by \"Schedule Hearing\". It is not associated with any actor, does not\
+    \ include or extend any other use case, is not extended by any use case, and is\
+    \ not part of any generalization. Checking availability is an internal procedural\
+    \ step within scheduling, not a standalone service — functional decomposition\
+    \ of \"Schedule Hearing.\""
+raw_response_excerpt: '
+
+
+  DOMAIN: legal_case_management_system
+
+  DOMAIN_DISPLAY: Legal Case Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Open New Case, Validate Client Identity, include relationship
+  from Open New Case to Validate Client Identity
+
+  EXPLANATION: "Validate Client Identity" is an inclusion use case included only by
+  "Open New Case". It is not associated with any actor, does not include or extend
+  any other use case, is not extended by any us …[truncated]'

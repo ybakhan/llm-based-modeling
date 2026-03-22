@@ -1,0 +1,105 @@
+metadata:
+  prompt_number: 98
+  domain: dental_clinic_system
+  domain_display: Dental Clinic System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Schedule Appointment, Validate Patient Insurance
+      explanation: '"Validate Patient Insurance" is an inclusion use case included
+        only by "Schedule Appointment". It is not associated with any actor directly,
+        is not included by any other use case, does not include or extend any use
+        case, is not extended by any use case, and has no generalization relationships.
+        It represents a sub-step (insurance validation) rather than a complete service
+        observable to an actor, making it a functional decomposition of "Schedule
+        Appointment".'
+    - constructs_involved: Perform Dental Examination, Record Examination Findings
+      explanation: '"Record Examination Findings" is an inclusion use case included
+        only by "Perform Dental Examination". It is not associated with any actor,
+        is not included by any other use case, does not include or extend any use
+        case, is not extended by any use case, and has no generalization relationships.
+        Recording findings is a sub-step of performing an examination and does not
+        provide a standalone, complete service to any actor.'
+    - constructs_involved: Process Payment, Generate Payment Receipt
+      explanation: '"Generate Payment Receipt" is an inclusion use case included only
+        by "Process Payment". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Generating a receipt
+        is a sub-step of payment processing, not a complete service in its own right.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 28
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:38:33.743607'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_098_dental_clinic_system/dental_clinic_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_098_dental_clinic_system/dental_clinic_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_098_dental_clinic_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Patient\"\
+    \ as Patient\nactor \"Dentist\" as Dentist\nactor \"Receptionist\" as Receptionist\n\
+    actor \"Dental Hygienist\" as Hygienist\n\nrectangle \"Dental Clinic System\"\
+    \ {\n  usecase \"Schedule Appointment\" as UC1\n  usecase \"Cancel Appointment\"\
+    \ as UC2\n  usecase \"Validate Patient Insurance\" as UC3\n  usecase \"Register\
+    \ Patient\" as UC4\n  usecase \"Perform Dental Examination\" as UC5\n  usecase\
+    \ \"Record Examination Findings\" as UC6\n  usecase \"Prescribe Treatment\" as\
+    \ UC7\n  usecase \"Perform Teeth Cleaning\" as UC8\n  usecase \"Process Payment\"\
+    \ as UC9\n  usecase \"Generate Payment Receipt\" as UC10\n  usecase \"View Patient\
+    \ Records\" as UC11\n  usecase \"Request Emergency Appointment\" as UC12\n  usecase\
+    \ \"Manage Treatment Plan\" as UC13\n}\n\nPatient --> UC1\nPatient --> UC2\nPatient\
+    \ --> UC12\nReceptionist --> UC1\nReceptionist --> UC4\nReceptionist --> UC9\n\
+    Receptionist --> UC2\nDentist --> UC5\nDentist --> UC7\nDentist --> UC11\nDentist\
+    \ --> UC13\nHygienist --> UC8\n\nUC1 ..> UC3 : <<include>>\nUC5 ..> UC6 : <<include>>\n\
+    UC9 ..> UC10 : <<include>>\n\nUC12 ..> UC1 : <<extend>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Schedule Appointment, Validate Patient Insurance\n\
+    \   Instance 1: Explanation: \"Validate Patient Insurance\" is an inclusion use\
+    \ case included only by \"Schedule Appointment\". It is not associated with any\
+    \ actor directly, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ It represents a sub-step (insurance validation) rather than a complete service\
+    \ observable to an actor, making it a functional decomposition of \"Schedule Appointment\"\
+    .\n\n   Instance 2: Constructs Involved: Perform Dental Examination, Record Examination\
+    \ Findings\n   Instance 2: Explanation: \"Record Examination Findings\" is an\
+    \ inclusion use case included only by \"Perform Dental Examination\". It is not\
+    \ associated with any actor, is not included by any other use case, does not include\
+    \ or extend any use case, is not extended by any use case, and has no generalization\
+    \ relationships. Recording findings is a sub-step of performing an examination\
+    \ and does not provide a standalone, complete service to any actor.\n\n   Instance\
+    \ 3: Constructs Involved: Process Payment, Generate Payment Receipt\n   Instance\
+    \ 3: Explanation: \"Generate Payment Receipt\" is an inclusion use case included\
+    \ only by \"Process Payment\". It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. Generating a receipt\
+    \ is a sub-step of payment processing, not a complete service in its own right."
+raw_response_excerpt: '
+
+
+  DOMAIN: dental_clinic_system
+
+  DOMAIN_DISPLAY: Dental Clinic System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Appointment, Validate Patient Insurance
+
+  EXPLANATION: "Validate Patient Insurance" is an inclusion use case included only
+  by "Schedule Appointment". It is not associated with any actor directly, is not
+  included by any other use case, does not include or extend any use case, is not
+  extended by any use case, and has no genera …[truncated]'

@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 30
+  domain: tax_filing_system
+  domain_display: Tax Filing System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 23
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:00:49.786483'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_030_tax_filing_system/tax_filing_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_030_tax_filing_system/tax_filing_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_030_tax_filing_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Taxpayer\" as Taxpayer\n\
+    actor \"Tax Preparer\" as TaxPreparer\nactor \"IRS Auditor\" as Auditor\n\nrectangle\
+    \ \"Tax Filing System\" {\n  usecase \"File Tax Return\" as UC1\n  usecase \"\
+    Calculate Tax Liability\" as UC3\n  usecase \"Submit Payment\" as UC5\n  usecase\
+    \ \"Request Refund\" as UC7\n  usecase \"Upload W-2 Forms\" as UC8\n  usecase\
+    \ \"View Filing Status\" as UC9\n  usecase \"Amend Tax Return\" as UC10\n  usecase\
+    \ \"Audit Tax Return\" as UC11\n  usecase \"Generate Tax Summary Report\" as UC12\n\
+    \  usecase \"Request Filing Extension\" as UC13\n}\n\nTaxpayer --> UC1\nTaxpayer\
+    \ --> UC3\nTaxpayer --> UC5\nTaxpayer --> UC7\nTaxpayer --> UC8\nTaxpayer -->\
+    \ UC9\nTaxpayer --> UC13\n\nTaxPreparer --> UC1\nTaxPreparer --> UC10\nTaxPreparer\
+    \ --> UC12\n\nAuditor --> UC11\n\nUC10 ..> UC1 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: tax_filing_system
+
+  DOMAIN_DISPLAY: Tax Filing System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: File Tax Return, Validate SSN, include relationship from File
+  Tax Return to Validate SSN
+
+  EXPLANATION: "Validate SSN" is an inclusion use case included only by "File Tax
+  Return." It is not associated with any actor, is not included by any other use case,
+  does not include or extend any use case, is not extended by any use case, and has
+  no  …[truncated]'

@@ -1,0 +1,114 @@
+metadata:
+  prompt_number: 7
+  domain: hotel_booking_system
+  domain_display: Hotel Booking System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Make Reservation, Validate Room Availability, include (Make
+        Reservation → Validate Room Availability)
+      explanation: '"Validate Room Availability" is an inclusion use case included
+        only by "Make Reservation." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (checking if a room is free) rather than a complete, independently
+        valuable service observable to an actor. This is functional decomposition
+        of "Make Reservation" into a procedural step.'
+    - constructs_involved: Process Payment, Calculate Total Cost, include (Process
+        Payment → Calculate Total Cost)
+      explanation: '"Calculate Total Cost" is an inclusion use case included only
+        by "Process Payment." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Calculating the
+        total cost is an internal computation step within payment processing, not
+        a complete service delivering an observable result to any actor. This is functional
+        decomposition of "Process Payment."'
+    - constructs_involved: Check In Guest, Verify Booking Details, include (Check
+        In Guest → Verify Booking Details)
+      explanation: '"Verify Booking Details" is an inclusion use case included only
+        by "Check In Guest." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Verifying booking
+        details is an internal procedural step of the check-in process, not a standalone
+        service offering an observable result to a user. This is functional decomposition
+        of "Check In Guest."'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 26
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:21:24.195809'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_007_hotel_booking_system/hotel_booking_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_007_hotel_booking_system/hotel_booking_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_007_hotel_booking_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Guest\"\
+    \ as Guest\nactor \"Receptionist\" as Receptionist\nactor \"Manager\" as Manager\n\
+    \nrectangle \"Hotel Booking System\" {\n  usecase \"Search Rooms\" as UC1\n  usecase\
+    \ \"Make Reservation\" as UC2\n  usecase \"Validate Room Availability\" as UC3\n\
+    \  usecase \"Cancel Reservation\" as UC4\n  usecase \"Process Payment\" as UC5\n\
+    \  usecase \"Calculate Total Cost\" as UC6\n  usecase \"Check In Guest\" as UC7\n\
+    \  usecase \"Verify Booking Details\" as UC8\n  usecase \"Check Out Guest\" as\
+    \ UC9\n  usecase \"View Booking History\" as UC10\n  usecase \"Generate Occupancy\
+    \ Report\" as UC11\n  usecase \"Manage Room Inventory\" as UC12\n  usecase \"\
+    Apply Discount\" as UC13\n}\n\nGuest --> UC1\nGuest --> UC2\nGuest --> UC4\nGuest\
+    \ --> UC5\nGuest --> UC10\n\nReceptionist --> UC7\nReceptionist --> UC9\n\nManager\
+    \ --> UC11\nManager --> UC12\n\nUC2 ..> UC3 : <<include>>\nUC5 ..> UC6 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\n\nUC5 ..> UC13 : <<extend>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Make Reservation, Validate Room Availability,\
+    \ include (Make Reservation → Validate Room Availability)\n   Instance 1: Explanation:\
+    \ \"Validate Room Availability\" is an inclusion use case included only by \"\
+    Make Reservation.\" It is not associated with any actor, is not included by any\
+    \ other use case, does not include or extend any use case, is not extended by\
+    \ any use case, and has no generalization relationships. It represents a sub-step\
+    \ (checking if a room is free) rather than a complete, independently valuable\
+    \ service observable to an actor. This is functional decomposition of \"Make Reservation\"\
+    \ into a procedural step.\n\n   Instance 2: Constructs Involved: Process Payment,\
+    \ Calculate Total Cost, include (Process Payment → Calculate Total Cost)\n   Instance\
+    \ 2: Explanation: \"Calculate Total Cost\" is an inclusion use case included only\
+    \ by \"Process Payment.\" It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. Calculating the total\
+    \ cost is an internal computation step within payment processing, not a complete\
+    \ service delivering an observable result to any actor. This is functional decomposition\
+    \ of \"Process Payment.\"\n\n   Instance 3: Constructs Involved: Check In Guest,\
+    \ Verify Booking Details, include (Check In Guest → Verify Booking Details)\n\
+    \   Instance 3: Explanation: \"Verify Booking Details\" is an inclusion use case\
+    \ included only by \"Check In Guest.\" It is not associated with any actor, is\
+    \ not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. Verifying\
+    \ booking details is an internal procedural step of the check-in process, not\
+    \ a standalone service offering an observable result to a user. This is functional\
+    \ decomposition of \"Check In Guest.\""
+raw_response_excerpt: '
+
+
+  DOMAIN: hotel_booking_system
+
+  DOMAIN_DISPLAY: Hotel Booking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Make Reservation, Validate Room Availability, include (Make
+  Reservation → Validate Room Availability)
+
+  EXPLANATION: "Validate Room Availability" is an inclusion use case included only
+  by "Make Reservation." It is not associated with any actor, is not included by any
+  other use case, does not include or extend any use case, is not ext …[truncated]'

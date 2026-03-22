@@ -1,0 +1,52 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Family Member" as FM
+actor "Funeral Director" as FD
+actor "Accountant" as ACC
+actor "Transport Coordinator" as TC
+
+rectangle "Funeral Service Management System" {
+    usecase "Register Deceased" as UC1
+    usecase "Schedule Funeral Service" as UC2
+    usecase "Select Casket" as UC4
+    usecase "Manage Floral Arrangements" as UC5
+    usecase "Process Payment" as UC6
+    usecase "Arrange Transportation" as UC8
+    usecase "Manage Obituary" as UC10
+    usecase "View Service Details" as UC11
+    usecase "Generate Financial Report" as UC12
+    usecase "Coordinate Clergy" as UC13
+    usecase "Request Cremation" as UC14
+    usecase "Cancel Service" as UC15
+
+    UC15 ..> UC6 : <<extend>>
+}
+
+FM --> UC1
+FM --> UC2
+FM --> UC4
+FM --> UC5
+FM --> UC10
+FM --> UC11
+FM --> UC14
+
+FD --> UC2
+FD --> UC13
+FD --> UC15
+
+ACC --> UC6
+ACC --> UC12
+
+TC --> UC8
+
+@enduml
+
+
+Answer:
+No antipattern detected.

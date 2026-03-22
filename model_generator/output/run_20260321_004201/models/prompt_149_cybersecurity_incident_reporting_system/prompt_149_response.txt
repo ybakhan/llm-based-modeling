@@ -1,0 +1,112 @@
+
+
+DOMAIN: cybersecurity_incident_reporting_system
+DOMAIN_DISPLAY: Cybersecurity Incident Reporting System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Report Incident, Validate Incident Fields, include (Report Incident → Validate Incident Fields)
+EXPLANATION: "Validate Incident Fields" is an inclusion use case included only by "Report Incident." It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step (field validation) of reporting an incident rather than a complete, independently valuable service observable to an actor. This is functional decomposition of "Report Incident" into an internal processing step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Escalate Incident, Notify Escalation Team, include (Escalate Incident → Notify Escalation Team)
+EXPLANATION: "Notify Escalation Team" is an inclusion use case included only by "Escalate Incident." It has no direct actor association, does not include or extend any other use case, is not extended by any use case, and is not a generalization or specialization. Sending a notification to the escalation team is an internal sub-step of the escalation process, not a standalone service providing an observable result to a user. This decomposes "Escalate Incident" functionally.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Generate Compliance Report, Aggregate Incident Data, include (Generate Compliance Report → Aggregate Incident Data)
+EXPLANATION: "Aggregate Incident Data" is included only by "Generate Compliance Report." It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Aggregating data is an internal computational step within report generation, not a complete service with an observable result for any actor. This is functional decomposition of "Generate Compliance Report."
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Incident Fields," "Notify Escalation Team," and "Aggregate Incident Data" — each serve as isolated internal sub-steps included by exactly one base use case, with no actor associations or other relationships. Per the Drop Functional Decomposition refactoring: (1) Merge "Validate Incident Fields" into "Report Incident," removing the use case and its include relationship. (2) Merge "Notify Escalation Team" into "Escalate Incident," removing the use case and its include relationship. (3) Merge "Aggregate Incident Data" into "Generate Compliance Report," removing the use case and its include relationship. This eliminates 3 use cases and 3 include relationships (6 constructs), reducing the model from 27 to 21 constructs. The refactored model preserves all meaningful services while eliminating artificial decomposition.
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Security Analyst" as Analyst
+actor "Incident Manager" as Manager
+actor "CISO" as CISO
+actor "External Auditor" as Auditor
+
+rectangle "Cybersecurity Incident Reporting System" {
+  usecase "Report Incident" as UC1
+  usecase "Validate Incident Fields" as UC2
+  usecase "Classify Incident Severity" as UC3
+  usecase "Escalate Incident" as UC4
+  usecase "Notify Escalation Team" as UC5
+  usecase "Track Incident Status" as UC6
+  usecase "Assign Incident Handler" as UC7
+  usecase "Generate Compliance Report" as UC8
+  usecase "Aggregate Incident Data" as UC9
+  usecase "Review Incident Log" as UC10
+  usecase "Close Incident" as UC11
+  usecase "Configure Alert Thresholds" as UC12
+  usecase "Export Audit Trail" as UC13
+}
+
+Analyst --> UC1
+Analyst --> UC3
+Analyst --> UC6
+Manager --> UC4
+Manager --> UC7
+Manager --> UC11
+Manager --> UC6
+CISO --> UC8
+CISO --> UC12
+Auditor --> UC10
+Auditor --> UC13
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC8 ..> UC9 : <<include>>
+
+UC11 ..> UC6 : <<extend>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Security Analyst" as Analyst
+actor "Incident Manager" as Manager
+actor "CISO" as CISO
+actor "External Auditor" as Auditor
+
+rectangle "Cybersecurity Incident Reporting System" {
+  usecase "Report Incident" as UC1
+  usecase "Classify Incident Severity" as UC3
+  usecase "Escalate Incident" as UC4
+  usecase "Track Incident Status" as UC6
+  usecase "Assign Incident Handler" as UC7
+  usecase "Generate Compliance Report" as UC8
+  usecase "Review Incident Log" as UC10
+  usecase "Close Incident" as UC11
+  usecase "Configure Alert Thresholds" as UC12
+  usecase "Export Audit Trail" as UC13
+}
+
+Analyst --> UC1
+Analyst --> UC3
+Analyst --> UC6
+Manager --> UC4
+Manager --> UC7
+Manager --> UC11
+Manager --> UC6
+CISO --> UC8
+CISO --> UC12
+Auditor --> UC10
+Auditor --> UC13
+
+UC11 ..> UC6 : <<extend>>
+@enduml
+```

@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Customer
+actor "Event Organizer" as Organizer
+
+rectangle "Event Ticketing System" {
+  usecase "Browse Events" as UC1
+  usecase "Purchase Ticket" as UC2
+  usecase "Cancel Ticket" as UC4
+  usecase "Create Event" as UC5
+  usecase "View Sales Report" as UC6
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC4
+Organizer -- UC5
+Organizer -- UC6
+
+@enduml

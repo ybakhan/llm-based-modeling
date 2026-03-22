@@ -1,0 +1,73 @@
+
+
+DOMAIN: emergency_dispatch_system
+DOMAIN_DISPLAY: Emergency Dispatch System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Dispatch Emergency Unit, Determine Unit Availability
+EXPLANATION: The use case "Determine Unit Availability" is an inclusion use case that is included by only one use case ("Dispatch Emergency Unit"). It is not associated with any actor directly, does not include or extend any other use case, is not extended by any other use case, and is not involved in any generalization. It represents a sub-step of dispatching rather than a complete, independently valuable service to any actor. This is classic functional decomposition — the behavior of checking which units are available has been artificially split out of the dispatching process into a separate use case that delivers no standalone observable result to any user.
+
+REFACTORING_RATIONALE: The inclusion use case "Determine Unit Availability" must be merged back into "Dispatch Emergency Unit" because it serves only as an internal step of dispatching and provides no independent value to any actor. The <<include>> relationship between "Dispatch Emergency Unit" and "Determine Unit Availability" must be removed, and the "Determine Unit Availability" use case must be deleted. This reduces functional decomposition and restores "Dispatch Emergency Unit" as a single, cohesive use case that encompasses all steps necessary to dispatch a unit, including determining availability.
+CONSTRUCT_COUNT: 13
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Caller" as Caller
+actor "Dispatcher" as Dispatcher
+actor "Field Unit" as FieldUnit
+
+rectangle "Emergency Dispatch System" {
+  usecase "Report Emergency" as UC1
+  usecase "Receive Emergency Call" as UC2
+  usecase "Dispatch Emergency Unit" as UC3
+  usecase "Determine Unit Availability" as UC4
+  usecase "Log Incident" as UC5
+  usecase "Update Incident Status" as UC6
+}
+
+Caller --> UC1
+Dispatcher --> UC2
+Dispatcher --> UC3
+UC3 ..> UC4 : <<include>>
+Dispatcher --> UC5
+FieldUnit --> UC6
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Caller" as Caller
+actor "Dispatcher" as Dispatcher
+actor "Field Unit" as FieldUnit
+
+rectangle "Emergency Dispatch System" {
+  usecase "Report Emergency" as UC1
+  usecase "Receive Emergency Call" as UC2
+  usecase "Dispatch Emergency Unit" as UC3
+  usecase "Log Incident" as UC5
+  usecase "Update Incident Status" as UC6
+}
+
+Caller --> UC1
+Dispatcher --> UC2
+Dispatcher --> UC3
+Dispatcher --> UC5
+FieldUnit --> UC6
+
+@enduml
+```

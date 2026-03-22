@@ -1,0 +1,106 @@
+
+
+DOMAIN: budgeting_application
+DOMAIN_DISPLAY: Budgeting Application
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Create Budget, Validate Budget Categories, include (Create Budget → Validate Budget Categories)
+EXPLANATION: "Validate Budget Categories" is an inclusion use case included only by "Create Budget". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (validating categories) rather than a complete service observable to any user. This is functional decomposition of "Create Budget" into an internal processing step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Generate Report, Calculate Totals, include (Generate Report → Calculate Totals)
+EXPLANATION: "Calculate Totals" is an inclusion use case included only by "Generate Report". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Calculating totals is an internal computational step of report generation, not a standalone service offering an observable result to a user. This is functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Track Expenses, Retrieve Expense Data, include (Track Expenses → Retrieve Expense Data)
+EXPLANATION: "Retrieve Expense Data" is an inclusion use case included only by "Track Expenses". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Retrieving data is an internal data-fetching step within expense tracking, not a complete service providing an observable result to any actor. This is functional decomposition.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Budget Categories", "Calculate Totals", and "Retrieve Expense Data" — each serve as decomposed sub-steps of their respective base use cases. Each is included by exactly one use case, has no actor association, and participates in no other relationships. To refactor: (1) Merge "Validate Budget Categories" into "Create Budget", removing the inclusion use case and its include relationship. (2) Merge "Calculate Totals" into "Generate Report", removing the inclusion use case and its include relationship. (3) Merge "Retrieve Expense Data" into "Track Expenses", removing the inclusion use case and its include relationship. This eliminates 3 use cases and 3 include relationships, reducing the construct count by 6 while preserving all functionality within the base use cases.
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Budget Owner" as Owner
+actor "Financial Advisor" as Advisor
+actor "Administrator" as Admin
+
+rectangle "Budgeting Application" {
+  usecase "Create Budget" as UC1
+  usecase "Validate Budget Categories" as UC2
+  usecase "Track Expenses" as UC3
+  usecase "Retrieve Expense Data" as UC4
+  usecase "Set Savings Goals" as UC5
+  usecase "Generate Report" as UC6
+  usecase "Calculate Totals" as UC7
+  usecase "Review Budget Performance" as UC8
+  usecase "Manage User Accounts" as UC9
+  usecase "Send Budget Alerts" as UC10
+  usecase "Import Bank Transactions" as UC11
+  usecase "Categorize Transactions" as UC12
+}
+
+Owner --> UC1
+Owner --> UC3
+Owner --> UC5
+Owner --> UC11
+Owner --> UC12
+Advisor --> UC6
+Advisor --> UC8
+Admin --> UC9
+Admin --> UC10
+
+UC1 ..> UC2 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC3 ..> UC4 : <<include>>
+
+UC11 ..> UC12 : <<include>>
+UC8 ..> UC6 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Budget Owner" as Owner
+actor "Financial Advisor" as Advisor
+actor "Administrator" as Admin
+
+rectangle "Budgeting Application" {
+  usecase "Create Budget" as UC1
+  usecase "Track Expenses" as UC3
+  usecase "Set Savings Goals" as UC5
+  usecase "Generate Report" as UC6
+  usecase "Review Budget Performance" as UC8
+  usecase "Manage User Accounts" as UC9
+  usecase "Send Budget Alerts" as UC10
+  usecase "Import Bank Transactions" as UC11
+  usecase "Categorize Transactions" as UC12
+}
+
+Owner --> UC1
+Owner --> UC3
+Owner --> UC5
+Owner --> UC11
+Owner --> UC12
+Advisor --> UC6
+Advisor --> UC8
+Admin --> UC9
+Admin --> UC10
+
+UC11 ..> UC12 : <<include>>
+UC8 ..> UC6 : <<include>>
+@enduml
+```

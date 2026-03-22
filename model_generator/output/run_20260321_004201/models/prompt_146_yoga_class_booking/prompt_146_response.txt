@@ -1,0 +1,73 @@
+
+
+DOMAIN: yoga_class_booking
+DOMAIN_DISPLAY: Yoga Class Booking
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Class (UC2), Check Schedule Availability (UC5), the <<include>> relationship from UC2 to UC5
+EXPLANATION: "Check Schedule Availability" (UC5) is an inclusion use case that is included by only one use case ("Book Class" UC2). It is not associated with any actor directly, does not include or extend any other use case, is not extended by any other use case, and has no generalization relationships. It represents a sub-step of the booking process rather than a complete, independently valuable service observable to any actor. This is a classic functional decomposition — the developer broke apart the "Book Class" use case into a procedural step ("check if the schedule slot is available") that has no standalone value to any user.
+
+REFACTORING_RATIONALE: The "Check Schedule Availability" use case (UC5) and the <<include>> relationship from "Book Class" (UC2) to UC5 must be removed. The schedule availability checking behavior should be merged into the "Book Class" use case, since checking availability is an inherent internal step of booking a class, not a separate service. This eliminates the functional decomposition antipattern by consolidating the fragmented behavior back into a single, complete use case. The resulting model drops 1 use case and 1 include relationship, reducing the construct count from 12 to 10.
+
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Member" as A1
+actor "Instructor" as A2
+
+rectangle "Yoga Class Booking System" {
+  usecase "Browse Classes" as UC1
+  usecase "Book Class" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "View My Schedule" as UC4
+  usecase "Check Schedule Availability" as UC5
+  usecase "Manage Class Offerings" as UC6
+}
+
+A1 --> UC1
+A1 --> UC2
+A1 --> UC3
+A1 --> UC4
+A2 --> UC6
+
+UC2 ..> UC5 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Member" as A1
+actor "Instructor" as A2
+
+rectangle "Yoga Class Booking System" {
+  usecase "Browse Classes" as UC1
+  usecase "Book Class" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "View My Schedule" as UC4
+  usecase "Manage Class Offerings" as UC6
+}
+
+A1 --> UC1
+A1 --> UC2
+A1 --> UC3
+A1 --> UC4
+A2 --> UC6
+
+@enduml
+```

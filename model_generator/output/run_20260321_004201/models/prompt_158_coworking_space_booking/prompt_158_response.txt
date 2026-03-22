@@ -1,0 +1,72 @@
+
+
+DOMAIN: coworking_space_booking
+DOMAIN_DISPLAY: Coworking Space Booking System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Workspace, Check Availability
+EXPLANATION: The use case "Check Availability" is an inclusion use case that is included by only one use case ("Book Workspace"). "Check Availability" is not associated with any actor directly — no actor interacts with it. It does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. "Check Availability" does not represent a complete, independently valuable service to any actor; it is merely a decomposed step of the booking process. This constitutes the "Functional Decomposition: Using the include relationship" antipattern, where a base use case's internal behavior has been improperly broken out into a separate inclusion use case that serves no standalone purpose.
+
+REFACTORING_RATIONALE: The inclusion use case "Check Availability" must be merged back into "Book Workspace" because checking availability is an internal step of booking a workspace, not a standalone service. By dropping "Check Availability" and the corresponding <<include>> relationship, we eliminate the functional decomposition. The resulting "Book Workspace" use case encapsulates the full booking behavior (including the availability check) as a single complete service offered to the Member actor. This reduces the model by one use case and one include relationship (net −2 constructs).
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Member" as Member
+actor "Administrator" as Admin
+
+rectangle "Coworking Space Booking System" {
+  usecase "Browse Spaces" as UC1
+  usecase "Book Workspace" as UC2
+  usecase "Check Availability" as UC3
+  usecase "Cancel Booking" as UC4
+  usecase "Manage Spaces" as UC5
+  usecase "View Bookings" as UC6
+}
+
+Member --> UC1
+Member --> UC2
+Member --> UC4
+Member --> UC6
+Admin --> UC5
+
+UC2 ..> UC3 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Member" as Member
+actor "Administrator" as Admin
+
+rectangle "Coworking Space Booking System" {
+  usecase "Browse Spaces" as UC1
+  usecase "Book Workspace" as UC2
+  usecase "Cancel Booking" as UC4
+  usecase "Manage Spaces" as UC5
+  usecase "View Bookings" as UC6
+}
+
+Member --> UC1
+Member --> UC2
+Member --> UC4
+Member --> UC6
+Admin --> UC5
+
+@enduml
+```

@@ -1,0 +1,18 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Maintenance Technician" as Tech
+actor "Supervisor" as Sup
+
+rectangle "Equipment Maintenance System" {
+  usecase "Submit Work Order" as UC1
+  usecase "Schedule Maintenance" as UC3
+  usecase "View Maintenance History" as UC4
+  usecase "Approve Work Order" as UC5
+}
+
+Tech -- UC1
+Tech -- UC3
+Tech -- UC4
+Sup -- UC5
+@enduml

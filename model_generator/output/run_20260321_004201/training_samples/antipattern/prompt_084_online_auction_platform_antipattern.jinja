@@ -1,0 +1,63 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor Bidder
+actor Seller
+actor Admin
+actor "Payment Gateway" as PG
+
+rectangle "Online Auction Platform" {
+    usecase "Register Account" as UC1
+    usecase "Browse Auctions" as UC2
+    usecase "Place Bid" as UC3
+    usecase "Validate Bid Amount" as UC4
+    usecase "Send Bid Notification" as UC5
+    usecase "Create Auction Listing" as UC6
+    usecase "Upload Item Photos" as UC7
+    usecase "Close Auction" as UC8
+    usecase "Process Payment" as UC9
+    usecase "View Bid History" as UC10
+    usecase "Manage User Accounts" as UC11
+    usecase "Resolve Dispute" as UC12
+    usecase "Leave Feedback" as UC13
+    usecase "Search Auctions" as UC14
+}
+
+Bidder -- UC1
+Bidder -- UC2
+Bidder -- UC3
+Bidder -- UC10
+Bidder -- UC13
+Bidder -- UC14
+Seller -- UC1
+Seller -- UC6
+Seller -- UC8
+Seller -- UC13
+Admin -- UC11
+Admin -- UC12
+PG -- UC9
+
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC8 ..> UC9 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Place Bid, Validate Bid Amount, include relationship from Place Bid to Validate Bid Amount
+   Instance 1: Explanation: "Validate Bid Amount" is an inclusion use case included only by "Place Bid". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a decomposed step of the bidding process rather than a complete service observable to a user. This is functional decomposition of "Place Bid" into a sub-step.
+
+   Instance 2: Constructs Involved: Create Auction Listing, Upload Item Photos, include relationship from Create Auction Listing to Upload Item Photos
+   Instance 2: Explanation: "Upload Item Photos" is an inclusion use case included only by "Create Auction Listing". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Uploading photos is a sub-step of creating a listing, not a standalone service providing an observable result to any user. This is functional decomposition.
+
+   Instance 3: Constructs Involved: Place Bid, Send Bid Notification, include relationship from Place Bid to Send Bid Notification
+   Instance 3: Explanation: "Send Bid Notification" is an inclusion use case included only by "Place Bid". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Sending a notification is an internal sub-step of the bidding process, not a complete service observable to any actor. This is functional decomposition.

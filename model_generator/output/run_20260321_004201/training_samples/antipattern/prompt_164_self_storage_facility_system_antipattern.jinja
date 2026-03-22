@@ -1,0 +1,57 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Customer
+actor Manager
+actor "Payment Gateway" as PG
+
+rectangle "Self-Storage Facility System" {
+  usecase "Reserve Unit" as UC1
+  usecase "Check Unit Availability" as UC2
+  usecase "Process Payment" as UC3
+  usecase "Validate Payment Details" as UC4
+  usecase "View Unit Status" as UC5
+  usecase "Manage Unit Inventory" as UC6
+  usecase "Terminate Rental Agreement" as UC7
+  usecase "Generate Final Invoice" as UC8
+  usecase "Apply Late Fee" as UC9
+  usecase "Access Unit" as UC10
+  usecase "Update Customer Profile" as UC11
+  usecase "Generate Occupancy Report" as UC12
+  usecase "Sign Rental Agreement" as UC13
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC10
+Customer -- UC11
+Customer -- UC13
+Manager -- UC5
+Manager -- UC6
+Manager -- UC7
+Manager -- UC12
+PG -- UC3
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC9 ..> UC3 : <<extend>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Reserve Unit, Check Unit Availability
+   Instance 1: Explanation: "Reserve Unit" includes "Check Unit Availability". "Check Unit Availability" is included by only "Reserve Unit", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents an internal step (checking availability) that is not a complete service on its own — it is a functional decomposition of the reservation process.
+
+   Instance 2: Constructs Involved: Process Payment, Validate Payment Details
+   Instance 2: Explanation: "Process Payment" includes "Validate Payment Details". "Validate Payment Details" is included by only "Process Payment", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Validating payment details is an internal sub-step of processing a payment, not a standalone service — this is functional decomposition.
+
+   Instance 3: Constructs Involved: Terminate Rental Agreement, Generate Final Invoice
+   Instance 3: Explanation: "Terminate Rental Agreement" includes "Generate Final Invoice". "Generate Final Invoice" is included by only "Terminate Rental Agreement", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Generating a final invoice is an internal step of the termination process, not a complete service offered to any actor independently.

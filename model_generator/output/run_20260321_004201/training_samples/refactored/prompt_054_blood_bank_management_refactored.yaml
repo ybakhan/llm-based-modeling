@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 54
+  domain: blood_bank_management
+  domain_display: Blood Bank Management
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:53:17.086440'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_054_blood_bank_management/blood_bank_management_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_054_blood_bank_management/blood_bank_management_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_054_blood_bank_management_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Donor\" as Donor\n\
+    actor \"Nurse\" as Nurse\nactor \"Lab Technician\" as LabTech\nactor \"Doctor\"\
+    \ as Doctor\nactor \"Admin\" as Admin\n\nrectangle \"Blood Bank Management System\"\
+    \ {\n  usecase \"Register Donor\" as UC1\n  usecase \"Process Blood Donation\"\
+    \ as UC3\n  usecase \"Store Blood Unit\" as UC5\n  usecase \"Test Blood Sample\"\
+    \ as UC6\n  usecase \"Classify Blood Type\" as UC7\n  usecase \"Issue Blood Unit\"\
+    \ as UC8\n  usecase \"Request Blood\" as UC10\n  usecase \"Track Blood Inventory\"\
+    \ as UC11\n  usecase \"Manage Donation Campaigns\" as UC12\n  usecase \"Schedule\
+    \ Appointment\" as UC13\n  usecase \"Discard Expired Blood\" as UC14\n}\n\nDonor\
+    \ -- UC1\nDonor -- UC13\nNurse -- UC1\nNurse -- UC3\nNurse -- UC5\nLabTech --\
+    \ UC6\nLabTech -- UC7\nDoctor -- UC8\nDoctor -- UC10\nAdmin -- UC11\nAdmin --\
+    \ UC12\nAdmin -- UC14\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: blood_bank_management
+
+  DOMAIN_DISPLAY: Blood Bank Management
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Donor, Validate Donor ID, include relationship from
+  Register Donor to Validate Donor ID
+
+  EXPLANATION: "Validate Donor ID" is an inclusion use case included only by "Register
+  Donor". It is not associated with any actor, is not included by any other use case,
+  does not include or extend any use case, is not extended by any u …[truncated]'

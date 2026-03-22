@@ -1,0 +1,31 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Line Operator" as Operator
+actor "Production Manager" as Manager
+actor "Maintenance Technician" as Technician
+
+rectangle "Assembly Line Monitoring System" {
+    usecase "Monitor Production Line" as UC1
+    usecase "Acknowledge Alarm" as UC3
+    usecase "Generate Production Report" as UC5
+    usecase "Configure Alert Thresholds" as UC7
+    usecase "View Line Status Dashboard" as UC8
+    usecase "Schedule Maintenance" as UC9
+    usecase "Escalate Critical Alert" as UC10
+    usecase "Review Downtime History" as UC11
+}
+
+Operator -- UC1
+Operator -- UC3
+Operator -- UC8
+Manager -- UC5
+Manager -- UC7
+Manager -- UC8
+Manager -- UC11
+Technician -- UC9
+Technician -- UC3
+
+UC10 .> UC3 : <<extend>>
+@enduml

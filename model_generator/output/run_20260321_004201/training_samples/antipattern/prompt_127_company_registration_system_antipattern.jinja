@@ -1,0 +1,62 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Company Applicant" as Applicant
+actor "Registrar" as Registrar
+actor "Company Director" as Director
+actor "System Administrator" as Admin
+
+rectangle "Company Registration System" {
+  usecase "Register New Company" as UC1
+  usecase "Validate Company Name" as UC2
+  usecase "Generate Registration Number" as UC3
+  usecase "Search Company Registry" as UC4
+  usecase "Submit Annual Return" as UC5
+  usecase "Calculate Filing Fee" as UC6
+  usecase "Update Company Details" as UC7
+  usecase "Dissolve Company" as UC8
+  usecase "Review Registration Application" as UC9
+  usecase "Process Payment" as UC10
+  usecase "Generate Compliance Report" as UC11
+  usecase "Manage User Accounts" as UC12
+  usecase "File Director Changes" as UC13
+  usecase "Request Company Certificate" as UC14
+}
+
+Applicant --> UC1
+Applicant --> UC4
+Applicant --> UC10
+Director --> UC5
+Director --> UC7
+Director --> UC13
+Director --> UC14
+Registrar --> UC9
+Registrar --> UC8
+Registrar --> UC11
+Admin --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC8 ..> UC9 : <<extend>>
+}
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Register New Company, Validate Company Name
+   Instance 1: Explanation: "Validate Company Name" is an inclusion use case included only by "Register New Company". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step (name validation) rather than a complete, independently valuable service — this is functional decomposition of the registration process into an isolated validation fragment.
+
+   Instance 2: Constructs Involved: Register New Company, Generate Registration Number
+   Instance 2: Explanation: "Generate Registration Number" is an inclusion use case included only by "Register New Company". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Generating a registration number is an internal procedural step, not a standalone service offering an observable result to any user — this constitutes functional decomposition.
+
+   Instance 3: Constructs Involved: Submit Annual Return, Calculate Filing Fee
+   Instance 3: Explanation: "Calculate Filing Fee" is an inclusion use case included only by "Submit Annual Return". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Fee calculation is a computational sub-step of annual return submission, not an independently meaningful service — this is functional decomposition.

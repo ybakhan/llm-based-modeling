@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 97
+  domain: neighbourhood_watch_app
+  domain_display: Neighbourhood Watch App
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:38:11.110107'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_097_neighbourhood_watch_app/neighbourhood_watch_app_refactored.puml
+    image: output/run_20260321_004201/models/prompt_097_neighbourhood_watch_app/neighbourhood_watch_app_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_097_neighbourhood_watch_app_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Resident\" as Resident\n\
+    actor \"Watch Coordinator\" as Coordinator\nactor \"Police Liaison\" as Police\n\
+    \nrectangle \"Neighbourhood Watch App\" {\n  usecase \"Register Account\" as UC1\n\
+    \  usecase \"Report Incident\" as UC2\n  usecase \"Send Alert to Neighbours\"\
+    \ as UC4\n  usecase \"View Crime Map\" as UC6\n  usecase \"Manage Watch Zones\"\
+    \ as UC8\n  usecase \"Review Incident Reports\" as UC9\n  usecase \"Escalate to\
+    \ Police\" as UC10\n  usecase \"Post Safety Tip\" as UC11\n  usecase \"Schedule\
+    \ Patrol\" as UC12\n}\n\nResident --> UC1\nResident --> UC2\nResident --> UC4\n\
+    Resident --> UC6\nResident --> UC11\n\nCoordinator --> UC8\nCoordinator --> UC9\n\
+    Coordinator --> UC12\n\nPolice --> UC10\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: neighbourhood_watch_app
+
+  DOMAIN_DISPLAY: Neighbourhood Watch App
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Report Incident, Capture GPS Location, include (Report Incident
+  → Capture GPS Location)
+
+  EXPLANATION: "Capture GPS Location" is an inclusion use case included only by "Report
+  Incident". It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case, and is not part of any ge …[truncated]'

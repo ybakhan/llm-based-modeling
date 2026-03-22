@@ -1,0 +1,75 @@
+
+
+DOMAIN: pet_care_service_booking
+DOMAIN_DISPLAY: Pet Care Service Booking
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Grooming Appointment, Select Time Slot
+EXPLANATION: The use case "Select Time Slot" is an inclusion use case that is included by only one use case ("Book Grooming Appointment"). "Select Time Slot" is not associated with any actor directly, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a sub-step of booking rather than a complete, independently valuable service. Selecting a time slot alone provides no observable result to the user — it only makes sense as part of the booking process. This is a textbook example of functional decomposition where a single use case's internal logic has been artificially split into a separate inclusion use case.
+
+REFACTORING_RATIONALE: The use case "Select Time Slot" must be merged back into "Book Grooming Appointment" because it is a functionally decomposed fragment that serves no standalone purpose. It is included by only one use case, has no actor association, and participates in no other relationships. By applying the "Drop Functional Decomposition" refactoring, we absorb the time slot selection behavior into "Book Grooming Appointment," reducing unnecessary complexity while preserving the complete service offered to the Pet Owner. This removes 1 use case and 1 include relationship, reducing the construct count from 12 to 10.
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Pet Owner" as PO
+actor "Service Provider" as SP
+
+rectangle "Pet Care Service Booking System" {
+  usecase "Browse Services" as UC1
+  usecase "Book Grooming Appointment" as UC2
+  usecase "Select Time Slot" as UC3
+  usecase "Cancel Booking" as UC4
+  usecase "View Bookings" as UC5
+  usecase "Manage Availability" as UC6
+  usecase "Confirm Booking" as UC7
+}
+
+PO --> UC1
+PO --> UC2
+PO --> UC4
+PO --> UC5
+UC2 ..> UC3 : <<include>>
+SP --> UC6
+SP --> UC7
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Pet Owner" as PO
+actor "Service Provider" as SP
+
+rectangle "Pet Care Service Booking System" {
+  usecase "Browse Services" as UC1
+  usecase "Book Grooming Appointment" as UC2
+  usecase "Cancel Booking" as UC4
+  usecase "View Bookings" as UC5
+  usecase "Manage Availability" as UC6
+  usecase "Confirm Booking" as UC7
+}
+
+PO --> UC1
+PO --> UC2
+PO --> UC4
+PO --> UC5
+SP --> UC6
+SP --> UC7
+
+@enduml
+```

@@ -1,0 +1,131 @@
+
+
+DOMAIN: software_bug_tracking_system
+DOMAIN_DISPLAY: Software Bug Tracking System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Report Bug, Validate Bug Fields, include relationship from Report Bug to Validate Bug Fields
+EXPLANATION: "Validate Bug Fields" is an inclusion use case included only by "Report Bug". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (field validation) of reporting a bug rather than a complete, independently meaningful service. This is functional decomposition — breaking "Report Bug" into procedural steps via <<include>>.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Assign Bug, Select Developer, include relationship from Assign Bug to Select Developer
+EXPLANATION: "Select Developer" is an inclusion use case included only by "Assign Bug". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Selecting a developer is merely a sub-step of assigning a bug, not a standalone service delivering an observable result to any actor. This is functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Close Bug, Record Resolution Details, include relationship from Close Bug to Record Resolution Details
+EXPLANATION: "Record Resolution Details" is an inclusion use case included only by "Close Bug". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Recording resolution details is a procedural sub-step of closing a bug, not an independent service. This is functional decomposition.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Bug Fields", "Select Developer", "Record Resolution Details") must be merged back into their respective base use cases ("Report Bug", "Assign Bug", "Close Bug"). Each inclusion use case represents merely a procedural step rather than a complete service, and each is only included by one use case, has no actor association, and participates in no other relationships. Merging them eliminates 3 use cases and 3 include relationships (6 constructs removed), producing a cleaner model where each base use case encapsulates its full behavior.
+
+CONSTRUCT_COUNT: 29
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Reporter" as Reporter
+actor "Project Manager" as PM
+actor "Developer" as Dev
+actor "QA Tester" as QA
+
+rectangle "Software Bug Tracking System" {
+  usecase "Report Bug" as UC1
+  usecase "Validate Bug Fields" as UC2
+  usecase "View Bug List" as UC3
+  usecase "Search Bugs" as UC4
+  usecase "Assign Bug" as UC5
+  usecase "Select Developer" as UC6
+  usecase "Update Bug Status" as UC7
+  usecase "Add Comment" as UC8
+  usecase "Close Bug" as UC9
+  usecase "Record Resolution Details" as UC10
+  usecase "Reopen Bug" as UC11
+  usecase "Generate Bug Report" as UC12
+  usecase "Verify Fix" as UC13
+  usecase "Set Bug Priority" as UC14
+  usecase "Attach File" as UC15
+}
+
+Reporter --> UC1
+Reporter --> UC3
+Reporter --> UC4
+Reporter --> UC11
+
+PM --> UC5
+PM --> UC12
+PM --> UC14
+PM --> UC3
+
+Dev --> UC7
+Dev --> UC8
+Dev --> UC9
+Dev --> UC15
+
+QA --> UC13
+QA --> UC3
+
+UC1 ..> UC2 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC9 ..> UC10 : <<include>>
+
+UC1 ..> UC15 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 23
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Reporter" as Reporter
+actor "Project Manager" as PM
+actor "Developer" as Dev
+actor "QA Tester" as QA
+
+rectangle "Software Bug Tracking System" {
+  usecase "Report Bug" as UC1
+  usecase "View Bug List" as UC3
+  usecase "Search Bugs" as UC4
+  usecase "Assign Bug" as UC5
+  usecase "Update Bug Status" as UC7
+  usecase "Add Comment" as UC8
+  usecase "Close Bug" as UC9
+  usecase "Reopen Bug" as UC11
+  usecase "Generate Bug Report" as UC12
+  usecase "Verify Fix" as UC13
+  usecase "Set Bug Priority" as UC14
+  usecase "Attach File" as UC15
+}
+
+Reporter --> UC1
+Reporter --> UC3
+Reporter --> UC4
+Reporter --> UC11
+
+PM --> UC5
+PM --> UC12
+PM --> UC14
+PM --> UC3
+
+Dev --> UC7
+Dev --> UC8
+Dev --> UC9
+Dev --> UC15
+
+QA --> UC13
+QA --> UC3
+
+UC1 ..> UC15 : <<extend>>
+
+@enduml
+```

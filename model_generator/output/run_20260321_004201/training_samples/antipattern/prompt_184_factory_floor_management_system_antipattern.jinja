@@ -1,0 +1,33 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Floor Supervisor" as Supervisor
+actor "Maintenance Technician" as Technician
+
+rectangle "Factory Floor Management System" {
+  usecase "Monitor Production Line" as UC1
+  usecase "Schedule Production Run" as UC2
+  usecase "Allocate Machine Resources" as UC3
+  usecase "Report Equipment Fault" as UC4
+  usecase "Log Maintenance Activity" as UC5
+}
+
+Supervisor -- UC1
+Supervisor -- UC2
+UC2 ..> UC3 : <<include>>
+Technician -- UC4
+Technician -- UC5
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Schedule Production Run (UC2), Allocate Machine Resources (UC3), Include relationship from UC2 to UC3
+   Explanation: "Allocate Machine Resources" (UC3) is an inclusion use case that is included by only one use case ("Schedule Production Run" / UC2). UC3 is not associated with any actor directly — no actor interacts with it. UC3 does not include, extend, generalize, or get extended by any other use case. It merely represents a sub-step of scheduling a production run (allocating the machines), not a complete service observable to any user. This is a textbook instance of Functional Decomposition via the include relationship: the base use case's internal behavior has been improperly decomposed into a separate inclusion use case that provides no standalone value.

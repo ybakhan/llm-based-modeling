@@ -1,0 +1,65 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Couple" as Couple
+actor "Wedding Planner" as Planner
+actor "Vendor" as Vendor
+actor "Guest" as Guest
+
+rectangle "Wedding Planning Platform" {
+  usecase "Register Account" as UC1
+  usecase "Browse Vendors" as UC2
+  usecase "Book Venue" as UC3
+  usecase "Check Venue Availability" as UC4
+  usecase "Manage Guest List" as UC5
+  usecase "Send Invitations" as UC6
+  usecase "Validate Guest Addresses" as UC7
+  usecase "RSVP to Event" as UC8
+  usecase "Manage Budget" as UC9
+  usecase "Calculate Remaining Balance" as UC10
+  usecase "Create Seating Arrangement" as UC11
+  usecase "Submit Vendor Proposal" as UC12
+  usecase "Schedule Consultation" as UC13
+  usecase "View Wedding Timeline" as UC14
+}
+
+Couple --> UC1
+Couple --> UC2
+Couple --> UC3
+Couple --> UC5
+Couple --> UC6
+Couple --> UC9
+Couple --> UC11
+Couple --> UC14
+
+Planner --> UC3
+Planner --> UC13
+Planner --> UC14
+
+Vendor --> UC12
+
+Guest --> UC8
+
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC9 ..> UC10 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Book Venue, Check Venue Availability, include (Book Venue → Check Venue Availability)
+   Instance 1: Explanation: "Check Venue Availability" is an inclusion use case included only by "Book Venue." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed sub-step of the booking process rather than a complete, independently valuable service to any actor. This constitutes functional decomposition via the include relationship.
+
+   Instance 2: Constructs Involved: Send Invitations, Validate Guest Addresses, include (Send Invitations → Validate Guest Addresses)
+   Instance 2: Explanation: "Validate Guest Addresses" is an inclusion use case included only by "Send Invitations." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Validating addresses is a decomposed procedural step of sending invitations, not a standalone service observable to a user. This constitutes functional decomposition via the include relationship.
+
+   Instance 3: Constructs Involved: Manage Budget, Calculate Remaining Balance, include (Manage Budget → Calculate Remaining Balance)
+   Instance 3: Explanation: "Calculate Remaining Balance" is an inclusion use case included only by "Manage Budget." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Calculating a remaining balance is an internal computational step of budget management, not a complete service yielding an observable result to any actor. This constitutes functional decomposition via the include relationship.

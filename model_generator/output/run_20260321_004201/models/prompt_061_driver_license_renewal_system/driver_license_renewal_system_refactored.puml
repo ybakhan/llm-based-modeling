@@ -1,0 +1,36 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Applicant" as Applicant
+actor "DMV Clerk" as Clerk
+actor "Payment Gateway" as Gateway
+actor "Vision Examiner" as Examiner
+
+rectangle "Driver License Renewal System" {
+  usecase "Submit Renewal Application" as UC1
+  usecase "Upload Documents" as UC3
+  usecase "Process Payment" as UC4
+  usecase "Schedule Vision Test" as UC6
+  usecase "Conduct Vision Test" as UC8
+  usecase "Review Application" as UC9
+  usecase "Approve Renewal" as UC10
+  usecase "Reject Renewal" as UC11
+  usecase "Issue Renewed License" as UC12
+  usecase "Request Additional Documents" as UC13
+}
+
+Applicant -- UC1
+Applicant -- UC3
+Applicant -- UC4
+Applicant -- UC6
+Gateway -- UC4
+Examiner -- UC8
+Clerk -- UC9
+Clerk -- UC10
+Clerk -- UC11
+Clerk -- UC12
+
+UC9 ..> UC1 : <<include>>
+UC11 .> UC13 : <<extend>>
+
+@enduml

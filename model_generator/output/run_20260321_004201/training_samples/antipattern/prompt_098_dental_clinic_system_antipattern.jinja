@@ -1,0 +1,62 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Patient" as Patient
+actor "Dentist" as Dentist
+actor "Receptionist" as Receptionist
+actor "Dental Hygienist" as Hygienist
+
+rectangle "Dental Clinic System" {
+  usecase "Schedule Appointment" as UC1
+  usecase "Cancel Appointment" as UC2
+  usecase "Validate Patient Insurance" as UC3
+  usecase "Register Patient" as UC4
+  usecase "Perform Dental Examination" as UC5
+  usecase "Record Examination Findings" as UC6
+  usecase "Prescribe Treatment" as UC7
+  usecase "Perform Teeth Cleaning" as UC8
+  usecase "Process Payment" as UC9
+  usecase "Generate Payment Receipt" as UC10
+  usecase "View Patient Records" as UC11
+  usecase "Request Emergency Appointment" as UC12
+  usecase "Manage Treatment Plan" as UC13
+}
+
+Patient --> UC1
+Patient --> UC2
+Patient --> UC12
+Receptionist --> UC1
+Receptionist --> UC4
+Receptionist --> UC9
+Receptionist --> UC2
+Dentist --> UC5
+Dentist --> UC7
+Dentist --> UC11
+Dentist --> UC13
+Hygienist --> UC8
+
+UC1 ..> UC3 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC9 ..> UC10 : <<include>>
+
+UC12 ..> UC1 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Schedule Appointment, Validate Patient Insurance
+   Instance 1: Explanation: "Validate Patient Insurance" is an inclusion use case included only by "Schedule Appointment". It is not associated with any actor directly, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (insurance validation) rather than a complete service observable to an actor, making it a functional decomposition of "Schedule Appointment".
+
+   Instance 2: Constructs Involved: Perform Dental Examination, Record Examination Findings
+   Instance 2: Explanation: "Record Examination Findings" is an inclusion use case included only by "Perform Dental Examination". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Recording findings is a sub-step of performing an examination and does not provide a standalone, complete service to any actor.
+
+   Instance 3: Constructs Involved: Process Payment, Generate Payment Receipt
+   Instance 3: Explanation: "Generate Payment Receipt" is an inclusion use case included only by "Process Payment". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a receipt is a sub-step of payment processing, not a complete service in its own right.

@@ -1,0 +1,66 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+left to right direction
+
+actor "Safety Officer" as SO
+actor "Plant Worker" as PW
+actor "Safety Manager" as SM
+actor "Regulatory Authority" as RA
+
+rectangle "Industrial Safety Reporting System" {
+  usecase "Submit Incident Report" as UC1
+  usecase "Validate Report Fields" as UC2
+  usecase "View Incident History" as UC3
+  usecase "Conduct Safety Inspection" as UC4
+  usecase "Generate Inspection Checklist" as UC5
+  usecase "Investigate Incident" as UC6
+  usecase "Collect Evidence Data" as UC7
+  usecase "Assign Corrective Action" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Review Safety Metrics Dashboard" as UC10
+  usecase "Escalate Critical Incident" as UC11
+  usecase "Track Corrective Action Status" as UC12
+  usecase "Export Regulatory Filing" as UC13
+  usecase "Log Near-Miss Event" as UC14
+  usecase "Notify Stakeholders" as UC15
+}
+
+PW --> UC1
+PW --> UC14
+SO --> UC1
+SO --> UC3
+SO --> UC4
+SO --> UC6
+SO --> UC8
+SO --> UC12
+SM --> UC9
+SM --> UC10
+SM --> UC11
+RA --> UC13
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC11 ..> UC15 : <<include>>
+UC1 ..> UC15 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Submit Incident Report, Validate Report Fields, include relationship from "Submit Incident Report" to "Validate Report Fields"
+   Instance 1: Explanation: "Validate Report Fields" is an inclusion use case included only by "Submit Incident Report". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (field validation) of the incident submission process rather than a complete, independently observable service. This is functional decomposition — breaking "Submit Incident Report" into procedural steps via include.
+
+   Instance 2: Constructs Involved: Conduct Safety Inspection, Generate Inspection Checklist, include relationship from "Conduct Safety Inspection" to "Generate Inspection Checklist"
+   Instance 2: Explanation: "Generate Inspection Checklist" is included only by "Conduct Safety Inspection". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a checklist is an internal procedural step of conducting an inspection, not a standalone service delivering an observable result to any user. This constitutes functional decomposition via the include relationship.
+
+   Instance 3: Constructs Involved: Investigate Incident, Collect Evidence Data, include relationship from "Investigate Incident" to "Collect Evidence Data"
+   Instance 3: Explanation: "Collect Evidence Data" is included only by "Investigate Incident". It has no actor association, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Collecting evidence is an internal sub-task of the investigation process, not an independently valuable service for any actor. This is a clear case of functional decomposition through the include relationship.

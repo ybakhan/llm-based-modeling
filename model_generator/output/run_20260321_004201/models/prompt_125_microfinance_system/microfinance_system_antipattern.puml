@@ -1,0 +1,40 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Loan Officer" as LO
+actor "Branch Manager" as BM
+actor "Borrower" as BO
+actor "Auditor" as AU
+
+rectangle "Microfinance System" {
+  usecase "Process Loan Application" as UC1
+  usecase "Verify Applicant Identity" as UC2
+  usecase "Disburse Loan" as UC3
+  usecase "Calculate Disbursement Amount" as UC4
+  usecase "Manage Repayments" as UC5
+  usecase "Send Payment Reminder" as UC6
+  usecase "Register Borrower" as UC7
+  usecase "View Loan Status" as UC8
+  usecase "Generate Financial Report" as UC9
+  usecase "Approve Loan" as UC10
+  usecase "Close Loan Account" as UC11
+  usecase "Record Savings Deposit" as UC12
+}
+
+LO -- UC1
+LO -- UC3
+LO -- UC5
+LO -- UC7
+LO -- UC12
+BO -- UC8
+BM -- UC10
+BM -- UC9
+BM -- UC11
+AU -- UC9
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+@enduml

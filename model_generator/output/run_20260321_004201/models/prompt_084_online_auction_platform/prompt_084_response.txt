@@ -1,0 +1,120 @@
+
+
+DOMAIN: online_auction_platform
+DOMAIN_DISPLAY: Online Auction Platform
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Place Bid, Validate Bid Amount, include relationship from Place Bid to Validate Bid Amount
+EXPLANATION: "Validate Bid Amount" is an inclusion use case included only by "Place Bid". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a decomposed step of the bidding process rather than a complete service observable to a user. This is functional decomposition of "Place Bid" into a sub-step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Create Auction Listing, Upload Item Photos, include relationship from Create Auction Listing to Upload Item Photos
+EXPLANATION: "Upload Item Photos" is an inclusion use case included only by "Create Auction Listing". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Uploading photos is a sub-step of creating a listing, not a standalone service providing an observable result to any user. This is functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Place Bid, Send Bid Notification, include relationship from Place Bid to Send Bid Notification
+EXPLANATION: "Send Bid Notification" is an inclusion use case included only by "Place Bid". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Sending a notification is an internal sub-step of the bidding process, not a complete service observable to any actor. This is functional decomposition.
+
+REFACTORING_RATIONALE: All three functional decomposition instances must be resolved by merging the inclusion use cases back into their respective base use cases. (1) "Validate Bid Amount" must be merged into "Place Bid" — bid validation is an internal step of placing a bid. The use case and its include relationship are dropped. (2) "Upload Item Photos" must be merged into "Create Auction Listing" — photo uploading is part of the listing creation workflow. The use case and its include relationship are dropped. (3) "Send Bid Notification" must be merged into "Place Bid" — notification sending is an internal consequence of placing a bid. The use case and its include relationship are dropped. This removes 3 use cases and 3 include relationships (6 constructs total), yielding a cleaner model where each use case represents a complete, actor-observable service.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor Bidder
+actor Seller
+actor Admin
+actor "Payment Gateway" as PG
+
+rectangle "Online Auction Platform" {
+    usecase "Register Account" as UC1
+    usecase "Browse Auctions" as UC2
+    usecase "Place Bid" as UC3
+    usecase "Validate Bid Amount" as UC4
+    usecase "Send Bid Notification" as UC5
+    usecase "Create Auction Listing" as UC6
+    usecase "Upload Item Photos" as UC7
+    usecase "Close Auction" as UC8
+    usecase "Process Payment" as UC9
+    usecase "View Bid History" as UC10
+    usecase "Manage User Accounts" as UC11
+    usecase "Resolve Dispute" as UC12
+    usecase "Leave Feedback" as UC13
+    usecase "Search Auctions" as UC14
+}
+
+Bidder -- UC1
+Bidder -- UC2
+Bidder -- UC3
+Bidder -- UC10
+Bidder -- UC13
+Bidder -- UC14
+Seller -- UC1
+Seller -- UC6
+Seller -- UC8
+Seller -- UC13
+Admin -- UC11
+Admin -- UC12
+PG -- UC9
+
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC8 ..> UC9 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor Bidder
+actor Seller
+actor Admin
+actor "Payment Gateway" as PG
+
+rectangle "Online Auction Platform" {
+    usecase "Register Account" as UC1
+    usecase "Browse Auctions" as UC2
+    usecase "Place Bid" as UC3
+    usecase "Create Auction Listing" as UC6
+    usecase "Close Auction" as UC8
+    usecase "Process Payment" as UC9
+    usecase "View Bid History" as UC10
+    usecase "Manage User Accounts" as UC11
+    usecase "Resolve Dispute" as UC12
+    usecase "Leave Feedback" as UC13
+    usecase "Search Auctions" as UC14
+}
+
+Bidder -- UC1
+Bidder -- UC2
+Bidder -- UC3
+Bidder -- UC10
+Bidder -- UC13
+Bidder -- UC14
+Seller -- UC1
+Seller -- UC6
+Seller -- UC8
+Seller -- UC13
+Admin -- UC11
+Admin -- UC12
+PG -- UC9
+
+UC8 ..> UC9 : <<include>>
+@enduml
+```

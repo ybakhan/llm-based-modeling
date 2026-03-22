@@ -1,0 +1,34 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Visitor" as Visitor
+actor "Museum Staff" as Staff
+actor "Manager" as Manager
+actor "Payment Gateway" as Gateway
+
+rectangle "Museum Ticketing System" {
+  usecase "Browse Exhibitions" as UC1
+  usecase "Purchase Ticket" as UC2
+  usecase "Cancel Ticket" as UC5
+  usecase "Apply Discount" as UC6
+  usecase "Scan Ticket at Entry" as UC7
+  usecase "View Sales Report" as UC9
+  usecase "Manage Exhibition Schedule" as UC10
+  usecase "Process Payment" as UC11
+  usecase "Book Group Visit" as UC12
+}
+
+Visitor -- UC1
+Visitor -- UC2
+Visitor -- UC5
+Visitor -- UC12
+Staff -- UC7
+Manager -- UC9
+Manager -- UC10
+Gateway -- UC11
+
+UC2 ..> UC11 : <<include>>
+UC2 ..> UC6 : <<extend>>
+
+@enduml

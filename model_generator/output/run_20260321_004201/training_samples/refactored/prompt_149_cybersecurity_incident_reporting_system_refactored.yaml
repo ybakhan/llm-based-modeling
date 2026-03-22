@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 149
+  domain: cybersecurity_incident_reporting_system
+  domain_display: Cybersecurity Incident Reporting System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 21
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:00:04.177754'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_149_cybersecurity_incident_reporting_system/cybersecurity_incident_reporting_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_149_cybersecurity_incident_reporting_system/cybersecurity_incident_reporting_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_149_cybersecurity_incident_reporting_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Security Analyst\"\
+    \ as Analyst\nactor \"Incident Manager\" as Manager\nactor \"CISO\" as CISO\n\
+    actor \"External Auditor\" as Auditor\n\nrectangle \"Cybersecurity Incident Reporting\
+    \ System\" {\n  usecase \"Report Incident\" as UC1\n  usecase \"Classify Incident\
+    \ Severity\" as UC3\n  usecase \"Escalate Incident\" as UC4\n  usecase \"Track\
+    \ Incident Status\" as UC6\n  usecase \"Assign Incident Handler\" as UC7\n  usecase\
+    \ \"Generate Compliance Report\" as UC8\n  usecase \"Review Incident Log\" as\
+    \ UC10\n  usecase \"Close Incident\" as UC11\n  usecase \"Configure Alert Thresholds\"\
+    \ as UC12\n  usecase \"Export Audit Trail\" as UC13\n}\n\nAnalyst --> UC1\nAnalyst\
+    \ --> UC3\nAnalyst --> UC6\nManager --> UC4\nManager --> UC7\nManager --> UC11\n\
+    Manager --> UC6\nCISO --> UC8\nCISO --> UC12\nAuditor --> UC10\nAuditor --> UC13\n\
+    \nUC11 ..> UC6 : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: cybersecurity_incident_reporting_system
+
+  DOMAIN_DISPLAY: Cybersecurity Incident Reporting System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Report Incident, Validate Incident Fields, include (Report
+  Incident → Validate Incident Fields)
+
+  EXPLANATION: "Validate Incident Fields" is an inclusion use case included only by
+  "Report Incident." It is not associated with any actor, does not include or extend
+  any other use case, is not extende …[truncated]'

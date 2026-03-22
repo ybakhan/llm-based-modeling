@@ -1,0 +1,46 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Company Applicant" as Applicant
+actor "Registrar" as Registrar
+actor "Company Director" as Director
+actor "System Administrator" as Admin
+
+rectangle "Company Registration System" {
+  usecase "Register New Company" as UC1
+  usecase "Search Company Registry" as UC4
+  usecase "Submit Annual Return" as UC5
+  usecase "Update Company Details" as UC7
+  usecase "Dissolve Company" as UC8
+  usecase "Review Registration Application" as UC9
+  usecase "Process Payment" as UC10
+  usecase "Generate Compliance Report" as UC11
+  usecase "Manage User Accounts" as UC12
+  usecase "File Director Changes" as UC13
+  usecase "Request Company Certificate" as UC14
+}
+
+Applicant --> UC1
+Applicant --> UC4
+Applicant --> UC10
+Director --> UC5
+Director --> UC7
+Director --> UC13
+Director --> UC14
+Registrar --> UC9
+Registrar --> UC8
+Registrar --> UC11
+Admin --> UC12
+
+UC8 ..> UC9 : <<extend>>
+}
+@enduml
+
+
+Answer:
+No antipattern detected.

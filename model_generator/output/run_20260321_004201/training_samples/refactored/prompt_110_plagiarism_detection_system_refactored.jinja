@@ -1,0 +1,40 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Student" as Student
+actor "Instructor" as Instructor
+actor "Administrator" as Admin
+
+rectangle "Plagiarism Detection System" {
+  usecase "Submit Document" as UC1
+  usecase "Run Plagiarism Check" as UC3
+  usecase "Generate Report" as UC5
+  usecase "View Report" as UC7
+  usecase "Manage Document Repository" as UC8
+  usecase "Configure Detection Settings" as UC9
+  usecase "Flag Submission" as UC10
+  usecase "View Submission History" as UC11
+  usecase "Manage User Accounts" as UC12
+}
+
+Student --> UC1
+Student --> UC7
+Student --> UC11
+Instructor --> UC3
+Instructor --> UC7
+Instructor --> UC5
+Instructor --> UC10
+Admin --> UC8
+Admin --> UC9
+Admin --> UC12
+
+@enduml
+
+
+Answer:
+No antipattern detected.

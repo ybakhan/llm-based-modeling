@@ -1,0 +1,66 @@
+
+
+DOMAIN: equipment_maintenance_system
+DOMAIN_DISPLAY: Equipment Maintenance System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Submit Work Order, Validate Equipment ID
+EXPLANATION: The use case "Validate Equipment ID" is an inclusion use case that is included by only one use case ("Submit Work Order"). It is not associated with any actor directly, it does not include or extend any other use case, it is not extended by any other use case, and it is not involved in any generalization. "Validate Equipment ID" represents a sub-step of submitting a work order — validating the equipment identifier — rather than a complete, standalone service that delivers an observable result to any user. This is a textbook instance of functional decomposition via the include relationship, where a single use case's internal logic has been improperly broken out into a separate inclusion use case.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Equipment ID" must be merged back into the base use case "Submit Work Order" because it serves no independent purpose — it is included by only one use case, has no actor association, and provides no standalone observable result. By absorbing this validation step into "Submit Work Order," we eliminate the unnecessary functional decomposition while preserving all behavior. This also removes the <<include>> relationship, reducing the construct count by 2 (one use case and one include arrow).
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Maintenance Technician" as Tech
+actor "Supervisor" as Sup
+
+rectangle "Equipment Maintenance System" {
+  usecase "Submit Work Order" as UC1
+  usecase "Validate Equipment ID" as UC2
+  usecase "Schedule Maintenance" as UC3
+  usecase "View Maintenance History" as UC4
+  usecase "Approve Work Order" as UC5
+}
+
+Tech --> UC1
+Tech --> UC3
+Tech --> UC4
+Sup --> UC5
+
+UC1 ..> UC2 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 8
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Maintenance Technician" as Tech
+actor "Supervisor" as Sup
+
+rectangle "Equipment Maintenance System" {
+  usecase "Submit Work Order" as UC1
+  usecase "Schedule Maintenance" as UC3
+  usecase "View Maintenance History" as UC4
+  usecase "Approve Work Order" as UC5
+}
+
+Tech --> UC1
+Tech --> UC3
+Tech --> UC4
+Sup --> UC5
+@enduml
+```

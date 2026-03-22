@@ -1,0 +1,62 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Patient" as Patient
+actor "Doctor" as Doctor
+actor "Receptionist" as Receptionist
+actor "Nurse" as Nurse
+
+rectangle "Medical Clinic System" {
+  usecase "Schedule Appointment" as UC1
+  usecase "Validate Patient Insurance" as UC2
+  usecase "Cancel Appointment" as UC3
+  usecase "Conduct Consultation" as UC4
+  usecase "Prescribe Medication" as UC5
+  usecase "Check Drug Interactions" as UC6
+  usecase "Record Vital Signs" as UC7
+  usecase "View Medical Records" as UC8
+  usecase "Process Payment" as UC9
+  usecase "Generate Payment Receipt" as UC10
+  usecase "Register Patient" as UC11
+  usecase "Request Lab Test" as UC12
+  usecase "View Lab Results" as UC13
+
+  UC1 ..> UC2 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC9 ..> UC10 : <<include>>
+
+  UC4 ..> UC8 : <<include>>
+}
+
+Patient --> UC1
+Patient --> UC3
+Patient --> UC8
+Patient --> UC9
+Receptionist --> UC1
+Receptionist --> UC3
+Receptionist --> UC11
+Doctor --> UC4
+Doctor --> UC5
+Doctor --> UC12
+Doctor --> UC13
+Nurse --> UC7
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Schedule Appointment, Validate Patient Insurance
+   Instance 1: Explanation: "Validate Patient Insurance" is an inclusion use case included only by "Schedule Appointment". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (insurance validation) that has been improperly decomposed out of "Schedule Appointment" rather than being a complete service offering an observable result to an actor.
+
+   Instance 2: Constructs Involved: Prescribe Medication, Check Drug Interactions
+   Instance 2: Explanation: "Check Drug Interactions" is an inclusion use case included only by "Prescribe Medication". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal procedural step (checking interactions) that has been functionally decomposed out of "Prescribe Medication" and does not provide a complete, independently useful service to any actor.
+
+   Instance 3: Constructs Involved: Process Payment, Generate Payment Receipt
+   Instance 3: Explanation: "Generate Payment Receipt" is an inclusion use case included only by "Process Payment". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a receipt is an internal sub-step of processing a payment and does not constitute a standalone service with an observable result for any actor on its own.

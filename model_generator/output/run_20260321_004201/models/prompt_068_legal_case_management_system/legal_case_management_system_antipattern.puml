@@ -1,0 +1,49 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Attorney" as Attorney
+actor "Paralegal" as Paralegal
+actor "Client" as Client
+actor "Judge" as Judge
+
+rectangle "Legal Case Management System" {
+  usecase "Open New Case" as UC1
+  usecase "Validate Client Identity" as UC2
+  usecase "Search Cases" as UC3
+  usecase "File Court Document" as UC4
+  usecase "Generate Filing Reference" as UC5
+  usecase "Schedule Hearing" as UC6
+  usecase "Check Court Availability" as UC7
+  usecase "Record Case Notes" as UC8
+  usecase "Assign Attorney to Case" as UC9
+  usecase "Track Billing Hours" as UC10
+  usecase "View Case Status" as UC11
+  usecase "Send Client Notification" as UC12
+  usecase "Close Case" as UC13
+  usecase "Generate Case Report" as UC14
+}
+
+Attorney -- UC1
+Attorney -- UC3
+Attorney -- UC4
+Attorney -- UC6
+Attorney -- UC8
+Attorney -- UC10
+Attorney -- UC13
+Attorney -- UC14
+
+Paralegal -- UC3
+Paralegal -- UC9
+Paralegal -- UC12
+Paralegal -- UC8
+
+Client -- UC11
+
+Judge -- UC6
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC13 ..> UC12 : <<include>>
+
+@enduml

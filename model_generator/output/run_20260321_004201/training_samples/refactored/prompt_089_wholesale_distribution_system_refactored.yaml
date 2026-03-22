@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 89
+  domain: wholesale_distribution_system
+  domain_display: Wholesale Distribution System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 20
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T21:20:50.896845'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_089_wholesale_distribution_system/wholesale_distribution_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_089_wholesale_distribution_system/wholesale_distribution_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_089_wholesale_distribution_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Wholesale Buyer\"\
+    \ as Buyer\nactor \"Warehouse Manager\" as WM\nactor \"Sales Representative\"\
+    \ as SR\n\nrectangle \"Wholesale Distribution System\" {\n  usecase \"Place Bulk\
+    \ Order\" as UC1\n  usecase \"Track Order Status\" as UC3\n  usecase \"Process\
+    \ Shipment\" as UC4\n  usecase \"Manage Product Catalog\" as UC6\n  usecase \"\
+    Register New Customer\" as UC7\n  usecase \"Apply Volume Discount\" as UC9\n \
+    \ usecase \"Generate Sales Report\" as UC10\n  usecase \"Process Return\" as UC11\n\
+    \  usecase \"Manage Warehouse Inventory\" as UC12\n}\n\nBuyer -- UC1\nBuyer --\
+    \ UC3\nBuyer -- UC11\n\nWM -- UC4\nWM -- UC12\n\nSR -- UC6\nSR -- UC7\nSR -- UC10\n\
+    \nUC9 ..> UC1 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: wholesale_distribution_system
+
+  DOMAIN_DISPLAY: Wholesale Distribution System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Bulk Order, Validate Inventory Availability
+
+  EXPLANATION: "Validate Inventory Availability" is included only by "Place Bulk Order",
+  is not associated with any actor, does not include or extend any other use case,
+  is not extended by any use case, and is not part of any generalization. It represents
+  a decompose …[truncated]'

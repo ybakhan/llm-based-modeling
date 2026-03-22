@@ -1,0 +1,44 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Member
+actor Trainer
+actor Administrator
+actor "Payment Gateway" as PG
+
+rectangle "Gym Membership System" {
+  usecase "Register Membership" as UC1
+  usecase "Validate Personal Details" as UC1a
+  usecase "Renew Membership" as UC2
+  usecase "Cancel Membership" as UC3
+  usecase "Book Class" as UC4
+  usecase "Check Class Availability" as UC4a
+  usecase "View Schedule" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Calculate Total Amount" as UC6a
+  usecase "Manage Class Schedule" as UC7
+  usecase "Track Attendance" as UC8
+  usecase "Generate Reports" as UC9
+  usecase "Update Member Profile" as UC10
+  usecase "Apply Discount" as UC11
+}
+
+Member -- UC1
+Member -- UC2
+Member -- UC3
+Member -- UC4
+Member -- UC5
+Member -- UC10
+Trainer -- UC7
+Trainer -- UC8
+Administrator -- UC9
+Administrator -- UC3
+PG -- UC6
+
+UC1 ..> UC1a : <<include>>
+UC4 ..> UC4a : <<include>>
+UC6 ..> UC6a : <<include>>
+UC2 ..> UC6 : <<include>>
+UC11 ..> UC6 : <<extend>>
+
+@enduml

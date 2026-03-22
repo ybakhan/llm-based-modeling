@@ -1,0 +1,32 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Pharmacist" as Pharmacist
+actor "Customer" as Customer
+actor "Pharmacy Manager" as Manager
+
+rectangle "Pharmacy Management System" {
+    usecase "Fill Prescription" as UC1
+    usecase "Process Payment" as UC4
+    usecase "Manage Inventory" as UC6
+    usecase "Register Customer" as UC7
+    usecase "View Prescription History" as UC8
+    usecase "Order Medication Refill" as UC9
+    usecase "Generate Sales Report" as UC10
+    usecase "Manage Supplier Orders" as UC11
+    usecase "Update Drug Catalog" as UC12
+}
+
+Pharmacist -- UC1
+Pharmacist -- UC4
+Pharmacist -- UC6
+Pharmacist -- UC7
+Customer -- UC8
+Customer -- UC9
+Manager -- UC10
+Manager -- UC11
+Manager -- UC12
+
+UC9 ..> UC1 : <<include>>
+@enduml

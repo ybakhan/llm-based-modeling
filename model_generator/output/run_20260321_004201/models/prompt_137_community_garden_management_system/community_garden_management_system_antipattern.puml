@@ -1,0 +1,26 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Gardener" as Gardener
+actor "Garden Manager" as Manager
+
+rectangle "Community Garden Management System" {
+  usecase "Reserve Garden Plot" as UC1
+  usecase "Check Plot Availability" as UC2
+  usecase "Log Harvest" as UC3
+  usecase "Schedule Watering" as UC4
+  usecase "Manage Member Accounts" as UC5
+  usecase "View Garden Map" as UC6
+  usecase "Report Maintenance Issue" as UC7
+}
+
+Gardener -- UC1
+Gardener -- UC3
+Gardener -- UC4
+Gardener -- UC6
+Gardener -- UC7
+
+Manager -- UC5
+
+UC1 ..> UC2 : <<include>>
+@enduml

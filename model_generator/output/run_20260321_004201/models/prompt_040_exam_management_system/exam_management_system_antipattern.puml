@@ -1,0 +1,22 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Instructor" as Instructor
+actor "Student" as Student
+
+rectangle "Exam Management System" {
+  usecase "Schedule Exam" as UC1
+  usecase "Select Exam Date" as UC2
+  usecase "Take Exam" as UC3
+  usecase "Grade Exam" as UC4
+  usecase "View Results" as UC5
+}
+
+Instructor -- UC1
+Instructor -- UC4
+Student -- UC3
+Student -- UC5
+
+UC1 ..> UC2 : <<include>>
+@enduml

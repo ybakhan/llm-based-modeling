@@ -1,0 +1,38 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "End User" as EU
+actor "Meteorologist" as MET
+actor "System Administrator" as SA
+
+rectangle "Weather Forecasting Service" {
+  usecase "View Weather Forecast" as UC1
+  usecase "Fetch Forecast Data" as UC2
+  usecase "Set Location Preferences" as UC3
+  usecase "Publish Forecast" as UC4
+  usecase "Manage Weather Stations" as UC5
+  usecase "Subscribe to Alerts" as UC6
+  usecase "Configure Alert Thresholds" as UC7
+}
+
+EU --> UC1
+UC1 ..> UC2 : <<include>>
+EU --> UC3
+EU --> UC6
+MET --> UC4
+SA --> UC5
+UC7 ..|> UC6 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: View Weather Forecast, Fetch Forecast Data
+   Explanation: The use case "Fetch Forecast Data" is an inclusion use case that is included by only one use case ("View Weather Forecast"). "Fetch Forecast Data" is not associated with any actor directly, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents an internal implementation step (fetching data) rather than a complete, observable service to any user. This is a classic functional decomposition — the act of viewing a forecast has been artificially split into a base use case and an internal sub-step that provides no standalone value to any actor.

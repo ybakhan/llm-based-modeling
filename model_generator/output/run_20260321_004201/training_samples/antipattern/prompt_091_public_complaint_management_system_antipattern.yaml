@@ -1,0 +1,109 @@
+metadata:
+  prompt_number: 91
+  domain: public_complaint_management_system
+  domain_display: Public Complaint Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: File Complaint, Validate Complaint Fields, include (File
+        Complaint → Validate Complaint Fields)
+      explanation: '"Validate Complaint Fields" is an inclusion use case included
+        only by "File Complaint". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. It represents a sub-step (field validation) rather
+        than a complete, observable service to any user — a classic functional decomposition
+        of the filing process.'
+    - constructs_involved: Assign Complaint, Lookup Available Officers, include (Assign
+        Complaint → Lookup Available Officers)
+      explanation: '"Lookup Available Officers" is an inclusion use case included
+        only by "Assign Complaint". It is not associated with any actor, does not
+        include or extend any other use case, is not extended by any use case, and
+        is not part of any generalization. Looking up available officers is an internal
+        procedural step of assignment, not a standalone service delivering an observable
+        result to a user.'
+    - constructs_involved: Generate Report, Aggregate Complaint Statistics, include
+        (Generate Report → Aggregate Complaint Statistics)
+      explanation: '"Aggregate Complaint Statistics" is an inclusion use case included
+        only by "Generate Report". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. Aggregating statistics is an internal computation
+        step within report generation, not a complete service observable to any actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:35:51.654331'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_091_public_complaint_management_system/public_complaint_management_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_091_public_complaint_management_system/public_complaint_management_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_091_public_complaint_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Citizen\" as Citizen\nactor \"Complaint Officer\" as Officer\nactor\
+    \ \"Administrator\" as Admin\nactor \"Department Head\" as DeptHead\n\nrectangle\
+    \ \"Public Complaint Management System\" {\n  usecase \"File Complaint\" as UC1\n\
+    \  usecase \"Validate Complaint Fields\" as UC2\n  usecase \"Track Complaint Status\"\
+    \ as UC3\n  usecase \"Assign Complaint\" as UC4\n  usecase \"Lookup Available\
+    \ Officers\" as UC5\n  usecase \"Investigate Complaint\" as UC6\n  usecase \"\
+    Resolve Complaint\" as UC7\n  usecase \"Escalate Complaint\" as UC8\n  usecase\
+    \ \"Generate Report\" as UC9\n  usecase \"Aggregate Complaint Statistics\" as\
+    \ UC10\n  usecase \"Manage User Accounts\" as UC11\n  usecase \"Provide Feedback\"\
+    \ as UC12\n  usecase \"View Dashboard\" as UC13\n\n  UC1 ..> UC2 : <<include>>\n\
+    \  UC4 ..> UC5 : <<include>>\n  UC9 ..> UC10 : <<include>>\n  UC7 .> UC8 : <<extend>>\n\
+    }\n\nCitizen --> UC1\nCitizen --> UC3\nCitizen --> UC12\nOfficer --> UC6\nOfficer\
+    \ --> UC7\nAdmin --> UC4\nAdmin --> UC9\nAdmin --> UC11\nDeptHead --> UC13\nDeptHead\
+    \ --> UC9\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: File Complaint, Validate Complaint Fields,\
+    \ include (File Complaint → Validate Complaint Fields)\n   Instance 1: Explanation:\
+    \ \"Validate Complaint Fields\" is an inclusion use case included only by \"File\
+    \ Complaint\". It is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and is not part of any\
+    \ generalization. It represents a sub-step (field validation) rather than a complete,\
+    \ observable service to any user — a classic functional decomposition of the filing\
+    \ process.\n\n   Instance 2: Constructs Involved: Assign Complaint, Lookup Available\
+    \ Officers, include (Assign Complaint → Lookup Available Officers)\n   Instance\
+    \ 2: Explanation: \"Lookup Available Officers\" is an inclusion use case included\
+    \ only by \"Assign Complaint\". It is not associated with any actor, does not\
+    \ include or extend any other use case, is not extended by any use case, and is\
+    \ not part of any generalization. Looking up available officers is an internal\
+    \ procedural step of assignment, not a standalone service delivering an observable\
+    \ result to a user.\n\n   Instance 3: Constructs Involved: Generate Report, Aggregate\
+    \ Complaint Statistics, include (Generate Report → Aggregate Complaint Statistics)\n\
+    \   Instance 3: Explanation: \"Aggregate Complaint Statistics\" is an inclusion\
+    \ use case included only by \"Generate Report\". It is not associated with any\
+    \ actor, does not include or extend any other use case, is not extended by any\
+    \ use case, and is not part of any generalization. Aggregating statistics is an\
+    \ internal computation step within report generation, not a complete service observable\
+    \ to any actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: public_complaint_management_system
+
+  DOMAIN_DISPLAY: Public Complaint Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: File Complaint, Validate Complaint Fields, include (File Complaint
+  → Validate Complaint Fields)
+
+  EXPLANATION: "Validate Complaint Fields" is an inclusion use case included only
+  by "File Complaint". It is not associated with any actor, does not include or extend
+  any other use case, is not extended by any u …[truncated]'

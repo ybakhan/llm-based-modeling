@@ -1,0 +1,109 @@
+metadata:
+  prompt_number: 97
+  domain: neighbourhood_watch_app
+  domain_display: Neighbourhood Watch App
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Report Incident, Capture GPS Location, include (Report
+        Incident → Capture GPS Location)
+      explanation: '"Capture GPS Location" is an inclusion use case included only
+        by "Report Incident". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalisation. "Capture GPS Location" is not a complete service
+        on its own — it is merely a sub-step of reporting an incident, representing
+        functional decomposition of "Report Incident" into a technical sub-function.'
+    - constructs_involved: Send Alert to Neighbours, Format Notification Message,
+        include (Send Alert to Neighbours → Format Notification Message)
+      explanation: '"Format Notification Message" is an inclusion use case included
+        only by "Send Alert to Neighbours". It is not associated with any actor, does
+        not include or extend any other use case, is not extended by any use case,
+        and is not part of any generalisation. Formatting a notification message is
+        an internal processing step, not a standalone service observable to any user
+        — this is functional decomposition of the alerting behaviour.'
+    - constructs_involved: View Crime Map, Load Map Markers, include (View Crime Map
+        → Load Map Markers)
+      explanation: '"Load Map Markers" is an inclusion use case included only by "View
+        Crime Map". It is not associated with any actor, does not include or extend
+        any other use case, is not extended by any use case, and is not part of any
+        generalisation. Loading map markers is an implementation detail of viewing
+        the crime map, not a service that delivers an observable result to any user
+        — this is functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:38:11.110107'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_097_neighbourhood_watch_app/neighbourhood_watch_app_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_097_neighbourhood_watch_app/neighbourhood_watch_app_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_097_neighbourhood_watch_app_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Resident\"\
+    \ as Resident\nactor \"Watch Coordinator\" as Coordinator\nactor \"Police Liaison\"\
+    \ as Police\n\nrectangle \"Neighbourhood Watch App\" {\n  usecase \"Register Account\"\
+    \ as UC1\n  usecase \"Report Incident\" as UC2\n  usecase \"Capture GPS Location\"\
+    \ as UC3\n  usecase \"Send Alert to Neighbours\" as UC4\n  usecase \"Format Notification\
+    \ Message\" as UC5\n  usecase \"View Crime Map\" as UC6\n  usecase \"Load Map\
+    \ Markers\" as UC7\n  usecase \"Manage Watch Zones\" as UC8\n  usecase \"Review\
+    \ Incident Reports\" as UC9\n  usecase \"Escalate to Police\" as UC10\n  usecase\
+    \ \"Post Safety Tip\" as UC11\n  usecase \"Schedule Patrol\" as UC12\n}\n\nResident\
+    \ --> UC1\nResident --> UC2\nResident --> UC4\nResident --> UC6\nResident -->\
+    \ UC11\n\nCoordinator --> UC8\nCoordinator --> UC9\nCoordinator --> UC12\n\nPolice\
+    \ --> UC10\n\nUC2 ..> UC3 : <<include>>\nUC4 ..> UC5 : <<include>>\nUC6 ..> UC7\
+    \ : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Report Incident, Capture GPS Location, include\
+    \ (Report Incident → Capture GPS Location)\n   Instance 1: Explanation: \"Capture\
+    \ GPS Location\" is an inclusion use case included only by \"Report Incident\"\
+    . It is not associated with any actor, does not include or extend any other use\
+    \ case, is not extended by any use case, and is not part of any generalisation.\
+    \ \"Capture GPS Location\" is not a complete service on its own — it is merely\
+    \ a sub-step of reporting an incident, representing functional decomposition of\
+    \ \"Report Incident\" into a technical sub-function.\n\n   Instance 2: Constructs\
+    \ Involved: Send Alert to Neighbours, Format Notification Message, include (Send\
+    \ Alert to Neighbours → Format Notification Message)\n   Instance 2: Explanation:\
+    \ \"Format Notification Message\" is an inclusion use case included only by \"\
+    Send Alert to Neighbours\". It is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalisation. Formatting a notification message is an internal processing\
+    \ step, not a standalone service observable to any user — this is functional decomposition\
+    \ of the alerting behaviour.\n\n   Instance 3: Constructs Involved: View Crime\
+    \ Map, Load Map Markers, include (View Crime Map → Load Map Markers)\n   Instance\
+    \ 3: Explanation: \"Load Map Markers\" is an inclusion use case included only\
+    \ by \"View Crime Map\". It is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalisation. Loading map markers is an implementation detail of viewing\
+    \ the crime map, not a service that delivers an observable result to any user\
+    \ — this is functional decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: neighbourhood_watch_app
+
+  DOMAIN_DISPLAY: Neighbourhood Watch App
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Report Incident, Capture GPS Location, include (Report Incident
+  → Capture GPS Location)
+
+  EXPLANATION: "Capture GPS Location" is an inclusion use case included only by "Report
+  Incident". It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case, and is not part of any ge …[truncated]'

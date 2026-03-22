@@ -1,0 +1,64 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Adopter" as Adopter
+actor "Shelter Staff" as Staff
+actor "Veterinarian" as Vet
+actor "Administrator" as Admin
+
+rectangle "Pet Adoption System" {
+  usecase "Browse Available Pets" as UC1
+  usecase "Search Pets by Criteria" as UC2
+  usecase "View Pet Profile" as UC3
+  usecase "Submit Adoption Application" as UC4
+  usecase "Validate Applicant Address" as UC5
+  usecase "Review Application" as UC6
+  usecase "Schedule Home Visit" as UC7
+  usecase "Check Availability Slot" as UC8
+  usecase "Process Adoption Fee" as UC9
+  usecase "Generate Payment Receipt" as UC10
+  usecase "Register New Pet" as UC11
+  usecase "Update Pet Medical Records" as UC12
+  usecase "Perform Health Checkup" as UC13
+  usecase "Manage User Accounts" as UC14
+  usecase "Generate Adoption Reports" as UC15
+}
+
+Adopter --> UC1
+Adopter --> UC2
+Adopter --> UC3
+Adopter --> UC4
+Adopter --> UC9
+Staff --> UC6
+Staff --> UC7
+Staff --> UC11
+Vet --> UC12
+Vet --> UC13
+Admin --> UC14
+Admin --> UC15
+
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC9 ..> UC10 : <<include>>
+
+UC1 <.. UC2 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Submit Adoption Application, Validate Applicant Address
+   Instance 1: Explanation: "Validate Applicant Address" is an inclusion use case included only by "Submit Adoption Application". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (address validation) that is not a complete service observable to any user — it is a functional decomposition of the application submission process.
+
+   Instance 2: Constructs Involved: Schedule Home Visit, Check Availability Slot
+   Instance 2: Explanation: "Check Availability Slot" is an inclusion use case included only by "Schedule Home Visit". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Checking an availability slot is an internal sub-step of scheduling, not a standalone service providing an observable result to any actor.
+
+   Instance 3: Constructs Involved: Process Adoption Fee, Generate Payment Receipt
+   Instance 3: Explanation: "Generate Payment Receipt" is an inclusion use case included only by "Process Adoption Fee". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a receipt is a decomposed sub-function of fee processing, not a complete service offered to any actor on its own.

@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 119
+  domain: mortgage_application_system
+  domain_display: Mortgage Application System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 8
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:10:42.415657'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_119_mortgage_application_system/mortgage_application_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_119_mortgage_application_system/mortgage_application_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_119_mortgage_application_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Applicant\" as Applicant\nactor \"Loan Officer\" as LoanOfficer\n\nrectangle\
+    \ \"Mortgage Application System\" {\n  usecase \"Submit Mortgage Application\"\
+    \ as UC1\n  usecase \"Check Credit Score\" as UC3\n  usecase \"Review Application\"\
+    \ as UC4\n  usecase \"Approve Mortgage\" as UC5\n  usecase \"Reject Mortgage\"\
+    \ as UC6\n}\n\nApplicant -- UC1\nLoanOfficer -- UC4\nLoanOfficer -- UC5\nLoanOfficer\
+    \ -- UC3\nLoanOfficer -- UC6\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: mortgage_application_system
+
+  DOMAIN_DISPLAY: Mortgage Application System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Mortgage Application, Validate Applicant Income
+
+  EXPLANATION: The use case "Submit Mortgage Application" includes "Validate Applicant
+  Income" via an <<include>> relationship. "Validate Applicant Income" is an inclusion
+  use case that (1) is included by only one use case ("Submit Mortgage Application"),
+  (2) is not  …[truncated]'

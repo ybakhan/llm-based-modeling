@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 116
+  domain: visa_application_system
+  domain_display: Visa Application System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:45:02.951427'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_116_visa_application_system/visa_application_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_116_visa_application_system/visa_application_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_116_visa_application_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Applicant\" as Applicant\n\
+    actor \"Visa Officer\" as Officer\nactor \"Embassy Manager\" as Manager\n\nrectangle\
+    \ \"Visa Application System\" {\n  usecase \"Register Account\" as UC1\n  usecase\
+    \ \"Submit Application\" as UC2\n  usecase \"Pay Application Fee\" as UC5\n  usecase\
+    \ \"Track Application Status\" as UC6\n  usecase \"Schedule Interview\" as UC7\n\
+    \  usecase \"Process Application\" as UC8\n  usecase \"Approve Application\" as\
+    \ UC10\n  usecase \"Reject Application\" as UC11\n  usecase \"Generate Reports\"\
+    \ as UC12\n  usecase \"Request Additional Documents\" as UC13\n}\n\nApplicant\
+    \ --> UC1\nApplicant --> UC2\nApplicant --> UC5\nApplicant --> UC6\nApplicant\
+    \ --> UC7\n\nOfficer --> UC8\nOfficer --> UC10\nOfficer --> UC11\nOfficer -->\
+    \ UC13\n\nManager --> UC12\n\nUC10 .> UC8 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: visa_application_system
+
+  DOMAIN_DISPLAY: Visa Application System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Application, Validate Passport Details, include (Submit
+  Application → Validate Passport Details)
+
+  EXPLANATION: "Validate Passport Details" is an inclusion use case included only
+  by "Submit Application". It is not associated with any actor, not included by any
+  other use case, does not include or extend any use case, is n …[truncated]'

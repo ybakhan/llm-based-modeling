@@ -1,0 +1,55 @@
+metadata:
+  prompt_number: 48
+  domain: document_management_system
+  domain_display: Document Management System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 11
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:44:39.729583'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_048_document_management_system/document_management_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_048_document_management_system/document_management_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_048_document_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Author\" as Author\nactor \"Reviewer\" as Reviewer\nactor \"Administrator\"\
+    \ as Admin\n\nrectangle \"Document Management System\" {\n  usecase \"Upload Document\"\
+    \ as UC1\n  usecase \"Search Documents\" as UC2\n  usecase \"Download Document\"\
+    \ as UC3\n  usecase \"Review Document\" as UC4\n  usecase \"Delete Document\"\
+    \ as UC5\n  usecase \"Assign Permissions\" as UC6\n}\n\nAuthor -- UC1\nAuthor\
+    \ -- UC2\nAuthor -- UC3\nReviewer -- UC4\nReviewer -- UC2\nAdmin -- UC5\nAdmin\
+    \ -- UC6\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: document_management_system
+
+  DOMAIN_DISPLAY: Document Management System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Upload Document, Validate File Format, the <<include>> relationship
+  from Upload Document to Validate File Format
+
+  EXPLANATION: "Validate File Format" is an inclusion use case that is included by
+  only one use case ("Upload Document"). It is not associated with any actor directly.
+  It does not include or extend any other use …[truncated]'

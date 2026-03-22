@@ -1,0 +1,49 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Store Clerk" as Clerk
+actor "Program Manager" as Manager
+actor "Partner Store" as Partner
+
+rectangle "Loyalty Rewards Program" {
+  usecase "Enroll in Program" as UC1
+  usecase "Verify Customer Identity" as UC2
+  usecase "Earn Points" as UC3
+  usecase "Calculate Points Amount" as UC4
+  usecase "Redeem Points" as UC5
+  usecase "Validate Point Balance" as UC6
+  usecase "View Rewards Catalog" as UC7
+  usecase "Check Point Balance" as UC8
+  usecase "Transfer Points" as UC9
+  usecase "Manage Reward Tiers" as UC10
+  usecase "Generate Loyalty Reports" as UC11
+  usecase "Register Partner Store" as UC12
+  usecase "Apply Bonus Promotion" as UC13
+  usecase "Update Member Profile" as UC14
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC5
+Customer -- UC7
+Customer -- UC8
+Customer -- UC9
+Customer -- UC14
+
+Clerk -- UC1
+Clerk -- UC3
+
+Manager -- UC10
+Manager -- UC11
+Manager -- UC13
+
+Partner -- UC12
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC13 ..> UC3 : <<extend>>
+@enduml

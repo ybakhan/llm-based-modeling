@@ -1,0 +1,42 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Citizen" as Citizen
+actor "Complaint Officer" as Officer
+actor "Administrator" as Admin
+actor "Department Head" as DeptHead
+
+rectangle "Public Complaint Management System" {
+  usecase "File Complaint" as UC1
+  usecase "Validate Complaint Fields" as UC2
+  usecase "Track Complaint Status" as UC3
+  usecase "Assign Complaint" as UC4
+  usecase "Lookup Available Officers" as UC5
+  usecase "Investigate Complaint" as UC6
+  usecase "Resolve Complaint" as UC7
+  usecase "Escalate Complaint" as UC8
+  usecase "Generate Report" as UC9
+  usecase "Aggregate Complaint Statistics" as UC10
+  usecase "Manage User Accounts" as UC11
+  usecase "Provide Feedback" as UC12
+  usecase "View Dashboard" as UC13
+
+  UC1 ..> UC2 : <<include>>
+  UC4 ..> UC5 : <<include>>
+  UC9 ..> UC10 : <<include>>
+  UC7 .> UC8 : <<extend>>
+}
+
+Citizen -- UC1
+Citizen -- UC3
+Citizen -- UC12
+Officer -- UC6
+Officer -- UC7
+Admin -- UC4
+Admin -- UC9
+Admin -- UC11
+DeptHead -- UC13
+DeptHead -- UC9
+
+@enduml

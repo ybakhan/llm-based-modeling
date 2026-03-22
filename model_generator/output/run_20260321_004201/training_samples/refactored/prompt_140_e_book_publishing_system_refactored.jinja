@@ -1,0 +1,31 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Author
+actor Reader
+actor Editor
+
+rectangle "E-Book Publishing System" {
+  usecase "Upload Manuscript" as UC1
+  usecase "Publish E-Book" as UC2
+  usecase "Browse Catalog" as UC4
+  usecase "Purchase E-Book" as UC5
+  usecase "Review Manuscript" as UC6
+}
+
+Author --> UC1
+Author --> UC2
+Reader --> UC4
+Reader --> UC5
+Editor --> UC6
+
+@enduml
+
+
+Answer:
+No antipattern detected.

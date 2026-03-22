@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Member" as Member
+actor "Administrator" as Admin
+
+rectangle "Coworking Space Booking System" {
+  usecase "Browse Spaces" as UC1
+  usecase "Book Workspace" as UC2
+  usecase "Cancel Booking" as UC4
+  usecase "Manage Spaces" as UC5
+  usecase "View Bookings" as UC6
+}
+
+Member -- UC1
+Member -- UC2
+Member -- UC4
+Member -- UC6
+Admin -- UC5
+
+@enduml

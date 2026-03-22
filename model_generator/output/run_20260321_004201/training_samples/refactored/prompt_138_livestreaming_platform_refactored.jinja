@@ -1,0 +1,33 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Streamer
+actor Viewer
+actor Moderator
+
+rectangle "Livestreaming Platform" {
+  usecase "Start Livestream" as UC1
+  usecase "Watch Livestream" as UC3
+  usecase "Send Chat Message" as UC4
+  usecase "Donate to Streamer" as UC5
+  usecase "Ban User" as UC6
+  usecase "End Livestream" as UC7
+}
+
+Streamer --> UC1
+Streamer --> UC7
+Viewer --> UC3
+Viewer --> UC4
+Viewer --> UC5
+Moderator --> UC6
+
+@enduml
+
+
+Answer:
+No antipattern detected.

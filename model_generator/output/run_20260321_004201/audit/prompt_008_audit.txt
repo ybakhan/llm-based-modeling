@@ -1,0 +1,246 @@
+AUDIT LOG — Prompt #008
+Timestamp : 2026-03-21T00:44:34.282378
+Model     : claude-opus-4-6
+Tokens    : input=1356  output=1408
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (3 instances) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #008: Generate a MEDIUM use case model with exactly 27 constructs (valid range for medium: 24–30 constructs). Domain: Flight Booking System.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: flight_booking_system
+DOMAIN_DISPLAY: Flight Booking System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Flight, Validate Passenger Details, include (Book Flight → Validate Passenger Details)
+EXPLANATION: "Validate Passenger Details" is an inclusion use case included only by "Book Flight". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. It represents a sub-step (validation) rather than a complete, independently valuable service observable to an actor. This is functional decomposition of "Book Flight" into a procedural step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Make Payment, Process Credit Card, include (Make Payment → Process Credit Card)
+EXPLANATION: "Process Credit Card" is an inclusion use case included only by "Make Payment". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. It represents an internal processing step rather than a standalone service with an observable result to a user. This is functional decomposition of "Make Payment" into an implementation detail.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Check In Online, Generate Boarding Pass, include (Check In Online → Generate Boarding Pass)
+EXPLANATION: "Generate Boarding Pass" is an inclusion use case included only by "Check In Online". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. Generating a boarding pass is a sub-step of the check-in process, not a complete service independently offered to an actor. This is functional decomposition of the check-in use case.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Passenger Details", "Process Credit Card", and "Generate Boarding Pass" — each represent procedural sub-steps that are only included by a single base use case, have no actor associations, and participate in no other relationships. Per the Drop Functional Decomposition refactoring: (1) "Validate Passenger Details" must be merged into "Book Flight", removing the use case and its include relationship; (2) "Process Credit Card" must be merged into "Make Payment", removing the use case and its include relationship; (3) "Generate Boarding Pass" must be merged into "Check In Online", removing the use case and its include relationship. This eliminates 3 use cases and 3 include relationships (6 constructs total), yielding a cleaner model where each use case represents a complete, actor-observable service.
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Traveller" as Traveller
+actor "Travel Agent" as TravelAgent
+actor "Airline Admin" as Admin
+actor "Payment Gateway" as PayGW
+
+rectangle "Flight Booking System" {
+    usecase "Search Flights" as UC1
+    usecase "Book Flight" as UC2
+    usecase "Validate Passenger Details" as UC3
+    usecase "Make Payment" as UC4
+    usecase "Process Credit Card" as UC5
+    usecase "Cancel Booking" as UC6
+    usecase "Check In Online" as UC7
+    usecase "Generate Boarding Pass" as UC8
+    usecase "View Booking History" as UC9
+    usecase "Manage Flight Schedule" as UC10
+    usecase "Select Seat" as UC11
+    usecase "Apply Promo Code" as UC12
+
+    UC2 ..> UC3 : <<include>>
+    UC4 ..> UC5 : <<include>>
+    UC7 ..> UC8 : <<include>>
+
+    UC2 ..> UC4 : <<include>>
+    UC2 .> UC12 : <<extend>>
+    UC2 .> UC11 : <<extend>>
+}
+
+Traveller --> UC1
+Traveller --> UC2
+Traveller --> UC4
+Traveller --> UC6
+Traveller --> UC7
+Traveller --> UC9
+
+TravelAgent --> UC1
+TravelAgent --> UC2
+
+Admin --> UC10
+
+PayGW --> UC4
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Traveller" as Traveller
+actor "Travel Agent" as TravelAgent
+actor "Airline Admin" as Admin
+actor "Payment Gateway" as PayGW
+
+rectangle "Flight Booking System" {
+    usecase "Search Flights" as UC1
+    usecase "Book Flight" as UC2
+    usecase "Make Payment" as UC4
+    usecase "Cancel Booking" as UC6
+    usecase "Check In Online" as UC7
+    usecase "View Booking History" as UC9
+    usecase "Manage Flight Schedule" as UC10
+    usecase "Select Seat" as UC11
+    usecase "Apply Promo Code" as UC12
+
+    UC2 ..> UC4 : <<include>>
+    UC2 .> UC12 : <<extend>>
+    UC2 .> UC11 : <<extend>>
+}
+
+Traveller --> UC1
+Traveller --> UC2
+Traveller --> UC4
+Traveller --> UC6
+Traveller --> UC7
+Traveller --> UC9
+
+TravelAgent --> UC1
+TravelAgent --> UC2
+
+Admin --> UC10
+
+PayGW --> UC4
+
+@enduml
+```

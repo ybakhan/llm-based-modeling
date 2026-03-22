@@ -1,0 +1,22 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Park Ranger" as Ranger
+actor "Emergency Service" as Emergency
+
+rectangle "Forest Fire Detection System" {
+  usecase "Monitor Forest Area" as UC1
+  usecase "Analyze Sensor Data" as UC2
+  usecase "Trigger Fire Alert" as UC3
+  usecase "View Fire Reports" as UC4
+  usecase "Dispatch Response Team" as UC5
+}
+
+Ranger -- UC1
+Ranger -- UC4
+Emergency -- UC3
+Emergency -- UC5
+
+UC1 ..> UC2 : <<include>>
+
+@enduml

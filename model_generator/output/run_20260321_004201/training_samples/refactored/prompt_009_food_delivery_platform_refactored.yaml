@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 9
+  domain: food_delivery_platform
+  domain_display: Food Delivery Platform
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:05:21.404687'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_009_food_delivery_platform/food_delivery_platform_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_009_food_delivery_platform/food_delivery_platform_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_009_food_delivery_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Customer\" as Customer\nactor \"Restaurant\" as Restaurant\nactor \"Delivery\
+    \ Driver\" as Driver\n\nrectangle \"Food Delivery Platform\" {\n  usecase \"Browse\
+    \ Restaurants\" as UC1\n  usecase \"Place Order\" as UC2\n  usecase \"Track Delivery\"\
+    \ as UC3\n  usecase \"Update Menu\" as UC4\n  usecase \"Accept Delivery\" as UC6\n\
+    }\n\nCustomer -- UC1\nCustomer -- UC2\nCustomer -- UC3\nRestaurant -- UC4\nDriver\
+    \ -- UC6\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: food_delivery_platform
+
+  DOMAIN_DISPLAY: Food Delivery Platform
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Order (UC2), Validate Delivery Address (UC5), the <<include>>
+  relationship from UC2 to UC5
+
+  EXPLANATION: "Validate Delivery Address" (UC5) is an inclusion use case that is
+  included by only one use case ("Place Order" / UC2). It is not associated with any
+  actor directly. It does not include or extend any other use case, is n …[truncated]'

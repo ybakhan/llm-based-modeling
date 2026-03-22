@@ -1,0 +1,38 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Reader" as Reader
+actor "Author" as Author
+
+rectangle "Graphic Novel Platform" {
+  usecase "Browse Catalog" as UC1
+  usecase "Read Novel" as UC2
+  usecase "Rate Novel" as UC3
+  usecase "Upload Novel" as UC4
+  usecase "Manage Chapters" as UC5
+  usecase "Load Thumbnail Previews" as UC6
+  usecase "Search Novels" as UC7
+}
+
+Reader --> UC1
+Reader --> UC2
+Reader --> UC3
+Reader --> UC7
+Author --> UC4
+Author --> UC5
+
+UC1 ..> UC6 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Browse Catalog, Load Thumbnail Previews
+   Explanation: The use case "Load Thumbnail Previews" is an inclusion use case that is included by only one use case ("Browse Catalog"). It is not associated with any actor directly, does not include or extend any other use case, is not extended by any other use case, and has no generalization relationships. "Load Thumbnail Previews" represents a sub-step of browsing (loading images) rather than a complete, independently valuable service offered to any user. This is a classic functional decomposition — breaking the browsing behavior into an internal implementation step that provides no standalone observable result to an actor.

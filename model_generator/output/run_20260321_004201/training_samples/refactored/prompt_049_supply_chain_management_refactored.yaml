@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 49
+  domain: supply_chain_management
+  domain_display: Supply Chain Management
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 20
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:18:53.892042'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_049_supply_chain_management/supply_chain_management_refactored.puml
+    image: output/run_20260321_004201/models/prompt_049_supply_chain_management/supply_chain_management_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_049_supply_chain_management_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Procurement Manager\"\
+    \ as PM\nactor \"Warehouse Manager\" as WM\nactor \"Logistics Coordinator\" as\
+    \ LC\nactor \"Supplier\" as SUP\nactor \"Finance Analyst\" as FA\n\nrectangle\
+    \ \"Supply Chain Management System\" {\n  usecase \"Place Purchase Order\" as\
+    \ UC1\n  usecase \"Manage Inventory\" as UC2\n  usecase \"Track Shipment\" as\
+    \ UC3\n  usecase \"Receive Goods\" as UC4\n  usecase \"Process Returns\" as UC5\n\
+    \  usecase \"Generate Supply Report\" as UC6\n  usecase \"Confirm Order Delivery\"\
+    \ as UC7\n  usecase \"Analyze Supply Costs\" as UC8\n}\n\nPM --> UC1\nPM --> UC5\n\
+    WM --> UC2\nWM --> UC4\nLC --> UC3\nLC --> UC7\nSUP --> UC7\nFA --> UC6\nFA -->\
+    \ UC8\n\nUC5 ..> UC4 : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: supply_chain_management
+
+  DOMAIN_DISPLAY: Supply Chain Management
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Purchase Order, Validate Supplier Details, include relationship
+  from Place Purchase Order to Validate Supplier Details
+
+  EXPLANATION: "Validate Supplier Details" is an inclusion use case included only
+  by "Place Purchase Order." It is not associated with any actor, is not included
+  by any other use case, does not include or …[truncated]'

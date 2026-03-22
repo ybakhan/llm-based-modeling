@@ -1,0 +1,39 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Patient" as Patient
+actor "Therapist" as Therapist
+actor "Receptionist" as Receptionist
+
+rectangle "Mental Health Appointment System" {
+  usecase "Book Appointment" as UC1
+  usecase "Validate Insurance Details" as UC2
+  usecase "Select Time Slot" as UC3
+  usecase "Cancel Appointment" as UC4
+  usecase "Send Cancellation Notification" as UC5
+  usecase "View Schedule" as UC6
+  usecase "Reschedule Appointment" as UC7
+  usecase "Record Session Notes" as UC8
+  usecase "View Patient History" as UC9
+  usecase "Manage Therapist Availability" as UC10
+  usecase "Generate Appointment Report" as UC11
+}
+
+Patient -- UC1
+Patient -- UC4
+Patient -- UC7
+Patient -- UC6
+Therapist -- UC6
+Therapist -- UC8
+Therapist -- UC9
+Receptionist -- UC1
+Receptionist -- UC10
+Receptionist -- UC11
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC1 : <<include>>
+
+@enduml

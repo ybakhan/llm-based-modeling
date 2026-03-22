@@ -1,0 +1,56 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Land Owner" as LO
+actor "Buyer" as BU
+actor "Notary" as NO
+actor "Bank Officer" as BO
+actor "Registry Clerk" as RC
+
+rectangle "Land Registry System" {
+  usecase "Register Property" as UC1
+  usecase "Validate Property Documents" as UC2
+  usecase "Transfer Ownership" as UC3
+  usecase "Verify Ownership Chain" as UC4
+  usecase "Search Land Records" as UC5
+  usecase "Process Mortgage Registration" as UC6
+  usecase "Record Lien Details" as UC7
+  usecase "Issue Title Certificate" as UC8
+  usecase "Update Cadastral Map" as UC9
+  usecase "Generate Ownership Report" as UC10
+}
+
+LO -- UC1
+LO -- UC3
+BU -- UC3
+BU -- UC5
+NO -- UC3
+NO -- UC8
+BO -- UC6
+RC -- UC1
+RC -- UC9
+RC -- UC10
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Register Property, Validate Property Documents
+   Instance 1: Explanation: "Register Property" includes "Validate Property Documents", but "Validate Property Documents" is only included by "Register Property", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. This is functional decomposition — a step of property registration has been broken out as a separate use case that provides no independent service to any actor.
+
+   Instance 2: Constructs Involved: Transfer Ownership, Verify Ownership Chain
+   Instance 2: Explanation: "Transfer Ownership" includes "Verify Ownership Chain", but "Verify Ownership Chain" is only included by "Transfer Ownership", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. This is functional decomposition — verifying the ownership chain is merely an internal step of the transfer process, not a standalone service.
+
+   Instance 3: Constructs Involved: Process Mortgage Registration, Record Lien Details
+   Instance 3: Explanation: "Process Mortgage Registration" includes "Record Lien Details", but "Record Lien Details" is only included by "Process Mortgage Registration", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. This is functional decomposition — recording lien details is an internal substep of mortgage registration, not a complete service offered to any user.

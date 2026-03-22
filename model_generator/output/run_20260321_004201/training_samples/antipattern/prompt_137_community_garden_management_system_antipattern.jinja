@@ -1,0 +1,38 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Gardener" as Gardener
+actor "Garden Manager" as Manager
+
+rectangle "Community Garden Management System" {
+  usecase "Reserve Garden Plot" as UC1
+  usecase "Check Plot Availability" as UC2
+  usecase "Log Harvest" as UC3
+  usecase "Schedule Watering" as UC4
+  usecase "Manage Member Accounts" as UC5
+  usecase "View Garden Map" as UC6
+  usecase "Report Maintenance Issue" as UC7
+}
+
+Gardener -- UC1
+Gardener -- UC3
+Gardener -- UC4
+Gardener -- UC6
+Gardener -- UC7
+
+Manager -- UC5
+
+UC1 ..> UC2 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Reserve Garden Plot, Check Plot Availability
+   Explanation: The use case "Check Plot Availability" is an inclusion use case that is included only by "Reserve Garden Plot". It is not associated with any actor directly, it does not include or extend any other use case, it is not extended by any use case, and it is not part of any generalization hierarchy. "Check Plot Availability" does not represent a complete service observable to any user — it is merely a decomposed sub-step of the reservation process. This constitutes the Functional Decomposition antipattern via the include relationship, where a base use case's internal logic has been unnecessarily broken out into a separate inclusion use case that serves no independent purpose.

@@ -1,0 +1,43 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Farm Manager" as FM
+actor "Agronomist" as AG
+actor "Field Technician" as FT
+actor "Weather Service" as WS
+
+rectangle "Crop Monitoring System" {
+  usecase "Monitor Crop Health" as UC1
+  usecase "Generate Yield Report" as UC3
+  usecase "Schedule Irrigation" as UC5
+  usecase "Detect Pest Outbreak" as UC7
+  usecase "Configure Field Zones" as UC8
+  usecase "View Weather Forecast" as UC9
+  usecase "Manage Crop Profiles" as UC10
+  usecase "Set Alert Thresholds" as UC11
+  usecase "Review Historical Data" as UC12
+}
+
+FM --> UC1
+FM --> UC3
+FM --> UC5
+FM --> UC11
+AG --> UC7
+AG --> UC10
+AG --> UC12
+FT --> UC8
+WS --> UC9
+
+UC7 ..> UC9 : <<include>>
+UC9 ..> UC1 : <<extend>>
+
+@enduml
+
+
+Answer:
+No antipattern detected.

@@ -1,0 +1,112 @@
+metadata:
+  prompt_number: 71
+  domain: property_management_system
+  domain_display: Property Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Collect Rent, Validate Payment Details, include relationship
+        from Collect Rent to Validate Payment Details
+      explanation: '"Validate Payment Details" is an inclusion use case included only
+        by "Collect Rent". It is not associated with any actor, not included by any
+        other use case, does not include or extend any other use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step of rent collection rather than a complete, independently valuable
+        service to any actor. This is functional decomposition — breaking "Collect
+        Rent" into procedural steps via include.'
+    - constructs_involved: List Property, Upload Property Photos, include relationship
+        from List Property to Upload Property Photos
+      explanation: '"Upload Property Photos" is an inclusion use case included only
+        by "List Property". It is not associated with any actor, not included by any
+        other use case, does not include or extend any other use case, is not extended
+        by any use case, and has no generalization relationships. Uploading photos
+        is merely a sub-task of listing a property, not a standalone service observable
+        to any actor. This is functional decomposition of the listing process.'
+    - constructs_involved: Schedule Maintenance, Assign Technician, include relationship
+        from Schedule Maintenance to Assign Technician
+      explanation: '"Assign Technician" is an inclusion use case included only by
+        "Schedule Maintenance". It is not associated with any actor, not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. Assigning
+        a technician is an internal procedural step of scheduling maintenance, not
+        a complete service providing an observable result to a user.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:28:44.837269'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_071_property_management_system/property_management_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_071_property_management_system/property_management_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_071_property_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Property\
+    \ Manager\" as PM\nactor \"Tenant\" as T\nactor \"Owner\" as O\nactor \"Maintenance\
+    \ Staff\" as MS\n\nrectangle \"Property Management System\" {\n  usecase \"List\
+    \ Property\" as UC1\n  usecase \"Upload Property Photos\" as UC2\n  usecase \"\
+    Manage Lease Agreement\" as UC3\n  usecase \"Collect Rent\" as UC4\n  usecase\
+    \ \"Validate Payment Details\" as UC5\n  usecase \"Schedule Maintenance\" as UC6\n\
+    \  usecase \"Assign Technician\" as UC7\n  usecase \"Submit Maintenance Request\"\
+    \ as UC8\n  usecase \"View Property Reports\" as UC9\n  usecase \"View Payment\
+    \ History\" as UC10\n  usecase \"Generate Financial Report\" as UC11\n  usecase\
+    \ \"Inspect Property\" as UC12\n  usecase \"Renew Lease\" as UC13\n}\n\nPM -->\
+    \ UC1\nPM --> UC3\nPM --> UC4\nPM --> UC6\nPM --> UC9\nPM --> UC12\n\nT --> UC8\n\
+    T --> UC10\nT --> UC13\n\nO --> UC9\nO --> UC11\n\nMS --> UC6\n\nUC1 ..> UC2 :\
+    \ <<include>>\nUC4 ..> UC5 : <<include>>\nUC6 ..> UC7 : <<include>>\n\nUC13 ..>\
+    \ UC3 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Collect Rent, Validate Payment Details,\
+    \ include relationship from Collect Rent to Validate Payment Details\n   Instance\
+    \ 1: Explanation: \"Validate Payment Details\" is an inclusion use case included\
+    \ only by \"Collect Rent\". It is not associated with any actor, not included\
+    \ by any other use case, does not include or extend any other use case, is not\
+    \ extended by any use case, and has no generalization relationships. It represents\
+    \ a sub-step of rent collection rather than a complete, independently valuable\
+    \ service to any actor. This is functional decomposition — breaking \"Collect\
+    \ Rent\" into procedural steps via include.\n\n   Instance 2: Constructs Involved:\
+    \ List Property, Upload Property Photos, include relationship from List Property\
+    \ to Upload Property Photos\n   Instance 2: Explanation: \"Upload Property Photos\"\
+    \ is an inclusion use case included only by \"List Property\". It is not associated\
+    \ with any actor, not included by any other use case, does not include or extend\
+    \ any other use case, is not extended by any use case, and has no generalization\
+    \ relationships. Uploading photos is merely a sub-task of listing a property,\
+    \ not a standalone service observable to any actor. This is functional decomposition\
+    \ of the listing process.\n\n   Instance 3: Constructs Involved: Schedule Maintenance,\
+    \ Assign Technician, include relationship from Schedule Maintenance to Assign\
+    \ Technician\n   Instance 3: Explanation: \"Assign Technician\" is an inclusion\
+    \ use case included only by \"Schedule Maintenance\". It is not associated with\
+    \ any actor, not included by any other use case, does not include or extend any\
+    \ other use case, is not extended by any use case, and has no generalization relationships.\
+    \ Assigning a technician is an internal procedural step of scheduling maintenance,\
+    \ not a complete service providing an observable result to a user."
+raw_response_excerpt: '
+
+
+  DOMAIN: property_management_system
+
+  DOMAIN_DISPLAY: Property Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Collect Rent, Validate Payment Details, include relationship
+  from Collect Rent to Validate Payment Details
+
+  EXPLANATION: "Validate Payment Details" is an inclusion use case included only by
+  "Collect Rent". It is not associated with any actor, not included by any other use
+  case, does not include or extend any other use ca …[truncated]'

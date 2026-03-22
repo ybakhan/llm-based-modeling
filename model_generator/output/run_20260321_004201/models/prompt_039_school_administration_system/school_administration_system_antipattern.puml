@@ -1,0 +1,22 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Registrar" as Registrar
+actor "Teacher" as Teacher
+actor "Principal" as Principal
+
+rectangle "School Administration System" {
+  usecase "Manage Class Schedule" as UC1
+  usecase "Enroll Student" as UC2
+  usecase "Validate Student Documents" as UC3
+  usecase "Record Grades" as UC4
+  usecase "Generate Report Card" as UC5
+}
+
+Registrar -- UC1
+Registrar -- UC2
+UC2 ..> UC3 : <<include>>
+Teacher -- UC4
+Principal -- UC5
+
+@enduml

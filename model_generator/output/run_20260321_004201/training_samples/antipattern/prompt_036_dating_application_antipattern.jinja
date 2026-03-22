@@ -1,0 +1,36 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "User" as A1
+actor "Admin" as A2
+
+rectangle "Dating Application" {
+  usecase "Browse Profiles" as UC1
+  usecase "Create Profile" as UC2
+  usecase "Send Message" as UC3
+  usecase "Manage Reports" as UC4
+  usecase "Upload Photo" as UC5
+  usecase "Swipe Match" as UC6
+}
+
+A1 --> UC1
+A1 --> UC2
+A1 --> UC3
+A1 --> UC6
+A2 --> UC4
+
+UC2 ..> UC5 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Create Profile (UC2), Upload Photo (UC5), include relationship from UC2 to UC5
+   Explanation: The use case "Upload Photo" (UC5) is an inclusion use case that is included by only one use case ("Create Profile" / UC2). It is not associated with any actor directly. It neither includes nor extends any other use case, is not extended by any use case, and is neither a generalization nor a specialization of any use case. "Upload Photo" does not represent a complete, standalone service observable to any actor — it is merely a decomposed sub-step of the profile creation process. This constitutes the "Functional Decomposition: Using the include relationship" antipattern, where the service of creating a profile has been improperly split into a separate inclusion use case that has no independent value.

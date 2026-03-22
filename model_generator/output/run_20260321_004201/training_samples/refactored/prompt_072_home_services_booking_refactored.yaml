@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 72
+  domain: home_services_booking
+  domain_display: Home Services Booking
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 9
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:08:11.374419'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_072_home_services_booking/home_services_booking_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_072_home_services_booking/home_services_booking_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_072_home_services_booking_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Homeowner as A1\nactor\
+    \ \"Service Provider\" as A2\n\nrectangle \"Home Services Booking System\" {\n\
+    \  usecase \"Browse Services\" as UC1\n  usecase \"Book Service\" as UC2\n  usecase\
+    \ \"Cancel Booking\" as UC3\n  usecase \"View Booking Details\" as UC5\n  usecase\
+    \ \"Update Availability\" as UC6\n}\n\nA1 -- UC1\nA1 -- UC2\nA1 -- UC3\nA1 --\
+    \ UC5\nA2 -- UC5\nA2 -- UC6\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: home_services_booking
+
+  DOMAIN_DISPLAY: Home Services Booking
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Service (UC2), Select Time Slot (UC4), UC2 --include-->
+  UC4
+
+  EXPLANATION: "Select Time Slot" (UC4) is an inclusion use case that is included
+  by only one use case ("Book Service" / UC2). It is not associated with any actor
+  directly. It does not include or extend any other use case, is not extended by any
+  use case, and is not in …[truncated]'

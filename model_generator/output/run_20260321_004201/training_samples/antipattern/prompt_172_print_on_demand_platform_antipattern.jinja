@@ -1,0 +1,56 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Designer
+actor Customer
+actor "Production Staff" as PS
+actor "Payment Gateway" as PG
+
+rectangle "Print-on-Demand Platform" {
+  usecase "Upload Design" as UC1
+  usecase "Validate File Format" as UC2
+  usecase "Browse Catalog" as UC3
+  usecase "Customize Product" as UC4
+  usecase "Place Order" as UC5
+  usecase "Calculate Shipping Cost" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Generate Invoice" as UC8
+  usecase "Track Order" as UC9
+  usecase "Fulfill Order" as UC10
+  usecase "Manage Product Listings" as UC11
+  usecase "View Sales Reports" as UC12
+}
+
+Designer --> UC1
+Designer --> UC11
+Designer --> UC12
+Customer --> UC3
+Customer --> UC4
+Customer --> UC5
+Customer --> UC7
+Customer --> UC9
+PS --> UC10
+PG --> UC7
+
+UC1 ..> UC2 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Upload Design, Validate File Format, include relationship from Upload Design to Validate File Format
+   Instance 1: Explanation: "Validate File Format" is an inclusion use case included only by "Upload Design." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (file validation) of the upload process rather than a complete, independently valuable service to any actor. This is functional decomposition of "Upload Design" into an internal step.
+
+   Instance 2: Constructs Involved: Place Order, Calculate Shipping Cost, include relationship from Place Order to Calculate Shipping Cost
+   Instance 2: Explanation: "Calculate Shipping Cost" is an inclusion use case included only by "Place Order." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal computational step within the ordering process, not a standalone service observable to a user. This is functional decomposition of "Place Order."
+
+   Instance 3: Constructs Involved: Process Payment, Generate Invoice, include relationship from Process Payment to Generate Invoice
+   Instance 3: Explanation: "Generate Invoice" is an inclusion use case included only by "Process Payment." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal sub-step of payment processing rather than a complete service offered to any actor. This is functional decomposition of "Process Payment."

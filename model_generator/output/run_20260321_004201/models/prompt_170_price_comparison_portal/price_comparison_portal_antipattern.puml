@@ -1,0 +1,42 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Shopper" as Shopper
+actor "Retailer" as Retailer
+actor "Admin" as Admin
+
+rectangle "Price Comparison Portal" {
+  usecase "Search Products" as UC1
+  usecase "Validate Search Input" as UC2
+  usecase "Compare Prices" as UC3
+  usecase "Fetch Retailer Data" as UC4
+  usecase "View Product Details" as UC5
+  usecase "Filter Results" as UC6
+  usecase "Set Price Alert" as UC7
+  usecase "Store Alert Preferences" as UC8
+  usecase "Write Review" as UC9
+  usecase "Register Account" as UC10
+  usecase "Manage Retailer Listings" as UC11
+  usecase "View Price History" as UC12
+  usecase "Moderate Reviews" as UC13
+  usecase "Generate Analytics Report" as UC14
+}
+
+Shopper -- UC1
+Shopper -- UC3
+Shopper -- UC5
+Shopper -- UC6
+Shopper -- UC7
+Shopper -- UC9
+Shopper -- UC10
+Shopper -- UC12
+Retailer -- UC11
+Retailer -- UC10
+Admin -- UC13
+Admin -- UC14
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml

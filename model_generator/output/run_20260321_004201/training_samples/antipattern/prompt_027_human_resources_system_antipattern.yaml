@@ -1,0 +1,110 @@
+metadata:
+  prompt_number: 27
+  domain: human_resources_system
+  domain_display: Human Resources System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Hire Employee, Validate Candidate Documents, include relationship
+        from Hire Employee to Validate Candidate Documents
+      explanation: '"Validate Candidate Documents" is included only by "Hire Employee",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not involved in any generalization.
+        It represents a sub-step of the hiring process rather than a complete, independently
+        valuable service observable to any actor. This is functional decomposition
+        of "Hire Employee" into a procedural sub-task via the include relationship.'
+    - constructs_involved: Process Payroll, Calculate Deductions, include relationship
+        from Process Payroll to Calculate Deductions
+      explanation: '"Calculate Deductions" is included only by "Process Payroll",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not involved in any generalization.
+        It fragments the payroll processing into a sub-function that delivers no standalone
+        observable result to any user. This is functional decomposition of "Process
+        Payroll" via the include relationship.'
+    - constructs_involved: Terminate Employee, Generate Exit Clearance, include relationship
+        from Terminate Employee to Generate Exit Clearance
+      explanation: '"Generate Exit Clearance" is included only by "Terminate Employee",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not involved in any generalization.
+        It is a procedural step within termination rather than a complete service.
+        This is functional decomposition of "Terminate Employee" via the include relationship.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:55:25.086110'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_027_human_resources_system/human_resources_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_027_human_resources_system/human_resources_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_027_human_resources_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"HR Manager\"\
+    \ as HRM\nactor \"Employee\" as EMP\nactor \"Payroll Officer\" as PAY\n\nrectangle\
+    \ \"Human Resources System\" {\n  usecase \"Hire Employee\" as UC1\n  usecase\
+    \ \"Validate Candidate Documents\" as UC2\n  usecase \"Terminate Employee\" as\
+    \ UC3\n  usecase \"Generate Exit Clearance\" as UC4\n  usecase \"Process Payroll\"\
+    \ as UC5\n  usecase \"Calculate Deductions\" as UC6\n  usecase \"Manage Leave\
+    \ Requests\" as UC7\n  usecase \"View Employee Profile\" as UC8\n  usecase \"\
+    Update Personal Information\" as UC9\n  usecase \"Submit Leave Request\" as UC10\n\
+    \  usecase \"Generate HR Report\" as UC11\n  usecase \"Conduct Performance Review\"\
+    \ as UC12\n  usecase \"Manage Benefits Enrollment\" as UC13\n  usecase \"Track\
+    \ Attendance\" as UC14\n}\n\nHRM --> UC1\nHRM --> UC3\nHRM --> UC7\nHRM --> UC11\n\
+    HRM --> UC12\nHRM --> UC14\n\nPAY --> UC5\nPAY --> UC13\n\nEMP --> UC8\nEMP -->\
+    \ UC9\nEMP --> UC10\n\nUC1 ..> UC2 : <<include>>\nUC5 ..> UC6 : <<include>>\n\
+    UC3 ..> UC4 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Hire Employee, Validate Candidate Documents,\
+    \ include relationship from Hire Employee to Validate Candidate Documents\n  \
+    \ Instance 1: Explanation: \"Validate Candidate Documents\" is included only by\
+    \ \"Hire Employee\", is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and is not involved in\
+    \ any generalization. It represents a sub-step of the hiring process rather than\
+    \ a complete, independently valuable service observable to any actor. This is\
+    \ functional decomposition of \"Hire Employee\" into a procedural sub-task via\
+    \ the include relationship.\n\n   Instance 2: Constructs Involved: Process Payroll,\
+    \ Calculate Deductions, include relationship from Process Payroll to Calculate\
+    \ Deductions\n   Instance 2: Explanation: \"Calculate Deductions\" is included\
+    \ only by \"Process Payroll\", is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not involved\
+    \ in any generalization. It fragments the payroll processing into a sub-function\
+    \ that delivers no standalone observable result to any user. This is functional\
+    \ decomposition of \"Process Payroll\" via the include relationship.\n\n   Instance\
+    \ 3: Constructs Involved: Terminate Employee, Generate Exit Clearance, include\
+    \ relationship from Terminate Employee to Generate Exit Clearance\n   Instance\
+    \ 3: Explanation: \"Generate Exit Clearance\" is included only by \"Terminate\
+    \ Employee\", is not associated with any actor, does not include or extend any\
+    \ other use case, is not extended by any use case, and is not involved in any\
+    \ generalization. It is a procedural step within termination rather than a complete\
+    \ service. This is functional decomposition of \"Terminate Employee\" via the\
+    \ include relationship."
+raw_response_excerpt: '
+
+
+  DOMAIN: human_resources_system
+
+  DOMAIN_DISPLAY: Human Resources System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Hire Employee, Validate Candidate Documents, include relationship
+  from Hire Employee to Validate Candidate Documents
+
+  EXPLANATION: "Validate Candidate Documents" is included only by "Hire Employee",
+  is not associated with any actor, does not include or extend any other use case,
+  is not extended by any use case, and is not involv …[truncated]'

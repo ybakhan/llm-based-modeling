@@ -1,0 +1,24 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Mentor
+actor Mentee
+actor Admin
+
+rectangle "Mentorship Platform" {
+  usecase "Create Profile" as UC1
+  usecase "Browse Mentors" as UC2
+  usecase "Request Mentorship" as UC3
+  usecase "Schedule Session" as UC5
+  usecase "Manage Users" as UC6
+  usecase "Provide Feedback" as UC7
+}
+
+Mentee -- UC1
+Mentee -- UC2
+Mentee -- UC3
+Mentor -- UC5
+Mentor -- UC7
+Admin -- UC6
+
+@enduml

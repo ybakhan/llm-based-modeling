@@ -1,0 +1,63 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Member" as Member
+actor "Front Desk Staff" as Staff
+actor "Instructor" as Instructor
+actor "Manager" as Manager
+
+rectangle "Climbing Gym Management System" {
+  usecase "Register Member" as UC1
+  usecase "Validate Personal Info" as UC2
+  usecase "Book Climbing Session" as UC3
+  usecase "Check Slot Availability" as UC4
+  usecase "Cancel Booking" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Generate Payment Receipt" as UC7
+  usecase "Manage Route Grades" as UC8
+  usecase "Schedule Group Class" as UC9
+  usecase "View Membership Status" as UC10
+  usecase "Check In Member" as UC11
+  usecase "Generate Attendance Report" as UC12
+  usecase "Renew Membership" as UC13
+}
+
+Member --> UC3
+Member --> UC5
+Member --> UC6
+Member --> UC10
+Member --> UC13
+
+Staff --> UC1
+Staff --> UC11
+
+Instructor --> UC8
+Instructor --> UC9
+
+Manager --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+UC13 ..> UC6 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Register Member, Validate Personal Info, include relationship from Register Member to Validate Personal Info
+   Instance 1: Explanation: "Validate Personal Info" is an inclusion use case included only by "Register Member." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (validating data) rather than a complete service observable to an actor, making it a functional decomposition of "Register Member."
+
+   Instance 2: Constructs Involved: Book Climbing Session, Check Slot Availability, include relationship from Book Climbing Session to Check Slot Availability
+   Instance 2: Explanation: "Check Slot Availability" is an inclusion use case included only by "Book Climbing Session." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Checking availability is an internal procedural step of booking, not a standalone service delivering an observable result to a user.
+
+   Instance 3: Constructs Involved: Process Payment, Generate Payment Receipt, include relationship from Process Payment to Generate Payment Receipt
+   Instance 3: Explanation: "Generate Payment Receipt" is an inclusion use case included only by "Process Payment." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a receipt is a sub-step decomposed out of the payment process rather than a complete, independently valuable service to an actor.

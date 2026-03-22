@@ -1,0 +1,21 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Cardholder" as A1
+actor "Customer Service Agent" as A2
+
+rectangle "Credit Card Management System" {
+  usecase "View Account Summary" as UC1
+  usecase "Request Credit Limit Increase" as UC2
+  usecase "Block Lost Card" as UC3
+  usecase "Pay Bill" as UC4
+  usecase "Validate Payment Details" as UC5
+}
+
+A1 -- UC1
+A1 -- UC4
+A1 -- UC2
+A2 -- UC3
+UC4 ..> UC5 : <<include>>
+@enduml

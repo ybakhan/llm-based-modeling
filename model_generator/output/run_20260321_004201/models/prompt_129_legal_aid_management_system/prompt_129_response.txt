@@ -1,0 +1,107 @@
+
+
+DOMAIN: legal_aid_management_system
+DOMAIN_DISPLAY: Legal Aid Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Submit Application, Validate Applicant Identity, include (Submit Application → Validate Applicant Identity)
+EXPLANATION: "Validate Applicant Identity" is an inclusion use case included only by "Submit Application". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step (identity validation) rather than a complete service observable to an actor, making this a functional decomposition of "Submit Application" via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Assign Attorney, Check Attorney Availability, include (Assign Attorney → Check Attorney Availability)
+EXPLANATION: "Check Attorney Availability" is an inclusion use case included only by "Assign Attorney". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Checking attorney availability is merely an internal step of the assignment process, not a standalone service yielding an observable result to a user. This is functional decomposition of "Assign Attorney".
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Close Case, Generate Closing Report, include (Close Case → Generate Closing Report)
+EXPLANATION: "Generate Closing Report" is an inclusion use case included only by "Close Case". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Generating a closing report is a sub-task of closing a case, not a complete independent service for any actor. This is functional decomposition of "Close Case".
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Applicant Identity", "Check Attorney Availability", "Generate Closing Report") must be merged back into their respective base use cases ("Submit Application", "Assign Attorney", "Close Case"). Each inclusion use case is only included by one base use case, has no actor association, and does not participate in any other relationship — they represent internal steps, not independent services. Merging them removes 3 use cases and 3 include relationships (6 constructs total), producing a cleaner model where each use case delivers a complete, observable service to its actor.
+
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Applicant" as Applicant
+actor "Case Manager" as CaseManager
+actor "Attorney" as Attorney
+actor "Administrator" as Admin
+
+rectangle "Legal Aid Management System" {
+  usecase "Submit Application" as UC1
+  usecase "Validate Applicant Identity" as UC2
+  usecase "Review Application" as UC3
+  usecase "Assign Attorney" as UC4
+  usecase "Check Attorney Availability" as UC5
+  usecase "Manage Case Documents" as UC6
+  usecase "Conduct Client Consultation" as UC7
+  usecase "Track Case Progress" as UC8
+  usecase "Close Case" as UC9
+  usecase "Generate Closing Report" as UC10
+  usecase "Manage User Accounts" as UC11
+  usecase "Generate Statistics Report" as UC12
+  usecase "Request Case Update" as UC13
+}
+
+Applicant --> UC1
+Applicant --> UC13
+CaseManager --> UC3
+CaseManager --> UC4
+CaseManager --> UC8
+CaseManager --> UC9
+Attorney --> UC6
+Attorney --> UC7
+Admin --> UC11
+Admin --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC9 ..> UC10 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 18
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Applicant" as Applicant
+actor "Case Manager" as CaseManager
+actor "Attorney" as Attorney
+actor "Administrator" as Admin
+
+rectangle "Legal Aid Management System" {
+  usecase "Submit Application" as UC1
+  usecase "Review Application" as UC3
+  usecase "Assign Attorney" as UC4
+  usecase "Manage Case Documents" as UC6
+  usecase "Conduct Client Consultation" as UC7
+  usecase "Track Case Progress" as UC8
+  usecase "Close Case" as UC9
+  usecase "Manage User Accounts" as UC11
+  usecase "Generate Statistics Report" as UC12
+  usecase "Request Case Update" as UC13
+}
+
+Applicant --> UC1
+Applicant --> UC13
+CaseManager --> UC3
+CaseManager --> UC4
+CaseManager --> UC8
+CaseManager --> UC9
+Attorney --> UC6
+Attorney --> UC7
+Admin --> UC11
+Admin --> UC12
+@enduml
+```

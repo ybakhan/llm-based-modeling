@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Customer" as Customer
+actor "Bank Teller" as Teller
+
+rectangle "Banking System" {
+  usecase "Check Balance" as UC1
+  usecase "Withdraw Cash" as UC2
+  usecase "Deposit Funds" as UC3
+  usecase "Transfer Funds" as UC4
+  usecase "View Transaction History" as UC5
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC4
+Customer -- UC5
+Teller -- UC3
+
+@enduml

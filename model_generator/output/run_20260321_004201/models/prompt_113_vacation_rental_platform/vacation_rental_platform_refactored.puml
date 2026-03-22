@@ -1,0 +1,37 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Guest
+actor "Property Owner" as Owner
+actor "Platform Admin" as Admin
+actor "Payment Gateway" as PG
+
+rectangle "Vacation Rental Platform" {
+  usecase "Search Properties" as UC1
+  usecase "View Property Details" as UC2
+  usecase "Book Property" as UC3
+  usecase "Process Payment" as UC4
+  usecase "Leave Review" as UC5
+  usecase "List Property" as UC6
+  usecase "Manage Availability" as UC7
+  usecase "Respond to Reviews" as UC8
+  usecase "Manage Listings" as UC9
+  usecase "Handle Disputes" as UC10
+}
+
+Guest -- UC1
+Guest -- UC2
+Guest -- UC3
+Guest -- UC4
+Guest -- UC5
+
+Owner -- UC6
+Owner -- UC7
+Owner -- UC8
+
+Admin -- UC9
+Admin -- UC10
+
+PG -- UC4
+
+@enduml

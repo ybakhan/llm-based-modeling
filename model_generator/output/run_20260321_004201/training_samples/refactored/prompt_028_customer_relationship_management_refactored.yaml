@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 28
+  domain: customer_relationship_management
+  domain_display: Customer Relationship Management
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 21
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:52:10.938342'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_028_customer_relationship_management/customer_relationship_management_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_028_customer_relationship_management/customer_relationship_management_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_028_customer_relationship_management_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Sales Rep\" as SalesRep\nactor \"Sales Manager\" as SalesManager\nactor\
+    \ \"Support Agent\" as SupportAgent\nactor \"Administrator\" as Admin\n\nrectangle\
+    \ \"CRM System\" {\n  usecase \"Manage Leads\" as UC1\n  usecase \"Log Customer\
+    \ Interaction\" as UC3\n  usecase \"Manage Contacts\" as UC5\n  usecase \"Track\
+    \ Opportunities\" as UC6\n  usecase \"Generate Sales Report\" as UC7\n  usecase\
+    \ \"Schedule Follow-Up\" as UC9\n  usecase \"Manage User Accounts\" as UC10\n\
+    \  usecase \"Export Contacts\" as UC11\n  usecase \"View Dashboard\" as UC12\n\
+    }\n\nSalesRep -- UC1\nSalesRep -- UC3\nSalesRep -- UC5\nSalesRep -- UC6\nSalesRep\
+    \ -- UC9\nSalesRep -- UC11\n\nSalesManager -- UC7\nSalesManager -- UC12\nSalesManager\
+    \ -- UC6\n\nSupportAgent -- UC3\nSupportAgent -- UC5\n\nAdmin -- UC10\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: customer_relationship_management
+
+  DOMAIN_DISPLAY: Customer Relationship Management
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Manage Leads, Validate Lead Data, include relationship from
+  "Manage Leads" to "Validate Lead Data"
+
+  EXPLANATION: "Validate Lead Data" is an inclusion use case included only by "Manage
+  Leads". It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case, a …[truncated]'

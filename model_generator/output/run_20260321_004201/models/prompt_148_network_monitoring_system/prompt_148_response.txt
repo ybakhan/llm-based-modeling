@@ -1,0 +1,119 @@
+
+
+DOMAIN: network_monitoring_system
+DOMAIN_DISPLAY: Network Monitoring System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Monitor Network Traffic, Parse Packet Headers
+EXPLANATION: "Monitor Network Traffic" includes "Parse Packet Headers" via an <<include>> relationship. "Parse Packet Headers" is only included by "Monitor Network Traffic", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step of monitoring rather than a complete, independently valuable service — a classic functional decomposition.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Generate Performance Report, Aggregate Metrics Data
+EXPLANATION: "Generate Performance Report" includes "Aggregate Metrics Data" via an <<include>> relationship. "Aggregate Metrics Data" is only included by "Generate Performance Report", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It decomposes report generation into a sub-function rather than offering an observable result to any user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Respond to Alert, Log Alert Details
+EXPLANATION: "Respond to Alert" includes "Log Alert Details" via an <<include>> relationship. "Log Alert Details" is only included by "Respond to Alert", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Logging alert details is a procedural sub-step of responding to an alert, not a standalone service.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Parse Packet Headers", "Aggregate Metrics Data", "Log Alert Details") must be merged into its respective base use case ("Monitor Network Traffic", "Generate Performance Report", "Respond to Alert"). This removes 3 use cases and 3 include relationships (6 constructs total), because each inclusion use case is only included by one base use case, has no actor association, and provides no independent observable result. After merging, each base use case absorbs the sub-step behavior internally.
+CONSTRUCT_COUNT: 29
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Network Admin" as Admin
+actor "NOC Operator" as NOC
+actor "Manager" as Manager
+actor "Monitoring Agent" as Agent
+
+rectangle "Network Monitoring System" {
+  usecase "Monitor Network Traffic" as UC1
+  usecase "Parse Packet Headers" as UC2
+  usecase "Configure Device Thresholds" as UC3
+  usecase "Respond to Alert" as UC4
+  usecase "Log Alert Details" as UC5
+  usecase "Escalate Incident" as UC6
+  usecase "Generate Performance Report" as UC7
+  usecase "Aggregate Metrics Data" as UC8
+  usecase "View Dashboard" as UC9
+  usecase "Manage Device Inventory" as UC10
+  usecase "Discover Network Devices" as UC11
+  usecase "Schedule Maintenance Window" as UC12
+}
+
+Admin -- UC1
+Admin -- UC3
+Admin -- UC10
+Admin -- UC11
+
+NOC -- UC4
+NOC -- UC9
+
+Manager -- UC7
+Manager -- UC9
+
+Agent -- UC1
+Agent -- UC11
+
+UC1 ..> UC2 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 .> UC4 : <<extend>>
+
+Admin -- UC12
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 23
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Network Admin" as Admin
+actor "NOC Operator" as NOC
+actor "Manager" as Manager
+actor "Monitoring Agent" as Agent
+
+rectangle "Network Monitoring System" {
+  usecase "Monitor Network Traffic" as UC1
+  usecase "Configure Device Thresholds" as UC3
+  usecase "Respond to Alert" as UC4
+  usecase "Escalate Incident" as UC6
+  usecase "Generate Performance Report" as UC7
+  usecase "View Dashboard" as UC9
+  usecase "Manage Device Inventory" as UC10
+  usecase "Discover Network Devices" as UC11
+  usecase "Schedule Maintenance Window" as UC12
+}
+
+Admin -- UC1
+Admin -- UC3
+Admin -- UC10
+Admin -- UC11
+
+NOC -- UC4
+NOC -- UC9
+
+Manager -- UC7
+Manager -- UC9
+
+Agent -- UC1
+Agent -- UC11
+
+UC6 .> UC4 : <<extend>>
+
+Admin -- UC12
+
+@enduml
+```

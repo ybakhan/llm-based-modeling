@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 35
+  domain: event_ticketing_system
+  domain_display: Event Ticketing System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 8
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:06:13.922385'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_035_event_ticketing_system/event_ticketing_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_035_event_ticketing_system/event_ticketing_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_035_event_ticketing_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Customer\nactor \"Event\
+    \ Organizer\" as Organizer\n\nrectangle \"Event Ticketing System\" {\n  usecase\
+    \ \"Browse Events\" as UC1\n  usecase \"Purchase Ticket\" as UC2\n  usecase \"\
+    Cancel Ticket\" as UC4\n  usecase \"Create Event\" as UC5\n  usecase \"View Sales\
+    \ Report\" as UC6\n}\n\nCustomer -- UC1\nCustomer -- UC2\nCustomer -- UC4\nOrganizer\
+    \ -- UC5\nOrganizer -- UC6\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: event_ticketing_system
+
+  DOMAIN_DISPLAY: Event Ticketing System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Purchase Ticket, Validate Payment Details
+
+  EXPLANATION: The use case "Validate Payment Details" is an inclusion use case that
+  is included by only one use case ("Purchase Ticket"). "Validate Payment Details"
+  is not associated with any actor directly — it has no independent actor relationship.
+  It does not include, extend, generaliz …[truncated]'

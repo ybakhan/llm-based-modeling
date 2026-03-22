@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 103
+  domain: medical_imaging_system
+  domain_display: Medical Imaging System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 21
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:40:15.734636'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_103_medical_imaging_system/medical_imaging_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_103_medical_imaging_system/medical_imaging_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_103_medical_imaging_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nleft to right direction\n\n\
+    actor \"Radiologist\" as Radiologist\nactor \"Technician\" as Technician\nactor\
+    \ \"Referring Physician\" as Physician\nactor \"System Administrator\" as Admin\n\
+    \nrectangle \"Medical Imaging System\" {\n  usecase \"Upload DICOM Image\" as\
+    \ UC1\n  usecase \"Perform Image Analysis\" as UC3\n  usecase \"Generate Diagnostic\
+    \ Report\" as UC5\n  usecase \"View Patient Images\" as UC7\n  usecase \"Search\
+    \ Image Archive\" as UC8\n  usecase \"Annotate Image\" as UC9\n  usecase \"Share\
+    \ Report with Physician\" as UC10\n  usecase \"Manage User Accounts\" as UC11\n\
+    \  usecase \"Monitor System Storage\" as UC12\n  usecase \"Request Second Opinion\"\
+    \ as UC13\n\n  UC13 ..> UC7 : <<include>>\n}\n\nTechnician --> UC1\nRadiologist\
+    \ --> UC3\nRadiologist --> UC5\nRadiologist --> UC7\nRadiologist --> UC9\nRadiologist\
+    \ --> UC13\nPhysician --> UC8\nPhysician --> UC10\nAdmin --> UC11\nAdmin --> UC12\n\
+    \n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: medical_imaging_system
+
+  DOMAIN_DISPLAY: Medical Imaging System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Upload DICOM Image, Validate DICOM Format, include relationship
+  from "Upload DICOM Image" to "Validate DICOM Format"
+
+  EXPLANATION: "Validate DICOM Format" is an inclusion use case included only by "Upload
+  DICOM Image." It is not associated with any actor, is not included by any other
+  use case, does not include or extend any use  …[truncated]'

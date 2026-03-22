@@ -1,0 +1,68 @@
+
+
+DOMAIN: cloud_storage_service
+DOMAIN_DISPLAY: Cloud Storage Service
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Upload File (UC2), Validate File Size (UC5), include relationship from UC2 to UC5
+EXPLANATION: "Validate File Size" (UC5) is an inclusion use case that is included by only one use case ("Upload File" / UC2). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. "Validate File Size" represents a sub-step of the upload process rather than a complete, independently valuable service observable to a user. This is a textbook instance of Functional Decomposition via the include relationship — the developer has decomposed the internal mechanics of uploading a file into a separate inclusion use case that provides no standalone value.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate File Size" (UC5) must be merged back into its sole base use case "Upload File" (UC2). File size validation is an internal step of uploading a file, not a service any actor would invoke independently. By absorbing UC5 into UC2, we eliminate the unnecessary decomposition and the corresponding include relationship, resulting in a cleaner model where each use case represents a complete, actor-facing service. This removes 1 use case and 1 include relationship (net −2 constructs).
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "User" as A1
+actor "Administrator" as A2
+
+rectangle "Cloud Storage Service" {
+  usecase "Browse Files" as UC1
+  usecase "Upload File" as UC2
+  usecase "Download File" as UC3
+  usecase "Manage User Accounts" as UC4
+  usecase "Validate File Size" as UC5
+}
+
+A1 --> UC1
+A1 --> UC2
+A1 --> UC3
+A2 --> UC4
+
+UC2 ..> UC5 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 8
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "User" as A1
+actor "Administrator" as A2
+
+rectangle "Cloud Storage Service" {
+  usecase "Browse Files" as UC1
+  usecase "Upload File" as UC2
+  usecase "Download File" as UC3
+  usecase "Manage User Accounts" as UC4
+}
+
+A1 --> UC1
+A1 --> UC2
+A1 --> UC3
+A2 --> UC4
+
+@enduml
+```

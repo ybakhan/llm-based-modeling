@@ -1,0 +1,61 @@
+metadata:
+  prompt_number: 94
+  domain: municipal_waste_management
+  domain_display: Municipal Waste Management
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 23
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:36:57.693491'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_094_municipal_waste_management/municipal_waste_management_refactored.puml
+    image: output/run_20260321_004201/models/prompt_094_municipal_waste_management/municipal_waste_management_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_094_municipal_waste_management_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Resident\" as Resident\n\
+    actor \"Waste Collector\" as Collector\nactor \"Municipal Admin\" as Admin\nactor\
+    \ \"Inspector\" as Inspector\n\nrectangle \"Municipal Waste Management System\"\
+    \ {\n  usecase \"Schedule Pickup\" as UC1\n  usecase \"Track Collection Route\"\
+    \ as UC3\n  usecase \"Report Illegal Dumping\" as UC4\n  usecase \"Process Payment\"\
+    \ as UC6\n  usecase \"View Collection Calendar\" as UC8\n  usecase \"Manage Waste\
+    \ Categories\" as UC9\n  usecase \"Generate Recycling Report\" as UC10\n  usecase\
+    \ \"Submit Complaint\" as UC11\n  usecase \"Assign Collection Zone\" as UC12\n\
+    \  usecase \"Conduct Site Inspection\" as UC13\n  usecase \"Request Special Pickup\"\
+    \ as UC14\n  usecase \"Update Pickup Status\" as UC15\n}\n\nResident --> UC1\n\
+    Resident --> UC4\nResident --> UC6\nResident --> UC8\nResident --> UC11\nResident\
+    \ --> UC14\n\nCollector --> UC3\nCollector --> UC15\n\nAdmin --> UC9\nAdmin -->\
+    \ UC10\nAdmin --> UC12\n\nInspector --> UC13\n\nUC14 ..> UC1 : <<extend>>\n\n\
+    @enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: municipal_waste_management
+
+  DOMAIN_DISPLAY: Municipal Waste Management
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Pickup, Validate Address
+
+  EXPLANATION: "Validate Address" is an inclusion use case included only by "Schedule
+  Pickup". It is not associated with any actor, not included by any other use case,
+  does not include or extend any use case, is not extended by any use case, and has
+  no generalization relationships. It rep …[truncated]'

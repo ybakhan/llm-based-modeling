@@ -1,0 +1,105 @@
+metadata:
+  prompt_number: 169
+  domain: baby_equipment_rental_service
+  domain_display: Baby Equipment Rental Service
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Reserve Equipment, Check Equipment Availability
+      explanation: '"Check Equipment Availability" is an inclusion use case included
+        only by "Reserve Equipment". It is not associated with any actor directly,
+        is not included by any other use case, does not include or extend any use
+        case, is not extended by any use case, and has no generalization relationships.
+        It represents a sub-step (checking stock) rather than a complete service observable
+        to a user, making it a functional decomposition of "Reserve Equipment".'
+    - constructs_involved: Process Payment, Validate Payment Details
+      explanation: '"Validate Payment Details" is an inclusion use case included only
+        by "Process Payment". It is not associated with any actor directly, is not
+        included by any other use case, does not include or extend any use case, is
+        not extended by any use case, and has no generalization relationships. It
+        represents an internal validation step rather than a standalone service, making
+        it a functional decomposition of "Process Payment".'
+    - constructs_involved: Return Equipment, Generate Return Receipt
+      explanation: '"Generate Return Receipt" is an inclusion use case included only
+        by "Return Equipment". It is not associated with any actor directly, is not
+        included by any other use case, does not include or extend any use case, is
+        not extended by any use case, and has no generalization relationships. It
+        represents a sub-task (printing a receipt) rather than a complete service
+        to any actor, making it a functional decomposition of "Return Equipment".'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:07:27.878912'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_169_baby_equipment_rental_service/baby_equipment_rental_service_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_169_baby_equipment_rental_service/baby_equipment_rental_service_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_169_baby_equipment_rental_service_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Parent\"\
+    \ as Parent\nactor \"Staff Member\" as Staff\nactor \"Delivery Driver\" as Driver\n\
+    \nrectangle \"Baby Equipment Rental Service\" {\n  usecase \"Browse Equipment\
+    \ Catalog\" as UC1\n  usecase \"Reserve Equipment\" as UC2\n  usecase \"Check\
+    \ Equipment Availability\" as UC3\n  usecase \"Process Payment\" as UC4\n  usecase\
+    \ \"Validate Payment Details\" as UC5\n  usecase \"Return Equipment\" as UC6\n\
+    \  usecase \"Generate Return Receipt\" as UC7\n  usecase \"Manage Inventory\"\
+    \ as UC8\n  usecase \"Deliver Equipment\" as UC9\n  usecase \"Track Rental Orders\"\
+    \ as UC10\n  usecase \"Rate Equipment\" as UC11\n  usecase \"Extend Rental Period\"\
+    \ as UC12\n  usecase \"Apply Late Fee\" as UC13\n}\n\nParent --> UC1\nParent -->\
+    \ UC2\nParent --> UC4\nParent --> UC6\nParent --> UC11\nParent --> UC12\n\nStaff\
+    \ --> UC8\nStaff --> UC10\n\nDriver --> UC9\n\nUC2 ..> UC3 : <<include>>\nUC4\
+    \ ..> UC5 : <<include>>\nUC6 ..> UC7 : <<include>>\nUC6 <.. UC13 : <<extend>>\n\
+    \n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Reserve Equipment, Check Equipment Availability\n\
+    \   Instance 1: Explanation: \"Check Equipment Availability\" is an inclusion\
+    \ use case included only by \"Reserve Equipment\". It is not associated with any\
+    \ actor directly, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ It represents a sub-step (checking stock) rather than a complete service observable\
+    \ to a user, making it a functional decomposition of \"Reserve Equipment\".\n\n\
+    \   Instance 2: Constructs Involved: Process Payment, Validate Payment Details\n\
+    \   Instance 2: Explanation: \"Validate Payment Details\" is an inclusion use\
+    \ case included only by \"Process Payment\". It is not associated with any actor\
+    \ directly, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ It represents an internal validation step rather than a standalone service,\
+    \ making it a functional decomposition of \"Process Payment\".\n\n   Instance\
+    \ 3: Constructs Involved: Return Equipment, Generate Return Receipt\n   Instance\
+    \ 3: Explanation: \"Generate Return Receipt\" is an inclusion use case included\
+    \ only by \"Return Equipment\". It is not associated with any actor directly,\
+    \ is not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ represents a sub-task (printing a receipt) rather than a complete service to\
+    \ any actor, making it a functional decomposition of \"Return Equipment\"."
+raw_response_excerpt: '
+
+
+  DOMAIN: baby_equipment_rental_service
+
+  DOMAIN_DISPLAY: Baby Equipment Rental Service
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Reserve Equipment, Check Equipment Availability
+
+  EXPLANATION: "Check Equipment Availability" is an inclusion use case included only
+  by "Reserve Equipment". It is not associated with any actor directly, is not included
+  by any other use case, does not include or extend any use case, is not extended
+  by any use case, a …[truncated]'

@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 175
+  domain: furniture_rental_service
+  domain_display: Furniture Rental Service
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 9
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:09:39.271362'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_175_furniture_rental_service/furniture_rental_service_refactored.puml
+    image: output/run_20260321_004201/models/prompt_175_furniture_rental_service/furniture_rental_service_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_175_furniture_rental_service_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Customer\" as Customer\n\
+    actor \"Warehouse Staff\" as Staff\n\nrectangle \"Furniture Rental Service\" {\n\
+    \  usecase \"Browse Furniture Catalog\" as UC1\n  usecase \"Place Rental Order\"\
+    \ as UC3\n  usecase \"Return Furniture\" as UC4\n  usecase \"Process Delivery\"\
+    \ as UC5\n}\n\nCustomer --> UC1\nCustomer --> UC3\nCustomer --> UC4\nStaff -->\
+    \ UC5\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: furniture_rental_service
+
+  DOMAIN_DISPLAY: Furniture Rental Service
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Browse Furniture Catalog, Check Furniture Availability
+
+  EXPLANATION: The use case "Check Furniture Availability" is an inclusion use case
+  that is included only by "Browse Furniture Catalog". It is not associated with any
+  actor directly, it does not include or extend any other use case, it is not extended
+  by any use case, and  …[truncated]'

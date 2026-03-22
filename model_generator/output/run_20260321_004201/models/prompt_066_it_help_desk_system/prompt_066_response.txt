@@ -1,0 +1,72 @@
+
+
+DOMAIN: it_help_desk_system
+DOMAIN_DISPLAY: IT Help Desk System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Submit Ticket, Validate Ticket Fields
+EXPLANATION: The use case "Validate Ticket Fields" is an inclusion use case that is included by only one use case ("Submit Ticket"). "Validate Ticket Fields" is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a sub-step of submitting a ticket (field validation) rather than a complete, independently meaningful service that produces an observable result for any user. This is classic functional decomposition — breaking down "Submit Ticket" into an internal procedural step and exposing it as a separate use case via an <<include>> relationship.
+
+REFACTORING_RATIONALE: The use case "Validate Ticket Fields" and the <<include>> relationship from "Submit Ticket" to "Validate Ticket Fields" must be removed. The validation behavior should be absorbed into "Submit Ticket" itself, since validating ticket fields is an internal step of submitting a ticket, not a standalone service. This eliminates 1 use case and 1 include relationship, reducing the construct count by 2.
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Employee" as EMP
+actor "Support Agent" as SA
+
+rectangle "IT Help Desk System" {
+  usecase "Submit Ticket" as UC1
+  usecase "Validate Ticket Fields" as UC2
+  usecase "View Ticket Status" as UC3
+  usecase "Resolve Ticket" as UC4
+  usecase "Escalate Ticket" as UC5
+  usecase "Close Ticket" as UC6
+}
+
+EMP -- UC1
+EMP -- UC3
+SA -- UC4
+SA -- UC5
+SA -- UC6
+
+UC1 ..> UC2 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 8
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Employee" as EMP
+actor "Support Agent" as SA
+
+rectangle "IT Help Desk System" {
+  usecase "Submit Ticket" as UC1
+  usecase "View Ticket Status" as UC3
+  usecase "Resolve Ticket" as UC4
+  usecase "Escalate Ticket" as UC5
+  usecase "Close Ticket" as UC6
+}
+
+EMP -- UC1
+EMP -- UC3
+SA -- UC4
+SA -- UC5
+SA -- UC6
+@enduml
+```

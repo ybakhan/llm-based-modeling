@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 57
+  domain: student_attendance_system
+  domain_display: Student Attendance System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:22:38.210710'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_057_student_attendance_system/student_attendance_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_057_student_attendance_system/student_attendance_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_057_student_attendance_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Teacher\" as Teacher\nactor \"Administrator\" as Admin\nactor \"Parent\"\
+    \ as Parent\nactor \"Student\" as Student\n\nrectangle \"Student Attendance System\"\
+    \ {\n  usecase \"Mark Attendance\" as UC1\n  usecase \"View Own Attendance\" as\
+    \ UC3\n  usecase \"Generate Attendance Report\" as UC4\n  usecase \"Manage Class\
+    \ Schedule\" as UC6\n  usecase \"Send Absence Notification\" as UC7\n  usecase\
+    \ \"View Child Attendance\" as UC9\n  usecase \"Register Student\" as UC10\n \
+    \ usecase \"Configure Attendance Policy\" as UC11\n  usecase \"Request Leave\"\
+    \ as UC12\n  usecase \"Approve Leave Request\" as UC13\n  usecase \"Export Attendance\
+    \ Data\" as UC14\n}\n\nTeacher --> UC1\nTeacher --> UC4\nTeacher --> UC6\nTeacher\
+    \ --> UC13\n\nStudent --> UC3\nStudent --> UC12\n\nAdmin --> UC10\nAdmin --> UC11\n\
+    Admin --> UC14\nAdmin --> UC7\n\nParent --> UC9\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: student_attendance_system
+
+  DOMAIN_DISPLAY: Student Attendance System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Mark Attendance, Validate Student ID, include (Mark Attendance
+  → Validate Student ID)
+
+  EXPLANATION: "Validate Student ID" is an inclusion use case included only by "Mark
+  Attendance". It is not associated with any actor, is not included by any other use
+  case, does not include or extend any use case, is not extended by any u …[truncated]'

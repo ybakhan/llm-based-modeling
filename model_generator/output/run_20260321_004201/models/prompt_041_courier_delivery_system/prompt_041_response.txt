@@ -1,0 +1,109 @@
+
+
+DOMAIN: courier_delivery_system
+DOMAIN_DISPLAY: Courier Delivery System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Place Delivery Order, Validate Sender Address
+EXPLANATION: "Validate Sender Address" is an inclusion use case included only by "Place Delivery Order". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (address validation) rather than a complete service observable to a user, making it a functional decomposition of "Place Delivery Order".
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Place Delivery Order, Calculate Shipping Cost
+EXPLANATION: "Calculate Shipping Cost" is an inclusion use case included only by "Place Delivery Order". It has no direct actor association, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It decomposes a computational sub-step out of "Place Delivery Order" rather than providing a standalone service to any actor.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Assign Courier, Check Courier Availability
+EXPLANATION: "Check Courier Availability" is an inclusion use case included only by "Assign Courier". It has no direct actor association, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal verification step extracted from "Assign Courier" rather than a complete, independently meaningful service.
+
+REFACTORING_RATIONALE: The three inclusion use cases — "Validate Sender Address", "Calculate Shipping Cost", and "Check Courier Availability" — must each be merged back into their respective base use cases. "Validate Sender Address" and "Calculate Shipping Cost" are absorbed into "Place Delivery Order" since address validation and cost calculation are integral parts of placing an order. "Check Courier Availability" is absorbed into "Assign Courier" since checking availability is an inherent step of assignment. This eliminates 3 use cases and 3 include relationships (6 constructs total), producing a cleaner model where each use case represents a complete, actor-observable service.
+
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Customer" as Customer
+actor "Dispatcher" as Dispatcher
+actor "Courier" as Courier
+actor "Admin" as Admin
+
+rectangle "Courier Delivery System" {
+  usecase "Place Delivery Order" as UC1
+  usecase "Validate Sender Address" as UC2
+  usecase "Calculate Shipping Cost" as UC3
+  usecase "Track Package" as UC4
+  usecase "Cancel Order" as UC5
+  usecase "Assign Courier" as UC6
+  usecase "Check Courier Availability" as UC7
+  usecase "Update Delivery Status" as UC8
+  usecase "Confirm Pickup" as UC9
+  usecase "Confirm Delivery" as UC10
+  usecase "Generate Delivery Report" as UC11
+  usecase "Manage Customer Accounts" as UC12
+  usecase "Rate Courier" as UC13
+}
+
+Customer --> UC1
+Customer --> UC4
+Customer --> UC5
+Customer --> UC13
+Dispatcher --> UC6
+Dispatcher --> UC11
+Courier --> UC8
+Courier --> UC9
+Courier --> UC10
+Admin --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Customer" as Customer
+actor "Dispatcher" as Dispatcher
+actor "Courier" as Courier
+actor "Admin" as Admin
+
+rectangle "Courier Delivery System" {
+  usecase "Place Delivery Order" as UC1
+  usecase "Track Package" as UC4
+  usecase "Cancel Order" as UC5
+  usecase "Assign Courier" as UC6
+  usecase "Update Delivery Status" as UC8
+  usecase "Confirm Pickup" as UC9
+  usecase "Confirm Delivery" as UC10
+  usecase "Generate Delivery Report" as UC11
+  usecase "Manage Customer Accounts" as UC12
+  usecase "Rate Courier" as UC13
+}
+
+Customer --> UC1
+Customer --> UC4
+Customer --> UC5
+Customer --> UC13
+Dispatcher --> UC6
+Dispatcher --> UC11
+Courier --> UC8
+Courier --> UC9
+Courier --> UC10
+Admin --> UC12
+
+@enduml
+```

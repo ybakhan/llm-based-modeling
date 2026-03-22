@@ -1,0 +1,108 @@
+metadata:
+  prompt_number: 55
+  domain: veterinary_clinic_system
+  domain_display: Veterinary Clinic System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Conduct Examination, Check Vital Signs, include relationship
+        from Conduct Examination to Check Vital Signs
+      explanation: '"Check Vital Signs" is an inclusion use case included only by
+        "Conduct Examination". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, and
+        is not extended by or generalized with any use case. It represents a sub-step
+        of the examination rather than a complete service observable to an actor,
+        making this a functional decomposition antipattern.'
+    - constructs_involved: Conduct Examination, Prescribe Medication, include relationship
+        from Conduct Examination to Prescribe Medication
+      explanation: '"Prescribe Medication" is an inclusion use case included only
+        by "Conduct Examination". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, and
+        is not extended by or generalized with any use case. It represents a sub-step
+        of the examination process rather than a standalone service, making this a
+        functional decomposition antipattern.'
+    - constructs_involved: Process Payment, Generate Invoice, include relationship
+        from Process Payment to Generate Invoice
+      explanation: '"Generate Invoice" is an inclusion use case included only by "Process
+        Payment". It is not associated with any actor, is not included by any other
+        use case, does not include or extend any other use case, and is not extended
+        by or generalized with any use case. It represents a decomposed sub-step of
+        payment processing rather than a complete service to any actor, making this
+        a functional decomposition antipattern.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 26
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:53:38.978912'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_055_veterinary_clinic_system/veterinary_clinic_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_055_veterinary_clinic_system/veterinary_clinic_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_055_veterinary_clinic_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Veterinarian\" as Vet\nactor \"Receptionist\" as Recep\nactor \"Pet\
+    \ Owner\" as Owner\n\nrectangle \"Veterinary Clinic System\" {\n    usecase \"\
+    Register Pet\" as UC1\n    usecase \"Schedule Appointment\" as UC2\n    usecase\
+    \ \"Conduct Examination\" as UC3\n    usecase \"Check Vital Signs\" as UC4\n \
+    \   usecase \"Prescribe Medication\" as UC5\n    usecase \"View Medical Records\"\
+    \ as UC6\n    usecase \"Process Payment\" as UC7\n    usecase \"Generate Invoice\"\
+    \ as UC8\n    usecase \"Manage Vaccinations\" as UC9\n    usecase \"Cancel Appointment\"\
+    \ as UC10\n}\n\nOwner -- UC1\nOwner -- UC2\nOwner -- UC6\nOwner -- UC10\nRecep\
+    \ -- UC2\nRecep -- UC7\nRecep -- UC1\nVet -- UC3\nVet -- UC9\nVet -- UC6\n\nUC3\
+    \ ..> UC4 : <<include>>\nUC3 ..> UC5 : <<include>>\nUC7 ..> UC8 : <<include>>\n\
+    @enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Conduct Examination, Check Vital Signs,\
+    \ include relationship from Conduct Examination to Check Vital Signs\n   Instance\
+    \ 1: Explanation: \"Check Vital Signs\" is an inclusion use case included only\
+    \ by \"Conduct Examination\". It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any other use case, and is\
+    \ not extended by or generalized with any use case. It represents a sub-step of\
+    \ the examination rather than a complete service observable to an actor, making\
+    \ this a functional decomposition antipattern.\n\n   Instance 2: Constructs Involved:\
+    \ Conduct Examination, Prescribe Medication, include relationship from Conduct\
+    \ Examination to Prescribe Medication\n   Instance 2: Explanation: \"Prescribe\
+    \ Medication\" is an inclusion use case included only by \"Conduct Examination\"\
+    . It is not associated with any actor, is not included by any other use case,\
+    \ does not include or extend any other use case, and is not extended by or generalized\
+    \ with any use case. It represents a sub-step of the examination process rather\
+    \ than a standalone service, making this a functional decomposition antipattern.\n\
+    \n   Instance 3: Constructs Involved: Process Payment, Generate Invoice, include\
+    \ relationship from Process Payment to Generate Invoice\n   Instance 3: Explanation:\
+    \ \"Generate Invoice\" is an inclusion use case included only by \"Process Payment\"\
+    . It is not associated with any actor, is not included by any other use case,\
+    \ does not include or extend any other use case, and is not extended by or generalized\
+    \ with any use case. It represents a decomposed sub-step of payment processing\
+    \ rather than a complete service to any actor, making this a functional decomposition\
+    \ antipattern."
+raw_response_excerpt: '
+
+
+  DOMAIN: veterinary_clinic_system
+
+  DOMAIN_DISPLAY: Veterinary Clinic System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Conduct Examination, Check Vital Signs, include relationship
+  from Conduct Examination to Check Vital Signs
+
+  EXPLANATION: "Check Vital Signs" is an inclusion use case included only by "Conduct
+  Examination". It is not associated with any actor, is not included by any other
+  use case, does not include or extend any other use cas …[truncated]'

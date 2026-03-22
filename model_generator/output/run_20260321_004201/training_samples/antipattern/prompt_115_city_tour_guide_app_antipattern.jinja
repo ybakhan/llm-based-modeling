@@ -1,0 +1,37 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Tourist
+actor "Tour Guide Admin" as Admin
+
+rectangle "City Tour Guide App" {
+  usecase "Browse Tours" as UC1
+  usecase "Load Tour Details" as UC2
+  usecase "Book Tour" as UC3
+  usecase "View Map Navigation" as UC4
+  usecase "Rate Tour" as UC5
+  usecase "Manage Tour Listings" as UC6
+  usecase "View Tourist Reviews" as UC7
+}
+
+Tourist --> UC1
+Tourist --> UC3
+Tourist --> UC4
+Tourist --> UC5
+Admin --> UC6
+Admin --> UC7
+
+UC1 ..> UC2 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Browse Tours, Load Tour Details
+   Explanation: The use case "Load Tour Details" is an inclusion use case that is included only by "Browse Tours". It is not associated with any actor directly, it does not include or extend any other use case, it is not extended by any use case, and it has no generalization relationships. "Load Tour Details" represents a technical sub-step (loading data) rather than a complete, independently valuable service observable to a user. This is a classic functional decomposition where the behavior of browsing tours has been artificially split into a base use case and a subordinate inclusion fragment that provides no standalone value.

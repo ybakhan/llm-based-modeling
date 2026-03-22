@@ -1,0 +1,43 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+left to right direction
+
+actor "Radiologist" as Radiologist
+actor "Technician" as Technician
+actor "Referring Physician" as Physician
+actor "System Administrator" as Admin
+
+rectangle "Medical Imaging System" {
+  usecase "Upload DICOM Image" as UC1
+  usecase "Validate DICOM Format" as UC2
+  usecase "Perform Image Analysis" as UC3
+  usecase "Apply Enhancement Filters" as UC4
+  usecase "Generate Diagnostic Report" as UC5
+  usecase "Compile Report Sections" as UC6
+  usecase "View Patient Images" as UC7
+  usecase "Search Image Archive" as UC8
+  usecase "Annotate Image" as UC9
+  usecase "Share Report with Physician" as UC10
+  usecase "Manage User Accounts" as UC11
+  usecase "Monitor System Storage" as UC12
+  usecase "Request Second Opinion" as UC13
+
+  UC1 ..> UC2 : <<include>>
+  UC3 ..> UC4 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC13 ..> UC7 : <<include>>
+}
+
+Technician -- UC1
+Radiologist -- UC3
+Radiologist -- UC5
+Radiologist -- UC7
+Radiologist -- UC9
+Radiologist -- UC13
+Physician -- UC8
+Physician -- UC10
+Admin -- UC11
+Admin -- UC12
+
+@enduml

@@ -1,0 +1,76 @@
+
+
+DOMAIN: graphic_novel_platform
+DOMAIN_DISPLAY: Graphic Novel Platform
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Browse Catalog, Load Thumbnail Previews
+EXPLANATION: The use case "Load Thumbnail Previews" is an inclusion use case that is included by only one use case ("Browse Catalog"). It is not associated with any actor directly, does not include or extend any other use case, is not extended by any other use case, and has no generalization relationships. "Load Thumbnail Previews" represents a sub-step of browsing (loading images) rather than a complete, independently valuable service offered to any user. This is a classic functional decomposition — breaking the browsing behavior into an internal implementation step that provides no standalone observable result to an actor.
+
+REFACTORING_RATIONALE: The use case "Load Thumbnail Previews" must be merged back into "Browse Catalog" because it is merely an internal sub-function of browsing and not a service any actor would independently invoke. By dropping this inclusion use case and its <<include>> relationship, "Browse Catalog" becomes a single, cohesive use case that fully describes the browsing service. This removes 1 use case and 1 include relationship, reducing the construct count from 12 to 10.
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Reader" as Reader
+actor "Author" as Author
+
+rectangle "Graphic Novel Platform" {
+  usecase "Browse Catalog" as UC1
+  usecase "Read Novel" as UC2
+  usecase "Rate Novel" as UC3
+  usecase "Upload Novel" as UC4
+  usecase "Manage Chapters" as UC5
+  usecase "Load Thumbnail Previews" as UC6
+  usecase "Search Novels" as UC7
+}
+
+Reader --> UC1
+Reader --> UC2
+Reader --> UC3
+Reader --> UC7
+Author --> UC4
+Author --> UC5
+
+UC1 ..> UC6 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Reader" as Reader
+actor "Author" as Author
+
+rectangle "Graphic Novel Platform" {
+  usecase "Browse Catalog" as UC1
+  usecase "Read Novel" as UC2
+  usecase "Rate Novel" as UC3
+  usecase "Upload Novel" as UC4
+  usecase "Manage Chapters" as UC5
+  usecase "Search Novels" as UC7
+}
+
+Reader --> UC1
+Reader --> UC2
+Reader --> UC3
+Reader --> UC7
+Author --> UC4
+Author --> UC5
+@enduml
+```

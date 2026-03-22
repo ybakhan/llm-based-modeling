@@ -1,0 +1,115 @@
+
+
+DOMAIN: car_rental_system
+DOMAIN_DISPLAY: Car Rental System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Make Reservation, Validate Driver License
+EXPLANATION: "Validate Driver License" is an inclusion use case included only by "Make Reservation". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (license validation) rather than a complete service observable to any actor, making it a functional decomposition of "Make Reservation".
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Return Vehicle, Calculate Final Charges
+EXPLANATION: "Calculate Final Charges" is an inclusion use case included only by "Return Vehicle". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a computational sub-step rather than a standalone service, making it a functional decomposition of "Return Vehicle".
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Payment, Generate Payment Receipt
+EXPLANATION: "Generate Payment Receipt" is an inclusion use case included only by "Process Payment". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (receipt generation) rather than a complete service observable to any actor, making it a functional decomposition of "Process Payment".
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Driver License", "Calculate Final Charges", and "Generate Payment Receipt" — each serve only as sub-steps of a single base use case and offer no independent service to any actor. Applying Drop Functional Decomposition: (1) Merge "Validate Driver License" into "Make Reservation", eliminating 1 use case and 1 include relationship. (2) Merge "Calculate Final Charges" into "Return Vehicle", eliminating 1 use case and 1 include relationship. (3) Merge "Generate Payment Receipt" into "Process Payment", eliminating 1 use case and 1 include relationship. This removes 6 constructs total (3 use cases + 3 includes), reducing the count from 25 to 19 while preserving all meaningful system behavior.
+CONSTRUCT_COUNT: 25
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Rental Agent" as Agent
+actor "Manager" as Manager
+
+rectangle "Car Rental System" {
+  usecase "Browse Available Cars" as UC1
+  usecase "Make Reservation" as UC2
+  usecase "Validate Driver License" as UC3
+  usecase "Pick Up Vehicle" as UC4
+  usecase "Return Vehicle" as UC5
+  usecase "Calculate Final Charges" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Generate Payment Receipt" as UC8
+  usecase "Cancel Reservation" as UC9
+  usecase "Manage Fleet" as UC10
+  usecase "Generate Reports" as UC11
+  usecase "View Rental History" as UC12
+  usecase "Apply Late Fee" as UC13
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC9
+Customer --> UC7
+Customer --> UC12
+
+Agent --> UC4
+Agent --> UC5
+Agent --> UC2
+
+Manager --> UC10
+Manager --> UC11
+
+UC2 ..> UC3 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC5 ..> UC13 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 19
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Customer" as Customer
+actor "Rental Agent" as Agent
+actor "Manager" as Manager
+
+rectangle "Car Rental System" {
+  usecase "Browse Available Cars" as UC1
+  usecase "Make Reservation" as UC2
+  usecase "Pick Up Vehicle" as UC4
+  usecase "Return Vehicle" as UC5
+  usecase "Process Payment" as UC7
+  usecase "Cancel Reservation" as UC9
+  usecase "Manage Fleet" as UC10
+  usecase "Generate Reports" as UC11
+  usecase "View Rental History" as UC12
+  usecase "Apply Late Fee" as UC13
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC9
+Customer --> UC7
+Customer --> UC12
+
+Agent --> UC4
+Agent --> UC5
+Agent --> UC2
+
+Manager --> UC10
+Manager --> UC11
+
+UC5 ..> UC13 : <<extend>>
+
+@enduml
+```

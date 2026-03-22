@@ -1,0 +1,59 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Trader" as Trader
+actor "Broker" as Broker
+actor "System Administrator" as Admin
+
+rectangle "Stock Trading Platform" {
+  usecase "Place Order" as UC1
+  usecase "Validate Order Parameters" as UC2
+  usecase "Execute Trade" as UC3
+  usecase "Route to Exchange" as UC4
+  usecase "View Portfolio" as UC5
+  usecase "Fetch Account Data" as UC6
+  usecase "Cancel Order" as UC7
+  usecase "View Market Data" as UC8
+  usecase "Set Price Alert" as UC9
+  usecase "Manage User Accounts" as UC10
+  usecase "Generate Trade Report" as UC11
+  usecase "Place Limit Order" as UC12
+  usecase "Place Market Order" as UC13
+
+  UC1 ..> UC2 : <<include>>
+  UC3 ..> UC4 : <<include>>
+  UC5 ..> UC6 : <<include>>
+
+  UC12 --|> UC1
+  UC13 --|> UC1
+
+  UC7 ..> UC1 : <<extend>>
+}
+
+Trader --> UC1
+Trader --> UC5
+Trader --> UC8
+Trader --> UC9
+Broker --> UC3
+Broker --> UC11
+Admin --> UC10
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Place Order, Validate Order Parameters, include relationship from Place Order to Validate Order Parameters
+   Instance 1: Explanation: "Validate Order Parameters" is an inclusion use case included only by "Place Order". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. It represents a sub-step (validating parameters) of placing an order rather than a complete, standalone service observable to any actor. This is functional decomposition of "Place Order" into a procedural sub-step.
+
+   Instance 2: Constructs Involved: Execute Trade, Route to Exchange, include relationship from Execute Trade to Route to Exchange
+   Instance 2: Explanation: "Route to Exchange" is an inclusion use case included only by "Execute Trade". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. Routing to an exchange is an internal implementation step of executing a trade, not a complete service yielding an observable result to a user. This is functional decomposition of "Execute Trade".
+
+   Instance 3: Constructs Involved: View Portfolio, Fetch Account Data, include relationship from View Portfolio to Fetch Account Data
+   Instance 3: Explanation: "Fetch Account Data" is an inclusion use case included only by "View Portfolio". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. Fetching account data is an internal retrieval step within viewing a portfolio, not a standalone service with an observable result to any user. This is functional decomposition of "View Portfolio".

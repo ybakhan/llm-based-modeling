@@ -1,0 +1,19 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor Listener
+actor Admin
+
+rectangle "Music Streaming Platform" {
+    usecase "Play Song" as UC1
+    usecase "Search Music" as UC2
+    usecase "Create Playlist" as UC3
+    usecase "Manage Catalog" as UC4
+}
+
+Listener -- UC1
+Listener -- UC2
+Listener -- UC3
+Admin -- UC4
+@enduml

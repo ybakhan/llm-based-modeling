@@ -1,0 +1,117 @@
+
+
+DOMAIN: customer_relationship_management
+DOMAIN_DISPLAY: Customer Relationship Management
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Manage Leads, Validate Lead Data, include relationship from "Manage Leads" to "Validate Lead Data"
+EXPLANATION: "Validate Lead Data" is an inclusion use case included only by "Manage Leads". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a sub-step (data validation) rather than a complete service observable to a user, making it a functional decomposition of "Manage Leads".
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Log Customer Interaction, Record Timestamp, include relationship from "Log Customer Interaction" to "Record Timestamp"
+EXPLANATION: "Record Timestamp" is an inclusion use case included only by "Log Customer Interaction". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Recording a timestamp is a mechanical sub-step, not a standalone service with an observable result for any user, making this a functional decomposition of "Log Customer Interaction".
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Generate Sales Report, Format Report Output, include relationship from "Generate Sales Report" to "Format Report Output"
+EXPLANATION: "Format Report Output" is an inclusion use case included only by "Generate Sales Report". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Formatting output is a sub-step of report generation, not a complete service for any actor, making this a functional decomposition of "Generate Sales Report".
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Lead Data", "Record Timestamp", "Format Report Output") must be merged back into their respective base use cases ("Manage Leads", "Log Customer Interaction", "Generate Sales Report"). In each instance, the inclusion use case represents an internal processing step rather than a complete, actor-observable service. Removing these three use cases and their three include relationships eliminates all functional decomposition antipatterns while preserving the full behavior within the base use cases. This reduces the model by 6 constructs (3 use cases + 3 include relationships).
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Sales Rep" as SalesRep
+actor "Sales Manager" as SalesManager
+actor "Support Agent" as SupportAgent
+actor "Administrator" as Admin
+
+rectangle "CRM System" {
+  usecase "Manage Leads" as UC1
+  usecase "Validate Lead Data" as UC2
+  usecase "Log Customer Interaction" as UC3
+  usecase "Record Timestamp" as UC4
+  usecase "Manage Contacts" as UC5
+  usecase "Track Opportunities" as UC6
+  usecase "Generate Sales Report" as UC7
+  usecase "Format Report Output" as UC8
+  usecase "Schedule Follow-Up" as UC9
+  usecase "Manage User Accounts" as UC10
+  usecase "Export Contacts" as UC11
+  usecase "View Dashboard" as UC12
+}
+
+SalesRep -- UC1
+SalesRep -- UC3
+SalesRep -- UC5
+SalesRep -- UC6
+SalesRep -- UC9
+SalesRep -- UC11
+
+SalesManager -- UC7
+SalesManager -- UC12
+SalesManager -- UC6
+
+SupportAgent -- UC3
+SupportAgent -- UC5
+
+Admin -- UC10
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Sales Rep" as SalesRep
+actor "Sales Manager" as SalesManager
+actor "Support Agent" as SupportAgent
+actor "Administrator" as Admin
+
+rectangle "CRM System" {
+  usecase "Manage Leads" as UC1
+  usecase "Log Customer Interaction" as UC3
+  usecase "Manage Contacts" as UC5
+  usecase "Track Opportunities" as UC6
+  usecase "Generate Sales Report" as UC7
+  usecase "Schedule Follow-Up" as UC9
+  usecase "Manage User Accounts" as UC10
+  usecase "Export Contacts" as UC11
+  usecase "View Dashboard" as UC12
+}
+
+SalesRep -- UC1
+SalesRep -- UC3
+SalesRep -- UC5
+SalesRep -- UC6
+SalesRep -- UC9
+SalesRep -- UC11
+
+SalesManager -- UC7
+SalesManager -- UC12
+SalesManager -- UC6
+
+SupportAgent -- UC3
+SupportAgent -- UC5
+
+Admin -- UC10
+@enduml
+```

@@ -1,0 +1,58 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Receptionist as R
+actor Doctor as D
+actor Nurse as N
+actor "Lab Technician" as LT
+actor Administrator as A
+
+rectangle "Hospital Management System" {
+  usecase "Register Patient" as UC1
+  usecase "Schedule Appointment" as UC2
+  usecase "Check Doctor Availability" as UC3
+  usecase "Admit Patient" as UC4
+  usecase "Assign Ward" as UC5
+  usecase "Discharge Patient" as UC6
+  usecase "Generate Discharge Summary" as UC7
+  usecase "Record Diagnosis" as UC8
+  usecase "Prescribe Medication" as UC9
+  usecase "Record Vital Signs" as UC10
+  usecase "Order Lab Test" as UC11
+  usecase "Process Lab Results" as UC12
+  usecase "Manage Staff Records" as UC13
+}
+
+R --> UC1
+R --> UC2
+R --> UC4
+R --> UC6
+D --> UC8
+D --> UC9
+D --> UC11
+N --> UC10
+LT --> UC12
+A --> UC13
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Schedule Appointment, Check Doctor Availability
+   Instance 1: Explanation: "Check Doctor Availability" is an inclusion use case included only by "Schedule Appointment". It is not associated with any actor directly, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (checking availability) rather than a complete, independently valuable service to an actor. This is functional decomposition of "Schedule Appointment" into a procedural step.
+
+   Instance 2: Constructs Involved: Admit Patient, Assign Ward
+   Instance 2: Explanation: "Assign Ward" is an inclusion use case included only by "Admit Patient". It is not associated with any actor directly, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Assigning a ward is an internal sub-step of the admission process, not a standalone service providing an observable result to a user. This is functional decomposition of "Admit Patient".
+
+   Instance 3: Constructs Involved: Discharge Patient, Generate Discharge Summary
+   Instance 3: Explanation: "Generate Discharge Summary" is an inclusion use case included only by "Discharge Patient". It is not associated with any actor directly, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a discharge summary is a procedural sub-step of discharging a patient rather than an independently meaningful service to any actor. This is functional decomposition of "Discharge Patient".

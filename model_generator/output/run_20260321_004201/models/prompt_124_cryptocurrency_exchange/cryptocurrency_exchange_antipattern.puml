@@ -1,0 +1,46 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Trader
+actor "System Admin" as Admin
+actor "Payment Gateway" as PG
+
+rectangle "Cryptocurrency Exchange" {
+  usecase "Register Account" as UC1
+  usecase "Send Verification Email" as UC2
+  usecase "Login" as UC3
+  usecase "View Portfolio" as UC4
+  usecase "Deposit Funds" as UC5
+  usecase "Withdraw Funds" as UC6
+  usecase "Generate Blockchain Transaction" as UC7
+  usecase "Place Trade" as UC8
+  usecase "Validate Order Parameters" as UC9
+  usecase "View Order History" as UC10
+  usecase "Set Price Alert" as UC11
+  usecase "Complete KYC Verification" as UC12
+  usecase "Monitor Platform Activity" as UC13
+  usecase "Manage User Accounts" as UC14
+  usecase "View Market Data" as UC15
+  usecase "Process Payment" as UC16
+}
+
+Trader -- UC1
+Trader -- UC3
+Trader -- UC4
+Trader -- UC5
+Trader -- UC6
+Trader -- UC8
+Trader -- UC10
+Trader -- UC11
+Trader -- UC12
+Trader -- UC15
+Admin -- UC13
+Admin -- UC14
+PG -- UC16
+
+UC5 ..> UC16 : <<include>>
+UC1 ..> UC2 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC8 ..> UC9 : <<include>>
+
+@enduml

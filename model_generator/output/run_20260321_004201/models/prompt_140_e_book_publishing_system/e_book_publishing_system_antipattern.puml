@@ -1,0 +1,24 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Author
+actor Reader
+actor Editor
+
+rectangle "E-Book Publishing System" {
+  usecase "Upload Manuscript" as UC1
+  usecase "Publish E-Book" as UC2
+  usecase "Validate Manuscript Format" as UC3
+  usecase "Browse Catalog" as UC4
+  usecase "Purchase E-Book" as UC5
+  usecase "Review Manuscript" as UC6
+}
+
+Author -- UC1
+Author -- UC2
+UC2 ..> UC3 : <<include>>
+Reader -- UC4
+Reader -- UC5
+Editor -- UC6
+
+@enduml

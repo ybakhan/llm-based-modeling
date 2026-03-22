@@ -1,0 +1,76 @@
+
+
+DOMAIN: farm_management_system
+DOMAIN_DISPLAY: Farm Management System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Record Harvest, Validate Crop Data
+EXPLANATION: The use case "Record Harvest" includes "Validate Crop Data" via an <<include>> relationship. "Validate Crop Data" is an inclusion use case that (1) is included by only one use case ("Record Harvest"), (2) is not associated with any actor, (3) does not include or extend any other use case, (4) is not extended by any use case, and (5) is neither a generalization nor a specialization. "Validate Crop Data" represents a sub-step of recording a harvest rather than a complete, independently valuable service to any actor. This is functional decomposition — breaking "Record Harvest" into procedural steps via include.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Crop Data" must be merged back into "Record Harvest" since it does not provide a standalone service to any actor and is only included by one use case. The <<include>> relationship between "Record Harvest" and "Validate Crop Data" is removed, and the validation behavior is absorbed into "Record Harvest." This eliminates one use case and one include relationship, reducing the construct count by 2.
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Farmer" as Farmer
+actor "Farm Manager" as Manager
+
+rectangle "Farm Management System" {
+  usecase "Manage Livestock" as UC1
+  usecase "Record Harvest" as UC2
+  usecase "Validate Crop Data" as UC3
+  usecase "Schedule Irrigation" as UC4
+  usecase "Monitor Soil Health" as UC5
+  usecase "View Farm Dashboard" as UC6
+  usecase "Manage Field Plots" as UC7
+}
+
+Farmer -- UC1
+Farmer -- UC2
+Farmer -- UC4
+Manager -- UC5
+Manager -- UC6
+Manager -- UC7
+
+UC2 ..> UC3 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Farmer" as Farmer
+actor "Farm Manager" as Manager
+
+rectangle "Farm Management System" {
+  usecase "Manage Livestock" as UC1
+  usecase "Record Harvest" as UC2
+  usecase "Schedule Irrigation" as UC4
+  usecase "Monitor Soil Health" as UC5
+  usecase "View Farm Dashboard" as UC6
+  usecase "Manage Field Plots" as UC7
+}
+
+Farmer -- UC1
+Farmer -- UC2
+Farmer -- UC4
+Manager -- UC5
+Manager -- UC6
+Manager -- UC7
+@enduml
+```

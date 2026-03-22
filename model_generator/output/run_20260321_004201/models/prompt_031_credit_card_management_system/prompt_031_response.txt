@@ -1,0 +1,67 @@
+
+
+DOMAIN: credit_card_management_system
+DOMAIN_DISPLAY: Credit Card Management System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Pay Bill (UC4), Validate Payment Details (UC5), include relationship from UC4 to UC5
+EXPLANATION: "Validate Payment Details" (UC5) is an inclusion use case that is included by only one use case ("Pay Bill", UC4). It is not associated with any actor directly, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Validate Payment Details" does not represent a complete service observable to any actor — it is merely a substep of the bill payment process that has been improperly decomposed into its own use case. This constitutes the Functional Decomposition antipattern via the include relationship.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Payment Details" (UC5) and the <<include>> relationship from "Pay Bill" (UC4) to UC5 must be removed. The validation behavior should be merged back into the "Pay Bill" use case, since it is only a substep of that process and provides no standalone value to any actor. This eliminates 1 use case and 1 include relationship, reducing the construct count from 10 to 8.
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Cardholder" as A1
+actor "Customer Service Agent" as A2
+
+rectangle "Credit Card Management System" {
+  usecase "View Account Summary" as UC1
+  usecase "Request Credit Limit Increase" as UC2
+  usecase "Block Lost Card" as UC3
+  usecase "Pay Bill" as UC4
+  usecase "Validate Payment Details" as UC5
+}
+
+A1 --> UC1
+A1 --> UC4
+A1 --> UC2
+A2 --> UC3
+UC4 ..> UC5 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 8
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Cardholder" as A1
+actor "Customer Service Agent" as A2
+
+rectangle "Credit Card Management System" {
+  usecase "View Account Summary" as UC1
+  usecase "Request Credit Limit Increase" as UC2
+  usecase "Block Lost Card" as UC3
+  usecase "Pay Bill" as UC4
+}
+
+A1 --> UC1
+A1 --> UC4
+A1 --> UC2
+A2 --> UC3
+@enduml
+```

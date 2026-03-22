@@ -1,0 +1,35 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Customer" as Customer
+actor "Driver" as Driver
+actor "Admin" as Admin
+
+rectangle "Laundry Pickup Service" {
+  usecase "Register Account" as UC1
+  usecase "Schedule Pickup" as UC2
+  usecase "Track Order" as UC4
+  usecase "Process Payment" as UC6
+  usecase "Apply Promo Code" as UC8
+  usecase "Rate Service" as UC9
+  usecase "Accept Pickup Request" as UC10
+  usecase "Update Order Status" as UC11
+  usecase "Manage Pricing" as UC12
+  usecase "View Reports" as UC13
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC4
+Customer -- UC6
+Customer -- UC9
+
+Driver -- UC10
+Driver -- UC11
+
+Admin -- UC12
+Admin -- UC13
+
+UC8 ..> UC6 : <<extend>>
+@enduml

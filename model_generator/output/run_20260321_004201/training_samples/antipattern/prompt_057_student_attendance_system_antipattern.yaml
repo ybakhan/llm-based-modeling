@@ -1,0 +1,112 @@
+metadata:
+  prompt_number: 57
+  domain: student_attendance_system
+  domain_display: Student Attendance System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Mark Attendance, Validate Student ID, include (Mark Attendance
+        → Validate Student ID)
+      explanation: '"Validate Student ID" is an inclusion use case included only by
+        "Mark Attendance". It is not associated with any actor, is not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (validation) rather than a complete service observable to an actor,
+        making this a functional decomposition of "Mark Attendance".'
+    - constructs_involved: Generate Attendance Report, Fetch Attendance Records, include
+        (Generate Attendance Report → Fetch Attendance Records)
+      explanation: '"Fetch Attendance Records" is an inclusion use case included only
+        by "Generate Attendance Report". It is not associated with any actor, is not
+        included by any other use case, does not include or extend any use case, is
+        not extended by any use case, and has no generalization relationships. It
+        represents a data retrieval sub-step rather than a complete service, making
+        this a functional decomposition of "Generate Attendance Report".'
+    - constructs_involved: Send Absence Notification, Format Email Message, include
+        (Send Absence Notification → Format Email Message)
+      explanation: '"Format Email Message" is an inclusion use case included only
+        by "Send Absence Notification". It is not associated with any actor, is not
+        included by any other use case, does not include or extend any use case, is
+        not extended by any use case, and has no generalization relationships. It
+        represents an internal formatting step rather than a complete observable service
+        to any actor, making this a functional decomposition of "Send Absence Notification".'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 28
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:22:38.210710'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_057_student_attendance_system/student_attendance_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_057_student_attendance_system/student_attendance_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_057_student_attendance_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Teacher\" as Teacher\nactor \"Administrator\" as Admin\nactor \"Parent\"\
+    \ as Parent\nactor \"Student\" as Student\n\nrectangle \"Student Attendance System\"\
+    \ {\n  usecase \"Mark Attendance\" as UC1\n  usecase \"Validate Student ID\" as\
+    \ UC2\n  usecase \"View Own Attendance\" as UC3\n  usecase \"Generate Attendance\
+    \ Report\" as UC4\n  usecase \"Fetch Attendance Records\" as UC5\n  usecase \"\
+    Manage Class Schedule\" as UC6\n  usecase \"Send Absence Notification\" as UC7\n\
+    \  usecase \"Format Email Message\" as UC8\n  usecase \"View Child Attendance\"\
+    \ as UC9\n  usecase \"Register Student\" as UC10\n  usecase \"Configure Attendance\
+    \ Policy\" as UC11\n  usecase \"Request Leave\" as UC12\n  usecase \"Approve Leave\
+    \ Request\" as UC13\n  usecase \"Export Attendance Data\" as UC14\n}\n\nTeacher\
+    \ --> UC1\nTeacher --> UC4\nTeacher --> UC6\nTeacher --> UC13\n\nStudent --> UC3\n\
+    Student --> UC12\n\nAdmin --> UC10\nAdmin --> UC11\nAdmin --> UC14\nAdmin -->\
+    \ UC7\n\nParent --> UC9\n\nUC1 ..> UC2 : <<include>>\nUC4 ..> UC5 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Mark Attendance, Validate Student ID, include\
+    \ (Mark Attendance → Validate Student ID)\n   Instance 1: Explanation: \"Validate\
+    \ Student ID\" is an inclusion use case included only by \"Mark Attendance\".\
+    \ It is not associated with any actor, is not included by any other use case,\
+    \ does not include or extend any use case, is not extended by any use case, and\
+    \ has no generalization relationships. It represents a sub-step (validation) rather\
+    \ than a complete service observable to an actor, making this a functional decomposition\
+    \ of \"Mark Attendance\".\n\n   Instance 2: Constructs Involved: Generate Attendance\
+    \ Report, Fetch Attendance Records, include (Generate Attendance Report → Fetch\
+    \ Attendance Records)\n   Instance 2: Explanation: \"Fetch Attendance Records\"\
+    \ is an inclusion use case included only by \"Generate Attendance Report\". It\
+    \ is not associated with any actor, is not included by any other use case, does\
+    \ not include or extend any use case, is not extended by any use case, and has\
+    \ no generalization relationships. It represents a data retrieval sub-step rather\
+    \ than a complete service, making this a functional decomposition of \"Generate\
+    \ Attendance Report\".\n\n   Instance 3: Constructs Involved: Send Absence Notification,\
+    \ Format Email Message, include (Send Absence Notification → Format Email Message)\n\
+    \   Instance 3: Explanation: \"Format Email Message\" is an inclusion use case\
+    \ included only by \"Send Absence Notification\". It is not associated with any\
+    \ actor, is not included by any other use case, does not include or extend any\
+    \ use case, is not extended by any use case, and has no generalization relationships.\
+    \ It represents an internal formatting step rather than a complete observable\
+    \ service to any actor, making this a functional decomposition of \"Send Absence\
+    \ Notification\"."
+raw_response_excerpt: '
+
+
+  DOMAIN: student_attendance_system
+
+  DOMAIN_DISPLAY: Student Attendance System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Mark Attendance, Validate Student ID, include (Mark Attendance
+  → Validate Student ID)
+
+  EXPLANATION: "Validate Student ID" is an inclusion use case included only by "Mark
+  Attendance". It is not associated with any actor, is not included by any other use
+  case, does not include or extend any use case, is not extended by any u …[truncated]'

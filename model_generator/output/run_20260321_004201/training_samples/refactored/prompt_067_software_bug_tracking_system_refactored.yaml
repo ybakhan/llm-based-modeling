@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 67
+  domain: software_bug_tracking_system
+  domain_display: Software Bug Tracking System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 23
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:26:48.510073'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_067_software_bug_tracking_system/software_bug_tracking_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_067_software_bug_tracking_system/software_bug_tracking_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_067_software_bug_tracking_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Reporter\" as Reporter\n\
+    actor \"Project Manager\" as PM\nactor \"Developer\" as Dev\nactor \"QA Tester\"\
+    \ as QA\n\nrectangle \"Software Bug Tracking System\" {\n  usecase \"Report Bug\"\
+    \ as UC1\n  usecase \"View Bug List\" as UC3\n  usecase \"Search Bugs\" as UC4\n\
+    \  usecase \"Assign Bug\" as UC5\n  usecase \"Update Bug Status\" as UC7\n  usecase\
+    \ \"Add Comment\" as UC8\n  usecase \"Close Bug\" as UC9\n  usecase \"Reopen Bug\"\
+    \ as UC11\n  usecase \"Generate Bug Report\" as UC12\n  usecase \"Verify Fix\"\
+    \ as UC13\n  usecase \"Set Bug Priority\" as UC14\n  usecase \"Attach File\" as\
+    \ UC15\n}\n\nReporter --> UC1\nReporter --> UC3\nReporter --> UC4\nReporter -->\
+    \ UC11\n\nPM --> UC5\nPM --> UC12\nPM --> UC14\nPM --> UC3\n\nDev --> UC7\nDev\
+    \ --> UC8\nDev --> UC9\nDev --> UC15\n\nQA --> UC13\nQA --> UC3\n\nUC1 ..> UC15\
+    \ : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: software_bug_tracking_system
+
+  DOMAIN_DISPLAY: Software Bug Tracking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Report Bug, Validate Bug Fields, include relationship from
+  Report Bug to Validate Bug Fields
+
+  EXPLANATION: "Validate Bug Fields" is an inclusion use case included only by "Report
+  Bug". It is not associated with any actor, is not included by any other use case,
+  does not include or extend any use case, is not extended  …[truncated]'

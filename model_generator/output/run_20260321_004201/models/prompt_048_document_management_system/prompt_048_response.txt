@@ -1,0 +1,80 @@
+
+
+DOMAIN: document_management_system
+DOMAIN_DISPLAY: Document Management System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Upload Document, Validate File Format, the <<include>> relationship from Upload Document to Validate File Format
+EXPLANATION: "Validate File Format" is an inclusion use case that is included by only one use case ("Upload Document"). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Validate File Format" represents a sub-step of uploading a document rather than a complete, independently meaningful service observable to an actor. This is a classic functional decomposition — breaking the "Upload Document" use case into an artificial sub-function via <<include>>.
+
+REFACTORING_RATIONALE: The "Validate File Format" use case and its <<include>> relationship from "Upload Document" must be removed. The validation behavior should be absorbed into "Upload Document" itself, since file format validation is an internal step of uploading a document, not a standalone service. This eliminates the functional decomposition by merging the decomposed sub-function back into its base use case. No new use cases are introduced; we simply remove "Validate File Format" and the include arrow.
+CONSTRUCT_COUNT: 13
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Author" as Author
+actor "Reviewer" as Reviewer
+actor "Administrator" as Admin
+
+rectangle "Document Management System" {
+  usecase "Upload Document" as UC1
+  usecase "Search Documents" as UC2
+  usecase "Download Document" as UC3
+  usecase "Review Document" as UC4
+  usecase "Delete Document" as UC5
+  usecase "Assign Permissions" as UC6
+  usecase "Validate File Format" as UC7
+}
+
+Author -- UC1
+Author -- UC2
+Author -- UC3
+Reviewer -- UC4
+Reviewer -- UC2
+Admin -- UC5
+Admin -- UC6
+
+UC1 ..> UC7 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Author" as Author
+actor "Reviewer" as Reviewer
+actor "Administrator" as Admin
+
+rectangle "Document Management System" {
+  usecase "Upload Document" as UC1
+  usecase "Search Documents" as UC2
+  usecase "Download Document" as UC3
+  usecase "Review Document" as UC4
+  usecase "Delete Document" as UC5
+  usecase "Assign Permissions" as UC6
+}
+
+Author -- UC1
+Author -- UC2
+Author -- UC3
+Reviewer -- UC4
+Reviewer -- UC2
+Admin -- UC5
+Admin -- UC6
+@enduml
+```

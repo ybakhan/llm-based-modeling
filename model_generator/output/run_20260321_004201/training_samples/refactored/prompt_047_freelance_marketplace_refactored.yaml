@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 47
+  domain: freelance_marketplace
+  domain_display: Freelance Marketplace
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:18:12.689550'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_047_freelance_marketplace/freelance_marketplace_refactored.puml
+    image: output/run_20260321_004201/models/prompt_047_freelance_marketplace/freelance_marketplace_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_047_freelance_marketplace_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Client\" as Client\n\
+    actor \"Freelancer\" as Freelancer\nactor \"Admin\" as Admin\n\nrectangle \"Freelance\
+    \ Marketplace\" {\n    usecase \"Post Job\" as UC1\n    usecase \"Browse Jobs\"\
+    \ as UC3\n    usecase \"Submit Proposal\" as UC4\n    usecase \"Accept Proposal\"\
+    \ as UC6\n    usecase \"Process Payment\" as UC7\n    usecase \"Leave Review\"\
+    \ as UC9\n    usecase \"Manage Disputes\" as UC10\n    usecase \"Track Milestone\"\
+    \ as UC11\n    usecase \"Send Message\" as UC12\n    usecase \"Manage User Accounts\"\
+    \ as UC13\n}\n\nClient --> UC1\nClient --> UC3\nClient --> UC6\nClient --> UC7\n\
+    Client --> UC9\nClient --> UC11\nClient --> UC12\nFreelancer --> UC3\nFreelancer\
+    \ --> UC4\nFreelancer --> UC9\nFreelancer --> UC11\nFreelancer --> UC12\nAdmin\
+    \ --> UC10\nAdmin --> UC13\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: freelance_marketplace
+
+  DOMAIN_DISPLAY: Freelance Marketplace
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Post Job, Validate Job Details, include (Post Job → Validate
+  Job Details)
+
+  EXPLANATION: "Validate Job Details" is an inclusion use case included only by "Post
+  Job". It is not associated with any actor, not included by any other use case, does
+  not include or extend any use case, is not extended by any use case, and has no
+  generaliz …[truncated]'

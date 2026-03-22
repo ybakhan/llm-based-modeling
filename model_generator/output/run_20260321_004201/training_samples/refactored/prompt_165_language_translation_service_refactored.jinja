@@ -1,0 +1,47 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Customer" as Customer
+actor "Professional Translator" as Translator
+actor "Administrator" as Admin
+
+rectangle "Language Translation Service" {
+  usecase "Register Account" as UC1
+  usecase "Submit Translation Request" as UC2
+  usecase "Select Target Language" as UC4
+  usecase "Translate Document" as UC5
+  usecase "Review Translation" as UC7
+  usecase "Download Translated File" as UC8
+  usecase "Rate Translation Quality" as UC10
+  usecase "Manage Translator Profiles" as UC11
+  usecase "View Translation History" as UC12
+  usecase "Request Human Review" as UC13
+  usecase "Manage Supported Languages" as UC14
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC4
+Customer --> UC8
+Customer --> UC10
+Customer --> UC12
+Customer --> UC13
+
+Translator --> UC5
+Translator --> UC7
+
+Admin --> UC11
+Admin --> UC14
+
+UC13 ..> UC7 : <<include>>
+
+@enduml
+
+
+Answer:
+No antipattern detected.

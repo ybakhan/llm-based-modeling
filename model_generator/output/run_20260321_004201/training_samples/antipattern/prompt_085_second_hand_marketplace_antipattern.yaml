@@ -1,0 +1,110 @@
+metadata:
+  prompt_number: 85
+  domain: second_hand_marketplace
+  domain_display: Second-Hand Marketplace
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Create Listing, Upload Photos, include (Create Listing
+        → Upload Photos)
+      explanation: '"Upload Photos" is an inclusion use case included only by "Create
+        Listing". It is not associated with any actor directly, is not included by
+        any other use case, does not include or extend any other use case, and is
+        not extended by or generalized with any use case. This represents functional
+        decomposition where the act of uploading photos — a sub-step of creating a
+        listing — has been improperly separated into its own use case that provides
+        no standalone observable result to any actor.'
+    - constructs_involved: Purchase Item, Process Payment, include (Purchase Item
+        → Process Payment)
+      explanation: '"Process Payment" is an inclusion use case included only by "Purchase
+        Item". It has no direct actor association, is not included by any other use
+        case, does not include or extend any other use case, and is not extended by
+        or generalized with any use case. Processing payment is a sub-step of purchasing
+        an item and has been functionally decomposed into a separate use case that
+        does not represent a complete, independently valuable service to any user.'
+    - constructs_involved: Search Items, Apply Filters, include (Search Items → Apply
+        Filters)
+      explanation: '"Apply Filters" is an inclusion use case included only by "Search
+        Items". It has no direct actor association, is not included by any other use
+        case, does not include or extend any other use case, and is not extended by
+        or generalized with any use case. Applying filters is an internal step within
+        the search process and has been decomposed into its own use case, providing
+        no independently observable result to any actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:33:39.049290'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_085_second_hand_marketplace/second_hand_marketplace_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_085_second_hand_marketplace/second_hand_marketplace_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_085_second_hand_marketplace_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Seller\nactor\
+    \ Buyer\nactor Admin\n\nrectangle \"Second-Hand Marketplace\" {\n  usecase \"\
+    Create Listing\" as UC1\n  usecase \"Upload Photos\" as UC2\n  usecase \"Manage\
+    \ My Listings\" as UC3\n  usecase \"Search Items\" as UC4\n  usecase \"Apply Filters\"\
+    \ as UC5\n  usecase \"Purchase Item\" as UC6\n  usecase \"Process Payment\" as\
+    \ UC7\n  usecase \"Rate Seller\" as UC8\n  usecase \"Send Message\" as UC9\n \
+    \ usecase \"Browse Categories\" as UC10\n  usecase \"Manage Users\" as UC11\n\
+    \  usecase \"Resolve Dispute\" as UC12\n  usecase \"View Item Details\" as UC13\n\
+    }\n\nSeller --> UC1\nSeller --> UC3\nSeller --> UC9\n\nBuyer --> UC4\nBuyer -->\
+    \ UC6\nBuyer --> UC8\nBuyer --> UC9\nBuyer --> UC10\nBuyer --> UC13\n\nAdmin -->\
+    \ UC11\nAdmin --> UC12\n\nUC1 ..> UC2 : <<include>>\nUC4 ..> UC5 : <<include>>\n\
+    UC6 ..> UC7 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Create Listing, Upload Photos, include (Create\
+    \ Listing → Upload Photos)\n   Instance 1: Explanation: \"Upload Photos\" is an\
+    \ inclusion use case included only by \"Create Listing\". It is not associated\
+    \ with any actor directly, is not included by any other use case, does not include\
+    \ or extend any other use case, and is not extended by or generalized with any\
+    \ use case. This represents functional decomposition where the act of uploading\
+    \ photos — a sub-step of creating a listing — has been improperly separated into\
+    \ its own use case that provides no standalone observable result to any actor.\n\
+    \n   Instance 2: Constructs Involved: Purchase Item, Process Payment, include\
+    \ (Purchase Item → Process Payment)\n   Instance 2: Explanation: \"Process Payment\"\
+    \ is an inclusion use case included only by \"Purchase Item\". It has no direct\
+    \ actor association, is not included by any other use case, does not include or\
+    \ extend any other use case, and is not extended by or generalized with any use\
+    \ case. Processing payment is a sub-step of purchasing an item and has been functionally\
+    \ decomposed into a separate use case that does not represent a complete, independently\
+    \ valuable service to any user.\n\n   Instance 3: Constructs Involved: Search\
+    \ Items, Apply Filters, include (Search Items → Apply Filters)\n   Instance 3:\
+    \ Explanation: \"Apply Filters\" is an inclusion use case included only by \"\
+    Search Items\". It has no direct actor association, is not included by any other\
+    \ use case, does not include or extend any other use case, and is not extended\
+    \ by or generalized with any use case. Applying filters is an internal step within\
+    \ the search process and has been decomposed into its own use case, providing\
+    \ no independently observable result to any actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: second_hand_marketplace
+
+  DOMAIN_DISPLAY: Second-Hand Marketplace
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Create Listing, Upload Photos, include (Create Listing → Upload
+  Photos)
+
+  EXPLANATION: "Upload Photos" is an inclusion use case included only by "Create Listing".
+  It is not associated with any actor directly, is not included by any other use case,
+  does not include or extend any other use case, and is not extended by or generali
+  …[truncated]'

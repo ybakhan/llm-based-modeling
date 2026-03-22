@@ -1,0 +1,43 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Client" as Client
+actor "Freelancer" as Freelancer
+actor "Admin" as Admin
+
+rectangle "Freelance Marketplace" {
+    usecase "Post Job" as UC1
+    usecase "Validate Job Details" as UC2
+    usecase "Browse Jobs" as UC3
+    usecase "Submit Proposal" as UC4
+    usecase "Upload Portfolio Samples" as UC5
+    usecase "Accept Proposal" as UC6
+    usecase "Process Payment" as UC7
+    usecase "Calculate Service Fee" as UC8
+    usecase "Leave Review" as UC9
+    usecase "Manage Disputes" as UC10
+    usecase "Track Milestone" as UC11
+    usecase "Send Message" as UC12
+    usecase "Manage User Accounts" as UC13
+}
+
+Client -- UC1
+Client -- UC3
+Client -- UC6
+Client -- UC7
+Client -- UC9
+Client -- UC11
+Client -- UC12
+Freelancer -- UC3
+Freelancer -- UC4
+Freelancer -- UC9
+Freelancer -- UC11
+Freelancer -- UC12
+Admin -- UC10
+Admin -- UC13
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+@enduml

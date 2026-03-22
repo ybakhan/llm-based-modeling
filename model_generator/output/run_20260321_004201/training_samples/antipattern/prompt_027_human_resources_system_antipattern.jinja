@@ -1,0 +1,61 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "HR Manager" as HRM
+actor "Employee" as EMP
+actor "Payroll Officer" as PAY
+
+rectangle "Human Resources System" {
+  usecase "Hire Employee" as UC1
+  usecase "Validate Candidate Documents" as UC2
+  usecase "Terminate Employee" as UC3
+  usecase "Generate Exit Clearance" as UC4
+  usecase "Process Payroll" as UC5
+  usecase "Calculate Deductions" as UC6
+  usecase "Manage Leave Requests" as UC7
+  usecase "View Employee Profile" as UC8
+  usecase "Update Personal Information" as UC9
+  usecase "Submit Leave Request" as UC10
+  usecase "Generate HR Report" as UC11
+  usecase "Conduct Performance Review" as UC12
+  usecase "Manage Benefits Enrollment" as UC13
+  usecase "Track Attendance" as UC14
+}
+
+HRM --> UC1
+HRM --> UC3
+HRM --> UC7
+HRM --> UC11
+HRM --> UC12
+HRM --> UC14
+
+PAY --> UC5
+PAY --> UC13
+
+EMP --> UC8
+EMP --> UC9
+EMP --> UC10
+
+UC1 ..> UC2 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC3 ..> UC4 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Hire Employee, Validate Candidate Documents, include relationship from Hire Employee to Validate Candidate Documents
+   Instance 1: Explanation: "Validate Candidate Documents" is included only by "Hire Employee", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a sub-step of the hiring process rather than a complete, independently valuable service observable to any actor. This is functional decomposition of "Hire Employee" into a procedural sub-task via the include relationship.
+
+   Instance 2: Constructs Involved: Process Payroll, Calculate Deductions, include relationship from Process Payroll to Calculate Deductions
+   Instance 2: Explanation: "Calculate Deductions" is included only by "Process Payroll", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It fragments the payroll processing into a sub-function that delivers no standalone observable result to any user. This is functional decomposition of "Process Payroll" via the include relationship.
+
+   Instance 3: Constructs Involved: Terminate Employee, Generate Exit Clearance, include relationship from Terminate Employee to Generate Exit Clearance
+   Instance 3: Explanation: "Generate Exit Clearance" is included only by "Terminate Employee", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It is a procedural step within termination rather than a complete service. This is functional decomposition of "Terminate Employee" via the include relationship.

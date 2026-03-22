@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 177
+  domain: agricultural_marketplace
+  domain_display: Agricultural Marketplace
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 11
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T21:22:55.786118'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_177_agricultural_marketplace/agricultural_marketplace_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_177_agricultural_marketplace/agricultural_marketplace_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_177_agricultural_marketplace_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor Farmer as A1\nactor Buyer as A2\nactor Admin as A3\n\nrectangle \"Agricultural\
+    \ Marketplace\" {\n  usecase \"List Produce\" as UC1\n  usecase \"Browse Listings\"\
+    \ as UC2\n  usecase \"Place Order\" as UC3\n  usecase \"Manage Users\" as UC4\n\
+    \  usecase \"Leave Review\" as UC6\n  usecase \"Search Products\" as UC7\n}\n\n\
+    A1 -- UC1\nA2 -- UC2\nA2 -- UC3\nA3 -- UC4\nA2 -- UC6\nA2 -- UC7\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: agricultural_marketplace
+
+  DOMAIN_DISPLAY: Agricultural Marketplace
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Order (UC3), Validate Payment (UC5), Place Order --include-->
+  Validate Payment
+
+  EXPLANATION: "Validate Payment" (UC5) is an inclusion use case that is included
+  by only one use case ("Place Order", UC3). It is not associated with any actor directly.
+  It does not include or extend any other use case, is not extended by any …[truncated]'

@@ -1,0 +1,55 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Learner
+actor Instructor
+actor Admin
+
+rectangle "Language Learning App" {
+  usecase "Register Account" as UC1
+  usecase "Browse Courses" as UC2
+  usecase "Complete Lesson" as UC3
+  usecase "Take Vocabulary Quiz" as UC4
+  usecase "Practice Pronunciation" as UC5
+  usecase "View Progress Dashboard" as UC6
+  usecase "Create Course Content" as UC7
+  usecase "Manage Users" as UC8
+  usecase "Review Flashcards" as UC9
+  usecase "Load Quiz Questions" as UC10
+  usecase "Update Progress Tracker" as UC11
+  usecase "Record Audio Input" as UC12
+}
+
+Learner --> UC1
+Learner --> UC2
+Learner --> UC3
+Learner --> UC4
+Learner --> UC5
+Learner --> UC6
+Learner --> UC9
+Instructor --> UC7
+Admin --> UC8
+
+UC4 ..> UC10 : <<include>>
+UC3 ..> UC11 : <<include>>
+UC5 ..> UC12 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Take Vocabulary Quiz, Load Quiz Questions, Take Vocabulary Quiz --include--> Load Quiz Questions
+   Instance 1: Explanation: "Load Quiz Questions" is an inclusion use case included only by "Take Vocabulary Quiz." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and is not involved in any generalization. "Load Quiz Questions" does not represent a complete service observable to any user — it is merely a functional step decomposed out of the quiz-taking process. This constitutes the Functional Decomposition antipattern.
+
+   Instance 2: Constructs Involved: Complete Lesson, Update Progress Tracker, Complete Lesson --include--> Update Progress Tracker
+   Instance 2: Explanation: "Update Progress Tracker" is an inclusion use case included only by "Complete Lesson." It has no direct actor association, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not a generalization or specialization. Updating the progress tracker is an internal system step, not a standalone service delivering an observable result to a user. This is a clear instance of Functional Decomposition.
+
+   Instance 3: Constructs Involved: Practice Pronunciation, Record Audio Input, Practice Pronunciation --include--> Record Audio Input
+   Instance 3: Explanation: "Record Audio Input" is an inclusion use case included only by "Practice Pronunciation." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended, and is not part of any generalization hierarchy. Recording audio is a sub-step of practicing pronunciation, not a complete service on its own. This represents functional decomposition of "Practice Pronunciation" into an unnecessary inclusion.

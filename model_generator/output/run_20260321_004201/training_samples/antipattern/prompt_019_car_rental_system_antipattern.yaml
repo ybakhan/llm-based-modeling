@@ -1,0 +1,104 @@
+metadata:
+  prompt_number: 19
+  domain: car_rental_system
+  domain_display: Car Rental System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Make Reservation, Validate Driver License
+      explanation: '"Validate Driver License" is an inclusion use case included only
+        by "Make Reservation". It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (license validation) rather than a complete service observable to
+        any actor, making it a functional decomposition of "Make Reservation".'
+    - constructs_involved: Return Vehicle, Calculate Final Charges
+      explanation: '"Calculate Final Charges" is an inclusion use case included only
+        by "Return Vehicle". It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        computational sub-step rather than a standalone service, making it a functional
+        decomposition of "Return Vehicle".'
+    - constructs_involved: Process Payment, Generate Payment Receipt
+      explanation: '"Generate Payment Receipt" is an inclusion use case included only
+        by "Process Payment". It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (receipt generation) rather than a complete service observable to
+        any actor, making it a functional decomposition of "Process Payment".'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:50:19.372346'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_019_car_rental_system/car_rental_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_019_car_rental_system/car_rental_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_019_car_rental_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Customer\" as Customer\nactor \"Rental Agent\" as Agent\nactor \"Manager\"\
+    \ as Manager\n\nrectangle \"Car Rental System\" {\n  usecase \"Browse Available\
+    \ Cars\" as UC1\n  usecase \"Make Reservation\" as UC2\n  usecase \"Validate Driver\
+    \ License\" as UC3\n  usecase \"Pick Up Vehicle\" as UC4\n  usecase \"Return Vehicle\"\
+    \ as UC5\n  usecase \"Calculate Final Charges\" as UC6\n  usecase \"Process Payment\"\
+    \ as UC7\n  usecase \"Generate Payment Receipt\" as UC8\n  usecase \"Cancel Reservation\"\
+    \ as UC9\n  usecase \"Manage Fleet\" as UC10\n  usecase \"Generate Reports\" as\
+    \ UC11\n  usecase \"View Rental History\" as UC12\n  usecase \"Apply Late Fee\"\
+    \ as UC13\n}\n\nCustomer --> UC1\nCustomer --> UC2\nCustomer --> UC9\nCustomer\
+    \ --> UC7\nCustomer --> UC12\n\nAgent --> UC4\nAgent --> UC5\nAgent --> UC2\n\n\
+    Manager --> UC10\nManager --> UC11\n\nUC2 ..> UC3 : <<include>>\nUC5 ..> UC6 :\
+    \ <<include>>\nUC7 ..> UC8 : <<include>>\nUC5 ..> UC13 : <<extend>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Make Reservation, Validate Driver License\n\
+    \   Instance 1: Explanation: \"Validate Driver License\" is an inclusion use case\
+    \ included only by \"Make Reservation\". It is not associated with any actor,\
+    \ not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ represents a sub-step (license validation) rather than a complete service observable\
+    \ to any actor, making it a functional decomposition of \"Make Reservation\".\n\
+    \n   Instance 2: Constructs Involved: Return Vehicle, Calculate Final Charges\n\
+    \   Instance 2: Explanation: \"Calculate Final Charges\" is an inclusion use case\
+    \ included only by \"Return Vehicle\". It is not associated with any actor, not\
+    \ included by any other use case, does not include or extend any use case, is\
+    \ not extended by any use case, and has no generalization relationships. It represents\
+    \ a computational sub-step rather than a standalone service, making it a functional\
+    \ decomposition of \"Return Vehicle\".\n\n   Instance 3: Constructs Involved:\
+    \ Process Payment, Generate Payment Receipt\n   Instance 3: Explanation: \"Generate\
+    \ Payment Receipt\" is an inclusion use case included only by \"Process Payment\"\
+    . It is not associated with any actor, not included by any other use case, does\
+    \ not include or extend any use case, is not extended by any use case, and has\
+    \ no generalization relationships. It represents a sub-step (receipt generation)\
+    \ rather than a complete service observable to any actor, making it a functional\
+    \ decomposition of \"Process Payment\"."
+raw_response_excerpt: '
+
+
+  DOMAIN: car_rental_system
+
+  DOMAIN_DISPLAY: Car Rental System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Make Reservation, Validate Driver License
+
+  EXPLANATION: "Validate Driver License" is an inclusion use case included only by
+  "Make Reservation". It is not associated with any actor, not included by any other
+  use case, does not include or extend any use case, is not extended by any use case,
+  and has no generalization relationships. It repre …[truncated]'

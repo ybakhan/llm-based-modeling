@@ -1,0 +1,127 @@
+
+
+DOMAIN: escape_room_booking_system
+DOMAIN_DISPLAY: Escape Room Booking System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Escape Room, Validate Time Slot, include (Book Escape Room → Validate Time Slot)
+EXPLANATION: "Validate Time Slot" is an inclusion use case included only by "Book Escape Room." It is not associated with any actor, not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. It represents a sub-step (checking slot availability) rather than a complete, independently valuable service to any actor. This is functional decomposition of the booking process into an internal validation step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Payment, Calculate Total Price, include (Process Payment → Calculate Total Price)
+EXPLANATION: "Calculate Total Price" is an inclusion use case included only by "Process Payment." It is not associated with any actor, not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. Calculating the total price is an internal computational step within payment processing, not a standalone service offering an observable result to a user. This is functional decomposition of payment into a pricing sub-function.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Register Account, Send Verification Email, include (Register Account → Send Verification Email)
+EXPLANATION: "Send Verification Email" is an inclusion use case included only by "Register Account." It is not associated with any actor, not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. Sending a verification email is an internal system step within registration, not a complete service with an observable result for an actor. This is functional decomposition of the registration workflow.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases — "Validate Time Slot," "Calculate Total Price," and "Send Verification Email" — must be merged back into their respective base use cases ("Book Escape Room," "Process Payment," and "Register Account"). Each inclusion use case is only included by one base use case, is not associated with any actor, and neither includes, extends, generalizes, nor is extended/specialized by any other use case. They represent internal steps rather than complete services. By merging them, we remove 3 use cases and 3 include relationships (6 constructs total), producing a cleaner model where each use case represents a complete, actor-valuable service.
+
+CONSTRUCT_COUNT: 30
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Admin" as Admin
+actor "Payment Gateway" as PayGW
+
+rectangle "Escape Room Booking System" {
+  usecase "Register Account" as UC1
+  usecase "Send Verification Email" as UC2
+  usecase "Browse Escape Rooms" as UC3
+  usecase "View Room Details" as UC4
+  usecase "Book Escape Room" as UC5
+  usecase "Validate Time Slot" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Calculate Total Price" as UC8
+  usecase "Cancel Booking" as UC9
+  usecase "View Booking History" as UC10
+  usecase "Leave Review" as UC11
+  usecase "Manage Rooms" as UC12
+  usecase "View Booking Reports" as UC13
+  usecase "Apply Promo Code" as UC14
+  usecase "Manage Customer Accounts" as UC15
+}
+
+Customer --> UC1
+Customer --> UC3
+Customer --> UC4
+Customer --> UC5
+Customer --> UC7
+Customer --> UC9
+Customer --> UC10
+Customer --> UC11
+Customer --> UC14
+
+Admin --> UC12
+Admin --> UC13
+Admin --> UC15
+
+PayGW --> UC7
+
+UC1 ..> UC2 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+UC5 ..> UC7 : <<include>>
+UC3 ..> UC4 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Customer" as Customer
+actor "Admin" as Admin
+actor "Payment Gateway" as PayGW
+
+rectangle "Escape Room Booking System" {
+  usecase "Register Account" as UC1
+  usecase "Browse Escape Rooms" as UC3
+  usecase "View Room Details" as UC4
+  usecase "Book Escape Room" as UC5
+  usecase "Process Payment" as UC7
+  usecase "Cancel Booking" as UC9
+  usecase "View Booking History" as UC10
+  usecase "Leave Review" as UC11
+  usecase "Manage Rooms" as UC12
+  usecase "View Booking Reports" as UC13
+  usecase "Apply Promo Code" as UC14
+  usecase "Manage Customer Accounts" as UC15
+}
+
+Customer --> UC1
+Customer --> UC3
+Customer --> UC4
+Customer --> UC5
+Customer --> UC7
+Customer --> UC9
+Customer --> UC10
+Customer --> UC11
+Customer --> UC14
+
+Admin --> UC12
+Admin --> UC13
+Admin --> UC15
+
+PayGW --> UC7
+
+UC5 ..> UC7 : <<include>>
+UC3 ..> UC4 : <<include>>
+@enduml
+```

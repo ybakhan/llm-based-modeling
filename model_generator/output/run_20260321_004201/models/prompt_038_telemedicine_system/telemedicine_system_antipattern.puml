@@ -1,0 +1,42 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Patient" as Patient
+actor "Doctor" as Doctor
+actor "Admin" as Admin
+actor "Pharmacist" as Pharmacist
+
+rectangle "Telemedicine System" {
+  usecase "Register Account" as UC1
+  usecase "Schedule Appointment" as UC2
+  usecase "Validate Patient Insurance" as UC3
+  usecase "Conduct Video Consultation" as UC4
+  usecase "Initialize Video Stream" as UC5
+  usecase "View Medical Records" as UC6
+  usecase "Write Prescription" as UC7
+  usecase "Verify Drug Interactions" as UC8
+  usecase "Process Prescription" as UC9
+  usecase "Manage User Accounts" as UC10
+  usecase "Generate Reports" as UC11
+  usecase "Request Refill" as UC12
+  usecase "Rate Consultation" as UC13
+}
+
+Patient -- UC1
+Patient -- UC2
+Patient -- UC4
+Patient -- UC6
+Patient -- UC12
+Patient -- UC13
+Doctor -- UC4
+Doctor -- UC6
+Doctor -- UC7
+Pharmacist -- UC9
+Admin -- UC10
+Admin -- UC11
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+@enduml

@@ -1,0 +1,35 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Rider" as Rider
+actor "Driver" as Driver
+
+rectangle "Ride Sharing Service" {
+  usecase "Request Ride" as UC1
+  usecase "Calculate Fare" as UC2
+  usecase "Accept Ride" as UC3
+  usecase "Rate Driver" as UC4
+  usecase "View Ride History" as UC5
+  usecase "Update Location" as UC6
+}
+
+Rider --> UC1
+Rider --> UC4
+Rider --> UC5
+Driver --> UC3
+Driver --> UC6
+UC1 ..> UC2 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Request Ride, Calculate Fare
+   Explanation: The use case "Calculate Fare" is an inclusion use case that is included by only one use case ("Request Ride"). "Calculate Fare" is not associated with any actor directly — no actor interacts with it. It does not include or extend any other use case, is not extended by any use case, and is neither a generalization nor a specialization of any use case. "Calculate Fare" does not represent a complete, independently meaningful service to any user; it is merely a substep of "Request Ride" that has been improperly decomposed into a separate use case. This is a textbook instance of Functional Decomposition via the include relationship.

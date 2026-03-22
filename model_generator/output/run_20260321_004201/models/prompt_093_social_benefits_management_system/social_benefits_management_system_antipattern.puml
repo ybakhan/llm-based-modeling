@@ -1,0 +1,24 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Citizen" as Citizen
+actor "Case Worker" as CaseWorker
+actor "Administrator" as Admin
+
+rectangle "Social Benefits Management System" {
+  usecase "Submit Benefit Application" as UC1
+  usecase "Validate Applicant Identity" as UC2
+  usecase "Review Application" as UC3
+  usecase "Approve or Deny Benefit" as UC4
+  usecase "Generate Benefits Report" as UC5
+  usecase "Manage Benefit Programs" as UC6
+}
+
+Citizen -- UC1
+UC1 ..> UC2 : <<include>>
+CaseWorker -- UC3
+CaseWorker -- UC4
+Admin -- UC5
+Admin -- UC6
+
+@enduml

@@ -1,0 +1,60 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Member" as Member
+actor "Librarian" as Librarian
+actor "Administrator" as Admin
+
+rectangle "Library Management System" {
+  usecase "Borrow Book" as UC1
+  usecase "Return Book" as UC2
+  usecase "Search Catalog" as UC3
+  usecase "Reserve Book" as UC4
+  usecase "Manage Members" as UC5
+  usecase "Generate Reports" as UC6
+  usecase "Pay Fine" as UC7
+  usecase "Manage Book Inventory" as UC8
+  usecase "View Borrowing History" as UC9
+  usecase "Validate Library Card" as UC10
+  usecase "Update Book Availability" as UC11
+  usecase "Fetch Search Results" as UC12
+  usecase "Notify Overdue" as UC13
+}
+
+Member --> UC1
+Member --> UC2
+Member --> UC3
+Member --> UC4
+Member --> UC7
+Member --> UC9
+Librarian --> UC1
+Librarian --> UC2
+Librarian --> UC5
+Librarian --> UC13
+Admin --> UC6
+Admin --> UC8
+
+UC1 ..> UC10 : <<include>>
+UC2 ..> UC11 : <<include>>
+UC3 ..> UC12 : <<include>>
+
+UC7 ..> UC4 : <<extend>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Borrow Book, Validate Library Card, include relationship from Borrow Book to Validate Library Card
+   Instance 1: Explanation: "Validate Library Card" is an inclusion use case included only by "Borrow Book." It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a substep (validating the card) rather than a complete, independently valuable service — this is classic functional decomposition of "Borrow Book" into a procedural substep.
+
+   Instance 2: Constructs Involved: Return Book, Update Book Availability, include relationship from Return Book to Update Book Availability
+   Instance 2: Explanation: "Update Book Availability" is an inclusion use case included only by "Return Book." It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Updating availability is an internal system step of returning a book, not a standalone service observable to any user — this is functional decomposition.
+
+   Instance 3: Constructs Involved: Search Catalog, Fetch Search Results, include relationship from Search Catalog to Fetch Search Results
+   Instance 3: Explanation: "Fetch Search Results" is an inclusion use case included only by "Search Catalog." It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Fetching results is an internal processing step of searching, not a complete service providing an observable result to a user — this is functional decomposition.

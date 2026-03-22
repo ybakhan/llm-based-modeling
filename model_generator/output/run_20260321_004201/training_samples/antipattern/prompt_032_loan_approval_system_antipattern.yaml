@@ -1,0 +1,115 @@
+metadata:
+  prompt_number: 32
+  domain: loan_approval_system
+  domain_display: Loan Approval System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Submit Loan Application, Validate Applicant Identity, include
+        relationship from "Submit Loan Application" to "Validate Applicant Identity"
+      explanation: '"Validate Applicant Identity" is an inclusion use case included
+        only by "Submit Loan Application". It is not associated with any actor, not
+        included by any other use case, does not include or extend any use case, is
+        not extended by any use case, and has no generalization relationships. It
+        represents a substep (identity validation) of the submission process rather
+        than a complete, independently valuable service. This is functional decomposition
+        — breaking down "Submit Loan Application" into procedural substeps via include.'
+    - constructs_involved: Evaluate Loan Application, Calculate Credit Score, include
+        relationship from "Evaluate Loan Application" to "Calculate Credit Score"
+      explanation: '"Calculate Credit Score" is an inclusion use case included only
+        by "Evaluate Loan Application". It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents an
+        internal computational substep of the evaluation process rather than a standalone
+        service providing an observable result to any actor. This is functional decomposition.'
+    - constructs_involved: Approve Loan, Generate Loan Agreement, include relationship
+        from "Approve Loan" to "Generate Loan Agreement"
+      explanation: '"Generate Loan Agreement" is an inclusion use case included only
+        by "Approve Loan". It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. It represents a substep
+        (document generation) of the approval process rather than a complete service
+        observable to any user. This is functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 30
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:52:35.482499'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_032_loan_approval_system/loan_approval_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_032_loan_approval_system/loan_approval_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_032_loan_approval_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Applicant\" as Applicant\nactor \"Loan Officer\" as LoanOfficer\nactor\
+    \ \"Manager\" as Manager\nactor \"Credit Bureau\" as CreditBureau\n\nrectangle\
+    \ \"Loan Approval System\" {\n    usecase \"Submit Loan Application\" as UC1\n\
+    \    usecase \"Validate Applicant Identity\" as UC2\n    usecase \"Track Application\
+    \ Status\" as UC3\n    usecase \"Evaluate Loan Application\" as UC4\n    usecase\
+    \ \"Calculate Credit Score\" as UC5\n    usecase \"Request Additional Documents\"\
+    \ as UC6\n    usecase \"Approve Loan\" as UC7\n    usecase \"Generate Loan Agreement\"\
+    \ as UC8\n    usecase \"Reject Loan\" as UC9\n    usecase \"Appeal Rejection\"\
+    \ as UC10\n    usecase \"Override Decision\" as UC11\n    usecase \"Retrieve Credit\
+    \ Report\" as UC12\n    usecase \"Disburse Funds\" as UC13\n}\n\nApplicant --\
+    \ UC1\nApplicant -- UC3\nApplicant -- UC10\n\nLoanOfficer -- UC4\nLoanOfficer\
+    \ -- UC6\nLoanOfficer -- UC7\nLoanOfficer -- UC9\nLoanOfficer -- UC13\n\nManager\
+    \ -- UC11\n\nCreditBureau -- UC12\n\nUC1 ..> UC2 : <<include>>\nUC4 ..> UC5 :\
+    \ <<include>>\nUC4 ..> UC12 : <<include>>\nUC7 ..> UC8 : <<include>>\n}\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Submit Loan Application, Validate Applicant\
+    \ Identity, include relationship from \"Submit Loan Application\" to \"Validate\
+    \ Applicant Identity\"\n   Instance 1: Explanation: \"Validate Applicant Identity\"\
+    \ is an inclusion use case included only by \"Submit Loan Application\". It is\
+    \ not associated with any actor, not included by any other use case, does not\
+    \ include or extend any use case, is not extended by any use case, and has no\
+    \ generalization relationships. It represents a substep (identity validation)\
+    \ of the submission process rather than a complete, independently valuable service.\
+    \ This is functional decomposition — breaking down \"Submit Loan Application\"\
+    \ into procedural substeps via include.\n\n   Instance 2: Constructs Involved:\
+    \ Evaluate Loan Application, Calculate Credit Score, include relationship from\
+    \ \"Evaluate Loan Application\" to \"Calculate Credit Score\"\n   Instance 2:\
+    \ Explanation: \"Calculate Credit Score\" is an inclusion use case included only\
+    \ by \"Evaluate Loan Application\". It is not associated with any actor, not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. It represents an internal\
+    \ computational substep of the evaluation process rather than a standalone service\
+    \ providing an observable result to any actor. This is functional decomposition.\n\
+    \n   Instance 3: Constructs Involved: Approve Loan, Generate Loan Agreement, include\
+    \ relationship from \"Approve Loan\" to \"Generate Loan Agreement\"\n   Instance\
+    \ 3: Explanation: \"Generate Loan Agreement\" is an inclusion use case included\
+    \ only by \"Approve Loan\". It is not associated with any actor, not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. It represents a substep\
+    \ (document generation) of the approval process rather than a complete service\
+    \ observable to any user. This is functional decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: loan_approval_system
+
+  DOMAIN_DISPLAY: Loan Approval System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Loan Application, Validate Applicant Identity, include
+  relationship from "Submit Loan Application" to "Validate Applicant Identity"
+
+  EXPLANATION: "Validate Applicant Identity" is an inclusion use case included only
+  by "Submit Loan Application". It is not associated with any actor, not included
+  by any other use case, does not  …[truncated]'

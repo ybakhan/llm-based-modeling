@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 107
+  domain: certification_examination_system
+  domain_display: Certification Examination System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:41:49.827476'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_107_certification_examination_system/certification_examination_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_107_certification_examination_system/certification_examination_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_107_certification_examination_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Candidate\" as Candidate\nactor \"Examiner\" as Examiner\nactor \"Administrator\"\
+    \ as Admin\nactor \"Certification Authority\" as CertAuth\n\nrectangle \"Certification\
+    \ Examination System\" {\n  usecase \"Register for Exam\" as UC1\n  usecase \"\
+    Browse Available Exams\" as UC3\n  usecase \"Take Exam\" as UC4\n  usecase \"\
+    View Exam Results\" as UC6\n  usecase \"Grade Exam\" as UC7\n  usecase \"Manage\
+    \ Question Bank\" as UC8\n  usecase \"Issue Certificate\" as UC9\n  usecase \"\
+    Revoke Certificate\" as UC11\n  usecase \"Schedule Exam Session\" as UC12\n  usecase\
+    \ \"Appeal Exam Result\" as UC13\n  usecase \"Monitor Exam Session\" as UC14\n\
+    \n  UC13 ..> UC7 : <<extend>>\n}\n\nCandidate --> UC1\nCandidate --> UC3\nCandidate\
+    \ --> UC4\nCandidate --> UC6\nCandidate --> UC13\nExaminer --> UC7\nExaminer -->\
+    \ UC14\nAdmin --> UC8\nAdmin --> UC12\nCertAuth --> UC9\nCertAuth --> UC11\n\n\
+    @enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: certification_examination_system
+
+  DOMAIN_DISPLAY: Certification Examination System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register for Exam, Validate Candidate ID, include (Register
+  for Exam → Validate Candidate ID)
+
+  EXPLANATION: "Validate Candidate ID" is an inclusion use case included only by "Register
+  for Exam." It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case …[truncated]'

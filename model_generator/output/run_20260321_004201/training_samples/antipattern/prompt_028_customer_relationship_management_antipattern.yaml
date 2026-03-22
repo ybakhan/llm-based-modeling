@@ -1,0 +1,110 @@
+metadata:
+  prompt_number: 28
+  domain: customer_relationship_management
+  domain_display: Customer Relationship Management
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Manage Leads, Validate Lead Data, include relationship
+        from "Manage Leads" to "Validate Lead Data"
+      explanation: '"Validate Lead Data" is an inclusion use case included only by
+        "Manage Leads". It is not associated with any actor, does not include or extend
+        any other use case, is not extended by any use case, and is not involved in
+        any generalization. It represents a sub-step (data validation) rather than
+        a complete service observable to a user, making it a functional decomposition
+        of "Manage Leads".'
+    - constructs_involved: Log Customer Interaction, Record Timestamp, include relationship
+        from "Log Customer Interaction" to "Record Timestamp"
+      explanation: '"Record Timestamp" is an inclusion use case included only by "Log
+        Customer Interaction". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        involved in any generalization. Recording a timestamp is a mechanical sub-step,
+        not a standalone service with an observable result for any user, making this
+        a functional decomposition of "Log Customer Interaction".'
+    - constructs_involved: Generate Sales Report, Format Report Output, include relationship
+        from "Generate Sales Report" to "Format Report Output"
+      explanation: '"Format Report Output" is an inclusion use case included only
+        by "Generate Sales Report". It is not associated with any actor, does not
+        include or extend any other use case, is not extended by any use case, and
+        is not involved in any generalization. Formatting output is a sub-step of
+        report generation, not a complete service for any actor, making this a functional
+        decomposition of "Generate Sales Report".'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:52:10.938342'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_028_customer_relationship_management/customer_relationship_management_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_028_customer_relationship_management/customer_relationship_management_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_028_customer_relationship_management_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Sales Rep\" as SalesRep\nactor \"Sales Manager\" as SalesManager\nactor\
+    \ \"Support Agent\" as SupportAgent\nactor \"Administrator\" as Admin\n\nrectangle\
+    \ \"CRM System\" {\n  usecase \"Manage Leads\" as UC1\n  usecase \"Validate Lead\
+    \ Data\" as UC2\n  usecase \"Log Customer Interaction\" as UC3\n  usecase \"Record\
+    \ Timestamp\" as UC4\n  usecase \"Manage Contacts\" as UC5\n  usecase \"Track\
+    \ Opportunities\" as UC6\n  usecase \"Generate Sales Report\" as UC7\n  usecase\
+    \ \"Format Report Output\" as UC8\n  usecase \"Schedule Follow-Up\" as UC9\n \
+    \ usecase \"Manage User Accounts\" as UC10\n  usecase \"Export Contacts\" as UC11\n\
+    \  usecase \"View Dashboard\" as UC12\n}\n\nSalesRep -- UC1\nSalesRep -- UC3\n\
+    SalesRep -- UC5\nSalesRep -- UC6\nSalesRep -- UC9\nSalesRep -- UC11\n\nSalesManager\
+    \ -- UC7\nSalesManager -- UC12\nSalesManager -- UC6\n\nSupportAgent -- UC3\nSupportAgent\
+    \ -- UC5\n\nAdmin -- UC10\n\nUC1 ..> UC2 : <<include>>\nUC3 ..> UC4 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Manage Leads, Validate Lead Data, include\
+    \ relationship from \"Manage Leads\" to \"Validate Lead Data\"\n   Instance 1:\
+    \ Explanation: \"Validate Lead Data\" is an inclusion use case included only by\
+    \ \"Manage Leads\". It is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and is not involved in\
+    \ any generalization. It represents a sub-step (data validation) rather than a\
+    \ complete service observable to a user, making it a functional decomposition\
+    \ of \"Manage Leads\".\n\n   Instance 2: Constructs Involved: Log Customer Interaction,\
+    \ Record Timestamp, include relationship from \"Log Customer Interaction\" to\
+    \ \"Record Timestamp\"\n   Instance 2: Explanation: \"Record Timestamp\" is an\
+    \ inclusion use case included only by \"Log Customer Interaction\". It is not\
+    \ associated with any actor, does not include or extend any other use case, is\
+    \ not extended by any use case, and is not involved in any generalization. Recording\
+    \ a timestamp is a mechanical sub-step, not a standalone service with an observable\
+    \ result for any user, making this a functional decomposition of \"Log Customer\
+    \ Interaction\".\n\n   Instance 3: Constructs Involved: Generate Sales Report,\
+    \ Format Report Output, include relationship from \"Generate Sales Report\" to\
+    \ \"Format Report Output\"\n   Instance 3: Explanation: \"Format Report Output\"\
+    \ is an inclusion use case included only by \"Generate Sales Report\". It is not\
+    \ associated with any actor, does not include or extend any other use case, is\
+    \ not extended by any use case, and is not involved in any generalization. Formatting\
+    \ output is a sub-step of report generation, not a complete service for any actor,\
+    \ making this a functional decomposition of \"Generate Sales Report\"."
+raw_response_excerpt: '
+
+
+  DOMAIN: customer_relationship_management
+
+  DOMAIN_DISPLAY: Customer Relationship Management
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Manage Leads, Validate Lead Data, include relationship from
+  "Manage Leads" to "Validate Lead Data"
+
+  EXPLANATION: "Validate Lead Data" is an inclusion use case included only by "Manage
+  Leads". It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case, a …[truncated]'

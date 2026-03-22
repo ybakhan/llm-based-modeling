@@ -1,0 +1,31 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Caller" as Caller
+actor "Dispatcher" as Dispatcher
+actor "Field Unit" as FieldUnit
+
+rectangle "Emergency Dispatch System" {
+  usecase "Report Emergency" as UC1
+  usecase "Receive Emergency Call" as UC2
+  usecase "Dispatch Emergency Unit" as UC3
+  usecase "Log Incident" as UC5
+  usecase "Update Incident Status" as UC6
+}
+
+Caller --> UC1
+Dispatcher --> UC2
+Dispatcher --> UC3
+Dispatcher --> UC5
+FieldUnit --> UC6
+
+@enduml
+
+
+Answer:
+No antipattern detected.

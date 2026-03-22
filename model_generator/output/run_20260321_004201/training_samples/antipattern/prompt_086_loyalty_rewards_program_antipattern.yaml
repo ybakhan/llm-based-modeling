@@ -1,0 +1,116 @@
+metadata:
+  prompt_number: 86
+  domain: loyalty_rewards_program
+  domain_display: Loyalty Rewards Program
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Redeem Points, Validate Point Balance, include relationship
+        from "Redeem Points" to "Validate Point Balance"
+      explanation: '"Validate Point Balance" is an inclusion use case included only
+        by "Redeem Points." It is not associated with any actor, is not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (checking balance) of the redemption process rather than a complete,
+        independently valuable service. This is functional decomposition — breaking
+        "Redeem Points" into procedural steps via include.'
+    - constructs_involved: Enroll in Program, Verify Customer Identity, include relationship
+        from "Enroll in Program" to "Verify Customer Identity"
+      explanation: '"Verify Customer Identity" is an inclusion use case included only
+        by "Enroll in Program." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Verifying identity
+        is a procedural sub-step of enrollment, not a standalone service providing
+        an observable result to any user. This constitutes functional decomposition.'
+    - constructs_involved: Earn Points, Calculate Points Amount, include relationship
+        from "Earn Points" to "Calculate Points Amount"
+      explanation: '"Calculate Points Amount" is an inclusion use case included only
+        by "Earn Points." It is not associated with any actor, is not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Calculating the
+        point amount is an internal computational step within earning points, not
+        a complete service. This is functional decomposition of the "Earn Points"
+        use case.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 29
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:34:03.409064'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_086_loyalty_rewards_program/loyalty_rewards_program_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_086_loyalty_rewards_program/loyalty_rewards_program_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_086_loyalty_rewards_program_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Customer\" as Customer\nactor \"Store Clerk\" as Clerk\nactor \"Program\
+    \ Manager\" as Manager\nactor \"Partner Store\" as Partner\n\nrectangle \"Loyalty\
+    \ Rewards Program\" {\n  usecase \"Enroll in Program\" as UC1\n  usecase \"Verify\
+    \ Customer Identity\" as UC2\n  usecase \"Earn Points\" as UC3\n  usecase \"Calculate\
+    \ Points Amount\" as UC4\n  usecase \"Redeem Points\" as UC5\n  usecase \"Validate\
+    \ Point Balance\" as UC6\n  usecase \"View Rewards Catalog\" as UC7\n  usecase\
+    \ \"Check Point Balance\" as UC8\n  usecase \"Transfer Points\" as UC9\n  usecase\
+    \ \"Manage Reward Tiers\" as UC10\n  usecase \"Generate Loyalty Reports\" as UC11\n\
+    \  usecase \"Register Partner Store\" as UC12\n  usecase \"Apply Bonus Promotion\"\
+    \ as UC13\n  usecase \"Update Member Profile\" as UC14\n}\n\nCustomer --> UC1\n\
+    Customer --> UC3\nCustomer --> UC5\nCustomer --> UC7\nCustomer --> UC8\nCustomer\
+    \ --> UC9\nCustomer --> UC14\n\nClerk --> UC1\nClerk --> UC3\n\nManager --> UC10\n\
+    Manager --> UC11\nManager --> UC13\n\nPartner --> UC12\n\nUC1 ..> UC2 : <<include>>\n\
+    UC3 ..> UC4 : <<include>>\nUC5 ..> UC6 : <<include>>\n\nUC13 ..> UC3 : <<extend>>\n\
+    @enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Redeem Points, Validate Point Balance, include\
+    \ relationship from \"Redeem Points\" to \"Validate Point Balance\"\n   Instance\
+    \ 1: Explanation: \"Validate Point Balance\" is an inclusion use case included\
+    \ only by \"Redeem Points.\" It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. It represents a sub-step\
+    \ (checking balance) of the redemption process rather than a complete, independently\
+    \ valuable service. This is functional decomposition — breaking \"Redeem Points\"\
+    \ into procedural steps via include.\n\n   Instance 2: Constructs Involved: Enroll\
+    \ in Program, Verify Customer Identity, include relationship from \"Enroll in\
+    \ Program\" to \"Verify Customer Identity\"\n   Instance 2: Explanation: \"Verify\
+    \ Customer Identity\" is an inclusion use case included only by \"Enroll in Program.\"\
+    \ It is not associated with any actor, is not included by any other use case,\
+    \ does not include or extend any use case, is not extended by any use case, and\
+    \ has no generalization relationships. Verifying identity is a procedural sub-step\
+    \ of enrollment, not a standalone service providing an observable result to any\
+    \ user. This constitutes functional decomposition.\n\n   Instance 3: Constructs\
+    \ Involved: Earn Points, Calculate Points Amount, include relationship from \"\
+    Earn Points\" to \"Calculate Points Amount\"\n   Instance 3: Explanation: \"Calculate\
+    \ Points Amount\" is an inclusion use case included only by \"Earn Points.\" It\
+    \ is not associated with any actor, is not included by any other use case, does\
+    \ not include or extend any use case, is not extended by any use case, and has\
+    \ no generalization relationships. Calculating the point amount is an internal\
+    \ computational step within earning points, not a complete service. This is functional\
+    \ decomposition of the \"Earn Points\" use case."
+raw_response_excerpt: '
+
+
+  DOMAIN: loyalty_rewards_program
+
+  DOMAIN_DISPLAY: Loyalty Rewards Program
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Redeem Points, Validate Point Balance, include relationship
+  from "Redeem Points" to "Validate Point Balance"
+
+  EXPLANATION: "Validate Point Balance" is an inclusion use case included only by
+  "Redeem Points." It is not associated with any actor, is not included by any other
+  use case, does not include or extend any use case, is n …[truncated]'

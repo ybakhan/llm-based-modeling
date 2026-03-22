@@ -1,0 +1,57 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Waiter" as Waiter
+actor "Chef" as Chef
+actor "Cashier" as Cashier
+actor "Manager" as Manager
+
+rectangle "Restaurant Management System" {
+  usecase "Place Order" as UC1
+  usecase "Validate Menu Items" as UC2
+  usecase "View Kitchen Queue" as UC3
+  usecase "Update Order Status" as UC4
+  usecase "Process Payment" as UC5
+  usecase "Calculate Total" as UC6
+  usecase "Manage Menu" as UC7
+  usecase "Generate Report" as UC8
+  usecase "Fetch Report Data" as UC9
+  usecase "Manage Reservations" as UC10
+  usecase "View Table Availability" as UC11
+  usecase "Apply Discount" as UC12
+
+  UC1 ..> UC2 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC8 ..> UC9 : <<include>>
+  UC5 ..> UC12 : <<extend>>
+}
+
+Waiter --> UC1
+Waiter --> UC10
+Waiter --> UC11
+Chef --> UC3
+Chef --> UC4
+Cashier --> UC5
+Manager --> UC7
+Manager --> UC8
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Place Order, Validate Menu Items, include relationship from Place Order to Validate Menu Items
+   Instance 1: Explanation: "Validate Menu Items" is an inclusion use case included only by "Place Order". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal validation step—not a complete, independently valuable service to any actor—making this a functional decomposition of the "Place Order" use case.
+
+   Instance 2: Constructs Involved: Process Payment, Calculate Total, include relationship from Process Payment to Calculate Total
+   Instance 2: Explanation: "Calculate Total" is an inclusion use case included only by "Process Payment". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Calculating a total is an internal computational step within payment processing, not a standalone service observable to any user, making this a functional decomposition of "Process Payment".
+
+   Instance 3: Constructs Involved: Generate Report, Fetch Report Data, include relationship from Generate Report to Fetch Report Data
+   Instance 3: Explanation: "Fetch Report Data" is an inclusion use case included only by "Generate Report". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Fetching data is an internal sub-step of report generation and does not provide a complete, observable result to any actor on its own, constituting functional decomposition.

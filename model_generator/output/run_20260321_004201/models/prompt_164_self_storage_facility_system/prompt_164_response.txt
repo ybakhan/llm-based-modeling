@@ -1,0 +1,108 @@
+
+
+DOMAIN: self_storage_facility_system
+DOMAIN_DISPLAY: Self-Storage Facility System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Reserve Unit, Check Unit Availability
+EXPLANATION: "Reserve Unit" includes "Check Unit Availability". "Check Unit Availability" is included by only "Reserve Unit", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents an internal step (checking availability) that is not a complete service on its own — it is a functional decomposition of the reservation process.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Payment, Validate Payment Details
+EXPLANATION: "Process Payment" includes "Validate Payment Details". "Validate Payment Details" is included by only "Process Payment", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Validating payment details is an internal sub-step of processing a payment, not a standalone service — this is functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Terminate Rental Agreement, Generate Final Invoice
+EXPLANATION: "Terminate Rental Agreement" includes "Generate Final Invoice". "Generate Final Invoice" is included by only "Terminate Rental Agreement", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Generating a final invoice is an internal step of the termination process, not a complete service offered to any actor independently.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Check Unit Availability", "Validate Payment Details", "Generate Final Invoice") must be merged into their respective base use cases ("Reserve Unit", "Process Payment", "Terminate Rental Agreement"). This removes 3 use cases and 3 include relationships (6 constructs total), because each inclusion use case is only included by one base use case, has no actor association, and represents an internal procedural step rather than a complete, reusable service. After merging, each base use case provides its full service without unnecessary decomposition.
+
+CONSTRUCT_COUNT: 29
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Customer
+actor Manager
+actor "Payment Gateway" as PG
+
+rectangle "Self-Storage Facility System" {
+  usecase "Reserve Unit" as UC1
+  usecase "Check Unit Availability" as UC2
+  usecase "Process Payment" as UC3
+  usecase "Validate Payment Details" as UC4
+  usecase "View Unit Status" as UC5
+  usecase "Manage Unit Inventory" as UC6
+  usecase "Terminate Rental Agreement" as UC7
+  usecase "Generate Final Invoice" as UC8
+  usecase "Apply Late Fee" as UC9
+  usecase "Access Unit" as UC10
+  usecase "Update Customer Profile" as UC11
+  usecase "Generate Occupancy Report" as UC12
+  usecase "Sign Rental Agreement" as UC13
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC10
+Customer -- UC11
+Customer -- UC13
+Manager -- UC5
+Manager -- UC6
+Manager -- UC7
+Manager -- UC12
+PG -- UC3
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC9 ..> UC3 : <<extend>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 23
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Customer
+actor Manager
+actor "Payment Gateway" as PG
+
+rectangle "Self-Storage Facility System" {
+  usecase "Reserve Unit" as UC1
+  usecase "Process Payment" as UC3
+  usecase "View Unit Status" as UC5
+  usecase "Manage Unit Inventory" as UC6
+  usecase "Terminate Rental Agreement" as UC7
+  usecase "Apply Late Fee" as UC9
+  usecase "Access Unit" as UC10
+  usecase "Update Customer Profile" as UC11
+  usecase "Generate Occupancy Report" as UC12
+  usecase "Sign Rental Agreement" as UC13
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC10
+Customer -- UC11
+Customer -- UC13
+Manager -- UC5
+Manager -- UC6
+Manager -- UC7
+Manager -- UC12
+PG -- UC3
+
+UC9 ..> UC3 : <<extend>>
+@enduml
+```

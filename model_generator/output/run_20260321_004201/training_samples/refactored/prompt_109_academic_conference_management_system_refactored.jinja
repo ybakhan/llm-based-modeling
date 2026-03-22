@@ -1,0 +1,40 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Author" as Author
+actor "Reviewer" as Reviewer
+actor "Program Chair" as ProgramChair
+actor "Attendee" as Attendee
+
+rectangle "Academic Conference Management System" {
+  usecase "Submit Paper" as UC1
+  usecase "Review Paper" as UC3
+  usecase "Assign Reviewers" as UC4
+  usecase "Manage Conference Schedule" as UC6
+  usecase "Register for Conference" as UC7
+  usecase "View Accepted Papers" as UC9
+  usecase "Submit Camera Ready" as UC10
+  usecase "Send Notifications" as UC11
+  usecase "View Schedule" as UC12
+}
+
+Author --> UC1
+Author --> UC10
+Reviewer --> UC3
+ProgramChair --> UC4
+ProgramChair --> UC6
+ProgramChair --> UC11
+Attendee --> UC7
+Attendee --> UC9
+Attendee --> UC12
+
+@enduml
+
+
+Answer:
+No antipattern detected.

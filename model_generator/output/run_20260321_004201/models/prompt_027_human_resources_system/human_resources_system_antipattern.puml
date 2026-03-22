@@ -1,0 +1,43 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "HR Manager" as HRM
+actor "Employee" as EMP
+actor "Payroll Officer" as PAY
+
+rectangle "Human Resources System" {
+  usecase "Hire Employee" as UC1
+  usecase "Validate Candidate Documents" as UC2
+  usecase "Terminate Employee" as UC3
+  usecase "Generate Exit Clearance" as UC4
+  usecase "Process Payroll" as UC5
+  usecase "Calculate Deductions" as UC6
+  usecase "Manage Leave Requests" as UC7
+  usecase "View Employee Profile" as UC8
+  usecase "Update Personal Information" as UC9
+  usecase "Submit Leave Request" as UC10
+  usecase "Generate HR Report" as UC11
+  usecase "Conduct Performance Review" as UC12
+  usecase "Manage Benefits Enrollment" as UC13
+  usecase "Track Attendance" as UC14
+}
+
+HRM -- UC1
+HRM -- UC3
+HRM -- UC7
+HRM -- UC11
+HRM -- UC12
+HRM -- UC14
+
+PAY -- UC5
+PAY -- UC13
+
+EMP -- UC8
+EMP -- UC9
+EMP -- UC10
+
+UC1 ..> UC2 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC3 ..> UC4 : <<include>>
+
+@enduml

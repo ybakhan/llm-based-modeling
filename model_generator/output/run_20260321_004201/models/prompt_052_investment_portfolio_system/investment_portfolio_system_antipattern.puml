@@ -1,0 +1,44 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Investor" as Investor
+actor "Financial Advisor" as Advisor
+actor "System Administrator" as Admin
+
+rectangle "Investment Portfolio System" {
+  usecase "Create Portfolio" as UC1
+  usecase "Buy Securities" as UC2
+  usecase "Sell Securities" as UC3
+  usecase "View Portfolio Holdings" as UC4
+  usecase "Generate Portfolio Report" as UC5
+  usecase "Rebalance Portfolio" as UC6
+  usecase "Set Risk Profile" as UC7
+  usecase "Manage User Accounts" as UC8
+  usecase "Monitor Market Alerts" as UC9
+  usecase "Validate Funds Availability" as UC10
+  usecase "Fetch Historical Data" as UC11
+  usecase "Calculate Target Allocation" as UC12
+  usecase "Transfer Funds" as UC13
+}
+
+Investor -- UC1
+Investor -- UC2
+Investor -- UC3
+Investor -- UC4
+Investor -- UC9
+Investor -- UC13
+
+Advisor -- UC5
+Advisor -- UC6
+Advisor -- UC7
+Advisor -- UC4
+
+Admin -- UC8
+
+UC2 ..> UC10 : <<include>>
+UC5 ..> UC11 : <<include>>
+UC6 ..> UC12 : <<include>>
+
+UC3 .> UC2 : <<extend>>
+@enduml

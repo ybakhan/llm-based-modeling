@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 6
+  domain: messaging_application
+  domain_display: Messaging Application
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 11
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:43:49.349120'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_006_messaging_application/messaging_application_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_006_messaging_application/messaging_application_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_006_messaging_application_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Registered User\"\
+    \ as User\nactor \"Administrator\" as Admin\n\nrectangle \"Messaging Application\"\
+    \ {\n  usecase \"Register Account\" as UC1\n  usecase \"Send Message\" as UC2\n\
+    \  usecase \"View Conversations\" as UC3\n  usecase \"Delete Message\" as UC4\n\
+    \  usecase \"Manage Users\" as UC6\n  usecase \"Block User\" as UC7\n}\n\nUser\
+    \ --> UC1\nUser --> UC2\nUser --> UC3\nUser --> UC4\nUser --> UC7\nAdmin --> UC6\n\
+    @enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: messaging_application
+
+  DOMAIN_DISPLAY: Messaging Application
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Send Message (UC2), Validate Message Content (UC5), include
+  relationship from UC2 to UC5
+
+  EXPLANATION: "Validate Message Content" (UC5) is an inclusion use case that is included
+  by only one use case ("Send Message" / UC2). It is not associated with any actor
+  directly. It does not include or extend any other use case, is not extende …[truncated]'

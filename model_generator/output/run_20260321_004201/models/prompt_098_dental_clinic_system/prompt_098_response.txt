@@ -1,0 +1,117 @@
+
+
+DOMAIN: dental_clinic_system
+DOMAIN_DISPLAY: Dental Clinic System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Schedule Appointment, Validate Patient Insurance
+EXPLANATION: "Validate Patient Insurance" is an inclusion use case included only by "Schedule Appointment". It is not associated with any actor directly, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (insurance validation) rather than a complete service observable to an actor, making it a functional decomposition of "Schedule Appointment".
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Perform Dental Examination, Record Examination Findings
+EXPLANATION: "Record Examination Findings" is an inclusion use case included only by "Perform Dental Examination". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Recording findings is a sub-step of performing an examination and does not provide a standalone, complete service to any actor.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Payment, Generate Payment Receipt
+EXPLANATION: "Generate Payment Receipt" is an inclusion use case included only by "Process Payment". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a receipt is a sub-step of payment processing, not a complete service in its own right.
+
+REFACTORING_RATIONALE: The three inclusion use cases — "Validate Patient Insurance", "Record Examination Findings", and "Generate Payment Receipt" — must each be merged into their respective base use cases ("Schedule Appointment", "Perform Dental Examination", and "Process Payment"). Each inclusion use case is only included by one base use case, is not connected to any actor, and has no other relationships, meaning it fragments a single service into unnecessary sub-steps. Merging them removes 3 use cases and 3 include relationships (6 constructs total), producing a cleaner model where each use case represents a complete, actor-observable service.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Patient" as Patient
+actor "Dentist" as Dentist
+actor "Receptionist" as Receptionist
+actor "Dental Hygienist" as Hygienist
+
+rectangle "Dental Clinic System" {
+  usecase "Schedule Appointment" as UC1
+  usecase "Cancel Appointment" as UC2
+  usecase "Validate Patient Insurance" as UC3
+  usecase "Register Patient" as UC4
+  usecase "Perform Dental Examination" as UC5
+  usecase "Record Examination Findings" as UC6
+  usecase "Prescribe Treatment" as UC7
+  usecase "Perform Teeth Cleaning" as UC8
+  usecase "Process Payment" as UC9
+  usecase "Generate Payment Receipt" as UC10
+  usecase "View Patient Records" as UC11
+  usecase "Request Emergency Appointment" as UC12
+  usecase "Manage Treatment Plan" as UC13
+}
+
+Patient --> UC1
+Patient --> UC2
+Patient --> UC12
+Receptionist --> UC1
+Receptionist --> UC4
+Receptionist --> UC9
+Receptionist --> UC2
+Dentist --> UC5
+Dentist --> UC7
+Dentist --> UC11
+Dentist --> UC13
+Hygienist --> UC8
+
+UC1 ..> UC3 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC9 ..> UC10 : <<include>>
+
+UC12 ..> UC1 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Patient" as Patient
+actor "Dentist" as Dentist
+actor "Receptionist" as Receptionist
+actor "Dental Hygienist" as Hygienist
+
+rectangle "Dental Clinic System" {
+  usecase "Schedule Appointment" as UC1
+  usecase "Cancel Appointment" as UC2
+  usecase "Register Patient" as UC4
+  usecase "Perform Dental Examination" as UC5
+  usecase "Prescribe Treatment" as UC7
+  usecase "Perform Teeth Cleaning" as UC8
+  usecase "Process Payment" as UC9
+  usecase "View Patient Records" as UC11
+  usecase "Request Emergency Appointment" as UC12
+  usecase "Manage Treatment Plan" as UC13
+}
+
+Patient --> UC1
+Patient --> UC2
+Patient --> UC12
+Receptionist --> UC1
+Receptionist --> UC4
+Receptionist --> UC9
+Receptionist --> UC2
+Dentist --> UC5
+Dentist --> UC7
+Dentist --> UC11
+Dentist --> UC13
+Hygienist --> UC8
+
+UC12 ..> UC1 : <<extend>>
+
+@enduml
+```

@@ -1,0 +1,74 @@
+
+
+DOMAIN: e_book_publishing_system
+DOMAIN_DISPLAY: E-Book Publishing System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Publish E-Book, Validate Manuscript Format
+EXPLANATION: The use case "Validate Manuscript Format" is an inclusion use case that is included by only one use case ("Publish E-Book"). It is not associated with any actor directly — no actor interacts with it. It does not include or extend any other use case, nor is it extended by any use case, and it has no generalization relationships. "Validate Manuscript Format" does not represent a complete, independently meaningful service to any user; it is merely a decomposed sub-step of the "Publish E-Book" process. This constitutes the Functional Decomposition antipattern because the include relationship is being misused to break a use case into procedural steps rather than to share genuinely reusable, actor-facing behavior.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Manuscript Format" must be merged back into the base use case "Publish E-Book" because it serves no independent purpose — it is only included by one use case, has no actor association, and represents an internal step rather than a standalone service. The <<include>> relationship between "Publish E-Book" and "Validate Manuscript Format" should be removed, and the validation behavior should be absorbed into "Publish E-Book." This eliminates 1 use case and 1 include relationship, reducing the construct count from 12 to 10.
+
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Author
+actor Reader
+actor Editor
+
+rectangle "E-Book Publishing System" {
+  usecase "Upload Manuscript" as UC1
+  usecase "Publish E-Book" as UC2
+  usecase "Validate Manuscript Format" as UC3
+  usecase "Browse Catalog" as UC4
+  usecase "Purchase E-Book" as UC5
+  usecase "Review Manuscript" as UC6
+}
+
+Author --> UC1
+Author --> UC2
+UC2 ..> UC3 : <<include>>
+Reader --> UC4
+Reader --> UC5
+Editor --> UC6
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Author
+actor Reader
+actor Editor
+
+rectangle "E-Book Publishing System" {
+  usecase "Upload Manuscript" as UC1
+  usecase "Publish E-Book" as UC2
+  usecase "Browse Catalog" as UC4
+  usecase "Purchase E-Book" as UC5
+  usecase "Review Manuscript" as UC6
+}
+
+Author --> UC1
+Author --> UC2
+Reader --> UC4
+Reader --> UC5
+Editor --> UC6
+
+@enduml
+```

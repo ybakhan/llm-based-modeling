@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 190
+  domain: hazardous_materials_tracking_system
+  domain_display: Hazardous Materials Tracking System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 11
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:14:59.371273'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_190_hazardous_materials_tracking_system/hazardous_materials_tracking_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_190_hazardous_materials_tracking_system/hazardous_materials_tracking_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_190_hazardous_materials_tracking_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Safety Officer\" as\
+    \ SO\nactor \"Warehouse Manager\" as WM\nactor \"Regulatory Agency\" as RA\n\n\
+    rectangle \"Hazardous Materials Tracking System\" {\n  usecase \"Register Shipment\"\
+    \ as UC1\n  usecase \"Track Material Location\" as UC3\n  usecase \"Generate Compliance\
+    \ Report\" as UC4\n  usecase \"Dispose of Material\" as UC5\n  usecase \"View\
+    \ Inventory\" as UC6\n  usecase \"Receive Safety Alert\" as UC7\n}\n\nSO --> UC1\n\
+    SO --> UC3\nSO --> UC5\nWM --> UC6\nWM --> UC3\nRA --> UC4\nSO --> UC7\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: hazardous_materials_tracking_system
+
+  DOMAIN_DISPLAY: Hazardous Materials Tracking System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Shipment, Validate Hazard Classification
+
+  EXPLANATION: The use case "Validate Hazard Classification" is an inclusion use case
+  that is included by only one use case ("Register Shipment"). It is not associated
+  with any actor directly, it does not include or extend any other use case, it is
+  not ext …[truncated]'

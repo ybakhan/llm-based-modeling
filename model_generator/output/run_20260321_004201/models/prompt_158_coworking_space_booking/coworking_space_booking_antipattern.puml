@@ -1,0 +1,24 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Member" as Member
+actor "Administrator" as Admin
+
+rectangle "Coworking Space Booking System" {
+  usecase "Browse Spaces" as UC1
+  usecase "Book Workspace" as UC2
+  usecase "Check Availability" as UC3
+  usecase "Cancel Booking" as UC4
+  usecase "Manage Spaces" as UC5
+  usecase "View Bookings" as UC6
+}
+
+Member -- UC1
+Member -- UC2
+Member -- UC4
+Member -- UC6
+Admin -- UC5
+
+UC2 ..> UC3 : <<include>>
+
+@enduml

@@ -1,0 +1,71 @@
+
+
+DOMAIN: conference_registration_system
+DOMAIN_DISPLAY: Conference Registration System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register for Conference (UC2), Validate Payment Details (UC5), the <<include>> relationship from UC2 to UC5
+EXPLANATION: "Validate Payment Details" (UC5) is an inclusion use case that is included by only one use case ("Register for Conference" / UC2). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. "Validate Payment Details" does not represent a complete, independently meaningful service to any actor — it is merely a decomposed substep of the registration process. This is a textbook instance of the Functional Decomposition antipattern via the include relationship.
+
+REFACTORING_RATIONALE: The use case "Validate Payment Details" (UC5) must be merged back into "Register for Conference" (UC2), since payment validation is an internal step of registration and does not provide an observable, standalone result to any actor. This eliminates both UC5 and the <<include>> arrow from UC2 to UC5, removing the functional decomposition. The remaining model retains all meaningful, actor-facing services intact.
+CONSTRUCT_COUNT: 13
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Attendee" as A1
+actor "Organizer" as A2
+actor "Speaker" as A3
+
+rectangle "Conference Registration System" {
+  usecase "Browse Conference Schedule" as UC1
+  usecase "Register for Conference" as UC2
+  usecase "Submit Paper Abstract" as UC3
+  usecase "Manage Registrations" as UC4
+  usecase "Validate Payment Details" as UC5
+  usecase "Cancel Registration" as UC6
+}
+
+A1 --> UC1
+A1 --> UC2
+A3 --> UC3
+A2 --> UC4
+A1 --> UC6
+UC2 ..> UC5 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Attendee" as A1
+actor "Organizer" as A2
+actor "Speaker" as A3
+
+rectangle "Conference Registration System" {
+  usecase "Browse Conference Schedule" as UC1
+  usecase "Register for Conference" as UC2
+  usecase "Submit Paper Abstract" as UC3
+  usecase "Manage Registrations" as UC4
+  usecase "Cancel Registration" as UC6
+}
+
+A1 --> UC1
+A1 --> UC2
+A3 --> UC3
+A2 --> UC4
+A1 --> UC6
+@enduml
+```

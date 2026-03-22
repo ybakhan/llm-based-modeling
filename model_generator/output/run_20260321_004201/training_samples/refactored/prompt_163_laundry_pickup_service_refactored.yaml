@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 163
+  domain: laundry_pickup_service
+  domain_display: Laundry Pickup Service
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:45:08.960134'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_163_laundry_pickup_service/laundry_pickup_service_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_163_laundry_pickup_service/laundry_pickup_service_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_163_laundry_pickup_service_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Customer\" as Customer\nactor \"Driver\" as Driver\nactor \"Admin\" as\
+    \ Admin\n\nrectangle \"Laundry Pickup Service\" {\n  usecase \"Register Account\"\
+    \ as UC1\n  usecase \"Schedule Pickup\" as UC2\n  usecase \"Track Order\" as UC4\n\
+    \  usecase \"Process Payment\" as UC6\n  usecase \"Apply Promo Code\" as UC8\n\
+    \  usecase \"Rate Service\" as UC9\n  usecase \"Accept Pickup Request\" as UC10\n\
+    \  usecase \"Update Order Status\" as UC11\n  usecase \"Manage Pricing\" as UC12\n\
+    \  usecase \"View Reports\" as UC13\n}\n\nCustomer -- UC1\nCustomer -- UC2\nCustomer\
+    \ -- UC4\nCustomer -- UC6\nCustomer -- UC9\n\nDriver -- UC10\nDriver -- UC11\n\
+    \nAdmin -- UC12\nAdmin -- UC13\n\nUC8 ..> UC6 : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: laundry_pickup_service
+
+  DOMAIN_DISPLAY: Laundry Pickup Service
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Pickup, Select Time Slot, include relationship from
+  Schedule Pickup to Select Time Slot
+
+  EXPLANATION: "Select Time Slot" is an inclusion use case included only by "Schedule
+  Pickup". It is not associated with any actor, is not included by any other use case,
+  does not include or extend any use case, and is not extended by …[truncated]'

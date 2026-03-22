@@ -1,0 +1,68 @@
+
+
+DOMAIN: factory_floor_management_system
+DOMAIN_DISPLAY: Factory Floor Management System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Schedule Production Run (UC2), Allocate Machine Resources (UC3), Include relationship from UC2 to UC3
+EXPLANATION: "Allocate Machine Resources" (UC3) is an inclusion use case that is included by only one use case ("Schedule Production Run" / UC2). UC3 is not associated with any actor directly — no actor interacts with it. UC3 does not include, extend, generalize, or get extended by any other use case. It merely represents a sub-step of scheduling a production run (allocating the machines), not a complete service observable to any user. This is a textbook instance of Functional Decomposition via the include relationship: the base use case's internal behavior has been improperly decomposed into a separate inclusion use case that provides no standalone value.
+
+REFACTORING_RATIONALE: The inclusion use case "Allocate Machine Resources" (UC3) must be merged back into "Schedule Production Run" (UC2), and the include relationship between them must be removed. UC3 exists solely as a sub-step of UC2 and is not reused by any other use case nor accessed by any actor. After merging, UC2 fully encapsulates the resource allocation behavior within its own service, restoring a proper level of abstraction. This removes 1 use case and 1 include relationship, reducing the construct count from 10 to 8.
+
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Floor Supervisor" as Supervisor
+actor "Maintenance Technician" as Technician
+
+rectangle "Factory Floor Management System" {
+  usecase "Monitor Production Line" as UC1
+  usecase "Schedule Production Run" as UC2
+  usecase "Allocate Machine Resources" as UC3
+  usecase "Report Equipment Fault" as UC4
+  usecase "Log Maintenance Activity" as UC5
+}
+
+Supervisor -- UC1
+Supervisor -- UC2
+UC2 ..> UC3 : <<include>>
+Technician -- UC4
+Technician -- UC5
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 8
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Floor Supervisor" as Supervisor
+actor "Maintenance Technician" as Technician
+
+rectangle "Factory Floor Management System" {
+  usecase "Monitor Production Line" as UC1
+  usecase "Schedule Production Run" as UC2
+  usecase "Report Equipment Fault" as UC4
+  usecase "Log Maintenance Activity" as UC5
+}
+
+Supervisor -- UC1
+Supervisor -- UC2
+Technician -- UC4
+Technician -- UC5
+@enduml
+```

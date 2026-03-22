@@ -1,0 +1,23 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "HR Officer" as HR
+actor "Unit Commander" as CMD
+
+rectangle "Military Personnel Management System" {
+  usecase "Register New Personnel" as UC1
+  usecase "Assign Personnel to Unit" as UC2
+  usecase "View Personnel Records" as UC3
+  usecase "Process Discharge" as UC4
+  usecase "Validate Security Clearance" as UC5
+}
+
+HR -- UC1
+HR -- UC2
+HR -- UC4
+CMD -- UC3
+CMD -- UC2
+
+UC2 ..> UC5 : <<include>>
+
+@enduml

@@ -1,0 +1,108 @@
+
+
+DOMAIN: wholesale_distribution_system
+DOMAIN_DISPLAY: Wholesale Distribution System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Place Bulk Order, Validate Inventory Availability
+EXPLANATION: "Validate Inventory Availability" is included only by "Place Bulk Order", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a decomposed sub-step (checking stock) rather than a complete service observable to any actor, making it a functional decomposition via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Shipment, Generate Shipping Label
+EXPLANATION: "Generate Shipping Label" is included only by "Process Shipment", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal sub-step of shipment processing rather than a standalone service providing an observable result to a user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Register New Customer, Verify Business License
+EXPLANATION: "Verify Business License" is included only by "Register New Customer", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It decomposes the registration process into an internal verification step that provides no independent service to any actor.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Inventory Availability", "Generate Shipping Label", "Verify Business License") must be merged into its respective base use case ("Place Bulk Order", "Process Shipment", "Register New Customer"). This eliminates 3 use cases and 3 include relationships (6 constructs total). The behavior they represent becomes part of the base use case's internal flow, which is appropriate since none of these sub-steps constitutes a complete, independently valuable service to any actor.
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Wholesale Buyer" as Buyer
+actor "Warehouse Manager" as WM
+actor "Sales Representative" as SR
+
+rectangle "Wholesale Distribution System" {
+  usecase "Place Bulk Order" as UC1
+  usecase "Validate Inventory Availability" as UC2
+  usecase "Track Order Status" as UC3
+  usecase "Process Shipment" as UC4
+  usecase "Generate Shipping Label" as UC5
+  usecase "Manage Product Catalog" as UC6
+  usecase "Register New Customer" as UC7
+  usecase "Verify Business License" as UC8
+  usecase "Apply Volume Discount" as UC9
+  usecase "Generate Sales Report" as UC10
+  usecase "Process Return" as UC11
+  usecase "Manage Warehouse Inventory" as UC12
+}
+
+Buyer -- UC1
+Buyer -- UC3
+Buyer -- UC11
+
+WM -- UC4
+WM -- UC12
+
+SR -- UC6
+SR -- UC7
+SR -- UC10
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+UC9 ..> UC1 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Wholesale Buyer" as Buyer
+actor "Warehouse Manager" as WM
+actor "Sales Representative" as SR
+
+rectangle "Wholesale Distribution System" {
+  usecase "Place Bulk Order" as UC1
+  usecase "Track Order Status" as UC3
+  usecase "Process Shipment" as UC4
+  usecase "Manage Product Catalog" as UC6
+  usecase "Register New Customer" as UC7
+  usecase "Apply Volume Discount" as UC9
+  usecase "Generate Sales Report" as UC10
+  usecase "Process Return" as UC11
+  usecase "Manage Warehouse Inventory" as UC12
+}
+
+Buyer -- UC1
+Buyer -- UC3
+Buyer -- UC11
+
+WM -- UC4
+WM -- UC12
+
+SR -- UC6
+SR -- UC7
+SR -- UC10
+
+UC9 ..> UC1 : <<extend>>
+
+@enduml
+```

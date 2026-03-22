@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Warehouse Manager" as WM
+actor "Auditor" as AU
+
+rectangle "Inventory Management System" {
+  usecase "Add New Product" as UC1
+  usecase "Update Stock Level" as UC2
+  usecase "Restock Item" as UC3
+  usecase "Generate Inventory Report" as UC5
+  usecase "Perform Stock Audit" as UC6
+}
+
+WM -- UC1
+WM -- UC2
+WM -- UC3
+AU -- UC5
+AU -- UC6
+
+@enduml

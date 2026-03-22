@@ -1,0 +1,108 @@
+metadata:
+  prompt_number: 70
+  domain: museum_ticketing_system
+  domain_display: Museum Ticketing System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Purchase Ticket, Calculate Price, <<include>> from Purchase
+        Ticket to Calculate Price
+      explanation: '"Calculate Price" is an inclusion use case included only by "Purchase
+        Ticket". It is not associated with any actor, is not included by any other
+        use case, does not include or extend any other use case, is not extended by
+        any use case, and is not part of any generalization. It represents a sub-step
+        of purchasing rather than a complete service observable to an actor, making
+        it a functional decomposition.'
+    - constructs_involved: Purchase Ticket, Generate Receipt, <<include>> from Purchase
+        Ticket to Generate Receipt
+      explanation: '"Generate Receipt" is an inclusion use case included only by "Purchase
+        Ticket". It is not associated with any actor, is not included by any other
+        use case, does not include or extend any other use case, is not extended by
+        any use case, and is not part of any generalization. It represents a sub-step
+        of the purchase process rather than a standalone service, making it a functional
+        decomposition.'
+    - constructs_involved: Scan Ticket at Entry, Check Ticket Validity, <<include>>
+        from Scan Ticket at Entry to Check Ticket Validity
+      explanation: '"Check Ticket Validity" is an inclusion use case included only
+        by "Scan Ticket at Entry". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and is not part of any generalization. It represents
+        a sub-step of the scanning process rather than a complete service, making
+        it a functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:46:00.144502'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_070_museum_ticketing_system/museum_ticketing_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_070_museum_ticketing_system/museum_ticketing_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_070_museum_ticketing_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Visitor\" as Visitor\nactor \"Museum Staff\" as Staff\nactor \"Manager\"\
+    \ as Manager\nactor \"Payment Gateway\" as Gateway\n\nrectangle \"Museum Ticketing\
+    \ System\" {\n  usecase \"Browse Exhibitions\" as UC1\n  usecase \"Purchase Ticket\"\
+    \ as UC2\n  usecase \"Calculate Price\" as UC3\n  usecase \"Generate Receipt\"\
+    \ as UC4\n  usecase \"Cancel Ticket\" as UC5\n  usecase \"Apply Discount\" as\
+    \ UC6\n  usecase \"Scan Ticket at Entry\" as UC7\n  usecase \"Check Ticket Validity\"\
+    \ as UC8\n  usecase \"View Sales Report\" as UC9\n  usecase \"Manage Exhibition\
+    \ Schedule\" as UC10\n  usecase \"Process Payment\" as UC11\n  usecase \"Book\
+    \ Group Visit\" as UC12\n}\n\nVisitor -- UC1\nVisitor -- UC2\nVisitor -- UC5\n\
+    Visitor -- UC12\nStaff -- UC7\nManager -- UC9\nManager -- UC10\nGateway -- UC11\n\
+    \nUC2 ..> UC3 : <<include>>\nUC2 ..> UC4 : <<include>>\nUC2 ..> UC11 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\nUC2 ..> UC6 : <<extend>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Purchase Ticket, Calculate Price, <<include>>\
+    \ from Purchase Ticket to Calculate Price\n   Instance 1: Explanation: \"Calculate\
+    \ Price\" is an inclusion use case included only by \"Purchase Ticket\". It is\
+    \ not associated with any actor, is not included by any other use case, does not\
+    \ include or extend any other use case, is not extended by any use case, and is\
+    \ not part of any generalization. It represents a sub-step of purchasing rather\
+    \ than a complete service observable to an actor, making it a functional decomposition.\n\
+    \n   Instance 2: Constructs Involved: Purchase Ticket, Generate Receipt, <<include>>\
+    \ from Purchase Ticket to Generate Receipt\n   Instance 2: Explanation: \"Generate\
+    \ Receipt\" is an inclusion use case included only by \"Purchase Ticket\". It\
+    \ is not associated with any actor, is not included by any other use case, does\
+    \ not include or extend any other use case, is not extended by any use case, and\
+    \ is not part of any generalization. It represents a sub-step of the purchase\
+    \ process rather than a standalone service, making it a functional decomposition.\n\
+    \n   Instance 3: Constructs Involved: Scan Ticket at Entry, Check Ticket Validity,\
+    \ <<include>> from Scan Ticket at Entry to Check Ticket Validity\n   Instance\
+    \ 3: Explanation: \"Check Ticket Validity\" is an inclusion use case included\
+    \ only by \"Scan Ticket at Entry\". It is not associated with any actor, is not\
+    \ included by any other use case, does not include or extend any other use case,\
+    \ is not extended by any use case, and is not part of any generalization. It represents\
+    \ a sub-step of the scanning process rather than a complete service, making it\
+    \ a functional decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: museum_ticketing_system
+
+  DOMAIN_DISPLAY: Museum Ticketing System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Purchase Ticket, Calculate Price, <<include>> from Purchase
+  Ticket to Calculate Price
+
+  EXPLANATION: "Calculate Price" is an inclusion use case included only by "Purchase
+  Ticket". It is not associated with any actor, is not included by any other use case,
+  does not include or extend any other use case, is not extended by any use …[truncated]'

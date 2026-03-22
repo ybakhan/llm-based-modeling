@@ -1,0 +1,46 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Investor" as Investor
+actor "Financial Advisor" as Advisor
+actor "System Administrator" as Admin
+
+rectangle "Investment Portfolio System" {
+  usecase "Create Portfolio" as UC1
+  usecase "Buy Securities" as UC2
+  usecase "Sell Securities" as UC3
+  usecase "View Portfolio Holdings" as UC4
+  usecase "Generate Portfolio Report" as UC5
+  usecase "Rebalance Portfolio" as UC6
+  usecase "Set Risk Profile" as UC7
+  usecase "Manage User Accounts" as UC8
+  usecase "Monitor Market Alerts" as UC9
+  usecase "Transfer Funds" as UC13
+}
+
+Investor --> UC1
+Investor --> UC2
+Investor --> UC3
+Investor --> UC4
+Investor --> UC9
+Investor --> UC13
+
+Advisor --> UC5
+Advisor --> UC6
+Advisor --> UC7
+Advisor --> UC4
+
+Admin --> UC8
+
+UC3 .> UC2 : <<extend>>
+@enduml
+
+
+Answer:
+No antipattern detected.

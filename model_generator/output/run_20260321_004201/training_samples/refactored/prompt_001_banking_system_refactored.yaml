@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 1
+  domain: banking_system
+  domain_display: Banking System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 11
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:42:13.909632'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_001_banking_system/banking_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_001_banking_system/banking_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_001_banking_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Customer\" as Customer\n\
+    actor \"Bank Teller\" as Teller\n\nrectangle \"Banking System\" {\n  usecase \"\
+    Check Balance\" as UC1\n  usecase \"Withdraw Cash\" as UC2\n  usecase \"Deposit\
+    \ Funds\" as UC3\n  usecase \"Transfer Funds\" as UC4\n  usecase \"View Transaction\
+    \ History\" as UC5\n}\n\nCustomer --> UC1\nCustomer --> UC2\nCustomer --> UC4\n\
+    Customer --> UC5\nTeller --> UC3\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: banking_system
+
+  DOMAIN_DISPLAY: Banking System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Transfer Funds (base use case), Validate Account Number (inclusion
+  use case), Include relationship from "Transfer Funds" to "Validate Account Number"
+
+  EXPLANATION: The use case "Validate Account Number" is an inclusion use case that
+  is included by only one use case ("Transfer Funds"). It is not associated with any
+  actor directly — no actor has a …[truncated]'

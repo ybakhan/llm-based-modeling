@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 56
+  domain: mental_health_appointment_system
+  domain_display: Mental Health Appointment System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:22:15.199758'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_056_mental_health_appointment_system/mental_health_appointment_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_056_mental_health_appointment_system/mental_health_appointment_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_056_mental_health_appointment_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Patient\" as Patient\nactor \"Therapist\" as Therapist\nactor \"Receptionist\"\
+    \ as Receptionist\n\nrectangle \"Mental Health Appointment System\" {\n  usecase\
+    \ \"Book Appointment\" as UC1\n  usecase \"Cancel Appointment\" as UC4\n  usecase\
+    \ \"View Schedule\" as UC6\n  usecase \"Reschedule Appointment\" as UC7\n  usecase\
+    \ \"Record Session Notes\" as UC8\n  usecase \"View Patient History\" as UC9\n\
+    \  usecase \"Manage Therapist Availability\" as UC10\n  usecase \"Generate Appointment\
+    \ Report\" as UC11\n}\n\nPatient --> UC1\nPatient --> UC4\nPatient --> UC7\nPatient\
+    \ --> UC6\nTherapist --> UC6\nTherapist --> UC8\nTherapist --> UC9\nReceptionist\
+    \ --> UC1\nReceptionist --> UC10\nReceptionist --> UC11\n\nUC7 ..> UC1 : <<include>>\n\
+    \n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: mental_health_appointment_system
+
+  DOMAIN_DISPLAY: Mental Health Appointment System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Appointment, Validate Insurance Details, include (Book
+  Appointment → Validate Insurance Details)
+
+  EXPLANATION: "Validate Insurance Details" is an inclusion use case included only
+  by "Book Appointment." It is not associated with any actor, is not included by any
+  other use case, does not include or extend  …[truncated]'

@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 110
+  domain: plagiarism_detection_system
+  domain_display: Plagiarism Detection System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:42:58.995360'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_110_plagiarism_detection_system/plagiarism_detection_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_110_plagiarism_detection_system/plagiarism_detection_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_110_plagiarism_detection_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Student\" as Student\n\
+    actor \"Instructor\" as Instructor\nactor \"Administrator\" as Admin\n\nrectangle\
+    \ \"Plagiarism Detection System\" {\n  usecase \"Submit Document\" as UC1\n  usecase\
+    \ \"Run Plagiarism Check\" as UC3\n  usecase \"Generate Report\" as UC5\n  usecase\
+    \ \"View Report\" as UC7\n  usecase \"Manage Document Repository\" as UC8\n  usecase\
+    \ \"Configure Detection Settings\" as UC9\n  usecase \"Flag Submission\" as UC10\n\
+    \  usecase \"View Submission History\" as UC11\n  usecase \"Manage User Accounts\"\
+    \ as UC12\n}\n\nStudent --> UC1\nStudent --> UC7\nStudent --> UC11\nInstructor\
+    \ --> UC3\nInstructor --> UC7\nInstructor --> UC5\nInstructor --> UC10\nAdmin\
+    \ --> UC8\nAdmin --> UC9\nAdmin --> UC12\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: plagiarism_detection_system
+
+  DOMAIN_DISPLAY: Plagiarism Detection System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Document, Parse Document Text, include relationship
+  from "Submit Document" to "Parse Document Text"
+
+  EXPLANATION: "Parse Document Text" is an inclusion use case included only by "Submit
+  Document". It is not associated with any actor, not included by any other use case,
+  does not include or extend any other use ca …[truncated]'

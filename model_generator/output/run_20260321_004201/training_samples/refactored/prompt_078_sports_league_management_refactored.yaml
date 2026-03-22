@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 78
+  domain: sports_league_management
+  domain_display: Sports League Management
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 21
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:31:07.586608'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_078_sports_league_management/sports_league_management_refactored.puml
+    image: output/run_20260321_004201/models/prompt_078_sports_league_management/sports_league_management_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_078_sports_league_management_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"League Administrator\"\
+    \ as Admin\nactor \"Team Manager\" as TM\nactor \"Referee\" as Ref\nactor \"Fan\"\
+    \ as Fan\n\nrectangle \"Sports League Management System\" {\n  usecase \"Register\
+    \ Team\" as UC1\n  usecase \"Schedule Match\" as UC2\n  usecase \"Record Match\
+    \ Result\" as UC3\n  usecase \"Manage Player Transfers\" as UC4\n  usecase \"\
+    View League Standings\" as UC5\n  usecase \"Assign Referee to Match\" as UC6\n\
+    \  usecase \"Submit Match Report\" as UC7\n  usecase \"View Match Schedule\" as\
+    \ UC8\n  usecase \"Manage Season\" as UC9\n  usecase \"Register Player\" as UC10\n\
+    \  usecase \"Process Disciplinary Action\" as UC11\n}\n\nAdmin --> UC1\nAdmin\
+    \ --> UC2\nAdmin --> UC3\nAdmin --> UC6\nAdmin --> UC9\nAdmin --> UC11\nTM -->\
+    \ UC4\nTM --> UC10\nTM --> UC8\nRef --> UC7\nRef --> UC8\nFan --> UC5\nFan -->\
+    \ UC8\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: sports_league_management
+
+  DOMAIN_DISPLAY: Sports League Management
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Team, Validate Team Roster, include relationship from
+  Register Team to Validate Team Roster
+
+  EXPLANATION: "Validate Team Roster" is an inclusion use case included only by "Register
+  Team." It is not associated with any actor, not included by any other use case,
+  does not include or extend any use case, is not extended …[truncated]'

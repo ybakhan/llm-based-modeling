@@ -1,0 +1,28 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Author" as Author
+actor "Reviewer" as Reviewer
+actor "Administrator" as Admin
+
+rectangle "Document Management System" {
+  usecase "Upload Document" as UC1
+  usecase "Search Documents" as UC2
+  usecase "Download Document" as UC3
+  usecase "Review Document" as UC4
+  usecase "Delete Document" as UC5
+  usecase "Assign Permissions" as UC6
+  usecase "Validate File Format" as UC7
+}
+
+Author -- UC1
+Author -- UC2
+Author -- UC3
+Reviewer -- UC4
+Reviewer -- UC2
+Admin -- UC5
+Admin -- UC6
+
+UC1 ..> UC7 : <<include>>
+@enduml

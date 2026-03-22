@@ -1,0 +1,38 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Registered User" as RegUser
+actor "Guest" as Guest
+actor "Moderator" as Moderator
+
+rectangle "Forum and Discussion System" {
+  usecase "Register Account" as UC1
+  usecase "Login" as UC2
+  usecase "Browse Forums" as UC3
+  usecase "Create Thread" as UC4
+  usecase "Post Reply" as UC6
+  usecase "Search Forum" as UC8
+  usecase "Edit Post" as UC10
+  usecase "Delete Post" as UC11
+  usecase "Manage Categories" as UC12
+  usecase "Ban User" as UC13
+  usecase "Report Post" as UC14
+}
+
+Guest -- UC1
+Guest -- UC3
+Guest -- UC8
+
+RegUser -- UC2
+RegUser -- UC3
+RegUser -- UC4
+RegUser -- UC6
+RegUser -- UC8
+RegUser -- UC10
+RegUser -- UC14
+
+Moderator -- UC11
+Moderator -- UC12
+Moderator -- UC13
+
+@enduml

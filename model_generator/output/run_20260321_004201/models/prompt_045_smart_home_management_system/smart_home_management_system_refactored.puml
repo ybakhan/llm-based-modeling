@@ -1,0 +1,20 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Homeowner" as Homeowner
+actor "Guest" as Guest
+
+rectangle "Smart Home Management System" {
+  usecase "Control Lighting" as UC1
+  usecase "Adjust Thermostat" as UC2
+  usecase "Lock/Unlock Doors" as UC3
+  usecase "View Security Cameras" as UC4
+}
+
+Homeowner -- UC1
+Homeowner -- UC2
+Homeowner -- UC3
+Homeowner -- UC4
+Guest -- UC1
+@enduml

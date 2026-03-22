@@ -1,0 +1,106 @@
+
+
+DOMAIN: supply_chain_management
+DOMAIN_DISPLAY: Supply Chain Management
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Place Purchase Order, Validate Supplier Details, include relationship from Place Purchase Order to Validate Supplier Details
+EXPLANATION: "Validate Supplier Details" is an inclusion use case included only by "Place Purchase Order." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (validating supplier info) rather than a complete, independently observable service to any actor. This is functional decomposition of "Place Purchase Order" into a procedural sub-task.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Track Shipment, Update GPS Coordinates, include relationship from Track Shipment to Update GPS Coordinates
+EXPLANATION: "Update GPS Coordinates" is an inclusion use case included only by "Track Shipment." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Updating GPS coordinates is an internal sub-step of tracking a shipment, not a standalone service delivering an observable result to a user. This decomposes "Track Shipment" into a procedural fragment.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Manage Inventory, Calculate Reorder Point, include relationship from Manage Inventory to Calculate Reorder Point
+EXPLANATION: "Calculate Reorder Point" is an inclusion use case included only by "Manage Inventory." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Calculating a reorder point is an internal computational step within inventory management, not a complete service yielding an observable result to an actor. This is functional decomposition of "Manage Inventory."
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases — "Validate Supplier Details," "Update GPS Coordinates," and "Calculate Reorder Point" — must be merged back into their respective base use cases ("Place Purchase Order," "Track Shipment," and "Manage Inventory"). Each inclusion use case is included by only one base use case, has no actor association, and participates in no other relationships, meaning it represents an internal procedural step rather than a reusable or independently meaningful service. Removing these three inclusion use cases and their three include relationships eliminates 6 constructs (3 use cases + 3 includes), producing a cleaner model where each base use case encapsulates its full behavior.
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Procurement Manager" as PM
+actor "Warehouse Manager" as WM
+actor "Logistics Coordinator" as LC
+actor "Supplier" as SUP
+actor "Finance Analyst" as FA
+
+rectangle "Supply Chain Management System" {
+  usecase "Place Purchase Order" as UC1
+  usecase "Validate Supplier Details" as UC1a
+  usecase "Manage Inventory" as UC2
+  usecase "Calculate Reorder Point" as UC2a
+  usecase "Track Shipment" as UC3
+  usecase "Update GPS Coordinates" as UC3a
+  usecase "Receive Goods" as UC4
+  usecase "Process Returns" as UC5
+  usecase "Generate Supply Report" as UC6
+  usecase "Confirm Order Delivery" as UC7
+  usecase "Analyze Supply Costs" as UC8
+}
+
+PM --> UC1
+PM --> UC5
+WM --> UC2
+WM --> UC4
+LC --> UC3
+LC --> UC7
+SUP --> UC7
+FA --> UC6
+FA --> UC8
+
+UC1 ..> UC1a : <<include>>
+UC2 ..> UC2a : <<include>>
+UC3 ..> UC3a : <<include>>
+
+UC5 ..> UC4 : <<extend>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Procurement Manager" as PM
+actor "Warehouse Manager" as WM
+actor "Logistics Coordinator" as LC
+actor "Supplier" as SUP
+actor "Finance Analyst" as FA
+
+rectangle "Supply Chain Management System" {
+  usecase "Place Purchase Order" as UC1
+  usecase "Manage Inventory" as UC2
+  usecase "Track Shipment" as UC3
+  usecase "Receive Goods" as UC4
+  usecase "Process Returns" as UC5
+  usecase "Generate Supply Report" as UC6
+  usecase "Confirm Order Delivery" as UC7
+  usecase "Analyze Supply Costs" as UC8
+}
+
+PM --> UC1
+PM --> UC5
+WM --> UC2
+WM --> UC4
+LC --> UC3
+LC --> UC7
+SUP --> UC7
+FA --> UC6
+FA --> UC8
+
+UC5 ..> UC4 : <<extend>>
+@enduml
+```

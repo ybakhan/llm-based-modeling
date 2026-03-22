@@ -1,0 +1,32 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Therapist" as Therapist
+actor "Patient" as Patient
+
+rectangle "Rehabilitation Centre System" {
+  usecase "Schedule Therapy Session" as UC1
+  usecase "Check Therapist Availability" as UC2
+  usecase "Record Progress Notes" as UC3
+  usecase "View Treatment Plan" as UC4
+  usecase "Register Patient" as UC5
+}
+
+Therapist -- UC1
+Therapist -- UC3
+Patient -- UC4
+Patient -- UC5
+UC1 ..> UC2 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Schedule Therapy Session, Check Therapist Availability
+   Explanation: The use case "Check Therapist Availability" is an inclusion use case that is included by only one use case ("Schedule Therapy Session"). "Check Therapist Availability" is not associated with any actor directly, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a sub-step (checking if a therapist is free) rather than a complete, independently valuable service offered to an actor. This is functional decomposition — the base use case's internal logic has been artificially broken out into a separate inclusion use case that provides no standalone observable result to any user.

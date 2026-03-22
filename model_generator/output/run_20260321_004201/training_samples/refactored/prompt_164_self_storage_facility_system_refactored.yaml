@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 164
+  domain: self_storage_facility_system
+  domain_display: Self-Storage Facility System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 23
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T21:21:58.993596'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_164_self_storage_facility_system/self_storage_facility_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_164_self_storage_facility_system/self_storage_facility_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_164_self_storage_facility_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Customer\nactor Manager\n\
+    actor \"Payment Gateway\" as PG\n\nrectangle \"Self-Storage Facility System\"\
+    \ {\n  usecase \"Reserve Unit\" as UC1\n  usecase \"Process Payment\" as UC3\n\
+    \  usecase \"View Unit Status\" as UC5\n  usecase \"Manage Unit Inventory\" as\
+    \ UC6\n  usecase \"Terminate Rental Agreement\" as UC7\n  usecase \"Apply Late\
+    \ Fee\" as UC9\n  usecase \"Access Unit\" as UC10\n  usecase \"Update Customer\
+    \ Profile\" as UC11\n  usecase \"Generate Occupancy Report\" as UC12\n  usecase\
+    \ \"Sign Rental Agreement\" as UC13\n}\n\nCustomer -- UC1\nCustomer -- UC3\nCustomer\
+    \ -- UC10\nCustomer -- UC11\nCustomer -- UC13\nManager -- UC5\nManager -- UC6\n\
+    Manager -- UC7\nManager -- UC12\nPG -- UC3\n\nUC9 ..> UC3 : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: self_storage_facility_system
+
+  DOMAIN_DISPLAY: Self-Storage Facility System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Reserve Unit, Check Unit Availability
+
+  EXPLANATION: "Reserve Unit" includes "Check Unit Availability". "Check Unit Availability"
+  is included by only "Reserve Unit", is not associated with any actor, does not include
+  or extend any other use case, is not extended by any use case, and is not involved
+  in any generalizati …[truncated]'

@@ -1,0 +1,103 @@
+metadata:
+  prompt_number: 145
+  domain: sports_equipment_rental
+  domain_display: Sports Equipment Rental
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Browse Catalog, Search Inventory
+      explanation: '"Browse Catalog" includes "Search Inventory" via an <<include>>
+        relationship. "Search Inventory" is only included by "Browse Catalog", is
+        not associated with any actor, does not include or extend any other use case,
+        is not extended by any use case, and is not part of any generalization. It
+        represents a decomposed step of browsing rather than a complete, independently
+        valuable service. This constitutes functional decomposition via the include
+        relationship.'
+    - constructs_involved: Rent Equipment, Verify Availability
+      explanation: '"Rent Equipment" includes "Verify Availability" via an <<include>>
+        relationship. "Verify Availability" is only included by "Rent Equipment",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not part of any generalization.
+        It represents an internal procedural step of the rental process rather than
+        a standalone service, constituting functional decomposition.'
+    - constructs_involved: Process Payment, Validate Payment Details
+      explanation: '"Process Payment" includes "Validate Payment Details" via an <<include>>
+        relationship. "Validate Payment Details" is only included by "Process Payment",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not part of any generalization.
+        It is a decomposed sub-step of payment processing, not a complete service
+        observable to any actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:43:42.028145'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_145_sports_equipment_rental/sports_equipment_rental_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_145_sports_equipment_rental/sports_equipment_rental_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_145_sports_equipment_rental_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Customer\n\
+    actor Staff\n\nrectangle \"Sports Equipment Rental System\" {\n  usecase \"Browse\
+    \ Catalog\" as UC1\n  usecase \"Search Inventory\" as UC2\n  usecase \"Rent Equipment\"\
+    \ as UC3\n  usecase \"Verify Availability\" as UC4\n  usecase \"Return Equipment\"\
+    \ as UC5\n  usecase \"Process Payment\" as UC6\n  usecase \"Validate Payment Details\"\
+    \ as UC7\n  usecase \"Apply Late Fee\" as UC8\n  usecase \"Manage Inventory\"\
+    \ as UC9\n  usecase \"View Rental History\" as UC10\n  usecase \"Register Account\"\
+    \ as UC11\n}\n\nCustomer -- UC1\nCustomer -- UC3\nCustomer -- UC5\nCustomer --\
+    \ UC6\nCustomer -- UC10\nCustomer -- UC11\nStaff -- UC9\nStaff -- UC5\n\nUC1 ..>\
+    \ UC2 : <<include>>\nUC3 ..> UC4 : <<include>>\nUC6 ..> UC7 : <<include>>\nUC5\
+    \ <.. UC8 : <<extend>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Browse Catalog, Search Inventory\n   Instance\
+    \ 1: Explanation: \"Browse Catalog\" includes \"Search Inventory\" via an <<include>>\
+    \ relationship. \"Search Inventory\" is only included by \"Browse Catalog\", is\
+    \ not associated with any actor, does not include or extend any other use case,\
+    \ is not extended by any use case, and is not part of any generalization. It represents\
+    \ a decomposed step of browsing rather than a complete, independently valuable\
+    \ service. This constitutes functional decomposition via the include relationship.\n\
+    \n   Instance 2: Constructs Involved: Rent Equipment, Verify Availability\n  \
+    \ Instance 2: Explanation: \"Rent Equipment\" includes \"Verify Availability\"\
+    \ via an <<include>> relationship. \"Verify Availability\" is only included by\
+    \ \"Rent Equipment\", is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and is not part of any\
+    \ generalization. It represents an internal procedural step of the rental process\
+    \ rather than a standalone service, constituting functional decomposition.\n\n\
+    \   Instance 3: Constructs Involved: Process Payment, Validate Payment Details\n\
+    \   Instance 3: Explanation: \"Process Payment\" includes \"Validate Payment Details\"\
+    \ via an <<include>> relationship. \"Validate Payment Details\" is only included\
+    \ by \"Process Payment\", is not associated with any actor, does not include or\
+    \ extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. It is a decomposed sub-step of payment processing, not\
+    \ a complete service observable to any actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: sports_equipment_rental
+
+  DOMAIN_DISPLAY: Sports Equipment Rental
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Browse Catalog, Search Inventory
+
+  EXPLANATION: "Browse Catalog" includes "Search Inventory" via an <<include>> relationship.
+  "Search Inventory" is only included by "Browse Catalog", is not associated with
+  any actor, does not include or extend any other use case, is not extended by any
+  use case, and is not part of any generaliz …[truncated]'

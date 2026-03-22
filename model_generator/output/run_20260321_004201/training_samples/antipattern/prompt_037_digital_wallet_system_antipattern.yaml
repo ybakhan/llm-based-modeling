@@ -1,0 +1,102 @@
+metadata:
+  prompt_number: 37
+  domain: digital_wallet_system
+  domain_display: Digital Wallet System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Send Money, Validate Recipient
+      explanation: '"Send Money" includes "Validate Recipient". "Validate Recipient"
+        is included by only "Send Money", is not associated with any actor, does not
+        include or extend any other use case, is not extended by any use case, and
+        is not part of any generalization. It represents a sub-step of sending money
+        rather than a complete service observable to any user, constituting functional
+        decomposition.'
+    - constructs_involved: Top Up Wallet, Process Payment Gateway
+      explanation: '"Top Up Wallet" includes "Process Payment Gateway". "Process Payment
+        Gateway" is included by only "Top Up Wallet", is not associated with any actor,
+        does not include or extend any other use case, is not extended by any use
+        case, and is not part of any generalization. It decomposes the top-up process
+        into an internal sub-function rather than providing a standalone service to
+        an actor, constituting functional decomposition.'
+    - constructs_involved: Pay Merchant, Generate Receipt
+      explanation: '"Pay Merchant" includes "Generate Receipt". "Generate Receipt"
+        is included by only "Pay Merchant", is not associated with any actor, does
+        not include or extend any other use case, is not extended by any use case,
+        and is not part of any generalization. It represents an internal step of the
+        payment process rather than a complete, independently useful service to any
+        actor, constituting functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:44:03.864436'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_037_digital_wallet_system/digital_wallet_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_037_digital_wallet_system/digital_wallet_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_037_digital_wallet_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Wallet User\" as User\nactor \"Merchant\" as Merchant\nactor \"Admin\"\
+    \ as Admin\n\nrectangle \"Digital Wallet System\" {\n  usecase \"Register Account\"\
+    \ as UC1\n  usecase \"Top Up Wallet\" as UC2\n  usecase \"Process Payment Gateway\"\
+    \ as UC3\n  usecase \"Send Money\" as UC4\n  usecase \"Validate Recipient\" as\
+    \ UC5\n  usecase \"Pay Merchant\" as UC6\n  usecase \"Generate Receipt\" as UC7\n\
+    \  usecase \"View Transaction History\" as UC8\n  usecase \"Request Refund\" as\
+    \ UC9\n  usecase \"Manage Users\" as UC10\n  usecase \"View Balance\" as UC11\n\
+    \  usecase \"Withdraw Funds\" as UC12\n  usecase \"Accept Payment\" as UC13\n\
+    }\n\nUser -- UC1\nUser -- UC2\nUser -- UC4\nUser -- UC6\nUser -- UC8\nUser --\
+    \ UC9\nUser -- UC11\nUser -- UC12\nMerchant -- UC13\nAdmin -- UC10\n\nUC2 ..>\
+    \ UC3 : <<include>>\nUC4 ..> UC5 : <<include>>\nUC6 ..> UC7 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Send Money, Validate Recipient\n   Instance\
+    \ 1: Explanation: \"Send Money\" includes \"Validate Recipient\". \"Validate Recipient\"\
+    \ is included by only \"Send Money\", is not associated with any actor, does not\
+    \ include or extend any other use case, is not extended by any use case, and is\
+    \ not part of any generalization. It represents a sub-step of sending money rather\
+    \ than a complete service observable to any user, constituting functional decomposition.\n\
+    \n   Instance 2: Constructs Involved: Top Up Wallet, Process Payment Gateway\n\
+    \   Instance 2: Explanation: \"Top Up Wallet\" includes \"Process Payment Gateway\"\
+    . \"Process Payment Gateway\" is included by only \"Top Up Wallet\", is not associated\
+    \ with any actor, does not include or extend any other use case, is not extended\
+    \ by any use case, and is not part of any generalization. It decomposes the top-up\
+    \ process into an internal sub-function rather than providing a standalone service\
+    \ to an actor, constituting functional decomposition.\n\n   Instance 3: Constructs\
+    \ Involved: Pay Merchant, Generate Receipt\n   Instance 3: Explanation: \"Pay\
+    \ Merchant\" includes \"Generate Receipt\". \"Generate Receipt\" is included by\
+    \ only \"Pay Merchant\", is not associated with any actor, does not include or\
+    \ extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. It represents an internal step of the payment process\
+    \ rather than a complete, independently useful service to any actor, constituting\
+    \ functional decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: digital_wallet_system
+
+  DOMAIN_DISPLAY: Digital Wallet System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Send Money, Validate Recipient
+
+  EXPLANATION: "Send Money" includes "Validate Recipient". "Validate Recipient" is
+  included by only "Send Money", is not associated with any actor, does not include
+  or extend any other use case, is not extended by any use case, and is not part of
+  any generalization. It represents a sub-step of sending …[truncated]'

@@ -1,0 +1,116 @@
+metadata:
+  prompt_number: 18
+  domain: pharmacy_management_system
+  domain_display: Pharmacy Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Fill Prescription, Verify Patient Insurance, include relationship
+        from Fill Prescription to Verify Patient Insurance
+      explanation: '"Verify Patient Insurance" is an inclusion use case included only
+        by "Fill Prescription." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (insurance verification) decomposed out of filling a prescription
+        rather than a complete, independently valuable service observable to an actor.
+        This constitutes functional decomposition via the include relationship.'
+    - constructs_involved: Fill Prescription, Check Drug Interactions, include relationship
+        from Fill Prescription to Check Drug Interactions
+      explanation: '"Check Drug Interactions" is an inclusion use case included only
+        by "Fill Prescription." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Checking drug interactions
+        is a procedural sub-step of filling a prescription, not a standalone service
+        delivering an observable result to a user. This is functional decomposition
+        via the include relationship.'
+    - constructs_involved: Process Payment, Generate Receipt, include relationship
+        from Process Payment to Generate Receipt
+      explanation: '"Generate Receipt" is an inclusion use case included only by "Process
+        Payment." It is not associated with any actor, is not included by any other
+        use case, does not include or extend any use case, is not extended by any
+        use case, and has no generalization relationships. Generating a receipt is
+        a procedural sub-step of processing payment, not a complete service offered
+        to any actor on its own. This is functional decomposition via the include
+        relationship.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:49:58.175706'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_018_pharmacy_management_system/pharmacy_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_018_pharmacy_management_system/pharmacy_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_018_pharmacy_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Pharmacist\" as Pharmacist\nactor \"Customer\" as Customer\nactor \"\
+    Pharmacy Manager\" as Manager\n\nrectangle \"Pharmacy Management System\" {\n\
+    \    usecase \"Fill Prescription\" as UC1\n    usecase \"Verify Patient Insurance\"\
+    \ as UC2\n    usecase \"Check Drug Interactions\" as UC3\n    usecase \"Process\
+    \ Payment\" as UC4\n    usecase \"Generate Receipt\" as UC5\n    usecase \"Manage\
+    \ Inventory\" as UC6\n    usecase \"Register Customer\" as UC7\n    usecase \"\
+    View Prescription History\" as UC8\n    usecase \"Order Medication Refill\" as\
+    \ UC9\n    usecase \"Generate Sales Report\" as UC10\n    usecase \"Manage Supplier\
+    \ Orders\" as UC11\n    usecase \"Update Drug Catalog\" as UC12\n}\n\nPharmacist\
+    \ --> UC1\nPharmacist --> UC4\nPharmacist --> UC6\nPharmacist --> UC7\nCustomer\
+    \ --> UC8\nCustomer --> UC9\nManager --> UC10\nManager --> UC11\nManager --> UC12\n\
+    \nUC1 ..> UC2 : <<include>>\nUC1 ..> UC3 : <<include>>\nUC4 ..> UC5 : <<include>>\n\
+    UC9 ..> UC1 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Fill Prescription, Verify Patient Insurance,\
+    \ include relationship from Fill Prescription to Verify Patient Insurance\n  \
+    \ Instance 1: Explanation: \"Verify Patient Insurance\" is an inclusion use case\
+    \ included only by \"Fill Prescription.\" It is not associated with any actor,\
+    \ is not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ represents a sub-step (insurance verification) decomposed out of filling a prescription\
+    \ rather than a complete, independently valuable service observable to an actor.\
+    \ This constitutes functional decomposition via the include relationship.\n\n\
+    \   Instance 2: Constructs Involved: Fill Prescription, Check Drug Interactions,\
+    \ include relationship from Fill Prescription to Check Drug Interactions\n   Instance\
+    \ 2: Explanation: \"Check Drug Interactions\" is an inclusion use case included\
+    \ only by \"Fill Prescription.\" It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. Checking drug interactions\
+    \ is a procedural sub-step of filling a prescription, not a standalone service\
+    \ delivering an observable result to a user. This is functional decomposition\
+    \ via the include relationship.\n\n   Instance 3: Constructs Involved: Process\
+    \ Payment, Generate Receipt, include relationship from Process Payment to Generate\
+    \ Receipt\n   Instance 3: Explanation: \"Generate Receipt\" is an inclusion use\
+    \ case included only by \"Process Payment.\" It is not associated with any actor,\
+    \ is not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. Generating\
+    \ a receipt is a procedural sub-step of processing payment, not a complete service\
+    \ offered to any actor on its own. This is functional decomposition via the include\
+    \ relationship."
+raw_response_excerpt: '
+
+
+  DOMAIN: pharmacy_management_system
+
+  DOMAIN_DISPLAY: Pharmacy Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Fill Prescription, Verify Patient Insurance, include relationship
+  from Fill Prescription to Verify Patient Insurance
+
+  EXPLANATION: "Verify Patient Insurance" is an inclusion use case included only by
+  "Fill Prescription." It is not associated with any actor, is not included by any
+  other use case, does not include or exten …[truncated]'

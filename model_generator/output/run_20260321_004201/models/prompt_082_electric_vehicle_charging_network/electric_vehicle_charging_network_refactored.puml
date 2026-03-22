@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "EV Driver" as Driver
+actor "Network Operator" as Operator
+
+rectangle "Electric Vehicle Charging Network" {
+  usecase "Start Charging Session" as UC1
+  usecase "View Charging Status" as UC3
+  usecase "Process Payment" as UC4
+  usecase "Monitor Station Health" as UC5
+  usecase "View Usage Reports" as UC6
+}
+
+Driver -- UC1
+Driver -- UC3
+Driver -- UC4
+Operator -- UC5
+Operator -- UC6
+
+@enduml

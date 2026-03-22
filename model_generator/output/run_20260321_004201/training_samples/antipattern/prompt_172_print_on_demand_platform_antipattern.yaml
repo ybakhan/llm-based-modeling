@@ -1,0 +1,110 @@
+metadata:
+  prompt_number: 172
+  domain: print_on_demand_platform
+  domain_display: Print-on-Demand Platform
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Upload Design, Validate File Format, include relationship
+        from Upload Design to Validate File Format
+      explanation: '"Validate File Format" is an inclusion use case included only
+        by "Upload Design." It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. It represents a sub-step
+        (file validation) of the upload process rather than a complete, independently
+        valuable service to any actor. This is functional decomposition of "Upload
+        Design" into an internal step.'
+    - constructs_involved: Place Order, Calculate Shipping Cost, include relationship
+        from Place Order to Calculate Shipping Cost
+      explanation: '"Calculate Shipping Cost" is an inclusion use case included only
+        by "Place Order." It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. It represents an internal
+        computational step within the ordering process, not a standalone service observable
+        to a user. This is functional decomposition of "Place Order."'
+    - constructs_involved: Process Payment, Generate Invoice, include relationship
+        from Process Payment to Generate Invoice
+      explanation: '"Generate Invoice" is an inclusion use case included only by "Process
+        Payment." It is not associated with any actor, not included by any other use
+        case, does not include or extend any use case, is not extended by any use
+        case, and has no generalization relationships. It represents an internal sub-step
+        of payment processing rather than a complete service offered to any actor.
+        This is functional decomposition of "Process Payment."'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:08:35.371837'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_172_print_on_demand_platform/print_on_demand_platform_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_172_print_on_demand_platform/print_on_demand_platform_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_172_print_on_demand_platform_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Designer\n\
+    actor Customer\nactor \"Production Staff\" as PS\nactor \"Payment Gateway\" as\
+    \ PG\n\nrectangle \"Print-on-Demand Platform\" {\n  usecase \"Upload Design\"\
+    \ as UC1\n  usecase \"Validate File Format\" as UC2\n  usecase \"Browse Catalog\"\
+    \ as UC3\n  usecase \"Customize Product\" as UC4\n  usecase \"Place Order\" as\
+    \ UC5\n  usecase \"Calculate Shipping Cost\" as UC6\n  usecase \"Process Payment\"\
+    \ as UC7\n  usecase \"Generate Invoice\" as UC8\n  usecase \"Track Order\" as\
+    \ UC9\n  usecase \"Fulfill Order\" as UC10\n  usecase \"Manage Product Listings\"\
+    \ as UC11\n  usecase \"View Sales Reports\" as UC12\n}\n\nDesigner --> UC1\nDesigner\
+    \ --> UC11\nDesigner --> UC12\nCustomer --> UC3\nCustomer --> UC4\nCustomer -->\
+    \ UC5\nCustomer --> UC7\nCustomer --> UC9\nPS --> UC10\nPG --> UC7\n\nUC1 ..>\
+    \ UC2 : <<include>>\nUC5 ..> UC6 : <<include>>\nUC7 ..> UC8 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Upload Design, Validate File Format, include\
+    \ relationship from Upload Design to Validate File Format\n   Instance 1: Explanation:\
+    \ \"Validate File Format\" is an inclusion use case included only by \"Upload\
+    \ Design.\" It is not associated with any actor, not included by any other use\
+    \ case, does not include or extend any use case, is not extended by any use case,\
+    \ and has no generalization relationships. It represents a sub-step (file validation)\
+    \ of the upload process rather than a complete, independently valuable service\
+    \ to any actor. This is functional decomposition of \"Upload Design\" into an\
+    \ internal step.\n\n   Instance 2: Constructs Involved: Place Order, Calculate\
+    \ Shipping Cost, include relationship from Place Order to Calculate Shipping Cost\n\
+    \   Instance 2: Explanation: \"Calculate Shipping Cost\" is an inclusion use case\
+    \ included only by \"Place Order.\" It is not associated with any actor, not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. It represents an internal\
+    \ computational step within the ordering process, not a standalone service observable\
+    \ to a user. This is functional decomposition of \"Place Order.\"\n\n   Instance\
+    \ 3: Constructs Involved: Process Payment, Generate Invoice, include relationship\
+    \ from Process Payment to Generate Invoice\n   Instance 3: Explanation: \"Generate\
+    \ Invoice\" is an inclusion use case included only by \"Process Payment.\" It\
+    \ is not associated with any actor, not included by any other use case, does not\
+    \ include or extend any use case, is not extended by any use case, and has no\
+    \ generalization relationships. It represents an internal sub-step of payment\
+    \ processing rather than a complete service offered to any actor. This is functional\
+    \ decomposition of \"Process Payment.\""
+raw_response_excerpt: '
+
+
+  DOMAIN: print_on_demand_platform
+
+  DOMAIN_DISPLAY: Print-on-Demand Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Upload Design, Validate File Format, include relationship from
+  Upload Design to Validate File Format
+
+  EXPLANATION: "Validate File Format" is an inclusion use case included only by "Upload
+  Design." It is not associated with any actor, not included by any other use case,
+  does not include or extend any use case, is not extended …[truncated]'

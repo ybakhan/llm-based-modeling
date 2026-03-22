@@ -1,0 +1,115 @@
+
+
+DOMAIN: carpooling_app
+DOMAIN_DISPLAY: Carpooling App
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Search Rides, Validate Search Criteria, include (Search Rides → Validate Search Criteria)
+EXPLANATION: "Validate Search Criteria" is an inclusion use case included only by "Search Rides". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step (input validation) of searching for rides rather than a complete, independently meaningful service observable to a user. This is functional decomposition of the "Search Rides" use case.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Book Ride, Calculate Fare Split, include (Book Ride → Calculate Fare Split)
+EXPLANATION: "Calculate Fare Split" is an inclusion use case included only by "Book Ride". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal computation step within the booking process rather than a standalone service with an observable result to a user. This is functional decomposition of the "Book Ride" use case.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Create Ride Offer, Validate Route Details, include (Create Ride Offer → Validate Route Details)
+EXPLANATION: "Validate Route Details" is an inclusion use case included only by "Create Ride Offer". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal validation sub-step rather than a complete service. This is functional decomposition of the "Create Ride Offer" use case.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Search Criteria", "Calculate Fare Split", and "Validate Route Details" — each serve as decomposed sub-steps of their respective base use cases ("Search Rides", "Book Ride", "Create Ride Offer"). Each inclusion use case is included by only one base use case, has no actor association, and neither includes, extends, nor generalizes any other use case. Per the Drop Functional Decomposition refactoring, each inclusion use case and its corresponding <<include>> relationship must be removed, and the behavior must be merged back into the base use case. This eliminates 3 use cases and 3 include relationships (6 constructs), reducing the count from 26 to 20.
+
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Rider" as Rider
+actor "Driver" as Driver
+actor "Admin" as Admin
+
+rectangle "Carpooling App" {
+  usecase "Register Account" as UC1
+  usecase "Search Rides" as UC2
+  usecase "Validate Search Criteria" as UC3
+  usecase "Book Ride" as UC4
+  usecase "Calculate Fare Split" as UC5
+  usecase "Rate Driver" as UC6
+  usecase "Create Ride Offer" as UC7
+  usecase "Validate Route Details" as UC8
+  usecase "Manage Ride Requests" as UC9
+  usecase "View Ride History" as UC10
+  usecase "Process Payment" as UC11
+  usecase "Manage Users" as UC12
+  usecase "View Reports" as UC13
+}
+
+Rider --> UC1
+Rider --> UC2
+Rider --> UC4
+Rider --> UC6
+Rider --> UC10
+Rider --> UC11
+
+Driver --> UC1
+Driver --> UC7
+Driver --> UC9
+Driver --> UC10
+
+Admin --> UC12
+Admin --> UC13
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Rider" as Rider
+actor "Driver" as Driver
+actor "Admin" as Admin
+
+rectangle "Carpooling App" {
+  usecase "Register Account" as UC1
+  usecase "Search Rides" as UC2
+  usecase "Book Ride" as UC4
+  usecase "Rate Driver" as UC6
+  usecase "Create Ride Offer" as UC7
+  usecase "Manage Ride Requests" as UC9
+  usecase "View Ride History" as UC10
+  usecase "Process Payment" as UC11
+  usecase "Manage Users" as UC12
+  usecase "View Reports" as UC13
+}
+
+Rider --> UC1
+Rider --> UC2
+Rider --> UC4
+Rider --> UC6
+Rider --> UC10
+Rider --> UC11
+
+Driver --> UC1
+Driver --> UC7
+Driver --> UC9
+Driver --> UC10
+
+Admin --> UC12
+Admin --> UC13
+@enduml
+```

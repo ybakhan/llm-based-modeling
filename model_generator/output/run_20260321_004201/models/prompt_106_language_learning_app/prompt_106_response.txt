@@ -1,0 +1,103 @@
+
+
+DOMAIN: language_learning_app
+DOMAIN_DISPLAY: Language Learning App
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Take Vocabulary Quiz, Load Quiz Questions, Take Vocabulary Quiz --include--> Load Quiz Questions
+EXPLANATION: "Load Quiz Questions" is an inclusion use case included only by "Take Vocabulary Quiz." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and is not involved in any generalization. "Load Quiz Questions" does not represent a complete service observable to any user — it is merely a functional step decomposed out of the quiz-taking process. This constitutes the Functional Decomposition antipattern.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Complete Lesson, Update Progress Tracker, Complete Lesson --include--> Update Progress Tracker
+EXPLANATION: "Update Progress Tracker" is an inclusion use case included only by "Complete Lesson." It has no direct actor association, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not a generalization or specialization. Updating the progress tracker is an internal system step, not a standalone service delivering an observable result to a user. This is a clear instance of Functional Decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Practice Pronunciation, Record Audio Input, Practice Pronunciation --include--> Record Audio Input
+EXPLANATION: "Record Audio Input" is an inclusion use case included only by "Practice Pronunciation." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended, and is not part of any generalization hierarchy. Recording audio is a sub-step of practicing pronunciation, not a complete service on its own. This represents functional decomposition of "Practice Pronunciation" into an unnecessary inclusion.
+
+REFACTORING_RATIONALE: The three inclusion use cases — "Load Quiz Questions," "Update Progress Tracker," and "Record Audio Input" — must each be merged back into their respective base use cases ("Take Vocabulary Quiz," "Complete Lesson," and "Practice Pronunciation"). Each inclusion use case represents an internal implementation step rather than a standalone, actor-observable service. By dropping these three use cases and their three include relationships (6 constructs total removed), the refactored model eliminates all Functional Decomposition instances while preserving the complete, meaningful services offered to actors.
+
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Learner
+actor Instructor
+actor Admin
+
+rectangle "Language Learning App" {
+  usecase "Register Account" as UC1
+  usecase "Browse Courses" as UC2
+  usecase "Complete Lesson" as UC3
+  usecase "Take Vocabulary Quiz" as UC4
+  usecase "Practice Pronunciation" as UC5
+  usecase "View Progress Dashboard" as UC6
+  usecase "Create Course Content" as UC7
+  usecase "Manage Users" as UC8
+  usecase "Review Flashcards" as UC9
+  usecase "Load Quiz Questions" as UC10
+  usecase "Update Progress Tracker" as UC11
+  usecase "Record Audio Input" as UC12
+}
+
+Learner --> UC1
+Learner --> UC2
+Learner --> UC3
+Learner --> UC4
+Learner --> UC5
+Learner --> UC6
+Learner --> UC9
+Instructor --> UC7
+Admin --> UC8
+
+UC4 ..> UC10 : <<include>>
+UC3 ..> UC11 : <<include>>
+UC5 ..> UC12 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 18
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Learner
+actor Instructor
+actor Admin
+
+rectangle "Language Learning App" {
+  usecase "Register Account" as UC1
+  usecase "Browse Courses" as UC2
+  usecase "Complete Lesson" as UC3
+  usecase "Take Vocabulary Quiz" as UC4
+  usecase "Practice Pronunciation" as UC5
+  usecase "View Progress Dashboard" as UC6
+  usecase "Create Course Content" as UC7
+  usecase "Manage Users" as UC8
+  usecase "Review Flashcards" as UC9
+}
+
+Learner --> UC1
+Learner --> UC2
+Learner --> UC3
+Learner --> UC4
+Learner --> UC5
+Learner --> UC6
+Learner --> UC9
+Instructor --> UC7
+Admin --> UC8
+
+@enduml
+```

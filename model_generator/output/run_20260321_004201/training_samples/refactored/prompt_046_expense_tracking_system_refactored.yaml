@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 46
+  domain: expense_tracking_system
+  domain_display: Expense Tracking System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 9
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:17:50.085641'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_046_expense_tracking_system/expense_tracking_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_046_expense_tracking_system/expense_tracking_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_046_expense_tracking_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Employee\nactor Manager\n\
+    \nrectangle \"Expense Tracking System\" {\n  usecase \"Submit Expense Report\"\
+    \ as UC1\n  usecase \"View Expense History\" as UC3\n  usecase \"Approve Expense\"\
+    \ as UC4\n  usecase \"Categorize Expense\" as UC5\n  usecase \"Generate Spending\
+    \ Report\" as UC6\n}\n\nEmployee --> UC1\nEmployee --> UC3\nEmployee --> UC5\n\
+    Manager --> UC4\nManager --> UC6\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: expense_tracking_system
+
+  DOMAIN_DISPLAY: Expense Tracking System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Expense Report, Attach Receipt
+
+  EXPLANATION: The use case "Attach Receipt" is an inclusion use case that is included
+  by only one use case ("Submit Expense Report"). "Attach Receipt" is not associated
+  with any actor directly, does not include or extend any other use case, is not extended
+  by any use case, and is not involv …[truncated]'

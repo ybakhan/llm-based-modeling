@@ -1,0 +1,22 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Customer" as Customer
+actor "Warehouse Staff" as Staff
+
+rectangle "Furniture Rental Service" {
+  usecase "Browse Furniture Catalog" as UC1
+  usecase "Check Furniture Availability" as UC2
+  usecase "Place Rental Order" as UC3
+  usecase "Return Furniture" as UC4
+  usecase "Process Delivery" as UC5
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC4
+Staff -- UC5
+
+UC1 ..> UC2 : <<include>>
+
+@enduml

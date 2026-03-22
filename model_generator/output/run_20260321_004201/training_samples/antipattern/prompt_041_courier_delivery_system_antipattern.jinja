@@ -1,0 +1,58 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Customer" as Customer
+actor "Dispatcher" as Dispatcher
+actor "Courier" as Courier
+actor "Admin" as Admin
+
+rectangle "Courier Delivery System" {
+  usecase "Place Delivery Order" as UC1
+  usecase "Validate Sender Address" as UC2
+  usecase "Calculate Shipping Cost" as UC3
+  usecase "Track Package" as UC4
+  usecase "Cancel Order" as UC5
+  usecase "Assign Courier" as UC6
+  usecase "Check Courier Availability" as UC7
+  usecase "Update Delivery Status" as UC8
+  usecase "Confirm Pickup" as UC9
+  usecase "Confirm Delivery" as UC10
+  usecase "Generate Delivery Report" as UC11
+  usecase "Manage Customer Accounts" as UC12
+  usecase "Rate Courier" as UC13
+}
+
+Customer --> UC1
+Customer --> UC4
+Customer --> UC5
+Customer --> UC13
+Dispatcher --> UC6
+Dispatcher --> UC11
+Courier --> UC8
+Courier --> UC9
+Courier --> UC10
+Admin --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Place Delivery Order, Validate Sender Address
+   Instance 1: Explanation: "Validate Sender Address" is an inclusion use case included only by "Place Delivery Order". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (address validation) rather than a complete service observable to a user, making it a functional decomposition of "Place Delivery Order".
+
+   Instance 2: Constructs Involved: Place Delivery Order, Calculate Shipping Cost
+   Instance 2: Explanation: "Calculate Shipping Cost" is an inclusion use case included only by "Place Delivery Order". It has no direct actor association, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It decomposes a computational sub-step out of "Place Delivery Order" rather than providing a standalone service to any actor.
+
+   Instance 3: Constructs Involved: Assign Courier, Check Courier Availability
+   Instance 3: Explanation: "Check Courier Availability" is an inclusion use case included only by "Assign Courier". It has no direct actor association, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal verification step extracted from "Assign Courier" rather than a complete, independently meaningful service.

@@ -1,0 +1,105 @@
+metadata:
+  prompt_number: 192
+  domain: border_control_system
+  domain_display: Border Control System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Verify Passport, Scan Passport Chip
+      explanation: '"Verify Passport" includes "Scan Passport Chip", but "Scan Passport
+        Chip" is not associated with any actor, is included by only "Verify Passport",
+        does not include or extend any other use case, is not extended by any use
+        case, and is not involved in any generalization. It represents a decomposed
+        sub-step of passport verification rather than a complete, independently valuable
+        service observable to any actor.'
+    - constructs_involved: Process Visa Application, Validate Supporting Documents
+      explanation: '"Process Visa Application" includes "Validate Supporting Documents",
+        but "Validate Supporting Documents" is not associated with any actor, is included
+        by only "Process Visa Application", does not include or extend any other use
+        case, is not extended by any use case, and is not involved in any generalization.
+        It is a functional decomposition of a sub-step rather than a standalone service
+        providing an observable result to a user.'
+    - constructs_involved: Conduct Secondary Screening, Perform Background Check
+      explanation: '"Conduct Secondary Screening" includes "Perform Background Check",
+        but "Perform Background Check" is not associated with any actor, is included
+        by only "Conduct Secondary Screening", does not include or extend any other
+        use case, is not extended by any use case, and is not involved in any generalization.
+        It fragments the screening process into a sub-function that provides no complete
+        service on its own to any actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:15:40.727162'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_192_border_control_system/border_control_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_192_border_control_system/border_control_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_192_border_control_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Border Officer\"\
+    \ as BO\nactor \"Traveler\" as TR\nactor \"Immigration Supervisor\" as IS\nactor\
+    \ \"Customs Officer\" as CO\n\nrectangle \"Border Control System\" {\n  usecase\
+    \ \"Verify Passport\" as UC1\n  usecase \"Scan Passport Chip\" as UC2\n  usecase\
+    \ \"Process Visa Application\" as UC3\n  usecase \"Validate Supporting Documents\"\
+    \ as UC4\n  usecase \"Conduct Secondary Screening\" as UC5\n  usecase \"Perform\
+    \ Background Check\" as UC6\n  usecase \"Record Entry/Exit\" as UC7\n  usecase\
+    \ \"Submit Travel Declaration\" as UC8\n  usecase \"Issue Entry Denial\" as UC9\n\
+    \  usecase \"Inspect Luggage\" as UC10\n  usecase \"Generate Crossing Report\"\
+    \ as UC11\n  usecase \"Flag Suspicious Traveler\" as UC12\n  usecase \"Override\
+    \ Entry Decision\" as UC13\n}\n\nBO --> UC1\nBO --> UC5\nBO --> UC7\nBO --> UC9\n\
+    BO --> UC12\n\nTR --> UC8\nTR --> UC3\n\nIS --> UC11\nIS --> UC13\n\nCO --> UC10\n\
+    \nUC1 ..> UC2 : <<include>>\nUC3 ..> UC4 : <<include>>\nUC5 ..> UC6 : <<include>>\n\
+    \nUC9 ..> UC5 : <<extend>>\nIS --|> BO\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Verify Passport, Scan Passport Chip\n  \
+    \ Instance 1: Explanation: \"Verify Passport\" includes \"Scan Passport Chip\"\
+    , but \"Scan Passport Chip\" is not associated with any actor, is included by\
+    \ only \"Verify Passport\", does not include or extend any other use case, is\
+    \ not extended by any use case, and is not involved in any generalization. It\
+    \ represents a decomposed sub-step of passport verification rather than a complete,\
+    \ independently valuable service observable to any actor.\n\n   Instance 2: Constructs\
+    \ Involved: Process Visa Application, Validate Supporting Documents\n   Instance\
+    \ 2: Explanation: \"Process Visa Application\" includes \"Validate Supporting\
+    \ Documents\", but \"Validate Supporting Documents\" is not associated with any\
+    \ actor, is included by only \"Process Visa Application\", does not include or\
+    \ extend any other use case, is not extended by any use case, and is not involved\
+    \ in any generalization. It is a functional decomposition of a sub-step rather\
+    \ than a standalone service providing an observable result to a user.\n\n   Instance\
+    \ 3: Constructs Involved: Conduct Secondary Screening, Perform Background Check\n\
+    \   Instance 3: Explanation: \"Conduct Secondary Screening\" includes \"Perform\
+    \ Background Check\", but \"Perform Background Check\" is not associated with\
+    \ any actor, is included by only \"Conduct Secondary Screening\", does not include\
+    \ or extend any other use case, is not extended by any use case, and is not involved\
+    \ in any generalization. It fragments the screening process into a sub-function\
+    \ that provides no complete service on its own to any actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: border_control_system
+
+  DOMAIN_DISPLAY: Border Control System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Verify Passport, Scan Passport Chip
+
+  EXPLANATION: "Verify Passport" includes "Scan Passport Chip", but "Scan Passport
+  Chip" is not associated with any actor, is included by only "Verify Passport", does
+  not include or extend any other use case, is not extended by any use case, and is
+  not involved in any generalization. It represent …[truncated]'

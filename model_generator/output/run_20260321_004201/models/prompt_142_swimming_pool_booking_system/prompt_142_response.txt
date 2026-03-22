@@ -1,0 +1,127 @@
+
+
+DOMAIN: swimming_pool_booking_system
+DOMAIN_DISPLAY: Swimming Pool Booking System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Lane, Validate Membership Status, include relationship from Book Lane to Validate Membership Status
+EXPLANATION: "Validate Membership Status" is an inclusion use case included only by "Book Lane". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (checking membership validity) decomposed out of "Book Lane" rather than a complete, independently valuable service. This is functional decomposition of the booking process into an artificial sub-function.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Register for Swimming Lesson, Check Schedule Availability, include relationship from Register for Swimming Lesson to Check Schedule Availability
+EXPLANATION: "Check Schedule Availability" is an inclusion use case included only by "Register for Swimming Lesson". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a procedural sub-step (looking up available lesson times) rather than a standalone service offering an observable result to any user. This is functional decomposition of the registration process.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Payment, Generate Payment Receipt, include relationship from Process Payment to Generate Payment Receipt
+EXPLANATION: "Generate Payment Receipt" is an inclusion use case included only by "Process Payment". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Generating a receipt is a sub-step of payment processing decomposed into its own use case, rather than a complete service providing an observable result to a user. This is functional decomposition of the payment flow.
+
+REFACTORING_RATIONALE: Each of the three decomposed inclusion use cases must be merged back into its respective base use case. (1) "Validate Membership Status" and its include relationship must be removed; the validation logic is absorbed into "Book Lane". (2) "Check Schedule Availability" and its include relationship must be removed; availability checking becomes part of "Register for Swimming Lesson". (3) "Generate Payment Receipt" and its include relationship must be removed; receipt generation becomes part of "Process Payment". This eliminates 3 use cases and 3 include relationships (6 constructs), reducing the total from 30 to 24 while preserving all actor-facing functionality.
+
+CONSTRUCT_COUNT: 30
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Member" as Member
+actor "Guest" as Guest
+actor "Lifeguard" as Lifeguard
+actor "Administrator" as Admin
+actor "Payment Gateway" as PGW
+
+rectangle "Swimming Pool Booking System" {
+  usecase "Book Lane" as UC1
+  usecase "Validate Membership Status" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "Register for Swimming Lesson" as UC4
+  usecase "Check Schedule Availability" as UC5
+  usecase "View Pool Schedule" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Generate Payment Receipt" as UC8
+  usecase "Manage Pool Timetable" as UC9
+  usecase "Report Incident" as UC10
+  usecase "Purchase Day Pass" as UC11
+  usecase "View Booking History" as UC12
+  usecase "Manage Member Accounts" as UC13
+}
+
+Member --> UC1
+Member --> UC3
+Member --> UC4
+Member --> UC6
+Member --> UC7
+Member --> UC12
+
+Guest --> UC6
+Guest --> UC11
+
+Lifeguard --> UC10
+
+Admin --> UC9
+Admin --> UC13
+
+UC7 --> PGW
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+UC11 ..> UC7 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Member" as Member
+actor "Guest" as Guest
+actor "Lifeguard" as Lifeguard
+actor "Administrator" as Admin
+actor "Payment Gateway" as PGW
+
+rectangle "Swimming Pool Booking System" {
+  usecase "Book Lane" as UC1
+  usecase "Cancel Booking" as UC3
+  usecase "Register for Swimming Lesson" as UC4
+  usecase "View Pool Schedule" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Manage Pool Timetable" as UC9
+  usecase "Report Incident" as UC10
+  usecase "Purchase Day Pass" as UC11
+  usecase "View Booking History" as UC12
+  usecase "Manage Member Accounts" as UC13
+}
+
+Member --> UC1
+Member --> UC3
+Member --> UC4
+Member --> UC6
+Member --> UC7
+Member --> UC12
+
+Guest --> UC6
+Guest --> UC11
+
+Lifeguard --> UC10
+
+Admin --> UC9
+Admin --> UC13
+
+UC7 --> PGW
+
+UC11 ..> UC7 : <<include>>
+
+@enduml
+```

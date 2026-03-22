@@ -1,0 +1,35 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Applicant" as Applicant
+actor "Loan Officer" as LoanOfficer
+
+rectangle "Mortgage Application System" {
+  usecase "Submit Mortgage Application" as UC1
+  usecase "Validate Applicant Income" as UC2
+  usecase "Check Credit Score" as UC3
+  usecase "Review Application" as UC4
+  usecase "Approve Mortgage" as UC5
+  usecase "Reject Mortgage" as UC6
+}
+
+Applicant -- UC1
+LoanOfficer -- UC4
+LoanOfficer -- UC5
+LoanOfficer -- UC3
+LoanOfficer -- UC6
+UC1 ..> UC2 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Submit Mortgage Application, Validate Applicant Income
+   Explanation: The use case "Submit Mortgage Application" includes "Validate Applicant Income" via an <<include>> relationship. "Validate Applicant Income" is an inclusion use case that (1) is included by only one use case ("Submit Mortgage Application"), (2) is not directly associated with any actor, (3) does not include or extend any other use case, (4) is not extended by any use case, and (5) is neither a generalization nor a specialization of any use case. "Validate Applicant Income" does not represent a complete, independently meaningful service to any actor — it is merely a decomposed step of the submission process. This constitutes the Functional Decomposition antipattern using the include relationship.

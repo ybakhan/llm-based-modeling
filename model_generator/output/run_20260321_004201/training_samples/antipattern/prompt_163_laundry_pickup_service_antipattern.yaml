@@ -1,0 +1,109 @@
+metadata:
+  prompt_number: 163
+  domain: laundry_pickup_service
+  domain_display: Laundry Pickup Service
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Schedule Pickup, Select Time Slot, include relationship
+        from Schedule Pickup to Select Time Slot
+      explanation: '"Select Time Slot" is an inclusion use case included only by "Schedule
+        Pickup". It is not associated with any actor, is not included by any other
+        use case, does not include or extend any use case, and is not extended by
+        any use case. It represents a sub-step (selecting a time) that has been decomposed
+        out of "Schedule Pickup" rather than a complete service offering an observable
+        result to an actor. This is functional decomposition via the include relationship.'
+    - constructs_involved: Process Payment, Validate Payment Details, include relationship
+        from Process Payment to Validate Payment Details
+      explanation: '"Validate Payment Details" is an inclusion use case included only
+        by "Process Payment". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, and is not
+        extended by any use case. Validating payment details is an internal sub-step
+        of processing payment, not a standalone service delivering an observable result
+        to a user. This constitutes functional decomposition.'
+    - constructs_involved: Track Order, Fetch GPS Location, include relationship from
+        Track Order to Fetch GPS Location
+      explanation: '"Fetch GPS Location" is an inclusion use case included only by
+        "Track Order". It is not associated with any actor, is not included by any
+        other use case, does not include or extend any use case, and is not extended
+        by any use case. Fetching GPS data is an implementation sub-step of tracking
+        an order, not a complete service with an observable result for any actor.
+        This is functional decomposition via the include relationship.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:45:08.960134'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_163_laundry_pickup_service/laundry_pickup_service_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_163_laundry_pickup_service/laundry_pickup_service_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_163_laundry_pickup_service_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Customer\" as Customer\nactor \"Driver\" as Driver\nactor \"Admin\"\
+    \ as Admin\n\nrectangle \"Laundry Pickup Service\" {\n  usecase \"Register Account\"\
+    \ as UC1\n  usecase \"Schedule Pickup\" as UC2\n  usecase \"Select Time Slot\"\
+    \ as UC3\n  usecase \"Track Order\" as UC4\n  usecase \"Fetch GPS Location\" as\
+    \ UC5\n  usecase \"Process Payment\" as UC6\n  usecase \"Validate Payment Details\"\
+    \ as UC7\n  usecase \"Apply Promo Code\" as UC8\n  usecase \"Rate Service\" as\
+    \ UC9\n  usecase \"Accept Pickup Request\" as UC10\n  usecase \"Update Order Status\"\
+    \ as UC11\n  usecase \"Manage Pricing\" as UC12\n  usecase \"View Reports\" as\
+    \ UC13\n}\n\nCustomer -- UC1\nCustomer -- UC2\nCustomer -- UC4\nCustomer -- UC6\n\
+    Customer -- UC9\n\nDriver -- UC10\nDriver -- UC11\n\nAdmin -- UC12\nAdmin -- UC13\n\
+    \nUC2 ..> UC3 : <<include>>\nUC4 ..> UC5 : <<include>>\nUC6 ..> UC7 : <<include>>\n\
+    UC8 ..> UC6 : <<extend>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Schedule Pickup, Select Time Slot, include\
+    \ relationship from Schedule Pickup to Select Time Slot\n   Instance 1: Explanation:\
+    \ \"Select Time Slot\" is an inclusion use case included only by \"Schedule Pickup\"\
+    . It is not associated with any actor, is not included by any other use case,\
+    \ does not include or extend any use case, and is not extended by any use case.\
+    \ It represents a sub-step (selecting a time) that has been decomposed out of\
+    \ \"Schedule Pickup\" rather than a complete service offering an observable result\
+    \ to an actor. This is functional decomposition via the include relationship.\n\
+    \n   Instance 2: Constructs Involved: Process Payment, Validate Payment Details,\
+    \ include relationship from Process Payment to Validate Payment Details\n   Instance\
+    \ 2: Explanation: \"Validate Payment Details\" is an inclusion use case included\
+    \ only by \"Process Payment\". It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any use case, and is not extended\
+    \ by any use case. Validating payment details is an internal sub-step of processing\
+    \ payment, not a standalone service delivering an observable result to a user.\
+    \ This constitutes functional decomposition.\n\n   Instance 3: Constructs Involved:\
+    \ Track Order, Fetch GPS Location, include relationship from Track Order to Fetch\
+    \ GPS Location\n   Instance 3: Explanation: \"Fetch GPS Location\" is an inclusion\
+    \ use case included only by \"Track Order\". It is not associated with any actor,\
+    \ is not included by any other use case, does not include or extend any use case,\
+    \ and is not extended by any use case. Fetching GPS data is an implementation\
+    \ sub-step of tracking an order, not a complete service with an observable result\
+    \ for any actor. This is functional decomposition via the include relationship."
+raw_response_excerpt: '
+
+
+  DOMAIN: laundry_pickup_service
+
+  DOMAIN_DISPLAY: Laundry Pickup Service
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Pickup, Select Time Slot, include relationship from
+  Schedule Pickup to Select Time Slot
+
+  EXPLANATION: "Select Time Slot" is an inclusion use case included only by "Schedule
+  Pickup". It is not associated with any actor, is not included by any other use case,
+  does not include or extend any use case, and is not extended by …[truncated]'

@@ -1,0 +1,108 @@
+metadata:
+  prompt_number: 114
+  domain: hostel_booking_system
+  domain_display: Hostel Booking System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Search Available Rooms, Validate Search Criteria, include
+        (Search Available Rooms → Validate Search Criteria)
+      explanation: '"Validate Search Criteria" is an inclusion use case included only
+        by "Search Available Rooms." It is not associated with any actor, does not
+        include or extend any other use case, is not extended by any use case, and
+        is not part of any generalization. It represents a sub-step (validation) rather
+        than a complete service observable to a user, making it a functional decomposition
+        of "Search Available Rooms."'
+    - constructs_involved: Make Booking, Calculate Total Price, include (Make Booking
+        → Calculate Total Price)
+      explanation: '"Calculate Total Price" is an inclusion use case included only
+        by "Make Booking." It has no direct actor association, does not include or
+        extend any other use case, is not extended by any use case, and is not a generalization
+        or specialization. Calculating a total price is an internal computational
+        step within the booking process, not a standalone service — this is functional
+        decomposition of "Make Booking."'
+    - constructs_involved: Process Payment, Verify Card Details, include (Process
+        Payment → Verify Card Details)
+      explanation: '"Verify Card Details" is an inclusion use case included only by
+        "Process Payment." It is not associated with any actor, does not include or
+        extend any other use case, is not extended by any use case, and has no generalization
+        relationships. Verifying card details is an internal sub-step of payment processing,
+        not a complete service offered to any user — this constitutes functional decomposition
+        of "Process Payment."'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:44:24.150340'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_114_hostel_booking_system/hostel_booking_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_114_hostel_booking_system/hostel_booking_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_114_hostel_booking_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Guest\" as Guest\nactor \"Receptionist\" as Receptionist\nactor \"Admin\"\
+    \ as Admin\n\nrectangle \"Hostel Booking System\" {\n  usecase \"Search Available\
+    \ Rooms\" as UC1\n  usecase \"Validate Search Criteria\" as UC2\n  usecase \"\
+    Make Booking\" as UC3\n  usecase \"Calculate Total Price\" as UC4\n  usecase \"\
+    Process Payment\" as UC5\n  usecase \"Verify Card Details\" as UC6\n  usecase\
+    \ \"Cancel Booking\" as UC7\n  usecase \"View Booking History\" as UC8\n  usecase\
+    \ \"Manage Room Inventory\" as UC9\n  usecase \"Check In Guest\" as UC10\n  usecase\
+    \ \"Check Out Guest\" as UC11\n  usecase \"Generate Reports\" as UC12\n  usecase\
+    \ \"Leave Review\" as UC13\n}\n\nGuest --> UC1\nGuest --> UC3\nGuest --> UC5\n\
+    Guest --> UC7\nGuest --> UC8\nGuest --> UC13\n\nReceptionist --> UC10\nReceptionist\
+    \ --> UC11\nReceptionist --> UC1\n\nAdmin --> UC9\nAdmin --> UC12\n\nUC1 ..> UC2\
+    \ : <<include>>\nUC3 ..> UC4 : <<include>>\nUC5 ..> UC6 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Search Available Rooms, Validate Search\
+    \ Criteria, include (Search Available Rooms → Validate Search Criteria)\n   Instance\
+    \ 1: Explanation: \"Validate Search Criteria\" is an inclusion use case included\
+    \ only by \"Search Available Rooms.\" It is not associated with any actor, does\
+    \ not include or extend any other use case, is not extended by any use case, and\
+    \ is not part of any generalization. It represents a sub-step (validation) rather\
+    \ than a complete service observable to a user, making it a functional decomposition\
+    \ of \"Search Available Rooms.\"\n\n   Instance 2: Constructs Involved: Make Booking,\
+    \ Calculate Total Price, include (Make Booking → Calculate Total Price)\n   Instance\
+    \ 2: Explanation: \"Calculate Total Price\" is an inclusion use case included\
+    \ only by \"Make Booking.\" It has no direct actor association, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not a\
+    \ generalization or specialization. Calculating a total price is an internal computational\
+    \ step within the booking process, not a standalone service — this is functional\
+    \ decomposition of \"Make Booking.\"\n\n   Instance 3: Constructs Involved: Process\
+    \ Payment, Verify Card Details, include (Process Payment → Verify Card Details)\n\
+    \   Instance 3: Explanation: \"Verify Card Details\" is an inclusion use case\
+    \ included only by \"Process Payment.\" It is not associated with any actor, does\
+    \ not include or extend any other use case, is not extended by any use case, and\
+    \ has no generalization relationships. Verifying card details is an internal sub-step\
+    \ of payment processing, not a complete service offered to any user — this constitutes\
+    \ functional decomposition of \"Process Payment.\""
+raw_response_excerpt: '
+
+
+  DOMAIN: hostel_booking_system
+
+  DOMAIN_DISPLAY: Hostel Booking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Search Available Rooms, Validate Search Criteria, include (Search
+  Available Rooms → Validate Search Criteria)
+
+  EXPLANATION: "Validate Search Criteria" is an inclusion use case included only by
+  "Search Available Rooms." It is not associated with any actor, does not include
+  or extend any other use case, is not extended by any use ca …[truncated]'

@@ -1,0 +1,35 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Club Organizer" as Organizer
+actor "Member" as Member
+
+rectangle "Book Club Platform" {
+  usecase "Create Book Club" as UC1
+  usecase "Browse Book Clubs" as UC2
+  usecase "Join Book Club" as UC3
+  usecase "Schedule Meeting" as UC4
+  usecase "Select Date and Time" as UC5
+  usecase "Submit Book Review" as UC6
+}
+
+Organizer --> UC1
+Organizer --> UC4
+UC4 ..> UC5 : <<include>>
+Member --> UC2
+Member --> UC3
+Member --> UC6
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Schedule Meeting (UC4), Select Date and Time (UC5), include relationship from UC4 to UC5
+   Explanation: "Select Date and Time" (UC5) is an inclusion use case that is included by only one use case ("Schedule Meeting", UC4). UC5 is not associated with any actor directly — no actor interacts with it. UC5 does not include, extend, generalize, or get extended by any other use case. It represents a sub-step of scheduling a meeting (selecting a date/time) rather than a complete, independently valuable service observable to a user. This is classic functional decomposition: the behavior of "Schedule Meeting" has been artificially broken into a procedural sub-step via an include relationship, when "Select Date and Time" has no standalone value and is not reused elsewhere.

@@ -1,0 +1,109 @@
+metadata:
+  prompt_number: 84
+  domain: online_auction_platform
+  domain_display: Online Auction Platform
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Place Bid, Validate Bid Amount, include relationship from
+        Place Bid to Validate Bid Amount
+      explanation: '"Validate Bid Amount" is an inclusion use case included only by
+        "Place Bid". It is not associated with any actor, does not include or extend
+        any other use case, is not extended by any use case, and is not part of any
+        generalization. It represents a decomposed step of the bidding process rather
+        than a complete service observable to a user. This is functional decomposition
+        of "Place Bid" into a sub-step.'
+    - constructs_involved: Create Auction Listing, Upload Item Photos, include relationship
+        from Create Auction Listing to Upload Item Photos
+      explanation: '"Upload Item Photos" is an inclusion use case included only by
+        "Create Auction Listing". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. Uploading photos is a sub-step of creating a listing,
+        not a standalone service providing an observable result to any user. This
+        is functional decomposition.'
+    - constructs_involved: Place Bid, Send Bid Notification, include relationship
+        from Place Bid to Send Bid Notification
+      explanation: '"Send Bid Notification" is an inclusion use case included only
+        by "Place Bid". It is not associated with any actor, does not include or extend
+        any other use case, is not extended by any use case, and is not part of any
+        generalization. Sending a notification is an internal sub-step of the bidding
+        process, not a complete service observable to any actor. This is functional
+        decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 28
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:55:37.559999'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_084_online_auction_platform/online_auction_platform_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_084_online_auction_platform/online_auction_platform_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_084_online_auction_platform_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor Bidder\nactor Seller\nactor Admin\nactor \"Payment Gateway\" as PG\n\n\
+    rectangle \"Online Auction Platform\" {\n    usecase \"Register Account\" as UC1\n\
+    \    usecase \"Browse Auctions\" as UC2\n    usecase \"Place Bid\" as UC3\n  \
+    \  usecase \"Validate Bid Amount\" as UC4\n    usecase \"Send Bid Notification\"\
+    \ as UC5\n    usecase \"Create Auction Listing\" as UC6\n    usecase \"Upload\
+    \ Item Photos\" as UC7\n    usecase \"Close Auction\" as UC8\n    usecase \"Process\
+    \ Payment\" as UC9\n    usecase \"View Bid History\" as UC10\n    usecase \"Manage\
+    \ User Accounts\" as UC11\n    usecase \"Resolve Dispute\" as UC12\n    usecase\
+    \ \"Leave Feedback\" as UC13\n    usecase \"Search Auctions\" as UC14\n}\n\nBidder\
+    \ -- UC1\nBidder -- UC2\nBidder -- UC3\nBidder -- UC10\nBidder -- UC13\nBidder\
+    \ -- UC14\nSeller -- UC1\nSeller -- UC6\nSeller -- UC8\nSeller -- UC13\nAdmin\
+    \ -- UC11\nAdmin -- UC12\nPG -- UC9\n\nUC3 ..> UC4 : <<include>>\nUC3 ..> UC5\
+    \ : <<include>>\nUC6 ..> UC7 : <<include>>\nUC8 ..> UC9 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Place Bid, Validate Bid Amount, include\
+    \ relationship from Place Bid to Validate Bid Amount\n   Instance 1: Explanation:\
+    \ \"Validate Bid Amount\" is an inclusion use case included only by \"Place Bid\"\
+    . It is not associated with any actor, does not include or extend any other use\
+    \ case, is not extended by any use case, and is not part of any generalization.\
+    \ It represents a decomposed step of the bidding process rather than a complete\
+    \ service observable to a user. This is functional decomposition of \"Place Bid\"\
+    \ into a sub-step.\n\n   Instance 2: Constructs Involved: Create Auction Listing,\
+    \ Upload Item Photos, include relationship from Create Auction Listing to Upload\
+    \ Item Photos\n   Instance 2: Explanation: \"Upload Item Photos\" is an inclusion\
+    \ use case included only by \"Create Auction Listing\". It is not associated with\
+    \ any actor, does not include or extend any other use case, is not extended by\
+    \ any use case, and is not part of any generalization. Uploading photos is a sub-step\
+    \ of creating a listing, not a standalone service providing an observable result\
+    \ to any user. This is functional decomposition.\n\n   Instance 3: Constructs\
+    \ Involved: Place Bid, Send Bid Notification, include relationship from Place\
+    \ Bid to Send Bid Notification\n   Instance 3: Explanation: \"Send Bid Notification\"\
+    \ is an inclusion use case included only by \"Place Bid\". It is not associated\
+    \ with any actor, does not include or extend any other use case, is not extended\
+    \ by any use case, and is not part of any generalization. Sending a notification\
+    \ is an internal sub-step of the bidding process, not a complete service observable\
+    \ to any actor. This is functional decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: online_auction_platform
+
+  DOMAIN_DISPLAY: Online Auction Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Bid, Validate Bid Amount, include relationship from Place
+  Bid to Validate Bid Amount
+
+  EXPLANATION: "Validate Bid Amount" is an inclusion use case included only by "Place
+  Bid". It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case, and is not part of any genera …[truncated]'

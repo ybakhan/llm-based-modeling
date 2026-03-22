@@ -1,0 +1,110 @@
+metadata:
+  prompt_number: 104
+  domain: clinical_trial_management_system
+  domain_display: Clinical Trial Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Enroll Patient, Validate Eligibility Criteria, include
+        relationship from Enroll Patient to Validate Eligibility Criteria
+      explanation: '"Validate Eligibility Criteria" is included only by "Enroll Patient",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not part of any generalization.
+        It represents a sub-step of enrollment rather than a complete, independently
+        valuable service. This is functional decomposition of the "Enroll Patient"
+        use case.'
+    - constructs_involved: Enroll Patient, Randomize Patient, include relationship
+        from Enroll Patient to Randomize Patient
+      explanation: '"Randomize Patient" is included only by "Enroll Patient", is not
+        associated with any actor, does not include or extend any other use case,
+        is not extended by any use case, and is not part of any generalization. It
+        represents a procedural sub-step of enrollment rather than a standalone service
+        observable to any user. This is functional decomposition of the "Enroll Patient"
+        use case.'
+    - constructs_involved: Record Adverse Event, Generate Adverse Event Notification,
+        include relationship from Record Adverse Event to Generate Adverse Event Notification
+      explanation: '"Generate Adverse Event Notification" is included only by "Record
+        Adverse Event", is not associated with any actor, does not include or extend
+        any other use case, is not extended by any use case, and is not part of any
+        generalization. It represents an internal sub-step of recording an adverse
+        event rather than a complete service offered to a user. This is functional
+        decomposition of the "Record Adverse Event" use case.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 28
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T21:21:37.202041'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_104_clinical_trial_management_system/clinical_trial_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_104_clinical_trial_management_system/clinical_trial_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_104_clinical_trial_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Clinical\
+    \ Investigator\" as CI\nactor \"Study Coordinator\" as SC\nactor \"Data Manager\"\
+    \ as DM\nactor \"Sponsor\" as SP\nactor \"Regulatory Authority\" as RA\n\nrectangle\
+    \ \"Clinical Trial Management System\" {\n  usecase \"Enroll Patient\" as UC1\n\
+    \  usecase \"Validate Eligibility Criteria\" as UC2\n  usecase \"Randomize Patient\"\
+    \ as UC3\n  usecase \"Record Adverse Event\" as UC4\n  usecase \"Generate Adverse\
+    \ Event Notification\" as UC5\n  usecase \"Submit Case Report Form\" as UC6\n\
+    \  usecase \"Monitor Trial Progress\" as UC7\n  usecase \"Review Data Queries\"\
+    \ as UC8\n  usecase \"Generate Compliance Report\" as UC9\n  usecase \"Manage\
+    \ Study Protocol\" as UC10\n  usecase \"Audit Trial Data\" as UC11\n  usecase\
+    \ \"Close Study Site\" as UC12\n}\n\nCI -- UC1\nCI -- UC4\nSC -- UC6\nSC -- UC1\n\
+    DM -- UC8\nDM -- UC7\nSP -- UC7\nSP -- UC10\nSP -- UC12\nRA -- UC9\nRA -- UC11\n\
+    \nUC1 ..> UC2 : <<include>>\nUC1 ..> UC3 : <<include>>\nUC4 ..> UC5 : <<include>>\n\
+    @enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Enroll Patient, Validate Eligibility Criteria,\
+    \ include relationship from Enroll Patient to Validate Eligibility Criteria\n\
+    \   Instance 1: Explanation: \"Validate Eligibility Criteria\" is included only\
+    \ by \"Enroll Patient\", is not associated with any actor, does not include or\
+    \ extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. It represents a sub-step of enrollment rather than a\
+    \ complete, independently valuable service. This is functional decomposition of\
+    \ the \"Enroll Patient\" use case.\n\n   Instance 2: Constructs Involved: Enroll\
+    \ Patient, Randomize Patient, include relationship from Enroll Patient to Randomize\
+    \ Patient\n   Instance 2: Explanation: \"Randomize Patient\" is included only\
+    \ by \"Enroll Patient\", is not associated with any actor, does not include or\
+    \ extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. It represents a procedural sub-step of enrollment rather\
+    \ than a standalone service observable to any user. This is functional decomposition\
+    \ of the \"Enroll Patient\" use case.\n\n   Instance 3: Constructs Involved: Record\
+    \ Adverse Event, Generate Adverse Event Notification, include relationship from\
+    \ Record Adverse Event to Generate Adverse Event Notification\n   Instance 3:\
+    \ Explanation: \"Generate Adverse Event Notification\" is included only by \"\
+    Record Adverse Event\", is not associated with any actor, does not include or\
+    \ extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. It represents an internal sub-step of recording an adverse\
+    \ event rather than a complete service offered to a user. This is functional decomposition\
+    \ of the \"Record Adverse Event\" use case."
+raw_response_excerpt: '
+
+
+  DOMAIN: clinical_trial_management_system
+
+  DOMAIN_DISPLAY: Clinical Trial Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Enroll Patient, Validate Eligibility Criteria, include relationship
+  from Enroll Patient to Validate Eligibility Criteria
+
+  EXPLANATION: "Validate Eligibility Criteria" is included only by "Enroll Patient",
+  is not associated with any actor, does not include or extend any other use case,
+  is not extended by any u …[truncated]'

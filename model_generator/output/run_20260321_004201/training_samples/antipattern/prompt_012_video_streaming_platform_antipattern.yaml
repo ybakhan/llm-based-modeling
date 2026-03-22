@@ -1,0 +1,105 @@
+metadata:
+  prompt_number: 12
+  domain: video_streaming_platform
+  domain_display: Video Streaming Platform
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Search Content, Fetch Search Results
+      explanation: '"Search Content" includes "Fetch Search Results" via an <<include>>
+        relationship. "Fetch Search Results" is only included by "Search Content",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not part of any generalization.
+        It represents a decomposed substep (fetching results) rather than a complete,
+        independently valuable service — this is functional decomposition of "Search
+        Content" into an artificial substep.'
+    - constructs_involved: Play Video, Load Video Stream
+      explanation: '"Play Video" includes "Load Video Stream" via an <<include>> relationship.
+        "Load Video Stream" is only included by "Play Video", is not associated with
+        any actor, does not include or extend any other use case, is not extended
+        by any use case, and is not part of any generalization. Loading the video
+        stream is an internal technical substep of playing a video, not a complete
+        service observable to a user — this constitutes functional decomposition.'
+    - constructs_involved: Create Playlist, Validate Playlist Name
+      explanation: '"Create Playlist" includes "Validate Playlist Name" via an <<include>>
+        relationship. "Validate Playlist Name" is only included by "Create Playlist",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not part of any generalization.
+        Validating a playlist name is a granular internal step of playlist creation,
+        not a standalone service — this is functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:51:29.991465'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_012_video_streaming_platform/video_streaming_platform_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_012_video_streaming_platform/video_streaming_platform_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_012_video_streaming_platform_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Viewer\nactor\
+    \ \"Content Creator\" as Creator\nactor Administrator\n\nrectangle \"Video Streaming\
+    \ Platform\" {\n  usecase \"Register Account\" as UC1\n  usecase \"Search Content\"\
+    \ as UC2\n  usecase \"Fetch Search Results\" as UC3\n  usecase \"Play Video\"\
+    \ as UC4\n  usecase \"Load Video Stream\" as UC5\n  usecase \"Rate Video\" as\
+    \ UC6\n  usecase \"Create Playlist\" as UC7\n  usecase \"Validate Playlist Name\"\
+    \ as UC8\n  usecase \"Upload Video\" as UC9\n  usecase \"Manage Subscriptions\"\
+    \ as UC10\n  usecase \"Moderate Content\" as UC11\n  usecase \"View Watch History\"\
+    \ as UC12\n  usecase \"Add Subtitles\" as UC13\n}\n\nViewer -- UC1\nViewer --\
+    \ UC2\nViewer -- UC4\nViewer -- UC6\nViewer -- UC7\nViewer -- UC10\nViewer --\
+    \ UC12\nCreator -- UC9\nCreator -- UC13\nAdministrator -- UC11\n\nUC2 ..> UC3\
+    \ : <<include>>\nUC4 ..> UC5 : <<include>>\nUC7 ..> UC8 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Search Content, Fetch Search Results\n \
+    \  Instance 1: Explanation: \"Search Content\" includes \"Fetch Search Results\"\
+    \ via an <<include>> relationship. \"Fetch Search Results\" is only included by\
+    \ \"Search Content\", is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and is not part of any\
+    \ generalization. It represents a decomposed substep (fetching results) rather\
+    \ than a complete, independently valuable service — this is functional decomposition\
+    \ of \"Search Content\" into an artificial substep.\n\n   Instance 2: Constructs\
+    \ Involved: Play Video, Load Video Stream\n   Instance 2: Explanation: \"Play\
+    \ Video\" includes \"Load Video Stream\" via an <<include>> relationship. \"Load\
+    \ Video Stream\" is only included by \"Play Video\", is not associated with any\
+    \ actor, does not include or extend any other use case, is not extended by any\
+    \ use case, and is not part of any generalization. Loading the video stream is\
+    \ an internal technical substep of playing a video, not a complete service observable\
+    \ to a user — this constitutes functional decomposition.\n\n   Instance 3: Constructs\
+    \ Involved: Create Playlist, Validate Playlist Name\n   Instance 3: Explanation:\
+    \ \"Create Playlist\" includes \"Validate Playlist Name\" via an <<include>> relationship.\
+    \ \"Validate Playlist Name\" is only included by \"Create Playlist\", is not associated\
+    \ with any actor, does not include or extend any other use case, is not extended\
+    \ by any use case, and is not part of any generalization. Validating a playlist\
+    \ name is a granular internal step of playlist creation, not a standalone service\
+    \ — this is functional decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: video_streaming_platform
+
+  DOMAIN_DISPLAY: Video Streaming Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Search Content, Fetch Search Results
+
+  EXPLANATION: "Search Content" includes "Fetch Search Results" via an <<include>>
+  relationship. "Fetch Search Results" is only included by "Search Content", is not
+  associated with any actor, does not include or extend any other use case, is not
+  extended by any use case, and is not part of …[truncated]'

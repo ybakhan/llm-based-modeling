@@ -1,0 +1,33 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Customer" as Customer
+actor "Event Planner" as Planner
+actor "Admin" as Admin
+
+rectangle "Event Decoration Booking System" {
+  usecase "Browse Decoration Packages" as UC1
+  usecase "Place Booking" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "View Booking History" as UC4
+  usecase "Manage Decoration Packages" as UC5
+  usecase "Generate Revenue Report" as UC6
+  usecase "Consult on Custom Decoration" as UC7
+  usecase "Schedule Site Visit" as UC8
+  usecase "Apply Discount Code" as UC9
+
+  UC9 ..> UC2 : <<extend>>
+  UC3 ..> UC2 : <<extend>>
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC3
+Customer -- UC4
+Planner -- UC7
+Planner -- UC8
+Planner -- UC1
+Admin -- UC5
+Admin -- UC6
+
+@enduml

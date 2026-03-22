@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 154
+  domain: remote_desktop_service
+  domain_display: Remote Desktop Service
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:44:45.549581'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_154_remote_desktop_service/remote_desktop_service_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_154_remote_desktop_service/remote_desktop_service_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_154_remote_desktop_service_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"End User\" as EU\nactor \"IT Administrator\" as Admin\n\nrectangle \"\
+    Remote Desktop Service\" {\n  usecase \"Connect to Remote Desktop\" as UC1\n \
+    \ usecase \"Transfer Files\" as UC3\n  usecase \"Manage User Sessions\" as UC4\n\
+    \  usecase \"View Session Logs\" as UC5\n  usecase \"Disconnect Session\" as UC6\n\
+    }\n\nEU -- UC1\nEU -- UC3\nEU -- UC6\nAdmin -- UC4\nAdmin -- UC5\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: remote_desktop_service
+
+  DOMAIN_DISPLAY: Remote Desktop Service
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Connect to Remote Desktop, Establish VPN Tunnel, Connect to
+  Remote Desktop --include--> Establish VPN Tunnel
+
+  EXPLANATION: "Establish VPN Tunnel" is an inclusion use case that is included by
+  only one use case ("Connect to Remote Desktop"). It is not associated with any actor,
+  does not include or extend any other use case, is not  …[truncated]'

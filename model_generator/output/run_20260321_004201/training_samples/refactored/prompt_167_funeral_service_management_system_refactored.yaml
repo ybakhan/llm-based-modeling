@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 167
+  domain: funeral_service_management_system
+  domain_display: Funeral Service Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:06:47.751003'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_167_funeral_service_management_system/funeral_service_management_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_167_funeral_service_management_system/funeral_service_management_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_167_funeral_service_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Family Member\" as\
+    \ FM\nactor \"Funeral Director\" as FD\nactor \"Accountant\" as ACC\nactor \"\
+    Transport Coordinator\" as TC\n\nrectangle \"Funeral Service Management System\"\
+    \ {\n    usecase \"Register Deceased\" as UC1\n    usecase \"Schedule Funeral\
+    \ Service\" as UC2\n    usecase \"Select Casket\" as UC4\n    usecase \"Manage\
+    \ Floral Arrangements\" as UC5\n    usecase \"Process Payment\" as UC6\n    usecase\
+    \ \"Arrange Transportation\" as UC8\n    usecase \"Manage Obituary\" as UC10\n\
+    \    usecase \"View Service Details\" as UC11\n    usecase \"Generate Financial\
+    \ Report\" as UC12\n    usecase \"Coordinate Clergy\" as UC13\n    usecase \"\
+    Request Cremation\" as UC14\n    usecase \"Cancel Service\" as UC15\n\n    UC15\
+    \ ..> UC6 : <<extend>>\n}\n\nFM --> UC1\nFM --> UC2\nFM --> UC4\nFM --> UC5\n\
+    FM --> UC10\nFM --> UC11\nFM --> UC14\n\nFD --> UC2\nFD --> UC13\nFD --> UC15\n\
+    \nACC --> UC6\nACC --> UC12\n\nTC --> UC8\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: funeral_service_management_system
+
+  DOMAIN_DISPLAY: Funeral Service Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Funeral Service, Select Time Slot, include (Schedule
+  Funeral Service → Select Time Slot)
+
+  EXPLANATION: "Select Time Slot" is an inclusion use case included only by "Schedule
+  Funeral Service". It is not associated with any actor, is not included by any other
+  use case, does not include or extend any  …[truncated]'

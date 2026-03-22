@@ -1,0 +1,45 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Listener
+actor Podcaster
+actor Admin
+
+rectangle "Podcast Platform" {
+  usecase "Browse Catalog" as UC1
+  usecase "Search Podcasts" as UC2
+  usecase "Play Episode" as UC4
+  usecase "Subscribe to Podcast" as UC5
+  usecase "Rate and Review" as UC7
+  usecase "Download Episode" as UC8
+  usecase "Publish Episode" as UC9
+  usecase "Manage Podcast Profile" as UC11
+  usecase "View Analytics" as UC12
+  usecase "Moderate Content" as UC13
+  usecase "Manage Users" as UC14
+}
+
+Listener --> UC1
+Listener --> UC2
+Listener --> UC4
+Listener --> UC5
+Listener --> UC7
+Listener --> UC8
+
+Podcaster --> UC9
+Podcaster --> UC11
+Podcaster --> UC12
+
+Admin --> UC13
+Admin --> UC14
+
+@enduml
+
+
+Answer:
+No antipattern detected.

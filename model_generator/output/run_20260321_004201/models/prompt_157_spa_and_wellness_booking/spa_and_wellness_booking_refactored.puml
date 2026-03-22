@@ -1,0 +1,19 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Customer" as A1
+actor "Therapist" as A2
+
+rectangle "Spa and Wellness Booking System" {
+  usecase "Browse Services" as UC1
+  usecase "Book Treatment" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "View Schedule" as UC5
+}
+
+A1 -- UC1
+A1 -- UC2
+A1 -- UC3
+A2 -- UC5
+@enduml

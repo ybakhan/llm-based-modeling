@@ -1,0 +1,56 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Student" as Student
+actor "Instructor" as Instructor
+actor "Administrator" as Admin
+
+rectangle "Plagiarism Detection System" {
+  usecase "Submit Document" as UC1
+  usecase "Parse Document Text" as UC2
+  usecase "Run Plagiarism Check" as UC3
+  usecase "Compare Against Database" as UC4
+  usecase "Generate Report" as UC5
+  usecase "Calculate Similarity Score" as UC6
+  usecase "View Report" as UC7
+  usecase "Manage Document Repository" as UC8
+  usecase "Configure Detection Settings" as UC9
+  usecase "Flag Submission" as UC10
+  usecase "View Submission History" as UC11
+  usecase "Manage User Accounts" as UC12
+}
+
+Student --> UC1
+Student --> UC7
+Student --> UC11
+Instructor --> UC3
+Instructor --> UC7
+Instructor --> UC5
+Instructor --> UC10
+Admin --> UC8
+Admin --> UC9
+Admin --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Submit Document, Parse Document Text, include relationship from "Submit Document" to "Parse Document Text"
+   Instance 1: Explanation: "Parse Document Text" is an inclusion use case included only by "Submit Document". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents an internal processing step (text parsing) rather than a complete service observable to any user. This is functional decomposition — breaking "Submit Document" into an implementation sub-step.
+
+   Instance 2: Constructs Involved: Run Plagiarism Check, Compare Against Database, include relationship from "Run Plagiarism Check" to "Compare Against Database"
+   Instance 2: Explanation: "Compare Against Database" is an inclusion use case included only by "Run Plagiarism Check". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Comparing against a database is an internal algorithmic step, not a standalone service providing an observable result to a user. This decomposes the plagiarism check into an implementation detail.
+
+   Instance 3: Constructs Involved: Generate Report, Calculate Similarity Score, include relationship from "Generate Report" to "Calculate Similarity Score"
+   Instance 3: Explanation: "Calculate Similarity Score" is an inclusion use case included only by "Generate Report". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Calculating a similarity score is an internal computation step within report generation, not a complete service offered to any actor. This is functional decomposition of the reporting use case.

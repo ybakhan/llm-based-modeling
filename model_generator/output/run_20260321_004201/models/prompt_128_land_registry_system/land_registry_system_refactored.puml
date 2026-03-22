@@ -1,0 +1,31 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Land Owner" as LO
+actor "Buyer" as BU
+actor "Notary" as NO
+actor "Bank Officer" as BO
+actor "Registry Clerk" as RC
+
+rectangle "Land Registry System" {
+  usecase "Register Property" as UC1
+  usecase "Transfer Ownership" as UC3
+  usecase "Search Land Records" as UC5
+  usecase "Process Mortgage Registration" as UC6
+  usecase "Issue Title Certificate" as UC8
+  usecase "Update Cadastral Map" as UC9
+  usecase "Generate Ownership Report" as UC10
+}
+
+LO -- UC1
+LO -- UC3
+BU -- UC3
+BU -- UC5
+NO -- UC3
+NO -- UC8
+BO -- UC6
+RC -- UC1
+RC -- UC9
+RC -- UC10
+@enduml

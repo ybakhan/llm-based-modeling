@@ -1,0 +1,61 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Passenger
+actor Driver
+actor Administrator
+
+rectangle "Public Transport System" {
+  usecase "Plan Journey" as UC1
+  usecase "Validate Route Availability" as UC2
+  usecase "Purchase Ticket" as UC3
+  usecase "Calculate Fare" as UC4
+  usecase "View Live Schedule" as UC5
+  usecase "Register Account" as UC6
+  usecase "Send Confirmation Email" as UC7
+  usecase "Report Delay" as UC8
+  usecase "Track Vehicle Location" as UC9
+  usecase "Manage Routes" as UC10
+  usecase "View Passenger Statistics" as UC11
+  usecase "Request Refund" as UC12
+  usecase "Rate Service" as UC13
+  usecase "Apply Discount" as UC14
+}
+
+Passenger --> UC1
+Passenger --> UC3
+Passenger --> UC5
+Passenger --> UC6
+Passenger --> UC12
+Passenger --> UC13
+
+Driver --> UC8
+Driver --> UC9
+
+Administrator --> UC10
+Administrator --> UC11
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC3 ..> UC14 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Plan Journey, Validate Route Availability, include (Plan Journey → Validate Route Availability)
+   Instance 1: Explanation: "Validate Route Availability" is an inclusion use case included only by "Plan Journey". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed sub-step (checking if a route exists) rather than a complete, independently valuable service observable to a user. This is functional decomposition of "Plan Journey" into an artificially separated fragment.
+
+   Instance 2: Constructs Involved: Purchase Ticket, Calculate Fare, include (Purchase Ticket → Calculate Fare)
+   Instance 2: Explanation: "Calculate Fare" is an inclusion use case included only by "Purchase Ticket". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Fare calculation is a sub-step of purchasing a ticket and does not represent a standalone service with an observable result for any actor. This is functional decomposition of "Purchase Ticket" into an internal processing fragment.
+
+   Instance 3: Constructs Involved: Register Account, Send Confirmation Email, include (Register Account → Send Confirmation Email)
+   Instance 3: Explanation: "Send Confirmation Email" is an inclusion use case included only by "Register Account". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Sending a confirmation email is an internal implementation step of registration, not a complete service yielding an independent observable result to a user. This is functional decomposition of "Register Account" into a technical sub-task.

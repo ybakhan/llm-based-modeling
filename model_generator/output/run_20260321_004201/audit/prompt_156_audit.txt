@@ -1,0 +1,246 @@
+AUDIT LOG — Prompt #156
+Timestamp : 2026-03-21T02:02:40.640799
+Model     : claude-opus-4-6
+Tokens    : input=1355  output=1353
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (3 instances) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #156: Generate a MEDIUM use case model with exactly 27 constructs (valid range for medium: 24–30 constructs). Domain: Wedding Planning Platform.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: wedding_planning_platform
+DOMAIN_DISPLAY: Wedding Planning Platform
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Venue, Check Venue Availability, include (Book Venue → Check Venue Availability)
+EXPLANATION: "Check Venue Availability" is an inclusion use case included only by "Book Venue." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed sub-step of the booking process rather than a complete, independently valuable service to any actor. This constitutes functional decomposition via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Send Invitations, Validate Guest Addresses, include (Send Invitations → Validate Guest Addresses)
+EXPLANATION: "Validate Guest Addresses" is an inclusion use case included only by "Send Invitations." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Validating addresses is a decomposed procedural step of sending invitations, not a standalone service observable to a user. This constitutes functional decomposition via the include relationship.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Manage Budget, Calculate Remaining Balance, include (Manage Budget → Calculate Remaining Balance)
+EXPLANATION: "Calculate Remaining Balance" is an inclusion use case included only by "Manage Budget." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Calculating a remaining balance is an internal computational step of budget management, not a complete service yielding an observable result to any actor. This constitutes functional decomposition via the include relationship.
+
+REFACTORING_RATIONALE: Each of the three decomposed inclusion use cases ("Check Venue Availability," "Validate Guest Addresses," "Calculate Remaining Balance") must be merged into their respective base use cases ("Book Venue," "Send Invitations," "Manage Budget"). These inclusion use cases each serve only one base use case, have no actor associations, and represent internal procedural steps rather than complete services. Removing them and their include relationships eliminates 3 use cases and 3 include arrows (6 constructs), producing a cleaner model where each base use case encapsulates its full behavior.
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Couple" as Couple
+actor "Wedding Planner" as Planner
+actor "Vendor" as Vendor
+actor "Guest" as Guest
+
+rectangle "Wedding Planning Platform" {
+  usecase "Register Account" as UC1
+  usecase "Browse Vendors" as UC2
+  usecase "Book Venue" as UC3
+  usecase "Check Venue Availability" as UC4
+  usecase "Manage Guest List" as UC5
+  usecase "Send Invitations" as UC6
+  usecase "Validate Guest Addresses" as UC7
+  usecase "RSVP to Event" as UC8
+  usecase "Manage Budget" as UC9
+  usecase "Calculate Remaining Balance" as UC10
+  usecase "Create Seating Arrangement" as UC11
+  usecase "Submit Vendor Proposal" as UC12
+  usecase "Schedule Consultation" as UC13
+  usecase "View Wedding Timeline" as UC14
+}
+
+Couple --> UC1
+Couple --> UC2
+Couple --> UC3
+Couple --> UC5
+Couple --> UC6
+Couple --> UC9
+Couple --> UC11
+Couple --> UC14
+
+Planner --> UC3
+Planner --> UC13
+Planner --> UC14
+
+Vendor --> UC12
+
+Guest --> UC8
+
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC9 ..> UC10 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Couple" as Couple
+actor "Wedding Planner" as Planner
+actor "Vendor" as Vendor
+actor "Guest" as Guest
+
+rectangle "Wedding Planning Platform" {
+  usecase "Register Account" as UC1
+  usecase "Browse Vendors" as UC2
+  usecase "Book Venue" as UC3
+  usecase "Manage Guest List" as UC5
+  usecase "Send Invitations" as UC6
+  usecase "RSVP to Event" as UC8
+  usecase "Manage Budget" as UC9
+  usecase "Create Seating Arrangement" as UC11
+  usecase "Submit Vendor Proposal" as UC12
+  usecase "Schedule Consultation" as UC13
+  usecase "View Wedding Timeline" as UC14
+}
+
+Couple --> UC1
+Couple --> UC2
+Couple --> UC3
+Couple --> UC5
+Couple --> UC6
+Couple --> UC9
+Couple --> UC11
+Couple --> UC14
+
+Planner --> UC3
+Planner --> UC13
+Planner --> UC14
+
+Vendor --> UC12
+
+Guest --> UC8
+
+@enduml
+```

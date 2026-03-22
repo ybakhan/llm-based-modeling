@@ -1,0 +1,25 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Registrant" as A1
+actor "Gift Buyer" as A2
+actor "Store Admin" as A3
+
+rectangle "Gift Registry System" {
+  usecase "Browse Registries" as UC1
+  usecase "Create Registry" as UC2
+  usecase "Select Registry Theme" as UC3
+  usecase "Add Gift to Registry" as UC4
+  usecase "Purchase Gift" as UC5
+  usecase "Manage Store Catalog" as UC6
+}
+
+A1 -- UC1
+A1 -- UC2
+UC2 ..> UC3 : <<include>>
+A1 -- UC4
+A2 -- UC1
+A2 -- UC5
+A3 -- UC6
+
+@enduml

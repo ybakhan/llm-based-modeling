@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 11
+  domain: music_streaming_platform
+  domain_display: Music Streaming Platform
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 9
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:05:38.504530'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_011_music_streaming_platform/music_streaming_platform_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_011_music_streaming_platform/music_streaming_platform_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_011_music_streaming_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor Listener\nactor Admin\n\nrectangle \"Music Streaming Platform\" {\n    usecase\
+    \ \"Play Song\" as UC1\n    usecase \"Search Music\" as UC2\n    usecase \"Create\
+    \ Playlist\" as UC3\n    usecase \"Manage Catalog\" as UC4\n}\n\nListener -- UC1\n\
+    Listener -- UC2\nListener -- UC3\nAdmin -- UC4\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: music_streaming_platform
+
+  DOMAIN_DISPLAY: Music Streaming Platform
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Play Song, Load Audio Stream, Play Song --include--> Load Audio
+  Stream
+
+  EXPLANATION: The use case "Load Audio Stream" is an inclusion use case that is included
+  by only one use case ("Play Song"). It is not associated with any actor directly.
+  It does not include or extend any other use case, is not extended by any use case,
+  an …[truncated]'

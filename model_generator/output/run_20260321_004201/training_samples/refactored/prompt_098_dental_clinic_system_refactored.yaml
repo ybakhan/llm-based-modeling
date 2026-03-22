@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 98
+  domain: dental_clinic_system
+  domain_display: Dental Clinic System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:38:33.743607'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_098_dental_clinic_system/dental_clinic_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_098_dental_clinic_system/dental_clinic_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_098_dental_clinic_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Patient\" as Patient\n\
+    actor \"Dentist\" as Dentist\nactor \"Receptionist\" as Receptionist\nactor \"\
+    Dental Hygienist\" as Hygienist\n\nrectangle \"Dental Clinic System\" {\n  usecase\
+    \ \"Schedule Appointment\" as UC1\n  usecase \"Cancel Appointment\" as UC2\n \
+    \ usecase \"Register Patient\" as UC4\n  usecase \"Perform Dental Examination\"\
+    \ as UC5\n  usecase \"Prescribe Treatment\" as UC7\n  usecase \"Perform Teeth\
+    \ Cleaning\" as UC8\n  usecase \"Process Payment\" as UC9\n  usecase \"View Patient\
+    \ Records\" as UC11\n  usecase \"Request Emergency Appointment\" as UC12\n  usecase\
+    \ \"Manage Treatment Plan\" as UC13\n}\n\nPatient --> UC1\nPatient --> UC2\nPatient\
+    \ --> UC12\nReceptionist --> UC1\nReceptionist --> UC4\nReceptionist --> UC9\n\
+    Receptionist --> UC2\nDentist --> UC5\nDentist --> UC7\nDentist --> UC11\nDentist\
+    \ --> UC13\nHygienist --> UC8\n\nUC12 ..> UC1 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: dental_clinic_system
+
+  DOMAIN_DISPLAY: Dental Clinic System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Appointment, Validate Patient Insurance
+
+  EXPLANATION: "Validate Patient Insurance" is an inclusion use case included only
+  by "Schedule Appointment". It is not associated with any actor directly, is not
+  included by any other use case, does not include or extend any use case, is not
+  extended by any use case, and has no genera …[truncated]'

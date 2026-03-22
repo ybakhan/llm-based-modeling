@@ -1,0 +1,40 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Customer" as Customer
+actor "Dispatcher" as Dispatcher
+actor "Courier" as Courier
+actor "Admin" as Admin
+
+rectangle "Courier Delivery System" {
+  usecase "Place Delivery Order" as UC1
+  usecase "Validate Sender Address" as UC2
+  usecase "Calculate Shipping Cost" as UC3
+  usecase "Track Package" as UC4
+  usecase "Cancel Order" as UC5
+  usecase "Assign Courier" as UC6
+  usecase "Check Courier Availability" as UC7
+  usecase "Update Delivery Status" as UC8
+  usecase "Confirm Pickup" as UC9
+  usecase "Confirm Delivery" as UC10
+  usecase "Generate Delivery Report" as UC11
+  usecase "Manage Customer Accounts" as UC12
+  usecase "Rate Courier" as UC13
+}
+
+Customer -- UC1
+Customer -- UC4
+Customer -- UC5
+Customer -- UC13
+Dispatcher -- UC6
+Dispatcher -- UC11
+Courier -- UC8
+Courier -- UC9
+Courier -- UC10
+Admin -- UC12
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+@enduml

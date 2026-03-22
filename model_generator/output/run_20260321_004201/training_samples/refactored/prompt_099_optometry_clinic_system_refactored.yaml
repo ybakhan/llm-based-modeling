@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 99
+  domain: optometry_clinic_system
+  domain_display: Optometry Clinic System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 23
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:38:58.114623'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_099_optometry_clinic_system/optometry_clinic_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_099_optometry_clinic_system/optometry_clinic_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_099_optometry_clinic_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Patient\" as Patient\n\
+    actor \"Optometrist\" as Optometrist\nactor \"Receptionist\" as Receptionist\n\
+    actor \"Insurance Provider\" as InsProvider\n\nrectangle \"Optometry Clinic System\"\
+    \ {\n  usecase \"Schedule Appointment\" as UC1\n  usecase \"Check In Patient\"\
+    \ as UC2\n  usecase \"Conduct Eye Exam\" as UC3\n  usecase \"Prescribe Corrective\
+    \ Lenses\" as UC6\n  usecase \"Order Contact Lenses\" as UC7\n  usecase \"Manage\
+    \ Patient Records\" as UC8\n  usecase \"Process Payment\" as UC9\n  usecase \"\
+    Submit Insurance Claim\" as UC11\n  usecase \"View Prescription History\" as UC12\n\
+    \  usecase \"Diagnose Eye Condition\" as UC13\n}\n\nPatient --> UC1\nPatient -->\
+    \ UC7\nPatient --> UC12\nReceptionist --> UC1\nReceptionist --> UC2\nReceptionist\
+    \ --> UC8\nReceptionist --> UC9\nOptometrist --> UC3\nOptometrist --> UC6\nOptometrist\
+    \ --> UC13\nInsProvider --> UC11\n\nUC9 ..> UC11 : <<include>>\nUC7 ..> UC6 :\
+    \ <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: optometry_clinic_system
+
+  DOMAIN_DISPLAY: Optometry Clinic System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Conduct Eye Exam, Measure Visual Acuity, include relationship
+  from Conduct Eye Exam to Measure Visual Acuity
+
+  EXPLANATION: "Measure Visual Acuity" is an inclusion use case included only by "Conduct
+  Eye Exam." It is not associated with any actor directly, is not included by any
+  other use case, does not include or extend any use …[truncated]'

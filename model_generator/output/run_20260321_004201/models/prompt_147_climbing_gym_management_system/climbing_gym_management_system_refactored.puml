@@ -1,0 +1,38 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Member" as Member
+actor "Front Desk Staff" as Staff
+actor "Instructor" as Instructor
+actor "Manager" as Manager
+
+rectangle "Climbing Gym Management System" {
+  usecase "Register Member" as UC1
+  usecase "Book Climbing Session" as UC3
+  usecase "Cancel Booking" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Manage Route Grades" as UC8
+  usecase "Schedule Group Class" as UC9
+  usecase "View Membership Status" as UC10
+  usecase "Check In Member" as UC11
+  usecase "Generate Attendance Report" as UC12
+  usecase "Renew Membership" as UC13
+}
+
+Member -- UC3
+Member -- UC5
+Member -- UC6
+Member -- UC10
+Member -- UC13
+
+Staff -- UC1
+Staff -- UC11
+
+Instructor -- UC8
+Instructor -- UC9
+
+Manager -- UC12
+
+UC13 ..> UC6 : <<include>>
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Parent" as Parent
+actor "Staff Member" as Staff
+actor "Delivery Driver" as Driver
+
+rectangle "Baby Equipment Rental Service" {
+  usecase "Browse Equipment Catalog" as UC1
+  usecase "Reserve Equipment" as UC2
+  usecase "Process Payment" as UC4
+  usecase "Return Equipment" as UC6
+  usecase "Manage Inventory" as UC8
+  usecase "Deliver Equipment" as UC9
+  usecase "Track Rental Orders" as UC10
+  usecase "Rate Equipment" as UC11
+  usecase "Extend Rental Period" as UC12
+  usecase "Apply Late Fee" as UC13
+}
+
+Parent -- UC1
+Parent -- UC2
+Parent -- UC4
+Parent -- UC6
+Parent -- UC11
+Parent -- UC12
+
+Staff -- UC8
+Staff -- UC10
+
+Driver -- UC9
+
+UC6 <.. UC13 : <<extend>>
+
+@enduml

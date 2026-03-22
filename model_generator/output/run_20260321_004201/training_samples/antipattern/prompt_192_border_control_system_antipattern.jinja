@@ -1,0 +1,64 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Border Officer" as BO
+actor "Traveler" as TR
+actor "Immigration Supervisor" as IS
+actor "Customs Officer" as CO
+
+rectangle "Border Control System" {
+  usecase "Verify Passport" as UC1
+  usecase "Scan Passport Chip" as UC2
+  usecase "Process Visa Application" as UC3
+  usecase "Validate Supporting Documents" as UC4
+  usecase "Conduct Secondary Screening" as UC5
+  usecase "Perform Background Check" as UC6
+  usecase "Record Entry/Exit" as UC7
+  usecase "Submit Travel Declaration" as UC8
+  usecase "Issue Entry Denial" as UC9
+  usecase "Inspect Luggage" as UC10
+  usecase "Generate Crossing Report" as UC11
+  usecase "Flag Suspicious Traveler" as UC12
+  usecase "Override Entry Decision" as UC13
+}
+
+BO --> UC1
+BO --> UC5
+BO --> UC7
+BO --> UC9
+BO --> UC12
+
+TR --> UC8
+TR --> UC3
+
+IS --> UC11
+IS --> UC13
+
+CO --> UC10
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC9 ..> UC5 : <<extend>>
+IS --|> BO
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Verify Passport, Scan Passport Chip
+   Instance 1: Explanation: "Verify Passport" includes "Scan Passport Chip", but "Scan Passport Chip" is not associated with any actor, is included by only "Verify Passport", does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a decomposed sub-step of passport verification rather than a complete, independently valuable service observable to any actor.
+
+   Instance 2: Constructs Involved: Process Visa Application, Validate Supporting Documents
+   Instance 2: Explanation: "Process Visa Application" includes "Validate Supporting Documents", but "Validate Supporting Documents" is not associated with any actor, is included by only "Process Visa Application", does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It is a functional decomposition of a sub-step rather than a standalone service providing an observable result to a user.
+
+   Instance 3: Constructs Involved: Conduct Secondary Screening, Perform Background Check
+   Instance 3: Explanation: "Conduct Secondary Screening" includes "Perform Background Check", but "Perform Background Check" is not associated with any actor, is included by only "Conduct Secondary Screening", does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It fragments the screening process into a sub-function that provides no complete service on its own to any actor.

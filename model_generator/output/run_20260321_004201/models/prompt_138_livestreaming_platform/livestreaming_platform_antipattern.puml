@@ -1,0 +1,26 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Streamer
+actor Viewer
+actor Moderator
+
+rectangle "Livestreaming Platform" {
+  usecase "Start Livestream" as UC1
+  usecase "Initialize Encoding" as UC2
+  usecase "Watch Livestream" as UC3
+  usecase "Send Chat Message" as UC4
+  usecase "Donate to Streamer" as UC5
+  usecase "Ban User" as UC6
+  usecase "End Livestream" as UC7
+}
+
+Streamer -- UC1
+UC1 ..> UC2 : <<include>>
+Streamer -- UC7
+Viewer -- UC3
+Viewer -- UC4
+Viewer -- UC5
+Moderator -- UC6
+
+@enduml

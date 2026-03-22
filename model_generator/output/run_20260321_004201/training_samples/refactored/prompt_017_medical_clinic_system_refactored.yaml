@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 17
+  domain: medical_clinic_system
+  domain_display: Medical Clinic System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:49:35.237642'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_017_medical_clinic_system/medical_clinic_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_017_medical_clinic_system/medical_clinic_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_017_medical_clinic_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Patient\" as Patient\n\
+    actor \"Doctor\" as Doctor\nactor \"Receptionist\" as Receptionist\nactor \"Nurse\"\
+    \ as Nurse\n\nrectangle \"Medical Clinic System\" {\n  usecase \"Schedule Appointment\"\
+    \ as UC1\n  usecase \"Cancel Appointment\" as UC3\n  usecase \"Conduct Consultation\"\
+    \ as UC4\n  usecase \"Prescribe Medication\" as UC5\n  usecase \"Record Vital\
+    \ Signs\" as UC7\n  usecase \"View Medical Records\" as UC8\n  usecase \"Process\
+    \ Payment\" as UC9\n  usecase \"Register Patient\" as UC11\n  usecase \"Request\
+    \ Lab Test\" as UC12\n  usecase \"View Lab Results\" as UC13\n\n  UC4 ..> UC8\
+    \ : <<include>>\n}\n\nPatient --> UC1\nPatient --> UC3\nPatient --> UC8\nPatient\
+    \ --> UC9\nReceptionist --> UC1\nReceptionist --> UC3\nReceptionist --> UC11\n\
+    Doctor --> UC4\nDoctor --> UC5\nDoctor --> UC12\nDoctor --> UC13\nNurse --> UC7\n\
+    \n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: medical_clinic_system
+
+  DOMAIN_DISPLAY: Medical Clinic System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Appointment, Validate Patient Insurance
+
+  EXPLANATION: "Validate Patient Insurance" is an inclusion use case included only
+  by "Schedule Appointment". It is not associated with any actor, not included by
+  any other use case, does not include or extend any use case, is not extended by
+  any use case, and has no generalization r …[truncated]'

@@ -1,0 +1,110 @@
+metadata:
+  prompt_number: 113
+  domain: vacation_rental_platform
+  domain_display: Vacation Rental Platform
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Search Properties, Validate Search Filters, include relationship
+        from Search Properties to Validate Search Filters
+      explanation: '"Validate Search Filters" is an inclusion use case included only
+        by "Search Properties". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. It represents a sub-step (validating filter inputs)
+        rather than a complete, independently valuable service to any actor. This
+        is functional decomposition of "Search Properties" into a procedural sub-task.'
+    - constructs_involved: Book Property, Calculate Total Price, include relationship
+        from Book Property to Calculate Total Price
+      explanation: '"Calculate Total Price" is an inclusion use case included only
+        by "Book Property". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. Calculating the total price is an internal computational
+        step of the booking process, not a standalone service observable to a user.
+        This fragments "Book Property" into a procedural decomposition.'
+    - constructs_involved: Process Payment, Verify Payment Details, include relationship
+        from Process Payment to Verify Payment Details
+      explanation: '"Verify Payment Details" is an inclusion use case included only
+        by "Process Payment". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. Verifying payment details is an internal validation
+        step within payment processing, not a complete service that provides an observable
+        result to any user. This is functional decomposition of the payment process.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 29
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:44:01.695332'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_113_vacation_rental_platform/vacation_rental_platform_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_113_vacation_rental_platform/vacation_rental_platform_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_113_vacation_rental_platform_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Guest\nactor\
+    \ \"Property Owner\" as Owner\nactor \"Platform Admin\" as Admin\nactor \"Payment\
+    \ Gateway\" as PG\n\nrectangle \"Vacation Rental Platform\" {\n  usecase \"Search\
+    \ Properties\" as UC1\n  usecase \"Validate Search Filters\" as UC1a\n  usecase\
+    \ \"View Property Details\" as UC2\n  usecase \"Book Property\" as UC3\n  usecase\
+    \ \"Calculate Total Price\" as UC3a\n  usecase \"Process Payment\" as UC4\n  usecase\
+    \ \"Verify Payment Details\" as UC4a\n  usecase \"Leave Review\" as UC5\n  usecase\
+    \ \"List Property\" as UC6\n  usecase \"Manage Availability\" as UC7\n  usecase\
+    \ \"Respond to Reviews\" as UC8\n  usecase \"Manage Listings\" as UC9\n  usecase\
+    \ \"Handle Disputes\" as UC10\n}\n\nGuest --> UC1\nGuest --> UC2\nGuest --> UC3\n\
+    Guest --> UC4\nGuest --> UC5\n\nOwner --> UC6\nOwner --> UC7\nOwner --> UC8\n\n\
+    Admin --> UC9\nAdmin --> UC10\n\nPG --> UC4\n\nUC1 ..> UC1a : <<include>>\nUC3\
+    \ ..> UC3a : <<include>>\nUC4 ..> UC4a : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Search Properties, Validate Search Filters,\
+    \ include relationship from Search Properties to Validate Search Filters\n   Instance\
+    \ 1: Explanation: \"Validate Search Filters\" is an inclusion use case included\
+    \ only by \"Search Properties\". It is not associated with any actor, does not\
+    \ include or extend any other use case, is not extended by any use case, and is\
+    \ not part of any generalization. It represents a sub-step (validating filter\
+    \ inputs) rather than a complete, independently valuable service to any actor.\
+    \ This is functional decomposition of \"Search Properties\" into a procedural\
+    \ sub-task.\n\n   Instance 2: Constructs Involved: Book Property, Calculate Total\
+    \ Price, include relationship from Book Property to Calculate Total Price\n  \
+    \ Instance 2: Explanation: \"Calculate Total Price\" is an inclusion use case\
+    \ included only by \"Book Property\". It is not associated with any actor, does\
+    \ not include or extend any other use case, is not extended by any use case, and\
+    \ is not part of any generalization. Calculating the total price is an internal\
+    \ computational step of the booking process, not a standalone service observable\
+    \ to a user. This fragments \"Book Property\" into a procedural decomposition.\n\
+    \n   Instance 3: Constructs Involved: Process Payment, Verify Payment Details,\
+    \ include relationship from Process Payment to Verify Payment Details\n   Instance\
+    \ 3: Explanation: \"Verify Payment Details\" is an inclusion use case included\
+    \ only by \"Process Payment\". It is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. Verifying payment details is an internal validation step\
+    \ within payment processing, not a complete service that provides an observable\
+    \ result to any user. This is functional decomposition of the payment process."
+raw_response_excerpt: '
+
+
+  DOMAIN: vacation_rental_platform
+
+  DOMAIN_DISPLAY: Vacation Rental Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Search Properties, Validate Search Filters, include relationship
+  from Search Properties to Validate Search Filters
+
+  EXPLANATION: "Validate Search Filters" is an inclusion use case included only by
+  "Search Properties". It is not associated with any actor, does not include or extend
+  any other use case, is not extended by any u …[truncated]'

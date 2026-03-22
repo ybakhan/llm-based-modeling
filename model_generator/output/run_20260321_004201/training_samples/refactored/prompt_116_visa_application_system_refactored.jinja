@@ -1,0 +1,45 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Applicant" as Applicant
+actor "Visa Officer" as Officer
+actor "Embassy Manager" as Manager
+
+rectangle "Visa Application System" {
+  usecase "Register Account" as UC1
+  usecase "Submit Application" as UC2
+  usecase "Pay Application Fee" as UC5
+  usecase "Track Application Status" as UC6
+  usecase "Schedule Interview" as UC7
+  usecase "Process Application" as UC8
+  usecase "Approve Application" as UC10
+  usecase "Reject Application" as UC11
+  usecase "Generate Reports" as UC12
+  usecase "Request Additional Documents" as UC13
+}
+
+Applicant --> UC1
+Applicant --> UC2
+Applicant --> UC5
+Applicant --> UC6
+Applicant --> UC7
+
+Officer --> UC8
+Officer --> UC10
+Officer --> UC11
+Officer --> UC13
+
+Manager --> UC12
+
+UC10 .> UC8 : <<extend>>
+
+@enduml
+
+
+Answer:
+No antipattern detected.

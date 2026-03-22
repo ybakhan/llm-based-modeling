@@ -1,0 +1,36 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Manager" as Manager
+actor "Employee" as Employee
+actor "HR Administrator" as HRAdmin
+
+rectangle "Employee Performance Review System" {
+  usecase "Conduct Review Meeting" as UC1
+  usecase "Set Performance Goals" as UC3
+  usecase "Submit Self-Assessment" as UC5
+  usecase "Approve Final Rating" as UC7
+  usecase "Generate Performance Report" as UC8
+  usecase "View Review Dashboard" as UC9
+  usecase "Manage Review Cycles" as UC10
+  usecase "Escalate Disputed Review" as UC11
+  usecase "Provide Peer Feedback" as UC12
+  usecase "Request Calibration Session" as UC13
+}
+
+Manager -- UC1
+Manager -- UC3
+Manager -- UC7
+Manager -- UC9
+
+Employee -- UC5
+Employee -- UC9
+Employee -- UC12
+
+HRAdmin -- UC8
+HRAdmin -- UC10
+HRAdmin -- UC13
+
+UC11 .> UC1 : <<extend>>
+
+@enduml

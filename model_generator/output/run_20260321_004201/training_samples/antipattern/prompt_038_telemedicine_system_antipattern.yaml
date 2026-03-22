@@ -1,0 +1,108 @@
+metadata:
+  prompt_number: 38
+  domain: telemedicine_system
+  domain_display: Telemedicine System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Schedule Appointment, Validate Patient Insurance
+      explanation: '"Validate Patient Insurance" is an inclusion use case included
+        only by "Schedule Appointment". It is not associated with any actor, not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        a sub-step (insurance validation) that has been improperly decomposed out
+        of the scheduling process rather than being a complete service observable
+        to an actor.'
+    - constructs_involved: Conduct Video Consultation, Initialize Video Stream
+      explanation: '"Initialize Video Stream" is an inclusion use case included only
+        by "Conduct Video Consultation". It is not associated with any actor, not
+        included by any other use case, does not include or extend any other use case,
+        is not extended by any use case, and has no generalization relationships.
+        It represents a technical sub-step (stream initialization) that has been functionally
+        decomposed out of the consultation use case and offers no standalone observable
+        result to any user.'
+    - constructs_involved: Write Prescription, Verify Drug Interactions
+      explanation: '"Verify Drug Interactions" is an inclusion use case included only
+        by "Write Prescription". It is not associated with any actor, not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        an internal validation step improperly separated from the prescription-writing
+        process and provides no complete service to any actor on its own.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:14:31.250555'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_038_telemedicine_system/telemedicine_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_038_telemedicine_system/telemedicine_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_038_telemedicine_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Patient\"\
+    \ as Patient\nactor \"Doctor\" as Doctor\nactor \"Admin\" as Admin\nactor \"Pharmacist\"\
+    \ as Pharmacist\n\nrectangle \"Telemedicine System\" {\n  usecase \"Register Account\"\
+    \ as UC1\n  usecase \"Schedule Appointment\" as UC2\n  usecase \"Validate Patient\
+    \ Insurance\" as UC3\n  usecase \"Conduct Video Consultation\" as UC4\n  usecase\
+    \ \"Initialize Video Stream\" as UC5\n  usecase \"View Medical Records\" as UC6\n\
+    \  usecase \"Write Prescription\" as UC7\n  usecase \"Verify Drug Interactions\"\
+    \ as UC8\n  usecase \"Process Prescription\" as UC9\n  usecase \"Manage User Accounts\"\
+    \ as UC10\n  usecase \"Generate Reports\" as UC11\n  usecase \"Request Refill\"\
+    \ as UC12\n  usecase \"Rate Consultation\" as UC13\n}\n\nPatient --> UC1\nPatient\
+    \ --> UC2\nPatient --> UC4\nPatient --> UC6\nPatient --> UC12\nPatient --> UC13\n\
+    Doctor --> UC4\nDoctor --> UC6\nDoctor --> UC7\nPharmacist --> UC9\nAdmin -->\
+    \ UC10\nAdmin --> UC11\n\nUC2 ..> UC3 : <<include>>\nUC4 ..> UC5 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Schedule Appointment, Validate Patient Insurance\n\
+    \   Instance 1: Explanation: \"Validate Patient Insurance\" is an inclusion use\
+    \ case included only by \"Schedule Appointment\". It is not associated with any\
+    \ actor, not included by any other use case, does not include or extend any other\
+    \ use case, is not extended by any use case, and has no generalization relationships.\
+    \ It represents a sub-step (insurance validation) that has been improperly decomposed\
+    \ out of the scheduling process rather than being a complete service observable\
+    \ to an actor.\n\n   Instance 2: Constructs Involved: Conduct Video Consultation,\
+    \ Initialize Video Stream\n   Instance 2: Explanation: \"Initialize Video Stream\"\
+    \ is an inclusion use case included only by \"Conduct Video Consultation\". It\
+    \ is not associated with any actor, not included by any other use case, does not\
+    \ include or extend any other use case, is not extended by any use case, and has\
+    \ no generalization relationships. It represents a technical sub-step (stream\
+    \ initialization) that has been functionally decomposed out of the consultation\
+    \ use case and offers no standalone observable result to any user.\n\n   Instance\
+    \ 3: Constructs Involved: Write Prescription, Verify Drug Interactions\n   Instance\
+    \ 3: Explanation: \"Verify Drug Interactions\" is an inclusion use case included\
+    \ only by \"Write Prescription\". It is not associated with any actor, not included\
+    \ by any other use case, does not include or extend any other use case, is not\
+    \ extended by any use case, and has no generalization relationships. It represents\
+    \ an internal validation step improperly separated from the prescription-writing\
+    \ process and provides no complete service to any actor on its own."
+raw_response_excerpt: '
+
+
+  DOMAIN: telemedicine_system
+
+  DOMAIN_DISPLAY: Telemedicine System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Appointment, Validate Patient Insurance
+
+  EXPLANATION: "Validate Patient Insurance" is an inclusion use case included only
+  by "Schedule Appointment". It is not associated with any actor, not included by
+  any other use case, does not include or extend any other use case, is not extended
+  by any use case, and has no generalization …[truncated]'

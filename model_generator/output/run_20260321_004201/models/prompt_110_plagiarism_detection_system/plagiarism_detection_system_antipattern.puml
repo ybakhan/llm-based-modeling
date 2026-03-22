@@ -1,0 +1,38 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Student" as Student
+actor "Instructor" as Instructor
+actor "Administrator" as Admin
+
+rectangle "Plagiarism Detection System" {
+  usecase "Submit Document" as UC1
+  usecase "Parse Document Text" as UC2
+  usecase "Run Plagiarism Check" as UC3
+  usecase "Compare Against Database" as UC4
+  usecase "Generate Report" as UC5
+  usecase "Calculate Similarity Score" as UC6
+  usecase "View Report" as UC7
+  usecase "Manage Document Repository" as UC8
+  usecase "Configure Detection Settings" as UC9
+  usecase "Flag Submission" as UC10
+  usecase "View Submission History" as UC11
+  usecase "Manage User Accounts" as UC12
+}
+
+Student -- UC1
+Student -- UC7
+Student -- UC11
+Instructor -- UC3
+Instructor -- UC7
+Instructor -- UC5
+Instructor -- UC10
+Admin -- UC8
+Admin -- UC9
+Admin -- UC12
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+@enduml

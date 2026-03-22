@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 173
+  domain: vending_machine_management
+  domain_display: Vending Machine Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T21:22:20.944013'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_173_vending_machine_management/vending_machine_management_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_173_vending_machine_management/vending_machine_management_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_173_vending_machine_management_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Customer\nactor Technician\n\
+    actor Manager\n\nrectangle \"Vending Machine Management System\" {\n  usecase\
+    \ \"Select Product\" as UC1\n  usecase \"Process Payment\" as UC2\n  usecase \"\
+    Dispense Product\" as UC3\n  usecase \"Restock Machine\" as UC5\n  usecase \"\
+    Generate Sales Report\" as UC7\n  usecase \"Perform Maintenance\" as UC9\n  usecase\
+    \ \"Monitor Machine Status\" as UC10\n  usecase \"Report Malfunction\" as UC11\n\
+    \  usecase \"Apply Discount\" as UC12\n}\n\nCustomer -- UC1\nCustomer -- UC2\n\
+    Customer -- UC3\nTechnician -- UC5\nTechnician -- UC9\nTechnician -- UC11\nManager\
+    \ -- UC7\nManager -- UC10\n\nUC1 ..> UC2 : <<include>>\nUC12 ..> UC1 : <<extend>>\n\
+    \n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: vending_machine_management
+
+  DOMAIN_DISPLAY: Vending Machine Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Restock Machine, Validate Inventory Levels
+
+  EXPLANATION: "Restock Machine" includes "Validate Inventory Levels", but "Validate
+  Inventory Levels" is not associated with any actor, is included by only "Restock
+  Machine", does not include or extend any other use case, is not extended by any
+  use case, and has no genera …[truncated]'

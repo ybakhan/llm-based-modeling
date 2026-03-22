@@ -1,0 +1,108 @@
+
+
+DOMAIN: clinical_trial_management_system
+DOMAIN_DISPLAY: Clinical Trial Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Enroll Patient, Validate Eligibility Criteria, include relationship from Enroll Patient to Validate Eligibility Criteria
+EXPLANATION: "Validate Eligibility Criteria" is included only by "Enroll Patient", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step of enrollment rather than a complete, independently valuable service. This is functional decomposition of the "Enroll Patient" use case.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Enroll Patient, Randomize Patient, include relationship from Enroll Patient to Randomize Patient
+EXPLANATION: "Randomize Patient" is included only by "Enroll Patient", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a procedural sub-step of enrollment rather than a standalone service observable to any user. This is functional decomposition of the "Enroll Patient" use case.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Record Adverse Event, Generate Adverse Event Notification, include relationship from Record Adverse Event to Generate Adverse Event Notification
+EXPLANATION: "Generate Adverse Event Notification" is included only by "Record Adverse Event", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal sub-step of recording an adverse event rather than a complete service offered to a user. This is functional decomposition of the "Record Adverse Event" use case.
+
+REFACTORING_RATIONALE: All three functional decomposition instances must be resolved by merging the inclusion use cases into their respective base use cases. (1) "Validate Eligibility Criteria" must be merged into "Enroll Patient" and the include relationship dropped — eligibility validation is an integral part of enrollment. (2) "Randomize Patient" must be merged into "Enroll Patient" and the include relationship dropped — randomization is a procedural step within enrollment, not a standalone service. (3) "Generate Adverse Event Notification" must be merged into "Record Adverse Event" and the include relationship dropped — notification generation is an internal step of adverse event recording. This removes 3 use cases and 3 include relationships (6 constructs total).
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Clinical Investigator" as CI
+actor "Study Coordinator" as SC
+actor "Data Manager" as DM
+actor "Sponsor" as SP
+actor "Regulatory Authority" as RA
+
+rectangle "Clinical Trial Management System" {
+  usecase "Enroll Patient" as UC1
+  usecase "Validate Eligibility Criteria" as UC2
+  usecase "Randomize Patient" as UC3
+  usecase "Record Adverse Event" as UC4
+  usecase "Generate Adverse Event Notification" as UC5
+  usecase "Submit Case Report Form" as UC6
+  usecase "Monitor Trial Progress" as UC7
+  usecase "Review Data Queries" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Manage Study Protocol" as UC10
+  usecase "Audit Trial Data" as UC11
+  usecase "Close Study Site" as UC12
+}
+
+CI -- UC1
+CI -- UC4
+SC -- UC6
+SC -- UC1
+DM -- UC8
+DM -- UC7
+SP -- UC7
+SP -- UC10
+SP -- UC12
+RA -- UC9
+RA -- UC11
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Clinical Investigator" as CI
+actor "Study Coordinator" as SC
+actor "Data Manager" as DM
+actor "Sponsor" as SP
+actor "Regulatory Authority" as RA
+
+rectangle "Clinical Trial Management System" {
+  usecase "Enroll Patient" as UC1
+  usecase "Record Adverse Event" as UC4
+  usecase "Submit Case Report Form" as UC6
+  usecase "Monitor Trial Progress" as UC7
+  usecase "Review Data Queries" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Manage Study Protocol" as UC10
+  usecase "Audit Trial Data" as UC11
+  usecase "Close Study Site" as UC12
+}
+
+CI -- UC1
+CI -- UC4
+SC -- UC6
+SC -- UC1
+DM -- UC8
+DM -- UC7
+SP -- UC7
+SP -- UC10
+SP -- UC12
+RA -- UC9
+RA -- UC11
+@enduml
+```

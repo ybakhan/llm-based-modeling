@@ -1,0 +1,64 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Event Manager" as EM
+actor "Ticket Agent" as TA
+actor "Security Officer" as SO
+actor "Maintenance Staff" as MS
+actor "Fan" as FN
+
+rectangle "Stadium Management System" {
+  usecase "Schedule Event" as UC1
+  usecase "Check Venue Availability" as UC2
+  usecase "Cancel Event" as UC3
+  usecase "Process Ticket Sale" as UC4
+  usecase "Validate Payment Details" as UC5
+  usecase "Issue Refund" as UC6
+  usecase "Manage Security Patrol" as UC7
+  usecase "Log Patrol Checkpoint" as UC8
+  usecase "Monitor CCTV Feeds" as UC9
+  usecase "Submit Maintenance Request" as UC10
+  usecase "Track Repair Status" as UC11
+  usecase "View Event Schedule" as UC12
+  usecase "Purchase Ticket Online" as UC13
+  usecase "View Seating Map" as UC14
+  usecase "Generate Attendance Report" as UC15
+}
+
+EM --> UC1
+EM --> UC3
+EM --> UC15
+TA --> UC4
+TA --> UC6
+SO --> UC7
+SO --> UC9
+MS --> UC10
+MS --> UC11
+FN --> UC12
+FN --> UC13
+FN --> UC14
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC3 ..> UC1 : <<extend>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Schedule Event, Check Venue Availability, include (Schedule Event → Check Venue Availability)
+   Instance 1: Explanation: "Check Venue Availability" is an inclusion use case included only by "Schedule Event." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed sub-step of scheduling an event rather than a complete, independently valuable service observable by an actor. This constitutes the Functional Decomposition antipattern.
+
+   Instance 2: Constructs Involved: Process Ticket Sale, Validate Payment Details, include (Process Ticket Sale → Validate Payment Details)
+   Instance 2: Explanation: "Validate Payment Details" is an inclusion use case included only by "Process Ticket Sale." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a functional decomposition of the payment step within ticket sales rather than a standalone service providing an observable result to a user.
+
+   Instance 3: Constructs Involved: Manage Security Patrol, Log Patrol Checkpoint, include (Manage Security Patrol → Log Patrol Checkpoint)
+   Instance 3: Explanation: "Log Patrol Checkpoint" is an inclusion use case included only by "Manage Security Patrol." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Logging a patrol checkpoint is a decomposed procedural step of managing a security patrol, not a complete service with an observable result for any actor.

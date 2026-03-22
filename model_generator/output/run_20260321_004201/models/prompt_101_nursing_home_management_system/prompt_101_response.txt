@@ -1,0 +1,73 @@
+
+
+DOMAIN: nursing_home_management_system
+DOMAIN_DISPLAY: Nursing Home Management System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Admit Resident, Record Personal Details
+EXPLANATION: The use case "Record Personal Details" is an inclusion use case included only by "Admit Resident". "Record Personal Details" is not associated with any actor directly, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step of the admission process (recording personal details) rather than a complete, standalone service offering an observable result to an actor. This is a classic functional decomposition — breaking "Admit Resident" into procedural steps via <<include>> rather than modeling complete services.
+
+REFACTORING_RATIONALE: The inclusion use case "Record Personal Details" must be merged back into "Admit Resident" because it only serves as a decomposed sub-step of the admission process. Recording personal details is an inherent part of admitting a resident and does not constitute a standalone service for any actor. By dropping "Record Personal Details" and the <<include>> relationship between "Admit Resident" and "Record Personal Details", we eliminate the functional decomposition antipattern. The "Admit Resident" use case already represents the complete service; the sub-step is implicitly part of it.
+CONSTRUCT_COUNT: 13
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Nurse" as Nurse
+actor "Administrator" as Admin
+actor "Doctor" as Doctor
+
+rectangle "Nursing Home Management System" {
+  usecase "Admit Resident" as UC1
+  usecase "Record Personal Details" as UC2
+  usecase "Assign Room" as UC3
+  usecase "Administer Medication" as UC4
+  usecase "Schedule Care Plan" as UC5
+  usecase "Generate Reports" as UC6
+}
+
+Admin -- UC1
+UC1 ..> UC2 : <<include>>
+Admin -- UC3
+Nurse -- UC4
+Doctor -- UC5
+Admin -- UC6
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Nurse" as Nurse
+actor "Administrator" as Admin
+actor "Doctor" as Doctor
+
+rectangle "Nursing Home Management System" {
+  usecase "Admit Resident" as UC1
+  usecase "Assign Room" as UC3
+  usecase "Administer Medication" as UC4
+  usecase "Schedule Care Plan" as UC5
+  usecase "Generate Reports" as UC6
+}
+
+Admin -- UC1
+Admin -- UC3
+Nurse -- UC4
+Doctor -- UC5
+Admin -- UC6
+
+@enduml
+```

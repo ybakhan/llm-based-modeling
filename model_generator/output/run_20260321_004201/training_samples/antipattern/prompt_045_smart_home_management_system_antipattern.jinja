@@ -1,0 +1,35 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Homeowner" as Homeowner
+actor "Guest" as Guest
+
+rectangle "Smart Home Management System" {
+  usecase "Control Lighting" as UC1
+  usecase "Adjust Thermostat" as UC2
+  usecase "Lock/Unlock Doors" as UC3
+  usecase "View Security Cameras" as UC4
+  usecase "Validate Temperature Range" as UC5
+}
+
+Homeowner -- UC1
+Homeowner -- UC2
+Homeowner -- UC3
+Homeowner -- UC4
+Guest -- UC1
+
+UC2 ..> UC5 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Adjust Thermostat, Validate Temperature Range, Adjust Thermostat --include--> Validate Temperature Range
+   Explanation: The use case "Validate Temperature Range" is an inclusion use case that is included by only one use case ("Adjust Thermostat"). It is not associated with any actor directly, it does not include or extend any other use case, it is not extended by any use case, and it has no generalization relationships. "Validate Temperature Range" does not represent a complete service offering an observable result to a user — it is merely a decomposed sub-step of "Adjust Thermostat". This constitutes the Functional Decomposition: Using the include relationship antipattern.

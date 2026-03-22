@@ -1,0 +1,45 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Donor" as Donor
+actor "Nurse" as Nurse
+actor "Lab Technician" as LabTech
+actor "Doctor" as Doctor
+actor "Admin" as Admin
+
+rectangle "Blood Bank Management System" {
+  usecase "Register Donor" as UC1
+  usecase "Process Blood Donation" as UC3
+  usecase "Store Blood Unit" as UC5
+  usecase "Test Blood Sample" as UC6
+  usecase "Classify Blood Type" as UC7
+  usecase "Issue Blood Unit" as UC8
+  usecase "Request Blood" as UC10
+  usecase "Track Blood Inventory" as UC11
+  usecase "Manage Donation Campaigns" as UC12
+  usecase "Schedule Appointment" as UC13
+  usecase "Discard Expired Blood" as UC14
+}
+
+Donor -- UC1
+Donor -- UC13
+Nurse -- UC1
+Nurse -- UC3
+Nurse -- UC5
+LabTech -- UC6
+LabTech -- UC7
+Doctor -- UC8
+Doctor -- UC10
+Admin -- UC11
+Admin -- UC12
+Admin -- UC14
+@enduml
+
+
+Answer:
+No antipattern detected.

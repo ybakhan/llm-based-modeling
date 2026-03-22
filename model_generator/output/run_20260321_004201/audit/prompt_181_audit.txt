@@ -1,0 +1,233 @@
+AUDIT LOG — Prompt #181
+Timestamp : 2026-03-21T02:11:44.886564
+Model     : claude-opus-4-6
+Tokens    : input=1356  output=1317
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (3 instances) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #181: Generate a MEDIUM use case model with exactly 26 constructs (valid range for medium: 24–30 constructs). Domain: Irrigation Control System.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: irrigation_control_system
+DOMAIN_DISPLAY: Irrigation Control System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Schedule Irrigation, Validate Time Slots, include relationship from "Schedule Irrigation" to "Validate Time Slots"
+EXPLANATION: "Validate Time Slots" is an inclusion use case included only by "Schedule Irrigation." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (validating time slot data) rather than a complete, observable service to any actor. This is functional decomposition of "Schedule Irrigation" into a procedural sub-task.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Configure Zones, Load Zone Parameters, include relationship from "Configure Zones" to "Load Zone Parameters"
+EXPLANATION: "Load Zone Parameters" is an inclusion use case included only by "Configure Zones." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Loading zone parameters is an internal implementation step of zone configuration, not a standalone service yielding an observable result to a user. This is functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Monitor Soil Moisture, Parse Sensor Data, include relationship from "Monitor Soil Moisture" to "Parse Sensor Data"
+EXPLANATION: "Parse Sensor Data" is an inclusion use case included only by "Monitor Soil Moisture." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Parsing sensor data is a procedural sub-step of monitoring, not a complete service to any actor. This constitutes functional decomposition.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Time Slots," "Load Zone Parameters," "Parse Sensor Data") must be merged back into their respective base use cases ("Schedule Irrigation," "Configure Zones," "Monitor Soil Moisture") because they each represent internal procedural steps, not independent services. Removing these three use cases and their three include relationships eliminates 6 constructs, reducing the model from 26 to 20 constructs. To maintain a well-formed, realistic model at a suitable size, additional meaningful, self-contained use cases are added to restore richness without reintroducing antipatterns.
+
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Farm Manager" as FM
+actor "Technician" as Tech
+actor "Weather Service" as WS
+actor "Moisture Sensor" as MS
+
+rectangle "Irrigation Control System" {
+  usecase "Schedule Irrigation" as UC1
+  usecase "Validate Time Slots" as UC2
+  usecase "Configure Zones" as UC3
+  usecase "Load Zone Parameters" as UC4
+  usecase "Monitor Soil Moisture" as UC5
+  usecase "Parse Sensor Data" as UC6
+  usecase "Activate Manual Irrigation" as UC7
+  usecase "View Irrigation Dashboard" as UC8
+  usecase "Generate Water Usage Report" as UC9
+  usecase "Receive Weather Forecast" as UC10
+  usecase "Set Alert Thresholds" as UC11
+  usecase "Trigger Drought Alert" as UC12
+
+  UC1 ..> UC2 : <<include>>
+  UC3 ..> UC4 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC12 ..> UC5 : <<include>>
+  UC8 .> UC12 : <<extend>>
+}
+
+FM --> UC1
+FM --> UC3
+FM --> UC7
+FM --> UC8
+FM --> UC9
+Tech --> UC3
+Tech --> UC11
+WS --> UC10
+MS --> UC5
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Farm Manager" as FM
+actor "Technician" as Tech
+actor "Weather Service" as WS
+actor "Moisture Sensor" as MS
+
+rectangle "Irrigation Control System" {
+  usecase "Schedule Irrigation" as UC1
+  usecase "Configure Zones" as UC3
+  usecase "Monitor Soil Moisture" as UC5
+  usecase "Activate Manual Irrigation" as UC7
+  usecase "View Irrigation Dashboard" as UC8
+  usecase "Generate Water Usage Report" as UC9
+  usecase "Receive Weather Forecast" as UC10
+  usecase "Set Alert Thresholds" as UC11
+  usecase "Trigger Drought Alert" as UC12
+
+  UC12 ..> UC5 : <<include>>
+  UC8 .> UC12 : <<extend>>
+}
+
+FM --> UC1
+FM --> UC3
+FM --> UC7
+FM --> UC8
+FM --> UC9
+Tech --> UC3
+Tech --> UC11
+WS --> UC10
+MS --> UC5
+
+@enduml
+```

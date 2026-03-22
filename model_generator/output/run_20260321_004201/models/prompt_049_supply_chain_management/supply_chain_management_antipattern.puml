@@ -1,0 +1,39 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Procurement Manager" as PM
+actor "Warehouse Manager" as WM
+actor "Logistics Coordinator" as LC
+actor "Supplier" as SUP
+actor "Finance Analyst" as FA
+
+rectangle "Supply Chain Management System" {
+  usecase "Place Purchase Order" as UC1
+  usecase "Validate Supplier Details" as UC1a
+  usecase "Manage Inventory" as UC2
+  usecase "Calculate Reorder Point" as UC2a
+  usecase "Track Shipment" as UC3
+  usecase "Update GPS Coordinates" as UC3a
+  usecase "Receive Goods" as UC4
+  usecase "Process Returns" as UC5
+  usecase "Generate Supply Report" as UC6
+  usecase "Confirm Order Delivery" as UC7
+  usecase "Analyze Supply Costs" as UC8
+}
+
+PM -- UC1
+PM -- UC5
+WM -- UC2
+WM -- UC4
+LC -- UC3
+LC -- UC7
+SUP -- UC7
+FA -- UC6
+FA -- UC8
+
+UC1 ..> UC1a : <<include>>
+UC2 ..> UC2a : <<include>>
+UC3 ..> UC3a : <<include>>
+
+UC5 ..> UC4 : <<extend>>
+@enduml

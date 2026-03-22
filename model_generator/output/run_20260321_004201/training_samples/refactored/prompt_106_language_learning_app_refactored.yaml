@@ -1,0 +1,56 @@
+metadata:
+  prompt_number: 106
+  domain: language_learning_app
+  domain_display: Language Learning App
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:41:25.768321'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_106_language_learning_app/language_learning_app_refactored.puml
+    image: output/run_20260321_004201/models/prompt_106_language_learning_app/language_learning_app_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_106_language_learning_app_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Learner\nactor Instructor\n\
+    actor Admin\n\nrectangle \"Language Learning App\" {\n  usecase \"Register Account\"\
+    \ as UC1\n  usecase \"Browse Courses\" as UC2\n  usecase \"Complete Lesson\" as\
+    \ UC3\n  usecase \"Take Vocabulary Quiz\" as UC4\n  usecase \"Practice Pronunciation\"\
+    \ as UC5\n  usecase \"View Progress Dashboard\" as UC6\n  usecase \"Create Course\
+    \ Content\" as UC7\n  usecase \"Manage Users\" as UC8\n  usecase \"Review Flashcards\"\
+    \ as UC9\n}\n\nLearner --> UC1\nLearner --> UC2\nLearner --> UC3\nLearner -->\
+    \ UC4\nLearner --> UC5\nLearner --> UC6\nLearner --> UC9\nInstructor --> UC7\n\
+    Admin --> UC8\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: language_learning_app
+
+  DOMAIN_DISPLAY: Language Learning App
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Take Vocabulary Quiz, Load Quiz Questions, Take Vocabulary
+  Quiz --include--> Load Quiz Questions
+
+  EXPLANATION: "Load Quiz Questions" is an inclusion use case included only by "Take
+  Vocabulary Quiz." It is not associated with any actor, is not included by any other
+  use case, does not include or extend any use case, is not extended  …[truncated]'

@@ -1,0 +1,55 @@
+metadata:
+  prompt_number: 145
+  domain: sports_equipment_rental
+  domain_display: Sports Equipment Rental
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:43:42.028145'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_145_sports_equipment_rental/sports_equipment_rental_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_145_sports_equipment_rental/sports_equipment_rental_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_145_sports_equipment_rental_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Customer\nactor Staff\n\
+    \nrectangle \"Sports Equipment Rental System\" {\n  usecase \"Browse Catalog\"\
+    \ as UC1\n  usecase \"Rent Equipment\" as UC3\n  usecase \"Return Equipment\"\
+    \ as UC5\n  usecase \"Process Payment\" as UC6\n  usecase \"Apply Late Fee\" as\
+    \ UC8\n  usecase \"Manage Inventory\" as UC9\n  usecase \"View Rental History\"\
+    \ as UC10\n  usecase \"Register Account\" as UC11\n}\n\nCustomer -- UC1\nCustomer\
+    \ -- UC3\nCustomer -- UC5\nCustomer -- UC6\nCustomer -- UC10\nCustomer -- UC11\n\
+    Staff -- UC9\nStaff -- UC5\n\nUC5 <.. UC8 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: sports_equipment_rental
+
+  DOMAIN_DISPLAY: Sports Equipment Rental
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Browse Catalog, Search Inventory
+
+  EXPLANATION: "Browse Catalog" includes "Search Inventory" via an <<include>> relationship.
+  "Search Inventory" is only included by "Browse Catalog", is not associated with
+  any actor, does not include or extend any other use case, is not extended by any
+  use case, and is not part of any generaliz …[truncated]'

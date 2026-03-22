@@ -1,0 +1,123 @@
+
+
+DOMAIN: second_hand_clothing_marketplace
+DOMAIN_DISPLAY: Second-Hand Clothing Marketplace
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: List Item for Sale, Upload Item Photos, include relationship from "List Item for Sale" to "Upload Item Photos"
+EXPLANATION: "Upload Item Photos" is an inclusion use case included only by "List Item for Sale." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (uploading photos) of the listing process rather than a complete, independently valuable service to any actor. This is functional decomposition of "List Item for Sale" into a procedural step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Purchase Item, Process Payment, include relationship from "Purchase Item" to "Process Payment"
+EXPLANATION: "Process Payment" is an inclusion use case included only by "Purchase Item." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal procedural step of the purchasing workflow rather than a standalone service observable to an actor. This is functional decomposition of "Purchase Item."
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Search Items, Apply Filters, include relationship from "Search Items" to "Apply Filters"
+EXPLANATION: "Apply Filters" is an inclusion use case included only by "Search Items." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Applying filters is a sub-step of searching, not a complete service providing an observable result to any user on its own. This is functional decomposition of "Search Items."
+
+REFACTORING_RATIONALE: Each of the three decomposed inclusion use cases ("Upload Item Photos," "Process Payment," and "Apply Filters") must be merged back into their respective base use cases ("List Item for Sale," "Purchase Item," and "Search Items"). Each inclusion use case is only included by one base use case, has no actor association, and represents no independently complete service. Merging them eliminates 3 use cases and 3 include relationships (6 constructs removed), simplifying the model while preserving all functionality within the base use cases. The refactored model retains meaningful use cases that each deliver a complete, observable result to an actor.
+
+CONSTRUCT_COUNT: 29
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Seller
+actor Buyer
+actor Admin
+
+rectangle "Second-Hand Clothing Marketplace" {
+  usecase "Register Account" as UC1
+  usecase "List Item for Sale" as UC2
+  usecase "Upload Item Photos" as UC3
+  usecase "Search Items" as UC4
+  usecase "Apply Filters" as UC5
+  usecase "Purchase Item" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Leave Review" as UC8
+  usecase "Manage Listings" as UC9
+  usecase "Track Order" as UC10
+  usecase "Send Message" as UC11
+  usecase "Moderate Listings" as UC12
+  usecase "Manage Users" as UC13
+  usecase "Request Return" as UC14
+  usecase "Browse Categories" as UC15
+}
+
+Seller --> UC1
+Seller --> UC2
+Seller --> UC9
+Seller --> UC11
+
+Buyer --> UC1
+Buyer --> UC4
+Buyer --> UC6
+Buyer --> UC8
+Buyer --> UC10
+Buyer --> UC11
+Buyer --> UC14
+Buyer --> UC15
+
+Admin --> UC12
+Admin --> UC13
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 23
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Seller
+actor Buyer
+actor Admin
+
+rectangle "Second-Hand Clothing Marketplace" {
+  usecase "Register Account" as UC1
+  usecase "List Item for Sale" as UC2
+  usecase "Search Items" as UC4
+  usecase "Purchase Item" as UC6
+  usecase "Leave Review" as UC8
+  usecase "Manage Listings" as UC9
+  usecase "Track Order" as UC10
+  usecase "Send Message" as UC11
+  usecase "Moderate Listings" as UC12
+  usecase "Manage Users" as UC13
+  usecase "Request Return" as UC14
+  usecase "Browse Categories" as UC15
+}
+
+Seller --> UC1
+Seller --> UC2
+Seller --> UC9
+Seller --> UC11
+
+Buyer --> UC1
+Buyer --> UC4
+Buyer --> UC6
+Buyer --> UC8
+Buyer --> UC10
+Buyer --> UC11
+Buyer --> UC14
+Buyer --> UC15
+
+Admin --> UC12
+Admin --> UC13
+
+@enduml
+```

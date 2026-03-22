@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 126
+  domain: court_case_management_system
+  domain_display: Court Case Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 23
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:51:34.733863'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_126_court_case_management_system/court_case_management_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_126_court_case_management_system/court_case_management_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_126_court_case_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Clerk\" as Clerk\n\
+    actor \"Judge\" as Judge\nactor \"Attorney\" as Attorney\nactor \"Administrator\"\
+    \ as Admin\n\nrectangle \"Court Case Management System\" {\n  usecase \"File New\
+    \ Case\" as UC1\n  usecase \"Assign Judge to Case\" as UC3\n  usecase \"Schedule\
+    \ Hearing\" as UC4\n  usecase \"Record Hearing Outcome\" as UC6\n  usecase \"\
+    Issue Court Order\" as UC7\n  usecase \"View Case History\" as UC9\n  usecase\
+    \ \"Submit Evidence\" as UC10\n  usecase \"Manage User Accounts\" as UC11\n  usecase\
+    \ \"Generate Case Report\" as UC12\n  usecase \"Request Adjournment\" as UC13\n\
+    }\n\nClerk --> UC1\nClerk --> UC3\nClerk --> UC4\nClerk --> UC9\nClerk --> UC12\n\
+    \nJudge --> UC6\nJudge --> UC7\nJudge --> UC9\n\nAttorney --> UC10\nAttorney -->\
+    \ UC9\nAttorney --> UC13\n\nAdmin --> UC11\n\nUC4 ..> UC13 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: court_case_management_system
+
+  DOMAIN_DISPLAY: Court Case Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: File New Case, Validate Case Details, include (File New Case
+  → Validate Case Details)
+
+  EXPLANATION: "Validate Case Details" is an inclusion use case included only by "File
+  New Case." It is not associated with any actor, is not included by any other use
+  case, does not include or extend any use case, is not extended by …[truncated]'

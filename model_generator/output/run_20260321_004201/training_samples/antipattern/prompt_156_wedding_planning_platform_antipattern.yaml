@@ -1,0 +1,116 @@
+metadata:
+  prompt_number: 156
+  domain: wedding_planning_platform
+  domain_display: Wedding Planning Platform
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Book Venue, Check Venue Availability, include (Book Venue
+        → Check Venue Availability)
+      explanation: '"Check Venue Availability" is an inclusion use case included only
+        by "Book Venue." It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. It represents a decomposed
+        sub-step of the booking process rather than a complete, independently valuable
+        service to any actor. This constitutes functional decomposition via the include
+        relationship.'
+    - constructs_involved: Send Invitations, Validate Guest Addresses, include (Send
+        Invitations → Validate Guest Addresses)
+      explanation: '"Validate Guest Addresses" is an inclusion use case included only
+        by "Send Invitations." It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Validating addresses
+        is a decomposed procedural step of sending invitations, not a standalone service
+        observable to a user. This constitutes functional decomposition via the include
+        relationship.'
+    - constructs_involved: Manage Budget, Calculate Remaining Balance, include (Manage
+        Budget → Calculate Remaining Balance)
+      explanation: '"Calculate Remaining Balance" is an inclusion use case included
+        only by "Manage Budget." It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Calculating a remaining
+        balance is an internal computational step of budget management, not a complete
+        service yielding an observable result to any actor. This constitutes functional
+        decomposition via the include relationship.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:02:40.641647'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_156_wedding_planning_platform/wedding_planning_platform_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_156_wedding_planning_platform/wedding_planning_platform_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_156_wedding_planning_platform_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Couple\"\
+    \ as Couple\nactor \"Wedding Planner\" as Planner\nactor \"Vendor\" as Vendor\n\
+    actor \"Guest\" as Guest\n\nrectangle \"Wedding Planning Platform\" {\n  usecase\
+    \ \"Register Account\" as UC1\n  usecase \"Browse Vendors\" as UC2\n  usecase\
+    \ \"Book Venue\" as UC3\n  usecase \"Check Venue Availability\" as UC4\n  usecase\
+    \ \"Manage Guest List\" as UC5\n  usecase \"Send Invitations\" as UC6\n  usecase\
+    \ \"Validate Guest Addresses\" as UC7\n  usecase \"RSVP to Event\" as UC8\n  usecase\
+    \ \"Manage Budget\" as UC9\n  usecase \"Calculate Remaining Balance\" as UC10\n\
+    \  usecase \"Create Seating Arrangement\" as UC11\n  usecase \"Submit Vendor Proposal\"\
+    \ as UC12\n  usecase \"Schedule Consultation\" as UC13\n  usecase \"View Wedding\
+    \ Timeline\" as UC14\n}\n\nCouple --> UC1\nCouple --> UC2\nCouple --> UC3\nCouple\
+    \ --> UC5\nCouple --> UC6\nCouple --> UC9\nCouple --> UC11\nCouple --> UC14\n\n\
+    Planner --> UC3\nPlanner --> UC13\nPlanner --> UC14\n\nVendor --> UC12\n\nGuest\
+    \ --> UC8\n\nUC3 ..> UC4 : <<include>>\nUC6 ..> UC7 : <<include>>\nUC9 ..> UC10\
+    \ : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Book Venue, Check Venue Availability, include\
+    \ (Book Venue → Check Venue Availability)\n   Instance 1: Explanation: \"Check\
+    \ Venue Availability\" is an inclusion use case included only by \"Book Venue.\"\
+    \ It is not associated with any actor, not included by any other use case, does\
+    \ not include or extend any use case, is not extended by any use case, and has\
+    \ no generalization relationships. It represents a decomposed sub-step of the\
+    \ booking process rather than a complete, independently valuable service to any\
+    \ actor. This constitutes functional decomposition via the include relationship.\n\
+    \n   Instance 2: Constructs Involved: Send Invitations, Validate Guest Addresses,\
+    \ include (Send Invitations → Validate Guest Addresses)\n   Instance 2: Explanation:\
+    \ \"Validate Guest Addresses\" is an inclusion use case included only by \"Send\
+    \ Invitations.\" It is not associated with any actor, not included by any other\
+    \ use case, does not include or extend any use case, is not extended by any use\
+    \ case, and has no generalization relationships. Validating addresses is a decomposed\
+    \ procedural step of sending invitations, not a standalone service observable\
+    \ to a user. This constitutes functional decomposition via the include relationship.\n\
+    \n   Instance 3: Constructs Involved: Manage Budget, Calculate Remaining Balance,\
+    \ include (Manage Budget → Calculate Remaining Balance)\n   Instance 3: Explanation:\
+    \ \"Calculate Remaining Balance\" is an inclusion use case included only by \"\
+    Manage Budget.\" It is not associated with any actor, not included by any other\
+    \ use case, does not include or extend any use case, is not extended by any use\
+    \ case, and has no generalization relationships. Calculating a remaining balance\
+    \ is an internal computational step of budget management, not a complete service\
+    \ yielding an observable result to any actor. This constitutes functional decomposition\
+    \ via the include relationship."
+raw_response_excerpt: '
+
+
+  DOMAIN: wedding_planning_platform
+
+  DOMAIN_DISPLAY: Wedding Planning Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Venue, Check Venue Availability, include (Book Venue →
+  Check Venue Availability)
+
+  EXPLANATION: "Check Venue Availability" is an inclusion use case included only by
+  "Book Venue." It is not associated with any actor, not included by any other use
+  case, does not include or extend any use case, is not extended by any use  …[truncated]'

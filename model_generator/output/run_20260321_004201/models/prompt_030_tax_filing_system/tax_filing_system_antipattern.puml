@@ -1,0 +1,44 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Taxpayer" as Taxpayer
+actor "Tax Preparer" as TaxPreparer
+actor "IRS Auditor" as Auditor
+
+rectangle "Tax Filing System" {
+  usecase "File Tax Return" as UC1
+  usecase "Validate SSN" as UC2
+  usecase "Calculate Tax Liability" as UC3
+  usecase "Apply Tax Brackets" as UC4
+  usecase "Submit Payment" as UC5
+  usecase "Generate Payment Reference" as UC6
+  usecase "Request Refund" as UC7
+  usecase "Upload W-2 Forms" as UC8
+  usecase "View Filing Status" as UC9
+  usecase "Amend Tax Return" as UC10
+  usecase "Audit Tax Return" as UC11
+  usecase "Generate Tax Summary Report" as UC12
+  usecase "Request Filing Extension" as UC13
+}
+
+Taxpayer -- UC1
+Taxpayer -- UC3
+Taxpayer -- UC5
+Taxpayer -- UC7
+Taxpayer -- UC8
+Taxpayer -- UC9
+Taxpayer -- UC13
+
+TaxPreparer -- UC1
+TaxPreparer -- UC10
+TaxPreparer -- UC12
+
+Auditor -- UC11
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC10 ..> UC1 : <<extend>>
+
+@enduml

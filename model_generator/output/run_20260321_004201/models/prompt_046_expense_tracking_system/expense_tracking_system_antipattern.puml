@@ -1,0 +1,24 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Employee
+actor Manager
+
+rectangle "Expense Tracking System" {
+  usecase "Submit Expense Report" as UC1
+  usecase "Attach Receipt" as UC2
+  usecase "View Expense History" as UC3
+  usecase "Approve Expense" as UC4
+  usecase "Categorize Expense" as UC5
+  usecase "Generate Spending Report" as UC6
+}
+
+Employee -- UC1
+Employee -- UC3
+Employee -- UC5
+Manager -- UC4
+Manager -- UC6
+
+UC1 ..> UC2 : <<include>>
+
+@enduml

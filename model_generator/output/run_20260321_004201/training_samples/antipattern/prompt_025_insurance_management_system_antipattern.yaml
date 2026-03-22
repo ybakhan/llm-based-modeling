@@ -1,0 +1,77 @@
+metadata:
+  prompt_number: 25
+  domain: insurance_management_system
+  domain_display: Insurance Management System
+  size: small
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Submit Claim, Validate Claim Documents
+      explanation: The use case "Validate Claim Documents" is an inclusion use case
+        that is included by only one use case ("Submit Claim"). It is not associated
+        with any actor directly — no actor interacts with it. It does not include
+        or extend any other use case, is not extended by any use case, and is neither
+        a generalization nor a specialization. "Validate Claim Documents" does not
+        represent a complete, independently meaningful service to any actor; it is
+        merely a decomposed sub-step of the "Submit Claim" process. This is a classic
+        instance of Functional Decomposition via the include relationship, where a
+        use case's internal behavior has been improperly extracted into a separate
+        inclusion use case that serves no standalone purpose.
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 9
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:54:37.011859'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_025_insurance_management_system/insurance_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_025_insurance_management_system/insurance_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_025_insurance_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Policyholder\"\
+    \ as PH\nactor \"Agent\" as AG\n\nrectangle \"Insurance Management System\" {\n\
+    \  usecase \"Purchase Policy\" as UC1\n  usecase \"Submit Claim\" as UC2\n  usecase\
+    \ \"Review Claim\" as UC3\n  usecase \"Validate Claim Documents\" as UC4\n  usecase\
+    \ \"View Policy Details\" as UC5\n}\n\nPH --> UC1\nPH --> UC2\nPH --> UC5\nAG\
+    \ --> UC3\nUC2 ..> UC4 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Constructs Involved: Submit Claim, Validate Claim Documents\n   Explanation:\
+    \ The use case \"Validate Claim Documents\" is an inclusion use case that is included\
+    \ by only one use case (\"Submit Claim\"). It is not associated with any actor\
+    \ directly — no actor interacts with it. It does not include or extend any other\
+    \ use case, is not extended by any use case, and is neither a generalization nor\
+    \ a specialization. \"Validate Claim Documents\" does not represent a complete,\
+    \ independently meaningful service to any actor; it is merely a decomposed sub-step\
+    \ of the \"Submit Claim\" process. This is a classic instance of Functional Decomposition\
+    \ via the include relationship, where a use case's internal behavior has been\
+    \ improperly extracted into a separate inclusion use case that serves no standalone\
+    \ purpose."
+raw_response_excerpt: '
+
+
+  DOMAIN: insurance_management_system
+
+  DOMAIN_DISPLAY: Insurance Management System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Claim, Validate Claim Documents
+
+  EXPLANATION: The use case "Validate Claim Documents" is an inclusion use case that
+  is included by only one use case ("Submit Claim"). It is not associated with any
+  actor directly — no actor interacts with it. It does not include or extend any other
+  use case, is not extended by any …[truncated]'

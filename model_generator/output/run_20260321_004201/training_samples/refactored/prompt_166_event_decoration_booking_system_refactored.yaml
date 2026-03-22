@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 166
+  domain: event_decoration_booking_system
+  domain_display: Event Decoration Booking System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:45:31.479604'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_166_event_decoration_booking_system/event_decoration_booking_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_166_event_decoration_booking_system/event_decoration_booking_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_166_event_decoration_booking_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Customer\" as Customer\n\
+    actor \"Event Planner\" as Planner\nactor \"Admin\" as Admin\n\nrectangle \"Event\
+    \ Decoration Booking System\" {\n  usecase \"Browse Decoration Packages\" as UC1\n\
+    \  usecase \"Place Booking\" as UC2\n  usecase \"Cancel Booking\" as UC3\n  usecase\
+    \ \"View Booking History\" as UC4\n  usecase \"Manage Decoration Packages\" as\
+    \ UC5\n  usecase \"Generate Revenue Report\" as UC6\n  usecase \"Consult on Custom\
+    \ Decoration\" as UC7\n  usecase \"Schedule Site Visit\" as UC8\n  usecase \"\
+    Apply Discount Code\" as UC9\n\n  UC9 ..> UC2 : <<extend>>\n  UC3 ..> UC2 : <<extend>>\n\
+    }\n\nCustomer -- UC1\nCustomer -- UC2\nCustomer -- UC3\nCustomer -- UC4\nPlanner\
+    \ -- UC7\nPlanner -- UC8\nPlanner -- UC1\nAdmin -- UC5\nAdmin -- UC6\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: event_decoration_booking_system
+
+  DOMAIN_DISPLAY: Event Decoration Booking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Booking, Validate Payment Details, include relationship
+  from Place Booking to Validate Payment Details
+
+  EXPLANATION: "Validate Payment Details" is an inclusion use case included only by
+  "Place Booking". It is not associated with any actor, not included by any other
+  use case, does not include or extend any …[truncated]'

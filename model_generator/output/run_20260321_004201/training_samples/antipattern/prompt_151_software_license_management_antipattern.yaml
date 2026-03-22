@@ -1,0 +1,108 @@
+metadata:
+  prompt_number: 151
+  domain: software_license_management
+  domain_display: Software License Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Assign License, Validate User Eligibility, include relationship
+        from Assign License to Validate User Eligibility
+      explanation: '"Validate User Eligibility" is an inclusion use case included
+        only by "Assign License". It is not associated with any actor, not included
+        by any other use case, and does not include, extend, generalize, or get extended
+        by any other use case. It represents a decomposed step of the assignment process
+        rather than a complete, independently valuable service — a classic functional
+        decomposition via include.'
+    - constructs_involved: Renew License, Process Payment, include relationship from
+        Renew License to Process Payment
+      explanation: '"Process Payment" is an inclusion use case included only by "Renew
+        License". It is not associated with any actor, not included by any other use
+        case, and does not include, extend, generalize, or get extended by any other
+        use case. It fragments the renewal workflow into a sub-step that offers no
+        standalone observable result to any actor — functional decomposition via include.'
+    - constructs_involved: Generate Compliance Report, Collect License Data, include
+        relationship from Generate Compliance Report to Collect License Data
+      explanation: '"Collect License Data" is an inclusion use case included only
+        by "Generate Compliance Report". It is not associated with any actor, not
+        included by any other use case, and does not include, extend, generalize,
+        or get extended by any other use case. It represents an internal data-gathering
+        step with no independent value to any user — functional decomposition via
+        include.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:44:28.416222'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_151_software_license_management/software_license_management_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_151_software_license_management/software_license_management_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_151_software_license_management_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"License Admin\" as Admin\nactor \"Compliance Officer\" as Officer\n\
+    actor \"End User\" as EndUser\nactor \"Notification Service\" as NotifSvc\n\n\
+    rectangle \"Software License Management System\" {\n  usecase \"Register Software\
+    \ Product\" as UC1\n  usecase \"Assign License\" as UC2\n  usecase \"Validate\
+    \ User Eligibility\" as UC3\n  usecase \"Revoke License\" as UC4\n  usecase \"\
+    Renew License\" as UC5\n  usecase \"Process Payment\" as UC6\n  usecase \"View\
+    \ Assigned Licenses\" as UC7\n  usecase \"Request License\" as UC8\n  usecase\
+    \ \"Generate Compliance Report\" as UC9\n  usecase \"Collect License Data\" as\
+    \ UC10\n  usecase \"Notify Expiring Licenses\" as UC11\n  usecase \"Track License\
+    \ Usage\" as UC12\n}\n\nAdmin -- UC1\nAdmin -- UC2\nAdmin -- UC4\nAdmin -- UC5\n\
+    Admin -- UC12\n\nEndUser -- UC7\nEndUser -- UC8\n\nOfficer -- UC9\n\nNotifSvc\
+    \ -- UC11\n\nUC2 ..> UC3 : <<include>>\nUC5 ..> UC6 : <<include>>\nUC9 ..> UC10\
+    \ : <<include>>\nUC11 ..> UC5 : <<extend>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Assign License, Validate User Eligibility,\
+    \ include relationship from Assign License to Validate User Eligibility\n   Instance\
+    \ 1: Explanation: \"Validate User Eligibility\" is an inclusion use case included\
+    \ only by \"Assign License\". It is not associated with any actor, not included\
+    \ by any other use case, and does not include, extend, generalize, or get extended\
+    \ by any other use case. It represents a decomposed step of the assignment process\
+    \ rather than a complete, independently valuable service — a classic functional\
+    \ decomposition via include.\n\n   Instance 2: Constructs Involved: Renew License,\
+    \ Process Payment, include relationship from Renew License to Process Payment\n\
+    \   Instance 2: Explanation: \"Process Payment\" is an inclusion use case included\
+    \ only by \"Renew License\". It is not associated with any actor, not included\
+    \ by any other use case, and does not include, extend, generalize, or get extended\
+    \ by any other use case. It fragments the renewal workflow into a sub-step that\
+    \ offers no standalone observable result to any actor — functional decomposition\
+    \ via include.\n\n   Instance 3: Constructs Involved: Generate Compliance Report,\
+    \ Collect License Data, include relationship from Generate Compliance Report to\
+    \ Collect License Data\n   Instance 3: Explanation: \"Collect License Data\" is\
+    \ an inclusion use case included only by \"Generate Compliance Report\". It is\
+    \ not associated with any actor, not included by any other use case, and does\
+    \ not include, extend, generalize, or get extended by any other use case. It represents\
+    \ an internal data-gathering step with no independent value to any user — functional\
+    \ decomposition via include."
+raw_response_excerpt: '
+
+
+  DOMAIN: software_license_management
+
+  DOMAIN_DISPLAY: Software License Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Assign License, Validate User Eligibility, include relationship
+  from Assign License to Validate User Eligibility
+
+  EXPLANATION: "Validate User Eligibility" is an inclusion use case included only
+  by "Assign License". It is not associated with any actor, not included by any other
+  use case, and does not include, ext …[truncated]'

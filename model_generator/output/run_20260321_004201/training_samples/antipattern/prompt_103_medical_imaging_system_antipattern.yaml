@@ -1,0 +1,115 @@
+metadata:
+  prompt_number: 103
+  domain: medical_imaging_system
+  domain_display: Medical Imaging System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Upload DICOM Image, Validate DICOM Format, include relationship
+        from "Upload DICOM Image" to "Validate DICOM Format"
+      explanation: '"Validate DICOM Format" is an inclusion use case included only
+        by "Upload DICOM Image." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (format validation) of uploading an image rather than a complete,
+        independently valuable service — a textbook functional decomposition of the
+        upload process.'
+    - constructs_involved: Generate Diagnostic Report, Compile Report Sections, include
+        relationship from "Generate Diagnostic Report" to "Compile Report Sections"
+      explanation: '"Compile Report Sections" is an inclusion use case included only
+        by "Generate Diagnostic Report." It is not associated with any actor, is not
+        included by any other use case, does not include or extend any use case, is
+        not extended by any use case, and has no generalization relationships. It
+        decomposes the report generation process into a sub-task rather than offering
+        a standalone observable result to any user.'
+    - constructs_involved: Perform Image Analysis, Apply Enhancement Filters, include
+        relationship from "Perform Image Analysis" to "Apply Enhancement Filters"
+      explanation: '"Apply Enhancement Filters" is an inclusion use case included
+        only by "Perform Image Analysis." It is not associated with any actor, is
+        not included by any other use case, does not include or extend any use case,
+        is not extended by any use case, and has no generalization relationships.
+        Applying filters is an internal processing step within analysis, not a complete
+        service yielding an observable result to an actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:40:15.734636'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_103_medical_imaging_system/medical_imaging_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_103_medical_imaging_system/medical_imaging_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_103_medical_imaging_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nleft to right direction\n\
+    \nactor \"Radiologist\" as Radiologist\nactor \"Technician\" as Technician\nactor\
+    \ \"Referring Physician\" as Physician\nactor \"System Administrator\" as Admin\n\
+    \nrectangle \"Medical Imaging System\" {\n  usecase \"Upload DICOM Image\" as\
+    \ UC1\n  usecase \"Validate DICOM Format\" as UC2\n  usecase \"Perform Image Analysis\"\
+    \ as UC3\n  usecase \"Apply Enhancement Filters\" as UC4\n  usecase \"Generate\
+    \ Diagnostic Report\" as UC5\n  usecase \"Compile Report Sections\" as UC6\n \
+    \ usecase \"View Patient Images\" as UC7\n  usecase \"Search Image Archive\" as\
+    \ UC8\n  usecase \"Annotate Image\" as UC9\n  usecase \"Share Report with Physician\"\
+    \ as UC10\n  usecase \"Manage User Accounts\" as UC11\n  usecase \"Monitor System\
+    \ Storage\" as UC12\n  usecase \"Request Second Opinion\" as UC13\n\n  UC1 ..>\
+    \ UC2 : <<include>>\n  UC3 ..> UC4 : <<include>>\n  UC5 ..> UC6 : <<include>>\n\
+    \  UC13 ..> UC7 : <<include>>\n}\n\nTechnician --> UC1\nRadiologist --> UC3\n\
+    Radiologist --> UC5\nRadiologist --> UC7\nRadiologist --> UC9\nRadiologist -->\
+    \ UC13\nPhysician --> UC8\nPhysician --> UC10\nAdmin --> UC11\nAdmin --> UC12\n\
+    \n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Upload DICOM Image, Validate DICOM Format,\
+    \ include relationship from \"Upload DICOM Image\" to \"Validate DICOM Format\"\
+    \n   Instance 1: Explanation: \"Validate DICOM Format\" is an inclusion use case\
+    \ included only by \"Upload DICOM Image.\" It is not associated with any actor,\
+    \ is not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ represents a sub-step (format validation) of uploading an image rather than\
+    \ a complete, independently valuable service — a textbook functional decomposition\
+    \ of the upload process.\n\n   Instance 2: Constructs Involved: Generate Diagnostic\
+    \ Report, Compile Report Sections, include relationship from \"Generate Diagnostic\
+    \ Report\" to \"Compile Report Sections\"\n   Instance 2: Explanation: \"Compile\
+    \ Report Sections\" is an inclusion use case included only by \"Generate Diagnostic\
+    \ Report.\" It is not associated with any actor, is not included by any other\
+    \ use case, does not include or extend any use case, is not extended by any use\
+    \ case, and has no generalization relationships. It decomposes the report generation\
+    \ process into a sub-task rather than offering a standalone observable result\
+    \ to any user.\n\n   Instance 3: Constructs Involved: Perform Image Analysis,\
+    \ Apply Enhancement Filters, include relationship from \"Perform Image Analysis\"\
+    \ to \"Apply Enhancement Filters\"\n   Instance 3: Explanation: \"Apply Enhancement\
+    \ Filters\" is an inclusion use case included only by \"Perform Image Analysis.\"\
+    \ It is not associated with any actor, is not included by any other use case,\
+    \ does not include or extend any use case, is not extended by any use case, and\
+    \ has no generalization relationships. Applying filters is an internal processing\
+    \ step within analysis, not a complete service yielding an observable result to\
+    \ an actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: medical_imaging_system
+
+  DOMAIN_DISPLAY: Medical Imaging System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Upload DICOM Image, Validate DICOM Format, include relationship
+  from "Upload DICOM Image" to "Validate DICOM Format"
+
+  EXPLANATION: "Validate DICOM Format" is an inclusion use case included only by "Upload
+  DICOM Image." It is not associated with any actor, is not included by any other
+  use case, does not include or extend any use  …[truncated]'

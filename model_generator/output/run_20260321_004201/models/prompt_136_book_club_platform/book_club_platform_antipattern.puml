@@ -1,0 +1,23 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Club Organizer" as Organizer
+actor "Member" as Member
+
+rectangle "Book Club Platform" {
+  usecase "Create Book Club" as UC1
+  usecase "Browse Book Clubs" as UC2
+  usecase "Join Book Club" as UC3
+  usecase "Schedule Meeting" as UC4
+  usecase "Select Date and Time" as UC5
+  usecase "Submit Book Review" as UC6
+}
+
+Organizer -- UC1
+Organizer -- UC4
+UC4 ..> UC5 : <<include>>
+Member -- UC2
+Member -- UC3
+Member -- UC6
+@enduml

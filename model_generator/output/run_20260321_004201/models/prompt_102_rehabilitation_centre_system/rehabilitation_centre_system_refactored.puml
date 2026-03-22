@@ -1,0 +1,18 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Therapist" as Therapist
+actor "Patient" as Patient
+
+rectangle "Rehabilitation Centre System" {
+  usecase "Schedule Therapy Session" as UC1
+  usecase "Record Progress Notes" as UC3
+  usecase "View Treatment Plan" as UC4
+  usecase "Register Patient" as UC5
+}
+
+Therapist -- UC1
+Therapist -- UC3
+Patient -- UC4
+Patient -- UC5
+@enduml

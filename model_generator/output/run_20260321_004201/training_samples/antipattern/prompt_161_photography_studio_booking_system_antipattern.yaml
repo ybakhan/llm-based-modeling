@@ -1,0 +1,118 @@
+metadata:
+  prompt_number: 161
+  domain: photography_studio_booking_system
+  domain_display: Photography Studio Booking System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Book Studio Session, Validate Time Slot Availability, include
+        relationship from Book Studio Session to Validate Time Slot Availability
+      explanation: '"Validate Time Slot Availability" is an inclusion use case included
+        only by "Book Studio Session." It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (checking slot availability) that is not a complete service on its
+        own — it is a functional decomposition of the booking process into an internal
+        step that provides no observable result to any user independently.'
+    - constructs_involved: Process Payment, Generate Payment Receipt, include relationship
+        from Process Payment to Generate Payment Receipt
+      explanation: '"Generate Payment Receipt" is an inclusion use case included only
+        by "Process Payment." It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Generating a receipt
+        is a sub-step of payment processing, not a standalone service — it decomposes
+        "Process Payment" into an internal procedural step that delivers no independent
+        observable result to any actor.'
+    - constructs_involved: Register Customer, Send Confirmation Email, include relationship
+        from Register Customer to Send Confirmation Email
+      explanation: '"Send Confirmation Email" is an inclusion use case included only
+        by "Register Customer." It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Sending a confirmation
+        email is an internal implementation step of registration, not a complete service
+        — it functionally decomposes the registration use case into a granular sub-task
+        with no independent value to any actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 29
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:04:29.202536'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_161_photography_studio_booking_system/photography_studio_booking_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_161_photography_studio_booking_system/photography_studio_booking_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_161_photography_studio_booking_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Customer\n\
+    actor Photographer\nactor \"Studio Manager\" as Manager\nactor \"Payment Gateway\"\
+    \ as Gateway\n\nrectangle \"Photography Studio Booking System\" {\n  usecase \"\
+    Register Customer\" as UC1\n  usecase \"Send Confirmation Email\" as UC2\n  usecase\
+    \ \"Browse Studio Packages\" as UC3\n  usecase \"Book Studio Session\" as UC4\n\
+    \  usecase \"Validate Time Slot Availability\" as UC5\n  usecase \"Cancel Booking\"\
+    \ as UC6\n  usecase \"Process Payment\" as UC7\n  usecase \"Generate Payment Receipt\"\
+    \ as UC8\n  usecase \"View Booking Schedule\" as UC9\n  usecase \"Upload Portfolio\"\
+    \ as UC10\n  usecase \"Manage Studio Rooms\" as UC11\n  usecase \"Generate Revenue\
+    \ Report\" as UC12\n  usecase \"Apply Discount\" as UC13\n}\n\nCustomer --> UC1\n\
+    Customer --> UC3\nCustomer --> UC4\nCustomer --> UC6\nCustomer --> UC7\n\nPhotographer\
+    \ --> UC9\nPhotographer --> UC10\n\nManager --> UC11\nManager --> UC12\nManager\
+    \ --> UC9\n\nGateway --> UC7\n\nUC1 ..> UC2 : <<include>>\nUC4 ..> UC5 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\nUC7 ..> UC4 : <<extend>>\nUC13 ..> UC7 : <<extend>>\n\
+    \n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Book Studio Session, Validate Time Slot\
+    \ Availability, include relationship from Book Studio Session to Validate Time\
+    \ Slot Availability\n   Instance 1: Explanation: \"Validate Time Slot Availability\"\
+    \ is an inclusion use case included only by \"Book Studio Session.\" It is not\
+    \ associated with any actor, not included by any other use case, does not include\
+    \ or extend any use case, is not extended by any use case, and has no generalization\
+    \ relationships. It represents a sub-step (checking slot availability) that is\
+    \ not a complete service on its own — it is a functional decomposition of the\
+    \ booking process into an internal step that provides no observable result to\
+    \ any user independently.\n\n   Instance 2: Constructs Involved: Process Payment,\
+    \ Generate Payment Receipt, include relationship from Process Payment to Generate\
+    \ Payment Receipt\n   Instance 2: Explanation: \"Generate Payment Receipt\" is\
+    \ an inclusion use case included only by \"Process Payment.\" It is not associated\
+    \ with any actor, not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ Generating a receipt is a sub-step of payment processing, not a standalone service\
+    \ — it decomposes \"Process Payment\" into an internal procedural step that delivers\
+    \ no independent observable result to any actor.\n\n   Instance 3: Constructs\
+    \ Involved: Register Customer, Send Confirmation Email, include relationship from\
+    \ Register Customer to Send Confirmation Email\n   Instance 3: Explanation: \"\
+    Send Confirmation Email\" is an inclusion use case included only by \"Register\
+    \ Customer.\" It is not associated with any actor, not included by any other use\
+    \ case, does not include or extend any use case, is not extended by any use case,\
+    \ and has no generalization relationships. Sending a confirmation email is an\
+    \ internal implementation step of registration, not a complete service — it functionally\
+    \ decomposes the registration use case into a granular sub-task with no independent\
+    \ value to any actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: photography_studio_booking_system
+
+  DOMAIN_DISPLAY: Photography Studio Booking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Studio Session, Validate Time Slot Availability, include
+  relationship from Book Studio Session to Validate Time Slot Availability
+
+  EXPLANATION: "Validate Time Slot Availability" is an inclusion use case included
+  only by "Book Studio Session." It is not associated with any actor, not included
+  by any oth …[truncated]'

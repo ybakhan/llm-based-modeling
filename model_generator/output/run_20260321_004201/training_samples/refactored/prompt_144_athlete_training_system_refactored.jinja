@@ -1,0 +1,45 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Athlete" as Athlete
+actor "Coach" as Coach
+actor "Medical Staff" as MedicalStaff
+
+rectangle "Athlete Training System" {
+  usecase "Schedule Training Session" as UC1
+  usecase "Log Workout Results" as UC3
+  usecase "Monitor Injury Status" as UC5
+  usecase "Create Training Plan" as UC7
+  usecase "View Progress Report" as UC8
+  usecase "Manage Nutrition Plan" as UC9
+  usecase "Send Alert Notification" as UC10
+  usecase "Assign Exercise Routine" as UC11
+  usecase "Track Recovery Progress" as UC12
+}
+
+Athlete -- UC1
+Athlete -- UC3
+Athlete -- UC8
+Athlete -- UC9
+
+Coach -- UC1
+Coach -- UC7
+Coach -- UC8
+Coach -- UC11
+
+MedicalStaff -- UC5
+MedicalStaff -- UC12
+
+UC7 ..> UC11 : <<include>>
+UC10 ..> UC5 : <<extend>>
+@enduml
+
+
+Answer:
+No antipattern detected.

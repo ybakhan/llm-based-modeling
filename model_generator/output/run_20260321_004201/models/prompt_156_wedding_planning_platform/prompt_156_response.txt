@@ -1,0 +1,123 @@
+
+
+DOMAIN: wedding_planning_platform
+DOMAIN_DISPLAY: Wedding Planning Platform
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Venue, Check Venue Availability, include (Book Venue → Check Venue Availability)
+EXPLANATION: "Check Venue Availability" is an inclusion use case included only by "Book Venue." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed sub-step of the booking process rather than a complete, independently valuable service to any actor. This constitutes functional decomposition via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Send Invitations, Validate Guest Addresses, include (Send Invitations → Validate Guest Addresses)
+EXPLANATION: "Validate Guest Addresses" is an inclusion use case included only by "Send Invitations." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Validating addresses is a decomposed procedural step of sending invitations, not a standalone service observable to a user. This constitutes functional decomposition via the include relationship.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Manage Budget, Calculate Remaining Balance, include (Manage Budget → Calculate Remaining Balance)
+EXPLANATION: "Calculate Remaining Balance" is an inclusion use case included only by "Manage Budget." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Calculating a remaining balance is an internal computational step of budget management, not a complete service yielding an observable result to any actor. This constitutes functional decomposition via the include relationship.
+
+REFACTORING_RATIONALE: Each of the three decomposed inclusion use cases ("Check Venue Availability," "Validate Guest Addresses," "Calculate Remaining Balance") must be merged into their respective base use cases ("Book Venue," "Send Invitations," "Manage Budget"). These inclusion use cases each serve only one base use case, have no actor associations, and represent internal procedural steps rather than complete services. Removing them and their include relationships eliminates 3 use cases and 3 include arrows (6 constructs), producing a cleaner model where each base use case encapsulates its full behavior.
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Couple" as Couple
+actor "Wedding Planner" as Planner
+actor "Vendor" as Vendor
+actor "Guest" as Guest
+
+rectangle "Wedding Planning Platform" {
+  usecase "Register Account" as UC1
+  usecase "Browse Vendors" as UC2
+  usecase "Book Venue" as UC3
+  usecase "Check Venue Availability" as UC4
+  usecase "Manage Guest List" as UC5
+  usecase "Send Invitations" as UC6
+  usecase "Validate Guest Addresses" as UC7
+  usecase "RSVP to Event" as UC8
+  usecase "Manage Budget" as UC9
+  usecase "Calculate Remaining Balance" as UC10
+  usecase "Create Seating Arrangement" as UC11
+  usecase "Submit Vendor Proposal" as UC12
+  usecase "Schedule Consultation" as UC13
+  usecase "View Wedding Timeline" as UC14
+}
+
+Couple --> UC1
+Couple --> UC2
+Couple --> UC3
+Couple --> UC5
+Couple --> UC6
+Couple --> UC9
+Couple --> UC11
+Couple --> UC14
+
+Planner --> UC3
+Planner --> UC13
+Planner --> UC14
+
+Vendor --> UC12
+
+Guest --> UC8
+
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC9 ..> UC10 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Couple" as Couple
+actor "Wedding Planner" as Planner
+actor "Vendor" as Vendor
+actor "Guest" as Guest
+
+rectangle "Wedding Planning Platform" {
+  usecase "Register Account" as UC1
+  usecase "Browse Vendors" as UC2
+  usecase "Book Venue" as UC3
+  usecase "Manage Guest List" as UC5
+  usecase "Send Invitations" as UC6
+  usecase "RSVP to Event" as UC8
+  usecase "Manage Budget" as UC9
+  usecase "Create Seating Arrangement" as UC11
+  usecase "Submit Vendor Proposal" as UC12
+  usecase "Schedule Consultation" as UC13
+  usecase "View Wedding Timeline" as UC14
+}
+
+Couple --> UC1
+Couple --> UC2
+Couple --> UC3
+Couple --> UC5
+Couple --> UC6
+Couple --> UC9
+Couple --> UC11
+Couple --> UC14
+
+Planner --> UC3
+Planner --> UC13
+Planner --> UC14
+
+Vendor --> UC12
+
+Guest --> UC8
+
+@enduml
+```

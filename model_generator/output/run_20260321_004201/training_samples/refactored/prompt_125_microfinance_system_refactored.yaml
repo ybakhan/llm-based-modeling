@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 125
+  domain: microfinance_system
+  domain_display: Microfinance System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 20
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:59:35.466627'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_125_microfinance_system/microfinance_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_125_microfinance_system/microfinance_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_125_microfinance_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\nskinparam\
+    \ packageStyle rectangle\n\nactor \"Loan Officer\" as LO\nactor \"Branch Manager\"\
+    \ as BM\nactor \"Borrower\" as BO\nactor \"Auditor\" as AU\n\nrectangle \"Microfinance\
+    \ System\" {\n  usecase \"Process Loan Application\" as UC1\n  usecase \"Disburse\
+    \ Loan\" as UC3\n  usecase \"Manage Repayments\" as UC5\n  usecase \"Register\
+    \ Borrower\" as UC7\n  usecase \"View Loan Status\" as UC8\n  usecase \"Generate\
+    \ Financial Report\" as UC9\n  usecase \"Approve Loan\" as UC10\n  usecase \"\
+    Close Loan Account\" as UC11\n  usecase \"Record Savings Deposit\" as UC12\n}\n\
+    \nLO -- UC1\nLO -- UC3\nLO -- UC5\nLO -- UC7\nLO -- UC12\nBO -- UC8\nBM -- UC10\n\
+    BM -- UC9\nBM -- UC11\nAU -- UC9\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: microfinance_system
+
+  DOMAIN_DISPLAY: Microfinance System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Process Loan Application, Verify Applicant Identity, include
+  relationship from "Process Loan Application" to "Verify Applicant Identity"
+
+  EXPLANATION: "Verify Applicant Identity" is an inclusion use case included only
+  by "Process Loan Application". It is not associated with any actor, is not included
+  by any other use case, does not in …[truncated]'

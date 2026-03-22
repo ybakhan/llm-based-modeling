@@ -1,0 +1,24 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Environmental Analyst" as Analyst
+actor "Field Technician" as Technician
+actor "System Administrator" as Admin
+
+rectangle "Air Quality Monitoring System" {
+  usecase "Monitor Pollutant Levels" as UC1
+  usecase "Generate Air Quality Report" as UC2
+  usecase "Format Report Data" as UC3
+  usecase "Configure Sensor Thresholds" as UC4
+  usecase "Calibrate Sensors" as UC5
+  usecase "View Real-Time Dashboard" as UC6
+}
+
+Analyst -- UC1
+Analyst -- UC2
+UC2 ..> UC3 : <<include>>
+Admin -- UC4
+Technician -- UC5
+Analyst -- UC6
+
+@enduml

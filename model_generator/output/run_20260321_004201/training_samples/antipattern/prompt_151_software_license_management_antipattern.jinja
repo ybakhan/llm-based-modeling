@@ -1,0 +1,60 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "License Admin" as Admin
+actor "Compliance Officer" as Officer
+actor "End User" as EndUser
+actor "Notification Service" as NotifSvc
+
+rectangle "Software License Management System" {
+  usecase "Register Software Product" as UC1
+  usecase "Assign License" as UC2
+  usecase "Validate User Eligibility" as UC3
+  usecase "Revoke License" as UC4
+  usecase "Renew License" as UC5
+  usecase "Process Payment" as UC6
+  usecase "View Assigned Licenses" as UC7
+  usecase "Request License" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Collect License Data" as UC10
+  usecase "Notify Expiring Licenses" as UC11
+  usecase "Track License Usage" as UC12
+}
+
+Admin -- UC1
+Admin -- UC2
+Admin -- UC4
+Admin -- UC5
+Admin -- UC12
+
+EndUser -- UC7
+EndUser -- UC8
+
+Officer -- UC9
+
+NotifSvc -- UC11
+
+UC2 ..> UC3 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC9 ..> UC10 : <<include>>
+UC11 ..> UC5 : <<extend>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Assign License, Validate User Eligibility, include relationship from Assign License to Validate User Eligibility
+   Instance 1: Explanation: "Validate User Eligibility" is an inclusion use case included only by "Assign License". It is not associated with any actor, not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. It represents a decomposed step of the assignment process rather than a complete, independently valuable service — a classic functional decomposition via include.
+
+   Instance 2: Constructs Involved: Renew License, Process Payment, include relationship from Renew License to Process Payment
+   Instance 2: Explanation: "Process Payment" is an inclusion use case included only by "Renew License". It is not associated with any actor, not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. It fragments the renewal workflow into a sub-step that offers no standalone observable result to any actor — functional decomposition via include.
+
+   Instance 3: Constructs Involved: Generate Compliance Report, Collect License Data, include relationship from Generate Compliance Report to Collect License Data
+   Instance 3: Explanation: "Collect License Data" is an inclusion use case included only by "Generate Compliance Report". It is not associated with any actor, not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. It represents an internal data-gathering step with no independent value to any user — functional decomposition via include.

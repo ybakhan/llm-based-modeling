@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 95
+  domain: water_utility_management
+  domain_display: Water Utility Management
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:09:48.688832'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_095_water_utility_management/water_utility_management_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_095_water_utility_management/water_utility_management_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_095_water_utility_management_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Customer\" as Customer\n\
+    actor \"Billing Clerk\" as BillingClerk\nactor \"Field Technician\" as FieldTech\n\
+    actor \"Operations Manager\" as OpsMgr\n\nrectangle \"Water Utility Management\
+    \ System\" {\n  usecase \"Submit Meter Reading\" as UC1\n  usecase \"Process Water\
+    \ Bill\" as UC2\n  usecase \"Register New Customer\" as UC4\n  usecase \"View\
+    \ Consumption History\" as UC6\n  usecase \"Report Water Leak\" as UC7\n  usecase\
+    \ \"Schedule Maintenance\" as UC8\n  usecase \"Generate Usage Report\" as UC10\n\
+    \  usecase \"Manage Water Shutoff\" as UC11\n  usecase \"Pay Bill Online\" as\
+    \ UC12\n}\n\nCustomer -- UC6\nCustomer -- UC7\nCustomer -- UC12\nBillingClerk\
+    \ -- UC2\nBillingClerk -- UC4\nFieldTech -- UC1\nFieldTech -- UC7\nOpsMgr -- UC8\n\
+    OpsMgr -- UC10\nOpsMgr -- UC11\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: water_utility_management
+
+  DOMAIN_DISPLAY: Water Utility Management
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Process Water Bill, Validate Meter Reading
+
+  EXPLANATION: "Process Water Bill" includes "Validate Meter Reading" via an <<include>>
+  relationship. "Validate Meter Reading" is only included by "Process Water Bill",
+  is not associated with any actor, does not include or extend any other use case,
+  is not extended by any use case,  …[truncated]'

@@ -1,0 +1,43 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Rider" as Rider
+actor "Driver" as Driver
+actor "Admin" as Admin
+
+rectangle "Carpooling App" {
+  usecase "Register Account" as UC1
+  usecase "Search Rides" as UC2
+  usecase "Validate Search Criteria" as UC3
+  usecase "Book Ride" as UC4
+  usecase "Calculate Fare Split" as UC5
+  usecase "Rate Driver" as UC6
+  usecase "Create Ride Offer" as UC7
+  usecase "Validate Route Details" as UC8
+  usecase "Manage Ride Requests" as UC9
+  usecase "View Ride History" as UC10
+  usecase "Process Payment" as UC11
+  usecase "Manage Users" as UC12
+  usecase "View Reports" as UC13
+}
+
+Rider -- UC1
+Rider -- UC2
+Rider -- UC4
+Rider -- UC6
+Rider -- UC10
+Rider -- UC11
+
+Driver -- UC1
+Driver -- UC7
+Driver -- UC9
+Driver -- UC10
+
+Admin -- UC12
+Admin -- UC13
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml

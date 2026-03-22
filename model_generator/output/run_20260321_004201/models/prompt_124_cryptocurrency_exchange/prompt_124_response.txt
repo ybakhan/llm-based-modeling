@@ -1,0 +1,122 @@
+
+
+DOMAIN: cryptocurrency_exchange
+DOMAIN_DISPLAY: Cryptocurrency Exchange
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Place Trade, Validate Order Parameters, include (Place Trade → Validate Order Parameters)
+EXPLANATION: "Validate Order Parameters" is an inclusion use case included only by "Place Trade". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (validating parameters) rather than a complete service observable to an actor, making it a functional decomposition of "Place Trade".
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Withdraw Funds, Generate Blockchain Transaction, include (Withdraw Funds → Generate Blockchain Transaction)
+EXPLANATION: "Generate Blockchain Transaction" is an inclusion use case included only by "Withdraw Funds". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal implementation step rather than a standalone service, making it a functional decomposition of "Withdraw Funds".
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Register Account, Send Verification Email, include (Register Account → Send Verification Email)
+EXPLANATION: "Send Verification Email" is an inclusion use case included only by "Register Account". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It is a sub-step of registration rather than a complete user-facing service, making it a functional decomposition of "Register Account".
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Order Parameters", "Generate Blockchain Transaction", "Send Verification Email") must be merged back into their respective base use cases ("Place Trade", "Withdraw Funds", "Register Account"). These inclusion use cases each represent an internal sub-step that does not provide an independently observable result to any actor. By merging them, we eliminate 3 use cases and 3 include relationships (6 constructs removed), producing a cleaner model where each use case represents a complete, actor-meaningful service. The behavior they represent becomes part of the base use case's internal flow.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Trader
+actor "System Admin" as Admin
+actor "Payment Gateway" as PG
+
+rectangle "Cryptocurrency Exchange" {
+  usecase "Register Account" as UC1
+  usecase "Send Verification Email" as UC2
+  usecase "Login" as UC3
+  usecase "View Portfolio" as UC4
+  usecase "Deposit Funds" as UC5
+  usecase "Withdraw Funds" as UC6
+  usecase "Generate Blockchain Transaction" as UC7
+  usecase "Place Trade" as UC8
+  usecase "Validate Order Parameters" as UC9
+  usecase "View Order History" as UC10
+  usecase "Set Price Alert" as UC11
+  usecase "Complete KYC Verification" as UC12
+  usecase "Monitor Platform Activity" as UC13
+  usecase "Manage User Accounts" as UC14
+  usecase "View Market Data" as UC15
+  usecase "Process Payment" as UC16
+}
+
+Trader --> UC1
+Trader --> UC3
+Trader --> UC4
+Trader --> UC5
+Trader --> UC6
+Trader --> UC8
+Trader --> UC10
+Trader --> UC11
+Trader --> UC12
+Trader --> UC15
+Admin --> UC13
+Admin --> UC14
+PG --> UC16
+
+UC5 ..> UC16 : <<include>>
+UC1 ..> UC2 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC8 ..> UC9 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Trader
+actor "System Admin" as Admin
+actor "Payment Gateway" as PG
+
+rectangle "Cryptocurrency Exchange" {
+  usecase "Register Account" as UC1
+  usecase "Login" as UC3
+  usecase "View Portfolio" as UC4
+  usecase "Deposit Funds" as UC5
+  usecase "Withdraw Funds" as UC6
+  usecase "Place Trade" as UC8
+  usecase "View Order History" as UC10
+  usecase "Set Price Alert" as UC11
+  usecase "Complete KYC Verification" as UC12
+  usecase "Monitor Platform Activity" as UC13
+  usecase "Manage User Accounts" as UC14
+  usecase "View Market Data" as UC15
+  usecase "Process Payment" as UC16
+}
+
+Trader --> UC1
+Trader --> UC3
+Trader --> UC4
+Trader --> UC5
+Trader --> UC6
+Trader --> UC8
+Trader --> UC10
+Trader --> UC11
+Trader --> UC12
+Trader --> UC15
+Admin --> UC13
+Admin --> UC14
+PG --> UC16
+
+UC5 ..> UC16 : <<include>>
+
+@enduml
+```

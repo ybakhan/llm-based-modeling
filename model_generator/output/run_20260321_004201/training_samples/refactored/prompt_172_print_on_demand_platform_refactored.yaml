@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 172
+  domain: print_on_demand_platform
+  domain_display: Print-on-Demand Platform
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:08:35.371837'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_172_print_on_demand_platform/print_on_demand_platform_refactored.puml
+    image: output/run_20260321_004201/models/prompt_172_print_on_demand_platform/print_on_demand_platform_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_172_print_on_demand_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Designer\nactor Customer\n\
+    actor \"Production Staff\" as PS\nactor \"Payment Gateway\" as PG\n\nrectangle\
+    \ \"Print-on-Demand Platform\" {\n  usecase \"Upload Design\" as UC1\n  usecase\
+    \ \"Browse Catalog\" as UC3\n  usecase \"Customize Product\" as UC4\n  usecase\
+    \ \"Place Order\" as UC5\n  usecase \"Process Payment\" as UC7\n  usecase \"Track\
+    \ Order\" as UC9\n  usecase \"Fulfill Order\" as UC10\n  usecase \"Manage Product\
+    \ Listings\" as UC11\n  usecase \"View Sales Reports\" as UC12\n}\n\nDesigner\
+    \ --> UC1\nDesigner --> UC11\nDesigner --> UC12\nCustomer --> UC3\nCustomer -->\
+    \ UC4\nCustomer --> UC5\nCustomer --> UC7\nCustomer --> UC9\nPS --> UC10\nPG -->\
+    \ UC7\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: print_on_demand_platform
+
+  DOMAIN_DISPLAY: Print-on-Demand Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Upload Design, Validate File Format, include relationship from
+  Upload Design to Validate File Format
+
+  EXPLANATION: "Validate File Format" is an inclusion use case included only by "Upload
+  Design." It is not associated with any actor, not included by any other use case,
+  does not include or extend any use case, is not extended …[truncated]'

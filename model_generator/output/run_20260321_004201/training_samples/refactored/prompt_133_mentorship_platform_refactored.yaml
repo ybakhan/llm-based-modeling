@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 133
+  domain: mentorship_platform
+  domain_display: Mentorship Platform
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:54:17.170033'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_133_mentorship_platform/mentorship_platform_refactored.puml
+    image: output/run_20260321_004201/models/prompt_133_mentorship_platform/mentorship_platform_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_133_mentorship_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Mentor\nactor Mentee\n\
+    actor Admin\n\nrectangle \"Mentorship Platform\" {\n  usecase \"Create Profile\"\
+    \ as UC1\n  usecase \"Browse Mentors\" as UC2\n  usecase \"Request Mentorship\"\
+    \ as UC3\n  usecase \"Schedule Session\" as UC5\n  usecase \"Manage Users\" as\
+    \ UC6\n  usecase \"Provide Feedback\" as UC7\n}\n\nMentee --> UC1\nMentee -->\
+    \ UC2\nMentee --> UC3\nMentor --> UC5\nMentor --> UC7\nAdmin --> UC6\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: mentorship_platform
+
+  DOMAIN_DISPLAY: Mentorship Platform
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Request Mentorship (base use case), Validate Availability (inclusion
+  use case), <<include>> from "Request Mentorship" to "Validate Availability"
+
+  EXPLANATION: "Validate Availability" is an inclusion use case that is included by
+  only one use case ("Request Mentorship"). It is not associated with any actor directly
+  — no actor has a direc …[truncated]'

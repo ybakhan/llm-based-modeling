@@ -1,0 +1,110 @@
+metadata:
+  prompt_number: 120
+  domain: crowdfunding_platform
+  domain_display: Crowdfunding Platform
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Create Campaign, Upload Campaign Media, include (Create
+        Campaign → Upload Campaign Media)
+      explanation: '"Upload Campaign Media" is an inclusion use case included only
+        by "Create Campaign." It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step of campaign creation rather than a complete, independently valuable
+        service. This is functional decomposition of "Create Campaign" into a procedural
+        step.'
+    - constructs_involved: Back Project, Process Payment Details, include (Back Project
+        → Process Payment Details)
+      explanation: '"Process Payment Details" is an inclusion use case included only
+        by "Back Project." It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. It represents an internal
+        payment processing step rather than a standalone service observable to a user.
+        This is functional decomposition of "Back Project" into a procedural sub-task.'
+    - constructs_involved: Withdraw Funds, Validate Bank Account, include (Withdraw
+        Funds → Validate Bank Account)
+      explanation: '"Validate Bank Account" is an inclusion use case included only
+        by "Withdraw Funds." It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents an
+        internal validation step rather than a complete service. This is functional
+        decomposition of "Withdraw Funds" into a procedural sub-step.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:46:28.456413'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_120_crowdfunding_platform/crowdfunding_platform_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_120_crowdfunding_platform/crowdfunding_platform_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_120_crowdfunding_platform_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Project\
+    \ Creator\" as Creator\nactor \"Backer\" as Backer\nactor \"Administrator\" as\
+    \ Admin\nactor \"Payment Gateway\" as PG\n\nrectangle \"Crowdfunding Platform\"\
+    \ {\n  usecase \"Create Campaign\" as UC1\n  usecase \"Upload Campaign Media\"\
+    \ as UC2\n  usecase \"Manage Campaign Updates\" as UC3\n  usecase \"Withdraw Funds\"\
+    \ as UC4\n  usecase \"Validate Bank Account\" as UC5\n  usecase \"Browse Campaigns\"\
+    \ as UC6\n  usecase \"Back Project\" as UC7\n  usecase \"Process Payment Details\"\
+    \ as UC8\n  usecase \"Track Pledges\" as UC9\n  usecase \"Review Flagged Campaigns\"\
+    \ as UC10\n  usecase \"Generate Platform Reports\" as UC11\n  usecase \"Authorize\
+    \ Transaction\" as UC12\n}\n\nCreator --> UC1\nCreator --> UC3\nCreator --> UC4\n\
+    Backer --> UC6\nBacker --> UC7\nBacker --> UC9\nAdmin --> UC10\nAdmin --> UC11\n\
+    PG --> UC12\n\nUC1 ..> UC2 : <<include>>\nUC7 ..> UC8 : <<include>>\nUC4 ..> UC5\
+    \ : <<include>>\nUC7 ..> UC12 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Create Campaign, Upload Campaign Media,\
+    \ include (Create Campaign → Upload Campaign Media)\n   Instance 1: Explanation:\
+    \ \"Upload Campaign Media\" is an inclusion use case included only by \"Create\
+    \ Campaign.\" It is not associated with any actor, not included by any other use\
+    \ case, does not include or extend any use case, is not extended by any use case,\
+    \ and has no generalization relationships. It represents a sub-step of campaign\
+    \ creation rather than a complete, independently valuable service. This is functional\
+    \ decomposition of \"Create Campaign\" into a procedural step.\n\n   Instance\
+    \ 2: Constructs Involved: Back Project, Process Payment Details, include (Back\
+    \ Project → Process Payment Details)\n   Instance 2: Explanation: \"Process Payment\
+    \ Details\" is an inclusion use case included only by \"Back Project.\" It is\
+    \ not associated with any actor, not included by any other use case, does not\
+    \ include or extend any use case, is not extended by any use case, and has no\
+    \ generalization relationships. It represents an internal payment processing step\
+    \ rather than a standalone service observable to a user. This is functional decomposition\
+    \ of \"Back Project\" into a procedural sub-task.\n\n   Instance 3: Constructs\
+    \ Involved: Withdraw Funds, Validate Bank Account, include (Withdraw Funds → Validate\
+    \ Bank Account)\n   Instance 3: Explanation: \"Validate Bank Account\" is an inclusion\
+    \ use case included only by \"Withdraw Funds.\" It is not associated with any\
+    \ actor, not included by any other use case, does not include or extend any use\
+    \ case, is not extended by any use case, and has no generalization relationships.\
+    \ It represents an internal validation step rather than a complete service. This\
+    \ is functional decomposition of \"Withdraw Funds\" into a procedural sub-step."
+raw_response_excerpt: '
+
+
+  DOMAIN: crowdfunding_platform
+
+  DOMAIN_DISPLAY: Crowdfunding Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Create Campaign, Upload Campaign Media, include (Create Campaign
+  → Upload Campaign Media)
+
+  EXPLANATION: "Upload Campaign Media" is an inclusion use case included only by "Create
+  Campaign." It is not associated with any actor, not included by any other use case,
+  does not include or extend any use case, is not extended by any use ca …[truncated]'

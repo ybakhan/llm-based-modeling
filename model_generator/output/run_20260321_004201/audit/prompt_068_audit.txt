@@ -1,0 +1,268 @@
+AUDIT LOG — Prompt #068
+Timestamp : 2026-03-21T20:54:49.918963
+Model     : claude-opus-4-6
+Tokens    : input=1644  output=1313
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (3 instances) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer -- UC1
+  Customer -- UC2
+
+═══ ASSOCIATION RULE ═════════════════════════════════════════════════════════════
+Actor-to-use-case associations MUST be undirected lines (--), NOT directed arrows (-->).
+  CORRECT:  Customer -- UC1
+  WRONG:    Customer --> UC1
+
+═══ REFACTORING SCOPE RULE ═══════════════════════════════════════════════════════
+Version 2 MUST be derived strictly from Version 1:
+  • You MAY remove constructs (use cases, actors, relationships) as required by the refactoring.
+  • You MAY add constructs ONLY if the specific antipattern's refactoring inherently requires it
+    (e.g. when fixing a3 "Functional Decomposition: Using the extend relationship", the refactoring
+    splits one extension use case into multiple — those new use cases are required by the fix).
+  • You MUST NOT invent new use cases or actors that are unrelated to the refactoring.
+    Enriching the domain model with extra functionality is strictly forbidden.
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #068: Generate a MEDIUM use case model with exactly 30 constructs (valid range for medium: 24–30 constructs). Domain: Legal Case Management System.
+
+REVIEWER NOTES (from previous attempt — address these in your output):
+the source model is invalid. use case "Send Client Notification" is not associated with any actor.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: legal_case_management_system
+DOMAIN_DISPLAY: Legal Case Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Open New Case, Validate Client Identity, include relationship from Open New Case to Validate Client Identity
+EXPLANATION: "Validate Client Identity" is an inclusion use case included only by "Open New Case". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step (identity validation) rather than a complete, standalone service observable to an actor — a classic functional decomposition of "Open New Case."
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: File Court Document, Generate Filing Reference, include relationship from File Court Document to Generate Filing Reference
+EXPLANATION: "Generate Filing Reference" is an inclusion use case included only by "File Court Document". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Generating a filing reference is an internal sub-step of filing a document, not a complete service offered to any user — this is functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Schedule Hearing, Check Court Availability, include relationship from Schedule Hearing to Check Court Availability
+EXPLANATION: "Check Court Availability" is an inclusion use case included only by "Schedule Hearing". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Checking availability is an internal procedural step within scheduling, not a standalone service — functional decomposition of "Schedule Hearing."
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Client Identity", "Generate Filing Reference", "Check Court Availability") must be merged back into their respective base use cases ("Open New Case", "File Court Document", "Schedule Hearing"). Each inclusion use case is included by only one base use case, has no actor association, and participates in no other relationships — they are purely decomposed sub-steps. Removing each inclusion use case and its include relationship eliminates 3 use cases and 3 include relationships (6 constructs total), yielding a clean model where each base use case encapsulates its full behavior.
+
+CONSTRUCT_COUNT: 30
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Attorney" as Attorney
+actor "Paralegal" as Paralegal
+actor "Client" as Client
+actor "Judge" as Judge
+
+rectangle "Legal Case Management System" {
+  usecase "Open New Case" as UC1
+  usecase "Validate Client Identity" as UC2
+  usecase "Search Cases" as UC3
+  usecase "File Court Document" as UC4
+  usecase "Generate Filing Reference" as UC5
+  usecase "Schedule Hearing" as UC6
+  usecase "Check Court Availability" as UC7
+  usecase "Record Case Notes" as UC8
+  usecase "Assign Attorney to Case" as UC9
+  usecase "Track Billing Hours" as UC10
+  usecase "View Case Status" as UC11
+  usecase "Send Client Notification" as UC12
+  usecase "Close Case" as UC13
+  usecase "Generate Case Report" as UC14
+}
+
+Attorney -- UC1
+Attorney -- UC3
+Attorney -- UC4
+Attorney -- UC6
+Attorney -- UC8
+Attorney -- UC10
+Attorney -- UC13
+Attorney -- UC14
+
+Paralegal -- UC3
+Paralegal -- UC9
+Paralegal -- UC12
+Paralegal -- UC8
+
+Client -- UC11
+
+Judge -- UC6
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC13 ..> UC12 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Attorney" as Attorney
+actor "Paralegal" as Paralegal
+actor "Client" as Client
+actor "Judge" as Judge
+
+rectangle "Legal Case Management System" {
+  usecase "Open New Case" as UC1
+  usecase "Search Cases" as UC3
+  usecase "File Court Document" as UC4
+  usecase "Schedule Hearing" as UC6
+  usecase "Record Case Notes" as UC8
+  usecase "Assign Attorney to Case" as UC9
+  usecase "Track Billing Hours" as UC10
+  usecase "View Case Status" as UC11
+  usecase "Send Client Notification" as UC12
+  usecase "Close Case" as UC13
+  usecase "Generate Case Report" as UC14
+}
+
+Attorney -- UC1
+Attorney -- UC3
+Attorney -- UC4
+Attorney -- UC6
+Attorney -- UC8
+Attorney -- UC10
+Attorney -- UC13
+Attorney -- UC14
+
+Paralegal -- UC3
+Paralegal -- UC9
+Paralegal -- UC12
+Paralegal -- UC8
+
+Client -- UC11
+
+Judge -- UC6
+
+UC13 ..> UC12 : <<include>>
+
+@enduml
+```

@@ -1,0 +1,113 @@
+metadata:
+  prompt_number: 65
+  domain: forum_and_discussion_system
+  domain_display: Forum and Discussion System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Create Thread, Validate Thread Content, include relationship
+        from Create Thread to Validate Thread Content
+      explanation: '"Validate Thread Content" is an inclusion use case included only
+        by "Create Thread." It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. It represents a sub-step
+        (content validation) of thread creation rather than a complete, independently
+        valuable service observable to a user. This is functional decomposition of
+        "Create Thread" into a procedural sub-task.'
+    - constructs_involved: Post Reply, Format Reply Text, include relationship from
+        Post Reply to Format Reply Text
+      explanation: '"Format Reply Text" is an inclusion use case included only by
+        "Post Reply." It is not associated with any actor, not included by any other
+        use case, does not include or extend any use case, is not extended by any
+        use case, and has no generalization relationships. Formatting reply text is
+        an internal implementation step of posting a reply, not a standalone service
+        providing an observable result to any user. This is functional decomposition
+        of "Post Reply."'
+    - constructs_involved: Search Forum, Build Search Index, include relationship
+        from Search Forum to Build Search Index
+      explanation: '"Build Search Index" is an inclusion use case included only by
+        "Search Forum." It is not associated with any actor, not included by any other
+        use case, does not include or extend any use case, is not extended by any
+        use case, and has no generalization relationships. Building a search index
+        is an internal system mechanism, not a complete user-facing service. This
+        is functional decomposition of "Search Forum" into a technical sub-procedure.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:26:05.593229'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_065_forum_and_discussion_system/forum_and_discussion_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_065_forum_and_discussion_system/forum_and_discussion_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_065_forum_and_discussion_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Registered\
+    \ User\" as RegUser\nactor \"Guest\" as Guest\nactor \"Moderator\" as Moderator\n\
+    \nrectangle \"Forum and Discussion System\" {\n  usecase \"Register Account\"\
+    \ as UC1\n  usecase \"Login\" as UC2\n  usecase \"Browse Forums\" as UC3\n  usecase\
+    \ \"Create Thread\" as UC4\n  usecase \"Validate Thread Content\" as UC5\n  usecase\
+    \ \"Post Reply\" as UC6\n  usecase \"Format Reply Text\" as UC7\n  usecase \"\
+    Search Forum\" as UC8\n  usecase \"Build Search Index\" as UC9\n  usecase \"Edit\
+    \ Post\" as UC10\n  usecase \"Delete Post\" as UC11\n  usecase \"Manage Categories\"\
+    \ as UC12\n  usecase \"Ban User\" as UC13\n  usecase \"Report Post\" as UC14\n\
+    }\n\nGuest --> UC1\nGuest --> UC3\nGuest --> UC8\n\nRegUser --> UC2\nRegUser -->\
+    \ UC3\nRegUser --> UC4\nRegUser --> UC6\nRegUser --> UC8\nRegUser --> UC10\nRegUser\
+    \ --> UC14\n\nModerator --> UC11\nModerator --> UC12\nModerator --> UC13\n\nUC4\
+    \ ..> UC5 : <<include>>\nUC6 ..> UC7 : <<include>>\nUC8 ..> UC9 : <<include>>\n\
+    \n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Create Thread, Validate Thread Content,\
+    \ include relationship from Create Thread to Validate Thread Content\n   Instance\
+    \ 1: Explanation: \"Validate Thread Content\" is an inclusion use case included\
+    \ only by \"Create Thread.\" It is not associated with any actor, not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. It represents a sub-step\
+    \ (content validation) of thread creation rather than a complete, independently\
+    \ valuable service observable to a user. This is functional decomposition of \"\
+    Create Thread\" into a procedural sub-task.\n\n   Instance 2: Constructs Involved:\
+    \ Post Reply, Format Reply Text, include relationship from Post Reply to Format\
+    \ Reply Text\n   Instance 2: Explanation: \"Format Reply Text\" is an inclusion\
+    \ use case included only by \"Post Reply.\" It is not associated with any actor,\
+    \ not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. Formatting\
+    \ reply text is an internal implementation step of posting a reply, not a standalone\
+    \ service providing an observable result to any user. This is functional decomposition\
+    \ of \"Post Reply.\"\n\n   Instance 3: Constructs Involved: Search Forum, Build\
+    \ Search Index, include relationship from Search Forum to Build Search Index\n\
+    \   Instance 3: Explanation: \"Build Search Index\" is an inclusion use case included\
+    \ only by \"Search Forum.\" It is not associated with any actor, not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. Building a search\
+    \ index is an internal system mechanism, not a complete user-facing service. This\
+    \ is functional decomposition of \"Search Forum\" into a technical sub-procedure."
+raw_response_excerpt: '
+
+
+  DOMAIN: forum_and_discussion_system
+
+  DOMAIN_DISPLAY: Forum and Discussion System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Create Thread, Validate Thread Content, include relationship
+  from Create Thread to Validate Thread Content
+
+  EXPLANATION: "Validate Thread Content" is an inclusion use case included only by
+  "Create Thread." It is not associated with any actor, not included by any other
+  use case, does not include or extend any use case,  …[truncated]'

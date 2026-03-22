@@ -1,0 +1,32 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Resident" as Resident
+actor "Watch Coordinator" as Coordinator
+actor "Police Liaison" as Police
+
+rectangle "Neighbourhood Watch App" {
+  usecase "Register Account" as UC1
+  usecase "Report Incident" as UC2
+  usecase "Send Alert to Neighbours" as UC4
+  usecase "View Crime Map" as UC6
+  usecase "Manage Watch Zones" as UC8
+  usecase "Review Incident Reports" as UC9
+  usecase "Escalate to Police" as UC10
+  usecase "Post Safety Tip" as UC11
+  usecase "Schedule Patrol" as UC12
+}
+
+Resident -- UC1
+Resident -- UC2
+Resident -- UC4
+Resident -- UC6
+Resident -- UC11
+
+Coordinator -- UC8
+Coordinator -- UC9
+Coordinator -- UC12
+
+Police -- UC10
+
+@enduml

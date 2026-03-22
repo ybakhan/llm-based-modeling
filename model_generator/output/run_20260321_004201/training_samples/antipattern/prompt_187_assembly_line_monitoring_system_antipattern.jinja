@@ -1,0 +1,55 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Line Operator" as Operator
+actor "Production Manager" as Manager
+actor "Maintenance Technician" as Technician
+
+rectangle "Assembly Line Monitoring System" {
+    usecase "Monitor Production Line" as UC1
+    usecase "Fetch Sensor Data" as UC2
+    usecase "Acknowledge Alarm" as UC3
+    usecase "Log Alarm Details" as UC4
+    usecase "Generate Production Report" as UC5
+    usecase "Compile Statistics" as UC6
+    usecase "Configure Alert Thresholds" as UC7
+    usecase "View Line Status Dashboard" as UC8
+    usecase "Schedule Maintenance" as UC9
+    usecase "Escalate Critical Alert" as UC10
+    usecase "Review Downtime History" as UC11
+}
+
+Operator -- UC1
+Operator -- UC3
+Operator -- UC8
+Manager -- UC5
+Manager -- UC7
+Manager -- UC8
+Manager -- UC11
+Technician -- UC9
+Technician -- UC3
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC10 .> UC3 : <<extend>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Monitor Production Line, Fetch Sensor Data, include relationship from Monitor Production Line to Fetch Sensor Data
+   Instance 1: Explanation: "Fetch Sensor Data" is an inclusion use case included only by "Monitor Production Line". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed substep rather than a complete service observable to an actor.
+
+   Instance 2: Constructs Involved: Generate Production Report, Compile Statistics, include relationship from Generate Production Report to Compile Statistics
+   Instance 2: Explanation: "Compile Statistics" is an inclusion use case included only by "Generate Production Report". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It is a decomposed internal step of report generation, not a standalone service.
+
+   Instance 3: Constructs Involved: Acknowledge Alarm, Log Alarm Details, include relationship from Acknowledge Alarm to Log Alarm Details
+   Instance 3: Explanation: "Log Alarm Details" is an inclusion use case included only by "Acknowledge Alarm". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed substep of acknowledging an alarm rather than a complete service.

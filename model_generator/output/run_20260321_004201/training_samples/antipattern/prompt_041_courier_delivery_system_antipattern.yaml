@@ -1,0 +1,105 @@
+metadata:
+  prompt_number: 41
+  domain: courier_delivery_system
+  domain_display: Courier Delivery System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Place Delivery Order, Validate Sender Address
+      explanation: '"Validate Sender Address" is an inclusion use case included only
+        by "Place Delivery Order". It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (address validation) rather than a complete service observable to
+        a user, making it a functional decomposition of "Place Delivery Order".'
+    - constructs_involved: Place Delivery Order, Calculate Shipping Cost
+      explanation: '"Calculate Shipping Cost" is an inclusion use case included only
+        by "Place Delivery Order". It has no direct actor association, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It decomposes a
+        computational sub-step out of "Place Delivery Order" rather than providing
+        a standalone service to any actor.'
+    - constructs_involved: Assign Courier, Check Courier Availability
+      explanation: '"Check Courier Availability" is an inclusion use case included
+        only by "Assign Courier". It has no direct actor association, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents an
+        internal verification step extracted from "Assign Courier" rather than a complete,
+        independently meaningful service.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 26
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:15:29.313370'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_041_courier_delivery_system/courier_delivery_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_041_courier_delivery_system/courier_delivery_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_041_courier_delivery_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Customer\"\
+    \ as Customer\nactor \"Dispatcher\" as Dispatcher\nactor \"Courier\" as Courier\n\
+    actor \"Admin\" as Admin\n\nrectangle \"Courier Delivery System\" {\n  usecase\
+    \ \"Place Delivery Order\" as UC1\n  usecase \"Validate Sender Address\" as UC2\n\
+    \  usecase \"Calculate Shipping Cost\" as UC3\n  usecase \"Track Package\" as\
+    \ UC4\n  usecase \"Cancel Order\" as UC5\n  usecase \"Assign Courier\" as UC6\n\
+    \  usecase \"Check Courier Availability\" as UC7\n  usecase \"Update Delivery\
+    \ Status\" as UC8\n  usecase \"Confirm Pickup\" as UC9\n  usecase \"Confirm Delivery\"\
+    \ as UC10\n  usecase \"Generate Delivery Report\" as UC11\n  usecase \"Manage\
+    \ Customer Accounts\" as UC12\n  usecase \"Rate Courier\" as UC13\n}\n\nCustomer\
+    \ --> UC1\nCustomer --> UC4\nCustomer --> UC5\nCustomer --> UC13\nDispatcher -->\
+    \ UC6\nDispatcher --> UC11\nCourier --> UC8\nCourier --> UC9\nCourier --> UC10\n\
+    Admin --> UC12\n\nUC1 ..> UC2 : <<include>>\nUC1 ..> UC3 : <<include>>\nUC6 ..>\
+    \ UC7 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Place Delivery Order, Validate Sender Address\n\
+    \   Instance 1: Explanation: \"Validate Sender Address\" is an inclusion use case\
+    \ included only by \"Place Delivery Order\". It is not associated with any actor,\
+    \ not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ represents a sub-step (address validation) rather than a complete service observable\
+    \ to a user, making it a functional decomposition of \"Place Delivery Order\"\
+    .\n\n   Instance 2: Constructs Involved: Place Delivery Order, Calculate Shipping\
+    \ Cost\n   Instance 2: Explanation: \"Calculate Shipping Cost\" is an inclusion\
+    \ use case included only by \"Place Delivery Order\". It has no direct actor association,\
+    \ is not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ decomposes a computational sub-step out of \"Place Delivery Order\" rather than\
+    \ providing a standalone service to any actor.\n\n   Instance 3: Constructs Involved:\
+    \ Assign Courier, Check Courier Availability\n   Instance 3: Explanation: \"Check\
+    \ Courier Availability\" is an inclusion use case included only by \"Assign Courier\"\
+    . It has no direct actor association, is not included by any other use case, does\
+    \ not include or extend any use case, is not extended by any use case, and has\
+    \ no generalization relationships. It represents an internal verification step\
+    \ extracted from \"Assign Courier\" rather than a complete, independently meaningful\
+    \ service."
+raw_response_excerpt: '
+
+
+  DOMAIN: courier_delivery_system
+
+  DOMAIN_DISPLAY: Courier Delivery System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Delivery Order, Validate Sender Address
+
+  EXPLANATION: "Validate Sender Address" is an inclusion use case included only by
+  "Place Delivery Order". It is not associated with any actor, not included by any
+  other use case, does not include or extend any use case, is not extended by any
+  use case, and has no generalization rel …[truncated]'

@@ -1,0 +1,49 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Member" as Member
+actor "Guest" as Guest
+actor "Lifeguard" as Lifeguard
+actor "Administrator" as Admin
+actor "Payment Gateway" as PGW
+
+rectangle "Swimming Pool Booking System" {
+  usecase "Book Lane" as UC1
+  usecase "Validate Membership Status" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "Register for Swimming Lesson" as UC4
+  usecase "Check Schedule Availability" as UC5
+  usecase "View Pool Schedule" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Generate Payment Receipt" as UC8
+  usecase "Manage Pool Timetable" as UC9
+  usecase "Report Incident" as UC10
+  usecase "Purchase Day Pass" as UC11
+  usecase "View Booking History" as UC12
+  usecase "Manage Member Accounts" as UC13
+}
+
+Member -- UC1
+Member -- UC3
+Member -- UC4
+Member -- UC6
+Member -- UC7
+Member -- UC12
+
+Guest -- UC6
+Guest -- UC11
+
+Lifeguard -- UC10
+
+Admin -- UC9
+Admin -- UC13
+
+UC7 -- PGW
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+UC11 ..> UC7 : <<include>>
+
+@enduml

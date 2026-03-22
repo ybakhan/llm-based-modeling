@@ -1,0 +1,45 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Patient" as Patient
+actor "Optometrist" as Optometrist
+actor "Receptionist" as Receptionist
+actor "Insurance Provider" as InsProvider
+
+rectangle "Optometry Clinic System" {
+  usecase "Schedule Appointment" as UC1
+  usecase "Check In Patient" as UC2
+  usecase "Conduct Eye Exam" as UC3
+  usecase "Prescribe Corrective Lenses" as UC6
+  usecase "Order Contact Lenses" as UC7
+  usecase "Manage Patient Records" as UC8
+  usecase "Process Payment" as UC9
+  usecase "Submit Insurance Claim" as UC11
+  usecase "View Prescription History" as UC12
+  usecase "Diagnose Eye Condition" as UC13
+}
+
+Patient --> UC1
+Patient --> UC7
+Patient --> UC12
+Receptionist --> UC1
+Receptionist --> UC2
+Receptionist --> UC8
+Receptionist --> UC9
+Optometrist --> UC3
+Optometrist --> UC6
+Optometrist --> UC13
+InsProvider --> UC11
+
+UC9 ..> UC11 : <<include>>
+UC7 ..> UC6 : <<extend>>
+@enduml
+
+
+Answer:
+No antipattern detected.

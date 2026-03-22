@@ -1,0 +1,42 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor Learner
+actor Instructor
+actor Admin
+
+rectangle "Skill Sharing Platform" {
+  usecase "Browse Skills" as UC1
+  usecase "Search Instructors" as UC2
+  usecase "Book Session" as UC3
+  usecase "Validate Availability" as UC4
+  usecase "Process Payment" as UC5
+  usecase "Leave Review" as UC6
+  usecase "Create Skill Listing" as UC7
+  usecase "Upload Portfolio Media" as UC8
+  usecase "Manage Schedule" as UC9
+  usecase "View Earnings" as UC10
+  usecase "Send Message" as UC11
+  usecase "Moderate Content" as UC12
+  usecase "Manage Users" as UC13
+  usecase "View Analytics Dashboard" as UC14
+}
+
+Learner -- UC1
+Learner -- UC2
+Learner -- UC3
+Learner -- UC6
+Learner -- UC11
+Instructor -- UC7
+Instructor -- UC9
+Instructor -- UC10
+Instructor -- UC11
+Admin -- UC12
+Admin -- UC13
+Admin -- UC14
+
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml

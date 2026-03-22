@@ -1,0 +1,62 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Taxpayer" as Taxpayer
+actor "Tax Preparer" as TaxPreparer
+actor "IRS Auditor" as Auditor
+
+rectangle "Tax Filing System" {
+  usecase "File Tax Return" as UC1
+  usecase "Validate SSN" as UC2
+  usecase "Calculate Tax Liability" as UC3
+  usecase "Apply Tax Brackets" as UC4
+  usecase "Submit Payment" as UC5
+  usecase "Generate Payment Reference" as UC6
+  usecase "Request Refund" as UC7
+  usecase "Upload W-2 Forms" as UC8
+  usecase "View Filing Status" as UC9
+  usecase "Amend Tax Return" as UC10
+  usecase "Audit Tax Return" as UC11
+  usecase "Generate Tax Summary Report" as UC12
+  usecase "Request Filing Extension" as UC13
+}
+
+Taxpayer --> UC1
+Taxpayer --> UC3
+Taxpayer --> UC5
+Taxpayer --> UC7
+Taxpayer --> UC8
+Taxpayer --> UC9
+Taxpayer --> UC13
+
+TaxPreparer --> UC1
+TaxPreparer --> UC10
+TaxPreparer --> UC12
+
+Auditor --> UC11
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC10 ..> UC1 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: File Tax Return, Validate SSN, include relationship from File Tax Return to Validate SSN
+   Instance 1: Explanation: "Validate SSN" is an inclusion use case included only by "File Tax Return." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (validating a social security number) rather than a complete, independently valuable service observable to an actor. This is functional decomposition of "File Tax Return" into a procedural step.
+
+   Instance 2: Constructs Involved: Calculate Tax Liability, Apply Tax Brackets, include relationship from Calculate Tax Liability to Apply Tax Brackets
+   Instance 2: Explanation: "Apply Tax Brackets" is an inclusion use case included only by "Calculate Tax Liability." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Applying tax brackets is an internal computational step of calculating tax liability, not a standalone service delivering an observable result to any user. This constitutes functional decomposition.
+
+   Instance 3: Constructs Involved: Submit Payment, Generate Payment Reference, include relationship from Submit Payment to Generate Payment Reference
+   Instance 3: Explanation: "Generate Payment Reference" is an inclusion use case included only by "Submit Payment." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a payment reference number is an internal procedural step within payment submission, not an independent service with observable value to an actor. This is functional decomposition.

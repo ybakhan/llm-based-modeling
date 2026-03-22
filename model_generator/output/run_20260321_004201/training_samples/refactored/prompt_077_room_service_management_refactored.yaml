@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 77
+  domain: room_service_management
+  domain_display: Room Service Management
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:46:17.804336'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_077_room_service_management/room_service_management_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_077_room_service_management/room_service_management_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_077_room_service_management_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Guest\" as Guest\nactor \"Room Service Staff\" as Staff\n\nrectangle \"\
+    Room Service Management System\" {\n  usecase \"Place Order\" as UC1\n  usecase\
+    \ \"Track Order Status\" as UC3\n  usecase \"Prepare Order\" as UC4\n  usecase\
+    \ \"Deliver Order\" as UC5\n  usecase \"Process Payment\" as UC6\n}\n\nGuest --\
+    \ UC1\nGuest -- UC3\nGuest -- UC6\nStaff -- UC4\nStaff -- UC5\nStaff -- UC3\n\
+    @enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: room_service_management
+
+  DOMAIN_DISPLAY: Room Service Management
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Order (base use case), Validate Room Number (inclusion
+  use case), Place Order --include--> Validate Room Number (include relationship)
+
+  EXPLANATION: "Validate Room Number" is an inclusion use case that is included by
+  only one use case ("Place Order"), is not associated with any actor, does not include
+  or extend any other  …[truncated]'

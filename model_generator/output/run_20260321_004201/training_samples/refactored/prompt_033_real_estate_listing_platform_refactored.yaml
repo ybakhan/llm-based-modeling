@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 33
+  domain: real_estate_listing_platform
+  domain_display: Real Estate Listing Platform
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 8
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:43:42.067727'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_033_real_estate_listing_platform/real_estate_listing_platform_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_033_real_estate_listing_platform/real_estate_listing_platform_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_033_real_estate_listing_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Home Buyer\" as Buyer\n\
+    actor \"Property Agent\" as Agent\n\nrectangle \"Real Estate Listing Platform\"\
+    \ {\n  usecase \"Browse Listings\" as UC1\n  usecase \"Search Properties\" as\
+    \ UC2\n  usecase \"Create Listing\" as UC3\n  usecase \"Contact Agent\" as UC4\n\
+    \  usecase \"Edit Listing\" as UC6\n}\n\nBuyer -- UC1\nBuyer -- UC2\nBuyer --\
+    \ UC4\nAgent -- UC3\nAgent -- UC6\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: real_estate_listing_platform
+
+  DOMAIN_DISPLAY: Real Estate Listing Platform
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Search Properties (UC2), Apply Filters (UC5), UC2 --include-->
+  UC5
+
+  EXPLANATION: "Apply Filters" (UC5) is an inclusion use case that is included by
+  only one use case ("Search Properties" / UC2). "Apply Filters" is not associated
+  with any actor directly, it does not include or extend any other use case, it is
+  not exten …[truncated]'

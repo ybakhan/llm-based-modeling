@@ -1,0 +1,71 @@
+
+
+DOMAIN: volunteer_management_system
+DOMAIN_DISPLAY: Volunteer Management System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register Volunteer, Validate Personal Details, the <<include>> relationship from "Register Volunteer" to "Validate Personal Details"
+EXPLANATION: "Validate Personal Details" is an inclusion use case that (1) is included by only one use case ("Register Volunteer"), (2) is not directly associated with any actor, (3) does not include or extend any other use case, (4) is not extended by any use case, and (5) is not involved in any generalization. It represents a sub-step of the registration process rather than a complete, independently valuable service observable to any actor. This is classic functional decomposition — breaking "Register Volunteer" into procedural steps via <<include>> instead of keeping it as one cohesive service.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Personal Details" must be merged back into "Register Volunteer" because it does not provide a standalone service to any actor and is only used by a single base use case. Removing "Validate Personal Details" and its <<include>> relationship eliminates the functional decomposition while preserving the complete service that "Register Volunteer" offers to the Coordinator. The validation logic is understood to be part of the registration process.
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Coordinator" as Coordinator
+actor "Volunteer" as Volunteer
+
+rectangle "Volunteer Management System" {
+  usecase "Register Volunteer" as UC1
+  usecase "Validate Personal Details" as UC2
+  usecase "Assign to Event" as UC3
+  usecase "View Schedule" as UC4
+  usecase "Log Volunteer Hours" as UC5
+  usecase "Browse Open Events" as UC6
+}
+
+Coordinator -- UC1
+UC1 ..> UC2 : <<include>>
+Coordinator -- UC3
+Coordinator -- UC5
+Volunteer -- UC4
+Volunteer -- UC6
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 9
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Coordinator" as Coordinator
+actor "Volunteer" as Volunteer
+
+rectangle "Volunteer Management System" {
+  usecase "Register Volunteer" as UC1
+  usecase "Assign to Event" as UC3
+  usecase "View Schedule" as UC4
+  usecase "Log Volunteer Hours" as UC5
+  usecase "Browse Open Events" as UC6
+}
+
+Coordinator -- UC1
+Coordinator -- UC3
+Coordinator -- UC5
+Volunteer -- UC4
+Volunteer -- UC6
+
+@enduml
+```

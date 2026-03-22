@@ -1,0 +1,32 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Customer
+actor Technician
+actor Manager
+
+rectangle "Vending Machine Management System" {
+  usecase "Select Product" as UC1
+  usecase "Process Payment" as UC2
+  usecase "Dispense Product" as UC3
+  usecase "Restock Machine" as UC5
+  usecase "Generate Sales Report" as UC7
+  usecase "Perform Maintenance" as UC9
+  usecase "Monitor Machine Status" as UC10
+  usecase "Report Malfunction" as UC11
+  usecase "Apply Discount" as UC12
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC3
+Technician -- UC5
+Technician -- UC9
+Technician -- UC11
+Manager -- UC7
+Manager -- UC10
+
+UC1 ..> UC2 : <<include>>
+UC12 ..> UC1 : <<extend>>
+
+@enduml

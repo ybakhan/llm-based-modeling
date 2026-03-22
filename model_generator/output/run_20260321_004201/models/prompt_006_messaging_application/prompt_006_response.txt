@@ -1,0 +1,74 @@
+
+
+DOMAIN: messaging_application
+DOMAIN_DISPLAY: Messaging Application
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Send Message (UC2), Validate Message Content (UC5), include relationship from UC2 to UC5
+EXPLANATION: "Validate Message Content" (UC5) is an inclusion use case that is included by only one use case ("Send Message" / UC2). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and is neither a generalization nor a specialization of any use case. "Validate Message Content" does not represent a complete, independently valuable service to any actor — it is merely a decomposed sub-step of sending a message. This is a textbook instance of Functional Decomposition via the include relationship, where a single use case's internal behavior has been artificially split into a separate inclusion use case that provides no observable standalone result to any user.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Message Content" (UC5) must be merged back into "Send Message" (UC2). Validation of message content is an internal step of sending a message and does not constitute a standalone service. By dropping UC5 and the <<include>> relationship from UC2 to UC5, we eliminate the functional decomposition. The behavior of validating message content becomes part of the "Send Message" use case's internal flow. This reduces the model by removing one use case and one include relationship, resulting in a cleaner, more cohesive model.
+CONSTRUCT_COUNT: 13
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Registered User" as User
+actor "Administrator" as Admin
+
+rectangle "Messaging Application" {
+  usecase "Register Account" as UC1
+  usecase "Send Message" as UC2
+  usecase "View Conversations" as UC3
+  usecase "Delete Message" as UC4
+  usecase "Validate Message Content" as UC5
+  usecase "Manage Users" as UC6
+  usecase "Block User" as UC7
+}
+
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC7
+Admin --> UC6
+
+UC2 ..> UC5 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Registered User" as User
+actor "Administrator" as Admin
+
+rectangle "Messaging Application" {
+  usecase "Register Account" as UC1
+  usecase "Send Message" as UC2
+  usecase "View Conversations" as UC3
+  usecase "Delete Message" as UC4
+  usecase "Manage Users" as UC6
+  usecase "Block User" as UC7
+}
+
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC7
+Admin --> UC6
+@enduml
+```

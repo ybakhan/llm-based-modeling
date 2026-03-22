@@ -1,0 +1,46 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Shipper" as Shipper
+actor "Carrier" as Carrier
+actor "Recipient" as Recipient
+actor "Logistics Manager" as Manager
+actor "Customer Service Agent" as Agent
+
+rectangle "Freight Tracking System" {
+  usecase "Register Shipment" as UC1
+  usecase "Track Shipment Location" as UC3
+  usecase "Update Shipment Status" as UC4
+  usecase "Receive Delivery Notification" as UC6
+  usecase "Generate Delivery Report" as UC7
+  usecase "Search Shipment" as UC9
+  usecase "Raise Shipment Issue" as UC10
+  usecase "Assign Carrier" as UC11
+  usecase "View Shipment History" as UC12
+  usecase "Escalate Delayed Shipment" as UC13
+}
+
+Shipper --> UC1
+Shipper --> UC3
+Carrier --> UC4
+Carrier --> UC11
+Recipient --> UC3
+Recipient --> UC6
+Manager --> UC7
+Manager --> UC12
+Agent --> UC9
+Agent --> UC10
+
+UC10 ..> UC13 : <<extend>>
+
+@enduml
+
+
+Answer:
+No antipattern detected.

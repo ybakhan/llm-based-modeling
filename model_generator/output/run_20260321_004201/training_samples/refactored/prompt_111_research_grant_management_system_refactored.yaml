@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 111
+  domain: research_grant_management_system
+  domain_display: Research Grant Management System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:43:16.456564'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_111_research_grant_management_system/research_grant_management_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_111_research_grant_management_system/research_grant_management_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_111_research_grant_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Researcher\" as Researcher\n\
+    actor \"Grant Reviewer\" as Reviewer\nactor \"Department Head\" as DeptHead\n\n\
+    rectangle \"Research Grant Management System\" {\n  usecase \"Submit Grant Proposal\"\
+    \ as UC1\n  usecase \"Review Grant Application\" as UC3\n  usecase \"Approve Grant\"\
+    \ as UC4\n  usecase \"Track Grant Status\" as UC5\n  usecase \"Generate Grant\
+    \ Report\" as UC6\n}\n\nResearcher --> UC1\nReviewer --> UC3\nDeptHead --> UC4\n\
+    Researcher --> UC5\nDeptHead --> UC6\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: research_grant_management_system
+
+  DOMAIN_DISPLAY: Research Grant Management System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Grant Proposal, Validate Budget Details, include relationship
+  from "Submit Grant Proposal" to "Validate Budget Details"
+
+  EXPLANATION: The use case "Validate Budget Details" is an inclusion use case that
+  is included by only one use case ("Submit Grant Proposal"). It is not associated
+  with any actor direc …[truncated]'

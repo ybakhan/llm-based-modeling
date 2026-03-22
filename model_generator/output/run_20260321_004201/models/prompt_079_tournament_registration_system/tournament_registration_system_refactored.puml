@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Player" as Player
+actor "Tournament Organizer" as Organizer
+
+rectangle "Tournament Registration System" {
+  usecase "Register for Tournament" as UC1
+  usecase "View Tournament Schedule" as UC3
+  usecase "Withdraw from Tournament" as UC4
+  usecase "Create Tournament" as UC5
+  usecase "View Registered Players" as UC6
+}
+
+Player -- UC1
+Player -- UC3
+Player -- UC4
+Organizer -- UC5
+Organizer -- UC6
+@enduml

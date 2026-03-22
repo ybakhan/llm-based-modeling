@@ -1,0 +1,52 @@
+metadata:
+  prompt_number: 134
+  domain: alumni_network_system
+  domain_display: Alumni Network System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 9
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:10:59.280624'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_134_alumni_network_system/alumni_network_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_134_alumni_network_system/alumni_network_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_134_alumni_network_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Alumni\" as A1\nactor\
+    \ \"Admin\" as A2\n\nrectangle \"Alumni Network System\" {\n  usecase \"Search\
+    \ Alumni Directory\" as UC1\n  usecase \"Update Profile\" as UC2\n  usecase \"\
+    Register for Event\" as UC3\n  usecase \"Manage Events\" as UC4\n}\n\nA1 -- UC1\n\
+    A1 -- UC2\nA1 -- UC3\nA2 -- UC4\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: alumni_network_system
+
+  DOMAIN_DISPLAY: Alumni Network System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Update Profile (UC2), Validate Profile Fields (UC5), include
+  relationship from UC2 to UC5
+
+  EXPLANATION: "Validate Profile Fields" (UC5) is an inclusion use case that is included
+  by only one use case ("Update Profile" / UC2). It is not associated with any actor
+  directly. It does not include or extend any other use case, is not exten …[truncated]'

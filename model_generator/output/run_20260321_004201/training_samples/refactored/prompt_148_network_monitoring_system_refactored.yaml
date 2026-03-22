@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 148
+  domain: network_monitoring_system
+  domain_display: Network Monitoring System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 23
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:44:04.422219'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_148_network_monitoring_system/network_monitoring_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_148_network_monitoring_system/network_monitoring_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_148_network_monitoring_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Network Admin\" as\
+    \ Admin\nactor \"NOC Operator\" as NOC\nactor \"Manager\" as Manager\nactor \"\
+    Monitoring Agent\" as Agent\n\nrectangle \"Network Monitoring System\" {\n  usecase\
+    \ \"Monitor Network Traffic\" as UC1\n  usecase \"Configure Device Thresholds\"\
+    \ as UC3\n  usecase \"Respond to Alert\" as UC4\n  usecase \"Escalate Incident\"\
+    \ as UC6\n  usecase \"Generate Performance Report\" as UC7\n  usecase \"View Dashboard\"\
+    \ as UC9\n  usecase \"Manage Device Inventory\" as UC10\n  usecase \"Discover\
+    \ Network Devices\" as UC11\n  usecase \"Schedule Maintenance Window\" as UC12\n\
+    }\n\nAdmin -- UC1\nAdmin -- UC3\nAdmin -- UC10\nAdmin -- UC11\n\nNOC -- UC4\n\
+    NOC -- UC9\n\nManager -- UC7\nManager -- UC9\n\nAgent -- UC1\nAgent -- UC11\n\n\
+    UC6 .> UC4 : <<extend>>\n\nAdmin -- UC12\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: network_monitoring_system
+
+  DOMAIN_DISPLAY: Network Monitoring System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Monitor Network Traffic, Parse Packet Headers
+
+  EXPLANATION: "Monitor Network Traffic" includes "Parse Packet Headers" via an <<include>>
+  relationship. "Parse Packet Headers" is only included by "Monitor Network Traffic",
+  is not associated with any actor, does not include or extend any other use case,
+  is not extended by any …[truncated]'

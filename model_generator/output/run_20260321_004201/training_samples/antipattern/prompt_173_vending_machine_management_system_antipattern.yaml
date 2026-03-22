@@ -1,0 +1,112 @@
+metadata:
+  prompt_number: 173
+  domain: vending_machine_management_system
+  domain_display: Vending Machine Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Purchase Product, Validate Payment, include relationship
+        from Purchase Product to Validate Payment
+      explanation: '"Validate Payment" is an inclusion use case included only by "Purchase
+        Product". It is not associated with any actor, is not included by any other
+        use case, does not include or extend any other use case, is not extended by
+        any use case, and has no generalization relationships. It represents a sub-step
+        of purchasing rather than a complete, independently valuable service. This
+        is functional decomposition — breaking "Purchase Product" into procedural
+        steps via include.'
+    - constructs_involved: Restock Machine, Verify Inventory Levels, include relationship
+        from Restock Machine to Verify Inventory Levels
+      explanation: '"Verify Inventory Levels" is an inclusion use case included only
+        by "Restock Machine". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        an internal procedural step of restocking rather than a standalone service
+        observable to any user. This is functional decomposition of the restocking
+        process.'
+    - constructs_involved: Generate Sales Report, Aggregate Transaction Data, include
+        relationship from Generate Sales Report to Aggregate Transaction Data
+      explanation: '"Aggregate Transaction Data" is an inclusion use case included
+        only by "Generate Sales Report". It is not associated with any actor, is not
+        included by any other use case, does not include or extend any other use case,
+        is not extended by any use case, and has no generalization relationships.
+        It is a sub-function of report generation, not a complete service to any actor.
+        This is functional decomposition of the reporting process.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T01:00:43.084271'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_173_vending_machine_management_system/vending_machine_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_173_vending_machine_management_system/vending_machine_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_173_vending_machine_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Customer\" as Customer\nactor \"Technician\" as Technician\nactor \"\
+    Manager\" as Manager\n\nrectangle \"Vending Machine Management System\" {\n  \
+    \  usecase \"Purchase Product\" as UC1\n    usecase \"Validate Payment\" as UC2\n\
+    \    usecase \"Browse Products\" as UC3\n    usecase \"Restock Machine\" as UC4\n\
+    \    usecase \"Verify Inventory Levels\" as UC5\n    usecase \"Perform Maintenance\"\
+    \ as UC6\n    usecase \"Generate Sales Report\" as UC7\n    usecase \"Aggregate\
+    \ Transaction Data\" as UC8\n    usecase \"Configure Pricing\" as UC9\n    usecase\
+    \ \"Monitor Machine Status\" as UC10\n    usecase \"Request Refund\" as UC11\n\
+    \    usecase \"Manage Machine Locations\" as UC12\n}\n\nCustomer -- UC1\nCustomer\
+    \ -- UC3\nCustomer -- UC11\nTechnician -- UC4\nTechnician -- UC6\nManager -- UC7\n\
+    Manager -- UC9\nManager -- UC10\nManager -- UC12\n\nUC1 ..> UC2 : <<include>>\n\
+    UC4 ..> UC5 : <<include>>\nUC7 ..> UC8 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Purchase Product, Validate Payment, include\
+    \ relationship from Purchase Product to Validate Payment\n   Instance 1: Explanation:\
+    \ \"Validate Payment\" is an inclusion use case included only by \"Purchase Product\"\
+    . It is not associated with any actor, is not included by any other use case,\
+    \ does not include or extend any other use case, is not extended by any use case,\
+    \ and has no generalization relationships. It represents a sub-step of purchasing\
+    \ rather than a complete, independently valuable service. This is functional decomposition\
+    \ — breaking \"Purchase Product\" into procedural steps via include.\n\n   Instance\
+    \ 2: Constructs Involved: Restock Machine, Verify Inventory Levels, include relationship\
+    \ from Restock Machine to Verify Inventory Levels\n   Instance 2: Explanation:\
+    \ \"Verify Inventory Levels\" is an inclusion use case included only by \"Restock\
+    \ Machine\". It is not associated with any actor, is not included by any other\
+    \ use case, does not include or extend any other use case, is not extended by\
+    \ any use case, and has no generalization relationships. It represents an internal\
+    \ procedural step of restocking rather than a standalone service observable to\
+    \ any user. This is functional decomposition of the restocking process.\n\n  \
+    \ Instance 3: Constructs Involved: Generate Sales Report, Aggregate Transaction\
+    \ Data, include relationship from Generate Sales Report to Aggregate Transaction\
+    \ Data\n   Instance 3: Explanation: \"Aggregate Transaction Data\" is an inclusion\
+    \ use case included only by \"Generate Sales Report\". It is not associated with\
+    \ any actor, is not included by any other use case, does not include or extend\
+    \ any other use case, is not extended by any use case, and has no generalization\
+    \ relationships. It is a sub-function of report generation, not a complete service\
+    \ to any actor. This is functional decomposition of the reporting process."
+raw_response_excerpt: '
+
+
+  DOMAIN: vending_machine_management_system
+
+  DOMAIN_DISPLAY: Vending Machine Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Purchase Product, Validate Payment, include relationship from
+  Purchase Product to Validate Payment
+
+  EXPLANATION: "Validate Payment" is an inclusion use case included only by "Purchase
+  Product". It is not associated with any actor, is not included by any other use
+  case, does not include or extend any other u …[truncated]'

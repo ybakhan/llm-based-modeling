@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 76
+  domain: catering_service_system
+  domain_display: Catering Service System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:30:26.616592'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_076_catering_service_system/catering_service_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_076_catering_service_system/catering_service_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_076_catering_service_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Customer\" as Customer\n\
+    actor \"Chef\" as Chef\nactor \"Event Coordinator\" as EC\nactor \"Payment Gateway\"\
+    \ as PG\n\nrectangle \"Catering Service System\" {\n  usecase \"Browse Menu\"\
+    \ as UC1\n  usecase \"Place Catering Order\" as UC2\n  usecase \"Process Payment\"\
+    \ as UC3\n  usecase \"Track Order Status\" as UC4\n  usecase \"Create Menu Package\"\
+    \ as UC5\n  usecase \"Manage Event Schedule\" as UC6\n  usecase \"Generate Invoice\"\
+    \ as UC7\n  usecase \"Request Custom Menu\" as UC11\n  usecase \"Rate Service\"\
+    \ as UC12\n}\n\nCustomer --> UC1\nCustomer --> UC2\nCustomer --> UC3\nCustomer\
+    \ --> UC4\nCustomer --> UC11\nCustomer --> UC12\nChef --> UC5\nEC --> UC6\nEC\
+    \ --> UC7\nPG --> UC3\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: catering_service_system
+
+  DOMAIN_DISPLAY: Catering Service System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Catering Order, Validate Customer Address
+
+  EXPLANATION: "Validate Customer Address" is an inclusion use case included only
+  by "Place Catering Order". It is not associated with any actor, is not included
+  by any other use case, does not include or extend any use case, is not extended
+  by any use case, and has no generalizat …[truncated]'

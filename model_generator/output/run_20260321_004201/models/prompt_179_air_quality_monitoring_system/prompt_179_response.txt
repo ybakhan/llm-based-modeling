@@ -1,0 +1,73 @@
+
+
+DOMAIN: air_quality_monitoring_system
+DOMAIN_DISPLAY: Air Quality Monitoring System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Generate Air Quality Report, Format Report Data
+EXPLANATION: The use case "Format Report Data" is an inclusion use case that is included only by "Generate Air Quality Report." It is not associated with any actor directly, it does not include or extend any other use case, it is not extended by any use case, and it has no generalization relationships. "Format Report Data" does not represent a complete, standalone service observable to any user — it is merely a decomposed sub-step of generating a report. This constitutes the Functional Decomposition antipattern because "Generate Air Quality Report" has been improperly broken into a base use case and a non-reusable inclusion fragment that only serves one base use case.
+
+REFACTORING_RATIONALE: The inclusion use case "Format Report Data" must be merged back into "Generate Air Quality Report" because it is only included by that single use case, is not associated with any actor, and provides no independent observable result. Removing "Format Report Data" and its <<include>> relationship eliminates the functional decomposition, reducing the model by one use case and one include relationship while preserving the complete service offered by "Generate Air Quality Report."
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Environmental Analyst" as Analyst
+actor "Field Technician" as Technician
+actor "System Administrator" as Admin
+
+rectangle "Air Quality Monitoring System" {
+  usecase "Monitor Pollutant Levels" as UC1
+  usecase "Generate Air Quality Report" as UC2
+  usecase "Format Report Data" as UC3
+  usecase "Configure Sensor Thresholds" as UC4
+  usecase "Calibrate Sensors" as UC5
+  usecase "View Real-Time Dashboard" as UC6
+}
+
+Analyst --> UC1
+Analyst --> UC2
+UC2 ..> UC3 : <<include>>
+Admin --> UC4
+Technician --> UC5
+Analyst --> UC6
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Environmental Analyst" as Analyst
+actor "Field Technician" as Technician
+actor "System Administrator" as Admin
+
+rectangle "Air Quality Monitoring System" {
+  usecase "Monitor Pollutant Levels" as UC1
+  usecase "Generate Air Quality Report" as UC2
+  usecase "Configure Sensor Thresholds" as UC4
+  usecase "Calibrate Sensors" as UC5
+  usecase "View Real-Time Dashboard" as UC6
+}
+
+Analyst --> UC1
+Analyst --> UC2
+Admin --> UC4
+Technician --> UC5
+Analyst --> UC6
+
+@enduml
+```

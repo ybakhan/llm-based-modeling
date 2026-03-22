@@ -1,0 +1,42 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+left to right direction
+
+actor "Safety Officer" as SO
+actor "Plant Worker" as PW
+actor "Safety Manager" as SM
+actor "Regulatory Authority" as RA
+
+rectangle "Industrial Safety Reporting System" {
+  usecase "Submit Incident Report" as UC1
+  usecase "View Incident History" as UC3
+  usecase "Conduct Safety Inspection" as UC4
+  usecase "Investigate Incident" as UC6
+  usecase "Assign Corrective Action" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Review Safety Metrics Dashboard" as UC10
+  usecase "Escalate Critical Incident" as UC11
+  usecase "Track Corrective Action Status" as UC12
+  usecase "Export Regulatory Filing" as UC13
+  usecase "Log Near-Miss Event" as UC14
+  usecase "Notify Stakeholders" as UC15
+}
+
+PW -- UC1
+PW -- UC14
+SO -- UC1
+SO -- UC3
+SO -- UC4
+SO -- UC6
+SO -- UC8
+SO -- UC12
+SM -- UC9
+SM -- UC10
+SM -- UC11
+RA -- UC13
+
+UC11 ..> UC15 : <<include>>
+UC1 ..> UC15 : <<include>>
+
+@enduml

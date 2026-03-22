@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 120
+  domain: crowdfunding_platform
+  domain_display: Crowdfunding Platform
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:46:28.456413'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_120_crowdfunding_platform/crowdfunding_platform_refactored.puml
+    image: output/run_20260321_004201/models/prompt_120_crowdfunding_platform/crowdfunding_platform_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_120_crowdfunding_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Project Creator\"\
+    \ as Creator\nactor \"Backer\" as Backer\nactor \"Administrator\" as Admin\nactor\
+    \ \"Payment Gateway\" as PG\n\nrectangle \"Crowdfunding Platform\" {\n  usecase\
+    \ \"Create Campaign\" as UC1\n  usecase \"Manage Campaign Updates\" as UC3\n \
+    \ usecase \"Withdraw Funds\" as UC4\n  usecase \"Browse Campaigns\" as UC6\n \
+    \ usecase \"Back Project\" as UC7\n  usecase \"Track Pledges\" as UC9\n  usecase\
+    \ \"Review Flagged Campaigns\" as UC10\n  usecase \"Generate Platform Reports\"\
+    \ as UC11\n  usecase \"Authorize Transaction\" as UC12\n}\n\nCreator --> UC1\n\
+    Creator --> UC3\nCreator --> UC4\nBacker --> UC6\nBacker --> UC7\nBacker --> UC9\n\
+    Admin --> UC10\nAdmin --> UC11\nPG --> UC12\n\nUC7 ..> UC12 : <<include>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: crowdfunding_platform
+
+  DOMAIN_DISPLAY: Crowdfunding Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Create Campaign, Upload Campaign Media, include (Create Campaign
+  → Upload Campaign Media)
+
+  EXPLANATION: "Upload Campaign Media" is an inclusion use case included only by "Create
+  Campaign." It is not associated with any actor, not included by any other use case,
+  does not include or extend any use case, is not extended by any use ca …[truncated]'

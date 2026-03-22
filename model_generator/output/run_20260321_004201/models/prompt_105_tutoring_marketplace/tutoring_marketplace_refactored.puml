@@ -1,0 +1,41 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Student" as Student
+actor "Tutor" as Tutor
+actor "Admin" as Admin
+
+rectangle "Tutoring Marketplace" {
+  usecase "Search Tutors" as UC1
+  usecase "Book Session" as UC2
+  usecase "Process Payment" as UC4
+  usecase "Leave Review" as UC6
+  usecase "Register As Tutor" as UC7
+  usecase "Manage Schedule" as UC9
+  usecase "View Earnings" as UC10
+  usecase "Conduct Session" as UC11
+  usecase "Manage Listings" as UC12
+  usecase "Resolve Dispute" as UC13
+  usecase "View Dashboard" as UC14
+  usecase "Send Message" as UC15
+  usecase "Cancel Session" as UC16
+}
+
+Student -- UC1
+Student -- UC2
+Student -- UC4
+Student -- UC6
+Student -- UC15
+Student -- UC16
+
+Tutor -- UC7
+Tutor -- UC9
+Tutor -- UC10
+Tutor -- UC11
+Tutor -- UC15
+
+Admin -- UC12
+Admin -- UC13
+Admin -- UC14
+@enduml

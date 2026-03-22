@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 118
+  domain: cruise_booking_system
+  domain_display: Cruise Booking System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:45:43.686600'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_118_cruise_booking_system/cruise_booking_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_118_cruise_booking_system/cruise_booking_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_118_cruise_booking_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Passenger\" as Passenger\nactor \"Travel Agent\" as TravelAgent\nactor\
+    \ \"Payment Gateway\" as PaymentGateway\n\nrectangle \"Cruise Booking System\"\
+    \ {\n  usecase \"Browse Cruises\" as UC1\n  usecase \"Book Cruise\" as UC2\n \
+    \ usecase \"Process Payment\" as UC5\n  usecase \"Cancel Booking\" as UC7\n  usecase\
+    \ \"View Itinerary\" as UC8\n  usecase \"Manage Passenger Profile\" as UC9\n \
+    \ usecase \"Search Excursions\" as UC10\n  usecase \"Apply Discount\" as UC11\n\
+    }\n\nPassenger --> UC1\nPassenger --> UC2\nPassenger --> UC5\nPassenger --> UC7\n\
+    Passenger --> UC8\nPassenger --> UC9\nPassenger --> UC10\nTravelAgent --> UC2\n\
+    TravelAgent --> UC7\nPaymentGateway --> UC5\n\nUC5 ..> UC11 : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: cruise_booking_system
+
+  DOMAIN_DISPLAY: Cruise Booking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Cruise, Validate Passenger Details, include (Book Cruise
+  → Validate Passenger Details)
+
+  EXPLANATION: "Validate Passenger Details" is an inclusion use case included only
+  by "Book Cruise". It is not associated with any actor, does not include or extend
+  any other use case, is not extended by any use case, and is not part of any  …[truncated]'

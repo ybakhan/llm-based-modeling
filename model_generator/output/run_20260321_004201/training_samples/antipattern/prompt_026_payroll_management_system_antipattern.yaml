@@ -1,0 +1,111 @@
+metadata:
+  prompt_number: 26
+  domain: payroll_management_system
+  domain_display: Payroll Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Process Payroll, Calculate Deductions, include(Process
+        Payroll -> Calculate Deductions)
+      explanation: '"Calculate Deductions" is an inclusion use case included only
+        by "Process Payroll." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step of payroll processing rather than a complete, independently valuable
+        service to any actor. This is functional decomposition of "Process Payroll"
+        into a procedural sub-task.'
+    - constructs_involved: Process Payroll, Compute Gross Pay, include(Process Payroll
+        -> Compute Gross Pay)
+      explanation: '"Compute Gross Pay" is an inclusion use case included only by
+        "Process Payroll." It is not associated with any actor, is not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It decomposes the
+        payroll process into a calculation step that provides no standalone observable
+        result to any user. This is a classic functional decomposition fragment.'
+    - constructs_involved: Generate Pay Stub, Format PDF Output, include(Generate
+        Pay Stub -> Format PDF Output)
+      explanation: '"Format PDF Output" is an inclusion use case included only by
+        "Generate Pay Stub." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Formatting a PDF
+        is an internal implementation step of generating a pay stub, not a complete
+        service visible to an actor. This is functional decomposition of "Generate
+        Pay Stub" into a technical sub-function.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 28
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:55:01.896146'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_026_payroll_management_system/payroll_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_026_payroll_management_system/payroll_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_026_payroll_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"HR Manager\"\
+    \ as HR\nactor \"Employee\" as EMP\nactor \"Accountant\" as ACC\nactor \"Bank\
+    \ System\" as BANK\n\nrectangle \"Payroll Management System\" {\n  usecase \"\
+    Manage Employee Records\" as UC1\n  usecase \"Process Payroll\" as UC2\n  usecase\
+    \ \"Compute Gross Pay\" as UC3\n  usecase \"Calculate Deductions\" as UC4\n  usecase\
+    \ \"Generate Pay Stub\" as UC5\n  usecase \"Format PDF Output\" as UC6\n  usecase\
+    \ \"View Pay History\" as UC7\n  usecase \"Submit Timesheet\" as UC8\n  usecase\
+    \ \"Approve Timesheet\" as UC9\n  usecase \"Generate Tax Report\" as UC10\n  usecase\
+    \ \"Transfer Salary\" as UC11\n  usecase \"Update Tax Settings\" as UC12\n  usecase\
+    \ \"Request Leave\" as UC13\n}\n\nHR --> UC1\nHR --> UC2\nHR --> UC9\nHR --> UC12\n\
+    EMP --> UC7\nEMP --> UC8\nEMP --> UC13\nACC --> UC5\nACC --> UC10\nBANK --> UC11\n\
+    \nUC2 ..> UC3 : <<include>>\nUC2 ..> UC4 : <<include>>\nUC5 ..> UC6 : <<include>>\n\
+    UC2 ..> UC11 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Process Payroll, Calculate Deductions, include(Process\
+    \ Payroll -> Calculate Deductions)\n   Instance 1: Explanation: \"Calculate Deductions\"\
+    \ is an inclusion use case included only by \"Process Payroll.\" It is not associated\
+    \ with any actor, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ It represents a sub-step of payroll processing rather than a complete, independently\
+    \ valuable service to any actor. This is functional decomposition of \"Process\
+    \ Payroll\" into a procedural sub-task.\n\n   Instance 2: Constructs Involved:\
+    \ Process Payroll, Compute Gross Pay, include(Process Payroll -> Compute Gross\
+    \ Pay)\n   Instance 2: Explanation: \"Compute Gross Pay\" is an inclusion use\
+    \ case included only by \"Process Payroll.\" It is not associated with any actor,\
+    \ is not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ decomposes the payroll process into a calculation step that provides no standalone\
+    \ observable result to any user. This is a classic functional decomposition fragment.\n\
+    \n   Instance 3: Constructs Involved: Generate Pay Stub, Format PDF Output, include(Generate\
+    \ Pay Stub -> Format PDF Output)\n   Instance 3: Explanation: \"Format PDF Output\"\
+    \ is an inclusion use case included only by \"Generate Pay Stub.\" It is not associated\
+    \ with any actor, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ Formatting a PDF is an internal implementation step of generating a pay stub,\
+    \ not a complete service visible to an actor. This is functional decomposition\
+    \ of \"Generate Pay Stub\" into a technical sub-function."
+raw_response_excerpt: '
+
+
+  DOMAIN: payroll_management_system
+
+  DOMAIN_DISPLAY: Payroll Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Process Payroll, Calculate Deductions, include(Process Payroll
+  -> Calculate Deductions)
+
+  EXPLANATION: "Calculate Deductions" is an inclusion use case included only by "Process
+  Payroll." It is not associated with any actor, is not included by any other use
+  case, does not include or extend any use case, is not extended by an …[truncated]'

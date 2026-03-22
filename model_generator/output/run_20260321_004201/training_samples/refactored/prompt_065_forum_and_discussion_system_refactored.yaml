@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 65
+  domain: forum_and_discussion_system
+  domain_display: Forum and Discussion System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:26:05.593229'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_065_forum_and_discussion_system/forum_and_discussion_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_065_forum_and_discussion_system/forum_and_discussion_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_065_forum_and_discussion_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Registered User\"\
+    \ as RegUser\nactor \"Guest\" as Guest\nactor \"Moderator\" as Moderator\n\nrectangle\
+    \ \"Forum and Discussion System\" {\n  usecase \"Register Account\" as UC1\n \
+    \ usecase \"Login\" as UC2\n  usecase \"Browse Forums\" as UC3\n  usecase \"Create\
+    \ Thread\" as UC4\n  usecase \"Post Reply\" as UC6\n  usecase \"Search Forum\"\
+    \ as UC8\n  usecase \"Edit Post\" as UC10\n  usecase \"Delete Post\" as UC11\n\
+    \  usecase \"Manage Categories\" as UC12\n  usecase \"Ban User\" as UC13\n  usecase\
+    \ \"Report Post\" as UC14\n}\n\nGuest --> UC1\nGuest --> UC3\nGuest --> UC8\n\n\
+    RegUser --> UC2\nRegUser --> UC3\nRegUser --> UC4\nRegUser --> UC6\nRegUser -->\
+    \ UC8\nRegUser --> UC10\nRegUser --> UC14\n\nModerator --> UC11\nModerator -->\
+    \ UC12\nModerator --> UC13\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: forum_and_discussion_system
+
+  DOMAIN_DISPLAY: Forum and Discussion System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Create Thread, Validate Thread Content, include relationship
+  from Create Thread to Validate Thread Content
+
+  EXPLANATION: "Validate Thread Content" is an inclusion use case included only by
+  "Create Thread." It is not associated with any actor, not included by any other
+  use case, does not include or extend any use case,  …[truncated]'

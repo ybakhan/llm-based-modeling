@@ -1,0 +1,38 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Photographer
+actor Viewer
+actor Administrator
+
+rectangle "Digital Photography Platform" {
+  usecase "Upload Photo" as UC1
+  usecase "Edit Photo" as UC3
+  usecase "Browse Gallery" as UC5
+  usecase "Search Photos" as UC6
+  usecase "Rate Photo" as UC7
+  usecase "Comment on Photo" as UC8
+  usecase "Create Album" as UC9
+  usecase "Purchase Print" as UC10
+  usecase "Manage User Accounts" as UC12
+  usecase "Moderate Content" as UC13
+  usecase "Share Photo" as UC14
+  usecase "Download Photo" as UC15
+}
+
+Photographer -- UC1
+Photographer -- UC3
+Photographer -- UC9
+Photographer -- UC10
+Photographer -- UC14
+Photographer -- UC5
+
+Viewer -- UC5
+Viewer -- UC6
+Viewer -- UC7
+Viewer -- UC8
+Viewer -- UC15
+
+Administrator -- UC12
+Administrator -- UC13
+@enduml

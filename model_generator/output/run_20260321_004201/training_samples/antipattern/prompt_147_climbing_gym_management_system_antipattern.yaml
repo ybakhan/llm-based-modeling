@@ -1,0 +1,111 @@
+metadata:
+  prompt_number: 147
+  domain: climbing_gym_management_system
+  domain_display: Climbing Gym Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Register Member, Validate Personal Info, include relationship
+        from Register Member to Validate Personal Info
+      explanation: '"Validate Personal Info" is an inclusion use case included only
+        by "Register Member." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (validating data) rather than a complete service observable to an
+        actor, making it a functional decomposition of "Register Member."'
+    - constructs_involved: Book Climbing Session, Check Slot Availability, include
+        relationship from Book Climbing Session to Check Slot Availability
+      explanation: '"Check Slot Availability" is an inclusion use case included only
+        by "Book Climbing Session." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Checking availability
+        is an internal procedural step of booking, not a standalone service delivering
+        an observable result to a user.'
+    - constructs_involved: Process Payment, Generate Payment Receipt, include relationship
+        from Process Payment to Generate Payment Receipt
+      explanation: '"Generate Payment Receipt" is an inclusion use case included only
+        by "Process Payment." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Generating a receipt
+        is a sub-step decomposed out of the payment process rather than a complete,
+        independently valuable service to an actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:59:10.831489'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_147_climbing_gym_management_system/climbing_gym_management_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_147_climbing_gym_management_system/climbing_gym_management_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_147_climbing_gym_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Member\"\
+    \ as Member\nactor \"Front Desk Staff\" as Staff\nactor \"Instructor\" as Instructor\n\
+    actor \"Manager\" as Manager\n\nrectangle \"Climbing Gym Management System\" {\n\
+    \  usecase \"Register Member\" as UC1\n  usecase \"Validate Personal Info\" as\
+    \ UC2\n  usecase \"Book Climbing Session\" as UC3\n  usecase \"Check Slot Availability\"\
+    \ as UC4\n  usecase \"Cancel Booking\" as UC5\n  usecase \"Process Payment\" as\
+    \ UC6\n  usecase \"Generate Payment Receipt\" as UC7\n  usecase \"Manage Route\
+    \ Grades\" as UC8\n  usecase \"Schedule Group Class\" as UC9\n  usecase \"View\
+    \ Membership Status\" as UC10\n  usecase \"Check In Member\" as UC11\n  usecase\
+    \ \"Generate Attendance Report\" as UC12\n  usecase \"Renew Membership\" as UC13\n\
+    }\n\nMember --> UC3\nMember --> UC5\nMember --> UC6\nMember --> UC10\nMember -->\
+    \ UC13\n\nStaff --> UC1\nStaff --> UC11\n\nInstructor --> UC8\nInstructor -->\
+    \ UC9\n\nManager --> UC12\n\nUC1 ..> UC2 : <<include>>\nUC3 ..> UC4 : <<include>>\n\
+    UC6 ..> UC7 : <<include>>\n\nUC13 ..> UC6 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Register Member, Validate Personal Info,\
+    \ include relationship from Register Member to Validate Personal Info\n   Instance\
+    \ 1: Explanation: \"Validate Personal Info\" is an inclusion use case included\
+    \ only by \"Register Member.\" It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. It represents a sub-step\
+    \ (validating data) rather than a complete service observable to an actor, making\
+    \ it a functional decomposition of \"Register Member.\"\n\n   Instance 2: Constructs\
+    \ Involved: Book Climbing Session, Check Slot Availability, include relationship\
+    \ from Book Climbing Session to Check Slot Availability\n   Instance 2: Explanation:\
+    \ \"Check Slot Availability\" is an inclusion use case included only by \"Book\
+    \ Climbing Session.\" It is not associated with any actor, is not included by\
+    \ any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. Checking availability\
+    \ is an internal procedural step of booking, not a standalone service delivering\
+    \ an observable result to a user.\n\n   Instance 3: Constructs Involved: Process\
+    \ Payment, Generate Payment Receipt, include relationship from Process Payment\
+    \ to Generate Payment Receipt\n   Instance 3: Explanation: \"Generate Payment\
+    \ Receipt\" is an inclusion use case included only by \"Process Payment.\" It\
+    \ is not associated with any actor, is not included by any other use case, does\
+    \ not include or extend any use case, is not extended by any use case, and has\
+    \ no generalization relationships. Generating a receipt is a sub-step decomposed\
+    \ out of the payment process rather than a complete, independently valuable service\
+    \ to an actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: climbing_gym_management_system
+
+  DOMAIN_DISPLAY: Climbing Gym Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Member, Validate Personal Info, include relationship
+  from Register Member to Validate Personal Info
+
+  EXPLANATION: "Validate Personal Info" is an inclusion use case included only by
+  "Register Member." It is not associated with any actor, is not included by any other
+  use case, does not include or extend an …[truncated]'

@@ -1,0 +1,104 @@
+metadata:
+  prompt_number: 164
+  domain: self_storage_facility_system
+  domain_display: Self-Storage Facility System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Reserve Unit, Check Unit Availability
+      explanation: '"Reserve Unit" includes "Check Unit Availability". "Check Unit
+        Availability" is included by only "Reserve Unit", is not associated with any
+        actor, does not include or extend any other use case, is not extended by any
+        use case, and is not involved in any generalization. It represents an internal
+        step (checking availability) that is not a complete service on its own — it
+        is a functional decomposition of the reservation process.'
+    - constructs_involved: Process Payment, Validate Payment Details
+      explanation: '"Process Payment" includes "Validate Payment Details". "Validate
+        Payment Details" is included by only "Process Payment", is not associated
+        with any actor, does not include or extend any other use case, is not extended
+        by any use case, and is not involved in any generalization. Validating payment
+        details is an internal sub-step of processing a payment, not a standalone
+        service — this is functional decomposition.'
+    - constructs_involved: Terminate Rental Agreement, Generate Final Invoice
+      explanation: '"Terminate Rental Agreement" includes "Generate Final Invoice".
+        "Generate Final Invoice" is included by only "Terminate Rental Agreement",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not involved in any generalization.
+        Generating a final invoice is an internal step of the termination process,
+        not a complete service offered to any actor independently.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 29
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T21:21:58.993596'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_164_self_storage_facility_system/self_storage_facility_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_164_self_storage_facility_system/self_storage_facility_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_164_self_storage_facility_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Customer\n\
+    actor Manager\nactor \"Payment Gateway\" as PG\n\nrectangle \"Self-Storage Facility\
+    \ System\" {\n  usecase \"Reserve Unit\" as UC1\n  usecase \"Check Unit Availability\"\
+    \ as UC2\n  usecase \"Process Payment\" as UC3\n  usecase \"Validate Payment Details\"\
+    \ as UC4\n  usecase \"View Unit Status\" as UC5\n  usecase \"Manage Unit Inventory\"\
+    \ as UC6\n  usecase \"Terminate Rental Agreement\" as UC7\n  usecase \"Generate\
+    \ Final Invoice\" as UC8\n  usecase \"Apply Late Fee\" as UC9\n  usecase \"Access\
+    \ Unit\" as UC10\n  usecase \"Update Customer Profile\" as UC11\n  usecase \"\
+    Generate Occupancy Report\" as UC12\n  usecase \"Sign Rental Agreement\" as UC13\n\
+    }\n\nCustomer -- UC1\nCustomer -- UC3\nCustomer -- UC10\nCustomer -- UC11\nCustomer\
+    \ -- UC13\nManager -- UC5\nManager -- UC6\nManager -- UC7\nManager -- UC12\nPG\
+    \ -- UC3\n\nUC1 ..> UC2 : <<include>>\nUC3 ..> UC4 : <<include>>\nUC7 ..> UC8\
+    \ : <<include>>\nUC9 ..> UC3 : <<extend>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Reserve Unit, Check Unit Availability\n\
+    \   Instance 1: Explanation: \"Reserve Unit\" includes \"Check Unit Availability\"\
+    . \"Check Unit Availability\" is included by only \"Reserve Unit\", is not associated\
+    \ with any actor, does not include or extend any other use case, is not extended\
+    \ by any use case, and is not involved in any generalization. It represents an\
+    \ internal step (checking availability) that is not a complete service on its\
+    \ own — it is a functional decomposition of the reservation process.\n\n   Instance\
+    \ 2: Constructs Involved: Process Payment, Validate Payment Details\n   Instance\
+    \ 2: Explanation: \"Process Payment\" includes \"Validate Payment Details\". \"\
+    Validate Payment Details\" is included by only \"Process Payment\", is not associated\
+    \ with any actor, does not include or extend any other use case, is not extended\
+    \ by any use case, and is not involved in any generalization. Validating payment\
+    \ details is an internal sub-step of processing a payment, not a standalone service\
+    \ — this is functional decomposition.\n\n   Instance 3: Constructs Involved: Terminate\
+    \ Rental Agreement, Generate Final Invoice\n   Instance 3: Explanation: \"Terminate\
+    \ Rental Agreement\" includes \"Generate Final Invoice\". \"Generate Final Invoice\"\
+    \ is included by only \"Terminate Rental Agreement\", is not associated with any\
+    \ actor, does not include or extend any other use case, is not extended by any\
+    \ use case, and is not involved in any generalization. Generating a final invoice\
+    \ is an internal step of the termination process, not a complete service offered\
+    \ to any actor independently."
+raw_response_excerpt: '
+
+
+  DOMAIN: self_storage_facility_system
+
+  DOMAIN_DISPLAY: Self-Storage Facility System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Reserve Unit, Check Unit Availability
+
+  EXPLANATION: "Reserve Unit" includes "Check Unit Availability". "Check Unit Availability"
+  is included by only "Reserve Unit", is not associated with any actor, does not include
+  or extend any other use case, is not extended by any use case, and is not involved
+  in any generalizati …[truncated]'

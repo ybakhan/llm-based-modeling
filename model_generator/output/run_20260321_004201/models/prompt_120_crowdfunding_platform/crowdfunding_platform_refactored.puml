@@ -1,0 +1,32 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Project Creator" as Creator
+actor "Backer" as Backer
+actor "Administrator" as Admin
+actor "Payment Gateway" as PG
+
+rectangle "Crowdfunding Platform" {
+  usecase "Create Campaign" as UC1
+  usecase "Manage Campaign Updates" as UC3
+  usecase "Withdraw Funds" as UC4
+  usecase "Browse Campaigns" as UC6
+  usecase "Back Project" as UC7
+  usecase "Track Pledges" as UC9
+  usecase "Review Flagged Campaigns" as UC10
+  usecase "Generate Platform Reports" as UC11
+  usecase "Authorize Transaction" as UC12
+}
+
+Creator -- UC1
+Creator -- UC3
+Creator -- UC4
+Backer -- UC6
+Backer -- UC7
+Backer -- UC9
+Admin -- UC10
+Admin -- UC11
+PG -- UC12
+
+UC7 ..> UC12 : <<include>>
+@enduml

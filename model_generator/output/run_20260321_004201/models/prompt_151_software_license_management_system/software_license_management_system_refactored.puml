@@ -1,0 +1,41 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "License Administrator" as Admin
+actor "End User" as EndUser
+actor "Compliance Auditor" as Auditor
+actor "Vendor" as Vendor
+
+rectangle "Software License Management System" {
+  usecase "Purchase License" as UC1
+  usecase "Renew License" as UC3
+  usecase "Assign License to User" as UC4
+  usecase "Revoke License" as UC6
+  usecase "View Assigned Licenses" as UC7
+  usecase "Request License" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Monitor License Expiry" as UC11
+  usecase "Manage License Keys" as UC12
+  usecase "View License Catalog" as UC13
+  usecase "Notify Expiring Licenses" as UC14
+}
+
+Admin -- UC1
+Admin -- UC3
+Admin -- UC4
+Admin -- UC6
+Admin -- UC11
+Admin -- UC12
+
+EndUser -- UC7
+EndUser -- UC8
+EndUser -- UC13
+
+Auditor -- UC9
+
+Vendor -- UC1
+
+UC11 ..> UC14 : <<include>>
+UC3 ..> UC14 : <<extend>>
+
+@enduml

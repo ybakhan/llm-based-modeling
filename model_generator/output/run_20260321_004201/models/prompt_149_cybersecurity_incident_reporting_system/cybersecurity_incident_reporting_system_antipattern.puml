@@ -1,0 +1,42 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Security Analyst" as Analyst
+actor "Incident Manager" as Manager
+actor "CISO" as CISO
+actor "External Auditor" as Auditor
+
+rectangle "Cybersecurity Incident Reporting System" {
+  usecase "Report Incident" as UC1
+  usecase "Validate Incident Fields" as UC2
+  usecase "Classify Incident Severity" as UC3
+  usecase "Escalate Incident" as UC4
+  usecase "Notify Escalation Team" as UC5
+  usecase "Track Incident Status" as UC6
+  usecase "Assign Incident Handler" as UC7
+  usecase "Generate Compliance Report" as UC8
+  usecase "Aggregate Incident Data" as UC9
+  usecase "Review Incident Log" as UC10
+  usecase "Close Incident" as UC11
+  usecase "Configure Alert Thresholds" as UC12
+  usecase "Export Audit Trail" as UC13
+}
+
+Analyst -- UC1
+Analyst -- UC3
+Analyst -- UC6
+Manager -- UC4
+Manager -- UC7
+Manager -- UC11
+Manager -- UC6
+CISO -- UC8
+CISO -- UC12
+Auditor -- UC10
+Auditor -- UC13
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC8 ..> UC9 : <<include>>
+
+UC11 ..> UC6 : <<extend>>
+@enduml

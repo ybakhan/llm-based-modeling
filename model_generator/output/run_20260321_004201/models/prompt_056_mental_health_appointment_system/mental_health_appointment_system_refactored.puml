@@ -1,0 +1,33 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Patient" as Patient
+actor "Therapist" as Therapist
+actor "Receptionist" as Receptionist
+
+rectangle "Mental Health Appointment System" {
+  usecase "Book Appointment" as UC1
+  usecase "Cancel Appointment" as UC4
+  usecase "View Schedule" as UC6
+  usecase "Reschedule Appointment" as UC7
+  usecase "Record Session Notes" as UC8
+  usecase "View Patient History" as UC9
+  usecase "Manage Therapist Availability" as UC10
+  usecase "Generate Appointment Report" as UC11
+}
+
+Patient -- UC1
+Patient -- UC4
+Patient -- UC7
+Patient -- UC6
+Therapist -- UC6
+Therapist -- UC8
+Therapist -- UC9
+Receptionist -- UC1
+Receptionist -- UC10
+Receptionist -- UC11
+
+UC7 ..> UC1 : <<include>>
+
+@enduml

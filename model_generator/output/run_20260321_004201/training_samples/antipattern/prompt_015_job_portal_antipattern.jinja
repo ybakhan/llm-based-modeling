@@ -1,0 +1,38 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Job Seeker" as A1
+actor "Employer" as A2
+actor "Admin" as A3
+
+rectangle "Job Portal" {
+  usecase "Register Account" as UC1
+  usecase "Search Jobs" as UC2
+  usecase "Apply for Job" as UC3
+  usecase "Post Job Listing" as UC4
+  usecase "Filter Results" as UC5
+  usecase "Manage Users" as UC6
+  usecase "View Applications" as UC7
+}
+
+A1 --> UC1
+A1 --> UC2
+A1 --> UC3
+A2 --> UC4
+A2 --> UC7
+A3 --> UC6
+
+UC2 ..> UC5 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Search Jobs (UC2), Filter Results (UC5), Include relationship from UC2 to UC5
+   Explanation: "Filter Results" (UC5) is an inclusion use case that is included by only one use case ("Search Jobs" / UC2). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. "Filter Results" does not represent a complete, standalone service yielding an observable result to any actor — it is merely a decomposed sub-step of the search process. This constitutes the Functional Decomposition antipattern via the include relationship.

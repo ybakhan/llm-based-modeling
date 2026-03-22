@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 165
+  domain: language_translation_service
+  domain_display: Language Translation Service
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:06:01.345357'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_165_language_translation_service/language_translation_service_refactored.puml
+    image: output/run_20260321_004201/models/prompt_165_language_translation_service/language_translation_service_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_165_language_translation_service_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Customer\" as Customer\n\
+    actor \"Professional Translator\" as Translator\nactor \"Administrator\" as Admin\n\
+    \nrectangle \"Language Translation Service\" {\n  usecase \"Register Account\"\
+    \ as UC1\n  usecase \"Submit Translation Request\" as UC2\n  usecase \"Select\
+    \ Target Language\" as UC4\n  usecase \"Translate Document\" as UC5\n  usecase\
+    \ \"Review Translation\" as UC7\n  usecase \"Download Translated File\" as UC8\n\
+    \  usecase \"Rate Translation Quality\" as UC10\n  usecase \"Manage Translator\
+    \ Profiles\" as UC11\n  usecase \"View Translation History\" as UC12\n  usecase\
+    \ \"Request Human Review\" as UC13\n  usecase \"Manage Supported Languages\" as\
+    \ UC14\n}\n\nCustomer --> UC1\nCustomer --> UC2\nCustomer --> UC4\nCustomer -->\
+    \ UC8\nCustomer --> UC10\nCustomer --> UC12\nCustomer --> UC13\n\nTranslator -->\
+    \ UC5\nTranslator --> UC7\n\nAdmin --> UC11\nAdmin --> UC14\n\nUC13 ..> UC7 :\
+    \ <<include>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: language_translation_service
+
+  DOMAIN_DISPLAY: Language Translation Service
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Translation Request, Parse Source Text, include relationship
+  from "Submit Translation Request" to "Parse Source Text"
+
+  EXPLANATION: "Parse Source Text" is an inclusion use case included only by "Submit
+  Translation Request". It is not associated with any actor, does not include or extend
+  any other use case, is  …[truncated]'

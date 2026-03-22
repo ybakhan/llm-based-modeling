@@ -1,0 +1,26 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Applicant" as Applicant
+actor "Passport Officer" as Officer
+
+rectangle "Passport Application System" {
+  usecase "Submit Passport Application" as UC1
+  usecase "Upload Photo" as UC2
+  usecase "Check Application Status" as UC3
+  usecase "Review Application" as UC4
+  usecase "Schedule Appointment" as UC5
+  usecase "Issue Passport" as UC6
+  usecase "Reject Application" as UC7
+}
+
+Applicant -- UC1
+UC1 ..> UC2 : <<include>>
+Applicant -- UC3
+Applicant -- UC5
+Officer -- UC4
+Officer -- UC6
+UC6 ..> UC4 : <<include>>
+UC4 ..> UC7 : <<extend>>
+
+@enduml

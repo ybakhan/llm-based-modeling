@@ -1,0 +1,112 @@
+metadata:
+  prompt_number: 106
+  domain: language_learning_app
+  domain_display: Language Learning App
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Take Vocabulary Quiz, Load Quiz Questions, Take Vocabulary
+        Quiz --include--> Load Quiz Questions
+      explanation: '"Load Quiz Questions" is an inclusion use case included only by
+        "Take Vocabulary Quiz." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and is not involved in any generalization. "Load Quiz Questions"
+        does not represent a complete service observable to any user — it is merely
+        a functional step decomposed out of the quiz-taking process. This constitutes
+        the Functional Decomposition antipattern.'
+    - constructs_involved: Complete Lesson, Update Progress Tracker, Complete Lesson
+        --include--> Update Progress Tracker
+      explanation: '"Update Progress Tracker" is an inclusion use case included only
+        by "Complete Lesson." It has no direct actor association, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and is not a generalization or specialization. Updating
+        the progress tracker is an internal system step, not a standalone service
+        delivering an observable result to a user. This is a clear instance of Functional
+        Decomposition.'
+    - constructs_involved: Practice Pronunciation, Record Audio Input, Practice Pronunciation
+        --include--> Record Audio Input
+      explanation: '"Record Audio Input" is an inclusion use case included only by
+        "Practice Pronunciation." It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended,
+        and is not part of any generalization hierarchy. Recording audio is a sub-step
+        of practicing pronunciation, not a complete service on its own. This represents
+        functional decomposition of "Practice Pronunciation" into an unnecessary inclusion.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:41:25.768321'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_106_language_learning_app/language_learning_app_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_106_language_learning_app/language_learning_app_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_106_language_learning_app_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Learner\n\
+    actor Instructor\nactor Admin\n\nrectangle \"Language Learning App\" {\n  usecase\
+    \ \"Register Account\" as UC1\n  usecase \"Browse Courses\" as UC2\n  usecase\
+    \ \"Complete Lesson\" as UC3\n  usecase \"Take Vocabulary Quiz\" as UC4\n  usecase\
+    \ \"Practice Pronunciation\" as UC5\n  usecase \"View Progress Dashboard\" as\
+    \ UC6\n  usecase \"Create Course Content\" as UC7\n  usecase \"Manage Users\"\
+    \ as UC8\n  usecase \"Review Flashcards\" as UC9\n  usecase \"Load Quiz Questions\"\
+    \ as UC10\n  usecase \"Update Progress Tracker\" as UC11\n  usecase \"Record Audio\
+    \ Input\" as UC12\n}\n\nLearner --> UC1\nLearner --> UC2\nLearner --> UC3\nLearner\
+    \ --> UC4\nLearner --> UC5\nLearner --> UC6\nLearner --> UC9\nInstructor --> UC7\n\
+    Admin --> UC8\n\nUC4 ..> UC10 : <<include>>\nUC3 ..> UC11 : <<include>>\nUC5 ..>\
+    \ UC12 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Take Vocabulary Quiz, Load Quiz Questions,\
+    \ Take Vocabulary Quiz --include--> Load Quiz Questions\n   Instance 1: Explanation:\
+    \ \"Load Quiz Questions\" is an inclusion use case included only by \"Take Vocabulary\
+    \ Quiz.\" It is not associated with any actor, is not included by any other use\
+    \ case, does not include or extend any use case, is not extended by any use case,\
+    \ and is not involved in any generalization. \"Load Quiz Questions\" does not\
+    \ represent a complete service observable to any user — it is merely a functional\
+    \ step decomposed out of the quiz-taking process. This constitutes the Functional\
+    \ Decomposition antipattern.\n\n   Instance 2: Constructs Involved: Complete Lesson,\
+    \ Update Progress Tracker, Complete Lesson --include--> Update Progress Tracker\n\
+    \   Instance 2: Explanation: \"Update Progress Tracker\" is an inclusion use case\
+    \ included only by \"Complete Lesson.\" It has no direct actor association, is\
+    \ not included by any other use case, does not include or extend any other use\
+    \ case, is not extended by any use case, and is not a generalization or specialization.\
+    \ Updating the progress tracker is an internal system step, not a standalone service\
+    \ delivering an observable result to a user. This is a clear instance of Functional\
+    \ Decomposition.\n\n   Instance 3: Constructs Involved: Practice Pronunciation,\
+    \ Record Audio Input, Practice Pronunciation --include--> Record Audio Input\n\
+    \   Instance 3: Explanation: \"Record Audio Input\" is an inclusion use case included\
+    \ only by \"Practice Pronunciation.\" It is not associated with any actor, not\
+    \ included by any other use case, does not include or extend any use case, is\
+    \ not extended, and is not part of any generalization hierarchy. Recording audio\
+    \ is a sub-step of practicing pronunciation, not a complete service on its own.\
+    \ This represents functional decomposition of \"Practice Pronunciation\" into\
+    \ an unnecessary inclusion."
+raw_response_excerpt: '
+
+
+  DOMAIN: language_learning_app
+
+  DOMAIN_DISPLAY: Language Learning App
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Take Vocabulary Quiz, Load Quiz Questions, Take Vocabulary
+  Quiz --include--> Load Quiz Questions
+
+  EXPLANATION: "Load Quiz Questions" is an inclusion use case included only by "Take
+  Vocabulary Quiz." It is not associated with any actor, is not included by any other
+  use case, does not include or extend any use case, is not extended  …[truncated]'

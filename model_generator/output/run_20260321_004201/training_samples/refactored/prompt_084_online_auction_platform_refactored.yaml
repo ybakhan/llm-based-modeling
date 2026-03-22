@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 84
+  domain: online_auction_platform
+  domain_display: Online Auction Platform
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:55:37.559999'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_084_online_auction_platform/online_auction_platform_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_084_online_auction_platform/online_auction_platform_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_084_online_auction_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor Bidder\nactor Seller\nactor Admin\nactor \"Payment Gateway\" as PG\n\nrectangle\
+    \ \"Online Auction Platform\" {\n    usecase \"Register Account\" as UC1\n   \
+    \ usecase \"Browse Auctions\" as UC2\n    usecase \"Place Bid\" as UC3\n    usecase\
+    \ \"Create Auction Listing\" as UC6\n    usecase \"Close Auction\" as UC8\n  \
+    \  usecase \"Process Payment\" as UC9\n    usecase \"View Bid History\" as UC10\n\
+    \    usecase \"Manage User Accounts\" as UC11\n    usecase \"Resolve Dispute\"\
+    \ as UC12\n    usecase \"Leave Feedback\" as UC13\n    usecase \"Search Auctions\"\
+    \ as UC14\n}\n\nBidder -- UC1\nBidder -- UC2\nBidder -- UC3\nBidder -- UC10\n\
+    Bidder -- UC13\nBidder -- UC14\nSeller -- UC1\nSeller -- UC6\nSeller -- UC8\n\
+    Seller -- UC13\nAdmin -- UC11\nAdmin -- UC12\nPG -- UC9\n\nUC8 ..> UC9 : <<include>>\n\
+    @enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: online_auction_platform
+
+  DOMAIN_DISPLAY: Online Auction Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Bid, Validate Bid Amount, include relationship from Place
+  Bid to Validate Bid Amount
+
+  EXPLANATION: "Validate Bid Amount" is an inclusion use case included only by "Place
+  Bid". It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case, and is not part of any genera …[truncated]'

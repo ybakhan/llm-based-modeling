@@ -1,0 +1,35 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Subscriber" as Sub
+actor "Admin" as Admin
+
+rectangle "Subscription Box Service" {
+  usecase "Browse Available Boxes" as UC1
+  usecase "Select Subscription Plan" as UC2
+  usecase "Validate Payment Details" as UC3
+  usecase "Manage Delivery Preferences" as UC4
+  usecase "Cancel Subscription" as UC5
+  usecase "Manage Box Inventory" as UC6
+}
+
+Sub --> UC1
+Sub --> UC2
+Sub --> UC4
+Sub --> UC5
+Admin --> UC6
+UC2 ..> UC3 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Select Subscription Plan, Validate Payment Details
+   Explanation: The use case "Select Subscription Plan" includes "Validate Payment Details" via an <<include>> relationship. "Validate Payment Details" is an inclusion use case that (1) is included by only one use case ("Select Subscription Plan"), (2) is not associated with any actor directly, (3) does not include or extend any other use case, (4) is not extended by any other use case, and (5) is neither a generalization nor a specialization of any use case. It represents a decomposed step of the subscription selection process rather than a complete, standalone service providing an observable result to a user. This is a classic functional decomposition — breaking a single coherent service into sub-steps modeled as separate use cases connected via include.

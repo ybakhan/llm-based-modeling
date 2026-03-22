@@ -1,0 +1,76 @@
+metadata:
+  prompt_number: 15
+  domain: job_portal
+  domain_display: Job Portal
+  size: small
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Search Jobs (UC2), Filter Results (UC5), Include relationship
+        from UC2 to UC5
+      explanation: '"Filter Results" (UC5) is an inclusion use case that is included
+        by only one use case ("Search Jobs" / UC2). It is not associated with any
+        actor directly. It does not include or extend any other use case, is not extended
+        by any use case, and is not part of any generalization hierarchy. "Filter
+        Results" does not represent a complete, standalone service yielding an observable
+        result to any actor — it is merely a decomposed sub-step of the search process.
+        This constitutes the Functional Decomposition antipattern via the include
+        relationship.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 13
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:22:36.078001'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_015_job_portal/job_portal_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_015_job_portal/job_portal_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_015_job_portal_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Job Seeker\"\
+    \ as A1\nactor \"Employer\" as A2\nactor \"Admin\" as A3\n\nrectangle \"Job Portal\"\
+    \ {\n  usecase \"Register Account\" as UC1\n  usecase \"Search Jobs\" as UC2\n\
+    \  usecase \"Apply for Job\" as UC3\n  usecase \"Post Job Listing\" as UC4\n \
+    \ usecase \"Filter Results\" as UC5\n  usecase \"Manage Users\" as UC6\n  usecase\
+    \ \"View Applications\" as UC7\n}\n\nA1 --> UC1\nA1 --> UC2\nA1 --> UC3\nA2 -->\
+    \ UC4\nA2 --> UC7\nA3 --> UC6\n\nUC2 ..> UC5 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Constructs Involved: Search Jobs (UC2), Filter Results (UC5), Include relationship\
+    \ from UC2 to UC5\n   Explanation: \"Filter Results\" (UC5) is an inclusion use\
+    \ case that is included by only one use case (\"Search Jobs\" / UC2). It is not\
+    \ associated with any actor directly. It does not include or extend any other\
+    \ use case, is not extended by any use case, and is not part of any generalization\
+    \ hierarchy. \"Filter Results\" does not represent a complete, standalone service\
+    \ yielding an observable result to any actor — it is merely a decomposed sub-step\
+    \ of the search process. This constitutes the Functional Decomposition antipattern\
+    \ via the include relationship."
+raw_response_excerpt: '
+
+
+  DOMAIN: job_portal
+
+  DOMAIN_DISPLAY: Job Portal
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Search Jobs (UC2), Filter Results (UC5), Include relationship
+  from UC2 to UC5
+
+  EXPLANATION: "Filter Results" (UC5) is an inclusion use case that is included by
+  only one use case ("Search Jobs" / UC2). It is not associated with any actor directly.
+  It does not include or extend any other use case, is not extended by any use case,
+  and is not part of any ge …[truncated]'

@@ -1,0 +1,38 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Teacher" as Teacher
+actor "Administrator" as Admin
+actor "Parent" as Parent
+actor "Student" as Student
+
+rectangle "Student Attendance System" {
+  usecase "Mark Attendance" as UC1
+  usecase "View Own Attendance" as UC3
+  usecase "Generate Attendance Report" as UC4
+  usecase "Manage Class Schedule" as UC6
+  usecase "Send Absence Notification" as UC7
+  usecase "View Child Attendance" as UC9
+  usecase "Register Student" as UC10
+  usecase "Configure Attendance Policy" as UC11
+  usecase "Request Leave" as UC12
+  usecase "Approve Leave Request" as UC13
+  usecase "Export Attendance Data" as UC14
+}
+
+Teacher -- UC1
+Teacher -- UC4
+Teacher -- UC6
+Teacher -- UC13
+
+Student -- UC3
+Student -- UC12
+
+Admin -- UC10
+Admin -- UC11
+Admin -- UC14
+Admin -- UC7
+
+Parent -- UC9
+@enduml

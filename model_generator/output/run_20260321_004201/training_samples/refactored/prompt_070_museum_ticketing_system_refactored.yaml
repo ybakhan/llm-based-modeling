@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 70
+  domain: museum_ticketing_system
+  domain_display: Museum Ticketing System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 21
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:46:00.144502'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_070_museum_ticketing_system/museum_ticketing_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_070_museum_ticketing_system/museum_ticketing_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_070_museum_ticketing_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Visitor\" as Visitor\nactor \"Museum Staff\" as Staff\nactor \"Manager\"\
+    \ as Manager\nactor \"Payment Gateway\" as Gateway\n\nrectangle \"Museum Ticketing\
+    \ System\" {\n  usecase \"Browse Exhibitions\" as UC1\n  usecase \"Purchase Ticket\"\
+    \ as UC2\n  usecase \"Cancel Ticket\" as UC5\n  usecase \"Apply Discount\" as\
+    \ UC6\n  usecase \"Scan Ticket at Entry\" as UC7\n  usecase \"View Sales Report\"\
+    \ as UC9\n  usecase \"Manage Exhibition Schedule\" as UC10\n  usecase \"Process\
+    \ Payment\" as UC11\n  usecase \"Book Group Visit\" as UC12\n}\n\nVisitor -- UC1\n\
+    Visitor -- UC2\nVisitor -- UC5\nVisitor -- UC12\nStaff -- UC7\nManager -- UC9\n\
+    Manager -- UC10\nGateway -- UC11\n\nUC2 ..> UC11 : <<include>>\nUC2 ..> UC6 :\
+    \ <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: museum_ticketing_system
+
+  DOMAIN_DISPLAY: Museum Ticketing System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Purchase Ticket, Calculate Price, <<include>> from Purchase
+  Ticket to Calculate Price
+
+  EXPLANATION: "Calculate Price" is an inclusion use case included only by "Purchase
+  Ticket". It is not associated with any actor, is not included by any other use case,
+  does not include or extend any other use case, is not extended by any use …[truncated]'

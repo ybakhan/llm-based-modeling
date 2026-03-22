@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Coordinator" as Coordinator
+actor "Volunteer" as Volunteer
+
+rectangle "Volunteer Management System" {
+  usecase "Register Volunteer" as UC1
+  usecase "Assign to Event" as UC3
+  usecase "View Schedule" as UC4
+  usecase "Log Volunteer Hours" as UC5
+  usecase "Browse Open Events" as UC6
+}
+
+Coordinator -- UC1
+Coordinator -- UC3
+Coordinator -- UC5
+Volunteer -- UC4
+Volunteer -- UC6
+
+@enduml

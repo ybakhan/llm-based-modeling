@@ -1,0 +1,48 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Adopter" as Adopter
+actor "Shelter Staff" as Staff
+actor "Veterinarian" as Vet
+actor "Administrator" as Admin
+
+rectangle "Pet Adoption System" {
+  usecase "Browse Available Pets" as UC1
+  usecase "Search Pets by Criteria" as UC2
+  usecase "View Pet Profile" as UC3
+  usecase "Submit Adoption Application" as UC4
+  usecase "Review Application" as UC6
+  usecase "Schedule Home Visit" as UC7
+  usecase "Process Adoption Fee" as UC9
+  usecase "Register New Pet" as UC11
+  usecase "Update Pet Medical Records" as UC12
+  usecase "Perform Health Checkup" as UC13
+  usecase "Manage User Accounts" as UC14
+  usecase "Generate Adoption Reports" as UC15
+}
+
+Adopter --> UC1
+Adopter --> UC2
+Adopter --> UC3
+Adopter --> UC4
+Adopter --> UC9
+Staff --> UC6
+Staff --> UC7
+Staff --> UC11
+Vet --> UC12
+Vet --> UC13
+Admin --> UC14
+Admin --> UC15
+
+UC1 <.. UC2 : <<extend>>
+
+@enduml
+
+
+Answer:
+No antipattern detected.

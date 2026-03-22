@@ -1,0 +1,49 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Resident" as Resident
+actor "Waste Collector" as Collector
+actor "Municipal Admin" as Admin
+actor "Inspector" as Inspector
+
+rectangle "Municipal Waste Management System" {
+  usecase "Schedule Pickup" as UC1
+  usecase "Validate Address" as UC2
+  usecase "Track Collection Route" as UC3
+  usecase "Report Illegal Dumping" as UC4
+  usecase "Capture GPS Coordinates" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Calculate Fee" as UC7
+  usecase "View Collection Calendar" as UC8
+  usecase "Manage Waste Categories" as UC9
+  usecase "Generate Recycling Report" as UC10
+  usecase "Submit Complaint" as UC11
+  usecase "Assign Collection Zone" as UC12
+  usecase "Conduct Site Inspection" as UC13
+  usecase "Request Special Pickup" as UC14
+  usecase "Update Pickup Status" as UC15
+}
+
+Resident -- UC1
+Resident -- UC4
+Resident -- UC6
+Resident -- UC8
+Resident -- UC11
+Resident -- UC14
+
+Collector -- UC3
+Collector -- UC15
+
+Admin -- UC9
+Admin -- UC10
+Admin -- UC12
+
+Inspector -- UC13
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+UC14 ..> UC1 : <<extend>>
+
+@enduml

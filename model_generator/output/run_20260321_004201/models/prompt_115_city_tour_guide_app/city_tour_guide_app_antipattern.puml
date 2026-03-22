@@ -1,0 +1,25 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Tourist
+actor "Tour Guide Admin" as Admin
+
+rectangle "City Tour Guide App" {
+  usecase "Browse Tours" as UC1
+  usecase "Load Tour Details" as UC2
+  usecase "Book Tour" as UC3
+  usecase "View Map Navigation" as UC4
+  usecase "Rate Tour" as UC5
+  usecase "Manage Tour Listings" as UC6
+  usecase "View Tourist Reviews" as UC7
+}
+
+Tourist -- UC1
+Tourist -- UC3
+Tourist -- UC4
+Tourist -- UC5
+Admin -- UC6
+Admin -- UC7
+
+UC1 ..> UC2 : <<include>>
+@enduml

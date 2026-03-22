@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 96
+  domain: pet_adoption_system
+  domain_display: Pet Adoption System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:37:48.583335'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_096_pet_adoption_system/pet_adoption_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_096_pet_adoption_system/pet_adoption_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_096_pet_adoption_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Adopter\" as Adopter\n\
+    actor \"Shelter Staff\" as Staff\nactor \"Veterinarian\" as Vet\nactor \"Administrator\"\
+    \ as Admin\n\nrectangle \"Pet Adoption System\" {\n  usecase \"Browse Available\
+    \ Pets\" as UC1\n  usecase \"Search Pets by Criteria\" as UC2\n  usecase \"View\
+    \ Pet Profile\" as UC3\n  usecase \"Submit Adoption Application\" as UC4\n  usecase\
+    \ \"Review Application\" as UC6\n  usecase \"Schedule Home Visit\" as UC7\n  usecase\
+    \ \"Process Adoption Fee\" as UC9\n  usecase \"Register New Pet\" as UC11\n  usecase\
+    \ \"Update Pet Medical Records\" as UC12\n  usecase \"Perform Health Checkup\"\
+    \ as UC13\n  usecase \"Manage User Accounts\" as UC14\n  usecase \"Generate Adoption\
+    \ Reports\" as UC15\n}\n\nAdopter --> UC1\nAdopter --> UC2\nAdopter --> UC3\n\
+    Adopter --> UC4\nAdopter --> UC9\nStaff --> UC6\nStaff --> UC7\nStaff --> UC11\n\
+    Vet --> UC12\nVet --> UC13\nAdmin --> UC14\nAdmin --> UC15\n\nUC1 <.. UC2 : <<extend>>\n\
+    \n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: pet_adoption_system
+
+  DOMAIN_DISPLAY: Pet Adoption System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Adoption Application, Validate Applicant Address
+
+  EXPLANATION: "Validate Applicant Address" is an inclusion use case included only
+  by "Submit Adoption Application". It is not associated with any actor, is not included
+  by any other use case, does not include or extend any use case, is not extended
+  by any use case, and has no gen …[truncated]'

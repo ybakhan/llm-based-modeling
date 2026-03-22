@@ -1,0 +1,49 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Admin" as Admin
+actor "Payment Gateway" as PayGW
+
+rectangle "Escape Room Booking System" {
+  usecase "Register Account" as UC1
+  usecase "Send Verification Email" as UC2
+  usecase "Browse Escape Rooms" as UC3
+  usecase "View Room Details" as UC4
+  usecase "Book Escape Room" as UC5
+  usecase "Validate Time Slot" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Calculate Total Price" as UC8
+  usecase "Cancel Booking" as UC9
+  usecase "View Booking History" as UC10
+  usecase "Leave Review" as UC11
+  usecase "Manage Rooms" as UC12
+  usecase "View Booking Reports" as UC13
+  usecase "Apply Promo Code" as UC14
+  usecase "Manage Customer Accounts" as UC15
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC4
+Customer -- UC5
+Customer -- UC7
+Customer -- UC9
+Customer -- UC10
+Customer -- UC11
+Customer -- UC14
+
+Admin -- UC12
+Admin -- UC13
+Admin -- UC15
+
+PayGW -- UC7
+
+UC1 ..> UC2 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+UC5 ..> UC7 : <<include>>
+UC3 ..> UC4 : <<include>>
+@enduml

@@ -1,0 +1,60 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Election Officer" as EO
+actor "Voter" as V
+actor "System Administrator" as SA
+
+rectangle "Electoral Roll Management System" {
+  usecase "Register Voter" as UC1
+  usecase "Validate ID Documents" as UC1a
+  usecase "Update Voter Record" as UC2
+  usecase "Verify Address Change" as UC2a
+  usecase "Remove Voter" as UC3
+  usecase "Confirm Removal Eligibility" as UC3a
+  usecase "Search Electoral Roll" as UC4
+  usecase "Generate Voter List" as UC5
+  usecase "View Registration Status" as UC6
+  usecase "Submit Registration Application" as UC7
+  usecase "Manage Polling Districts" as UC8
+  usecase "Audit Electoral Roll" as UC9
+  usecase "Export Roll Data" as UC10
+  usecase "Manage User Accounts" as UC11
+}
+
+EO --> UC1
+EO --> UC2
+EO --> UC3
+EO --> UC4
+EO --> UC5
+EO --> UC9
+
+V --> UC6
+V --> UC7
+
+SA --> UC8
+SA --> UC10
+SA --> UC11
+
+UC1 ..> UC1a : <<include>>
+UC2 ..> UC2a : <<include>>
+UC3 ..> UC3a : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Register Voter, Validate ID Documents
+   Instance 1: Explanation: "Validate ID Documents" is an inclusion use case included only by "Register Voter". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step of voter registration (validating documents) rather than a complete, standalone service observable by an actor. This is functional decomposition — breaking "Register Voter" into procedural steps via <<include>>.
+
+   Instance 2: Constructs Involved: Update Voter Record, Verify Address Change
+   Instance 2: Explanation: "Verify Address Change" is an inclusion use case included only by "Update Voter Record". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Verifying an address change is an internal step of updating a voter record, not a complete service to any actor. This constitutes functional decomposition of the update process.
+
+   Instance 3: Constructs Involved: Remove Voter, Confirm Removal Eligibility
+   Instance 3: Explanation: "Confirm Removal Eligibility" is an inclusion use case included only by "Remove Voter". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Confirming eligibility for removal is an internal procedural check, not a standalone service providing an observable result to a user. This is functional decomposition of the removal process.

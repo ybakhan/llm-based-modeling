@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 86
+  domain: loyalty_rewards_program
+  domain_display: Loyalty Rewards Program
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 23
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:34:03.409064'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_086_loyalty_rewards_program/loyalty_rewards_program_refactored.puml
+    image: output/run_20260321_004201/models/prompt_086_loyalty_rewards_program/loyalty_rewards_program_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_086_loyalty_rewards_program_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Customer\" as Customer\nactor \"Store Clerk\" as Clerk\nactor \"Program\
+    \ Manager\" as Manager\nactor \"Partner Store\" as Partner\n\nrectangle \"Loyalty\
+    \ Rewards Program\" {\n  usecase \"Enroll in Program\" as UC1\n  usecase \"Earn\
+    \ Points\" as UC3\n  usecase \"Redeem Points\" as UC5\n  usecase \"View Rewards\
+    \ Catalog\" as UC7\n  usecase \"Check Point Balance\" as UC8\n  usecase \"Transfer\
+    \ Points\" as UC9\n  usecase \"Manage Reward Tiers\" as UC10\n  usecase \"Generate\
+    \ Loyalty Reports\" as UC11\n  usecase \"Register Partner Store\" as UC12\n  usecase\
+    \ \"Apply Bonus Promotion\" as UC13\n  usecase \"Update Member Profile\" as UC14\n\
+    }\n\nCustomer --> UC1\nCustomer --> UC3\nCustomer --> UC5\nCustomer --> UC7\n\
+    Customer --> UC8\nCustomer --> UC9\nCustomer --> UC14\n\nClerk --> UC1\nClerk\
+    \ --> UC3\n\nManager --> UC10\nManager --> UC11\nManager --> UC13\n\nPartner -->\
+    \ UC12\n\nUC13 ..> UC3 : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: loyalty_rewards_program
+
+  DOMAIN_DISPLAY: Loyalty Rewards Program
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Redeem Points, Validate Point Balance, include relationship
+  from "Redeem Points" to "Validate Point Balance"
+
+  EXPLANATION: "Validate Point Balance" is an inclusion use case included only by
+  "Redeem Points." It is not associated with any actor, is not included by any other
+  use case, does not include or extend any use case, is n …[truncated]'

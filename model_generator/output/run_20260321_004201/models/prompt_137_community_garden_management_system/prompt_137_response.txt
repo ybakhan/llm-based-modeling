@@ -1,0 +1,76 @@
+
+
+DOMAIN: community_garden_management_system
+DOMAIN_DISPLAY: Community Garden Management System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Reserve Garden Plot, Check Plot Availability
+EXPLANATION: The use case "Check Plot Availability" is an inclusion use case that is included only by "Reserve Garden Plot". It is not associated with any actor directly, it does not include or extend any other use case, it is not extended by any use case, and it is not part of any generalization hierarchy. "Check Plot Availability" does not represent a complete service observable to any user — it is merely a decomposed sub-step of the reservation process. This constitutes the Functional Decomposition antipattern via the include relationship, where a base use case's internal logic has been unnecessarily broken out into a separate inclusion use case that serves no independent purpose.
+
+REFACTORING_RATIONALE: The inclusion use case "Check Plot Availability" must be merged back into the base use case "Reserve Garden Plot" because it exists solely as a decomposed step of that process. It is included by only one use case, has no actor association, and provides no standalone service. Removing "Check Plot Availability" and the <<include>> relationship between "Reserve Garden Plot" and "Check Plot Availability" eliminates the functional decomposition. The behavior of checking availability becomes an internal step within "Reserve Garden Plot", which is the appropriate level of abstraction.
+CONSTRUCT_COUNT: 13
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Gardener" as Gardener
+actor "Garden Manager" as Manager
+
+rectangle "Community Garden Management System" {
+  usecase "Reserve Garden Plot" as UC1
+  usecase "Check Plot Availability" as UC2
+  usecase "Log Harvest" as UC3
+  usecase "Schedule Watering" as UC4
+  usecase "Manage Member Accounts" as UC5
+  usecase "View Garden Map" as UC6
+  usecase "Report Maintenance Issue" as UC7
+}
+
+Gardener -- UC1
+Gardener -- UC3
+Gardener -- UC4
+Gardener -- UC6
+Gardener -- UC7
+
+Manager -- UC5
+
+UC1 ..> UC2 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Gardener" as Gardener
+actor "Garden Manager" as Manager
+
+rectangle "Community Garden Management System" {
+  usecase "Reserve Garden Plot" as UC1
+  usecase "Log Harvest" as UC3
+  usecase "Schedule Watering" as UC4
+  usecase "Manage Member Accounts" as UC5
+  usecase "View Garden Map" as UC6
+  usecase "Report Maintenance Issue" as UC7
+}
+
+Gardener -- UC1
+Gardener -- UC3
+Gardener -- UC4
+Gardener -- UC6
+Gardener -- UC7
+
+Manager -- UC5
+@enduml
+```

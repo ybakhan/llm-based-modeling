@@ -1,0 +1,78 @@
+
+
+DOMAIN: passport_application_system
+DOMAIN_DISPLAY: Passport Application System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Submit Passport Application, Upload Photo
+EXPLANATION: The use case "Upload Photo" is an inclusion use case that is included by only one use case ("Submit Passport Application"). "Upload Photo" is not associated with any actor directly — no actor has a direct association to it. It does not include or extend any other use case, is not extended by any use case, and is neither a generalization nor a specialization of any use case. "Upload Photo" represents a sub-step of the application submission process rather than a complete, standalone service offering an observable result to a user. This is a textbook instance of Functional Decomposition via the include relationship, where a single use case has been improperly broken down into a sub-function that has no independent value to any actor.
+
+REFACTORING_RATIONALE: The inclusion use case "Upload Photo" must be merged back into "Submit Passport Application" since uploading a photo is merely a step within the submission process and does not constitute a standalone service. By applying the "Drop Functional Decomposition" refactoring, we eliminate the "Upload Photo" use case and the <<include>> relationship between "Submit Passport Application" and "Upload Photo", reducing unnecessary decomposition. The base use case "Submit Passport Application" will inherently encompass the photo upload functionality. This removes 1 use case and 1 include relationship, reducing the total construct count by 2.
+
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Applicant" as Applicant
+actor "Passport Officer" as Officer
+
+rectangle "Passport Application System" {
+  usecase "Submit Passport Application" as UC1
+  usecase "Upload Photo" as UC2
+  usecase "Check Application Status" as UC3
+  usecase "Review Application" as UC4
+  usecase "Schedule Appointment" as UC5
+  usecase "Issue Passport" as UC6
+  usecase "Reject Application" as UC7
+}
+
+Applicant --> UC1
+UC1 ..> UC2 : <<include>>
+Applicant --> UC3
+Applicant --> UC5
+Officer --> UC4
+Officer --> UC6
+UC6 ..> UC4 : <<include>>
+UC4 ..> UC7 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Applicant" as Applicant
+actor "Passport Officer" as Officer
+
+rectangle "Passport Application System" {
+  usecase "Submit Passport Application" as UC1
+  usecase "Check Application Status" as UC3
+  usecase "Review Application" as UC4
+  usecase "Schedule Appointment" as UC5
+  usecase "Issue Passport" as UC6
+  usecase "Reject Application" as UC7
+}
+
+Applicant --> UC1
+Applicant --> UC3
+Applicant --> UC5
+Officer --> UC4
+Officer --> UC6
+UC6 ..> UC4 : <<include>>
+UC4 ..> UC7 : <<extend>>
+
+@enduml
+```

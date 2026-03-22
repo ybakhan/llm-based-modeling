@@ -1,0 +1,40 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Property Manager" as PM
+actor "Tenant" as T
+actor "Owner" as O
+actor "Maintenance Staff" as MS
+
+rectangle "Property Management System" {
+  usecase "List Property" as UC1
+  usecase "Manage Lease Agreement" as UC3
+  usecase "Collect Rent" as UC4
+  usecase "Schedule Maintenance" as UC6
+  usecase "Submit Maintenance Request" as UC8
+  usecase "View Property Reports" as UC9
+  usecase "View Payment History" as UC10
+  usecase "Generate Financial Report" as UC11
+  usecase "Inspect Property" as UC12
+  usecase "Renew Lease" as UC13
+}
+
+PM -- UC1
+PM -- UC3
+PM -- UC4
+PM -- UC6
+PM -- UC9
+PM -- UC12
+
+T -- UC8
+T -- UC10
+T -- UC13
+
+O -- UC9
+O -- UC11
+
+MS -- UC6
+
+UC13 ..> UC3 : <<include>>
+
+@enduml

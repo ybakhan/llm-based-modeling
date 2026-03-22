@@ -1,0 +1,35 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Customer as A1
+actor Admin as A2
+
+rectangle "Online Store" {
+  usecase "Browse Products" as UC1
+  usecase "Place Order" as UC2
+  usecase "Track Order" as UC3
+  usecase "Manage Inventory" as UC4
+  usecase "Validate Payment Details" as UC5
+  usecase "View Sales Reports" as UC6
+}
+
+A1 -- UC1
+A1 -- UC2
+A1 -- UC3
+A2 -- UC4
+A2 -- UC6
+
+UC2 ..> UC5 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Place Order (UC2), Validate Payment Details (UC5), Place Order --include--> Validate Payment Details
+   Explanation: "Validate Payment Details" (UC5) is an inclusion use case that is included by only one use case ("Place Order", UC2). It is not associated with any actor directly — no actor has an association line to UC5. It neither includes nor extends any other use case, is not extended by any use case, and is not involved in any generalization. "Validate Payment Details" does not represent a complete, independently meaningful service to any actor; it is merely a decomposed sub-step of placing an order. This constitutes the "Functional Decomposition: Using the include relationship" antipattern.

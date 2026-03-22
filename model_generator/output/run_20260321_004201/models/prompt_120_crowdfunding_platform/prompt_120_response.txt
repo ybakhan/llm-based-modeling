@@ -1,0 +1,106 @@
+
+
+DOMAIN: crowdfunding_platform
+DOMAIN_DISPLAY: Crowdfunding Platform
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Create Campaign, Upload Campaign Media, include (Create Campaign → Upload Campaign Media)
+EXPLANATION: "Upload Campaign Media" is an inclusion use case included only by "Create Campaign." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step of campaign creation rather than a complete, independently valuable service. This is functional decomposition of "Create Campaign" into a procedural step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Back Project, Process Payment Details, include (Back Project → Process Payment Details)
+EXPLANATION: "Process Payment Details" is an inclusion use case included only by "Back Project." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal payment processing step rather than a standalone service observable to a user. This is functional decomposition of "Back Project" into a procedural sub-task.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Withdraw Funds, Validate Bank Account, include (Withdraw Funds → Validate Bank Account)
+EXPLANATION: "Validate Bank Account" is an inclusion use case included only by "Withdraw Funds." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal validation step rather than a complete service. This is functional decomposition of "Withdraw Funds" into a procedural sub-step.
+
+REFACTORING_RATIONALE: Each of the three decomposed inclusion use cases ("Upload Campaign Media," "Process Payment Details," "Validate Bank Account") must be merged back into their respective base use cases ("Create Campaign," "Back Project," "Withdraw Funds"). Each inclusion use case is only included by one base use case, has no actor association, and has no other relationships — meaning they serve no independent purpose and merely fragment a single service into sub-steps. Removing these three use cases and their three include relationships eliminates 6 constructs, consolidating behavior into the base use cases which already represent the complete services offered to actors.
+
+CONSTRUCT_COUNT: 25
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Project Creator" as Creator
+actor "Backer" as Backer
+actor "Administrator" as Admin
+actor "Payment Gateway" as PG
+
+rectangle "Crowdfunding Platform" {
+  usecase "Create Campaign" as UC1
+  usecase "Upload Campaign Media" as UC2
+  usecase "Manage Campaign Updates" as UC3
+  usecase "Withdraw Funds" as UC4
+  usecase "Validate Bank Account" as UC5
+  usecase "Browse Campaigns" as UC6
+  usecase "Back Project" as UC7
+  usecase "Process Payment Details" as UC8
+  usecase "Track Pledges" as UC9
+  usecase "Review Flagged Campaigns" as UC10
+  usecase "Generate Platform Reports" as UC11
+  usecase "Authorize Transaction" as UC12
+}
+
+Creator --> UC1
+Creator --> UC3
+Creator --> UC4
+Backer --> UC6
+Backer --> UC7
+Backer --> UC9
+Admin --> UC10
+Admin --> UC11
+PG --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC12 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 19
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Project Creator" as Creator
+actor "Backer" as Backer
+actor "Administrator" as Admin
+actor "Payment Gateway" as PG
+
+rectangle "Crowdfunding Platform" {
+  usecase "Create Campaign" as UC1
+  usecase "Manage Campaign Updates" as UC3
+  usecase "Withdraw Funds" as UC4
+  usecase "Browse Campaigns" as UC6
+  usecase "Back Project" as UC7
+  usecase "Track Pledges" as UC9
+  usecase "Review Flagged Campaigns" as UC10
+  usecase "Generate Platform Reports" as UC11
+  usecase "Authorize Transaction" as UC12
+}
+
+Creator --> UC1
+Creator --> UC3
+Creator --> UC4
+Backer --> UC6
+Backer --> UC7
+Backer --> UC9
+Admin --> UC10
+Admin --> UC11
+PG --> UC12
+
+UC7 ..> UC12 : <<include>>
+@enduml
+```

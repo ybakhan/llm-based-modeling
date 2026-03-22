@@ -1,0 +1,41 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Customer" as Customer
+actor "Restaurant Manager" as Manager
+actor "Receptionist" as Receptionist
+
+rectangle "Restaurant Reservation System" {
+  usecase "Make Reservation" as UC1
+  usecase "Cancel Reservation" as UC2
+  usecase "Modify Reservation" as UC3
+  usecase "View Reservations" as UC4
+  usecase "Manage Table Layout" as UC5
+  usecase "Generate Reports" as UC6
+  usecase "Leave Review" as UC7
+  usecase "Request Special Seating" as UC8
+  usecase "View Waitlist" as UC9
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC3
+Customer --> UC7
+Manager --> UC5
+Manager --> UC6
+Manager --> UC4
+Receptionist --> UC4
+Receptionist --> UC9
+
+UC1 <.. UC8 : <<extend>>
+@enduml
+
+
+Answer:
+No antipattern detected.

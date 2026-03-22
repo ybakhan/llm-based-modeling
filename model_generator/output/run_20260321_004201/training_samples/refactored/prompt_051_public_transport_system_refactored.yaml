@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 51
+  domain: public_transport_system
+  domain_display: Public Transport System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:19:40.992353'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_051_public_transport_system/public_transport_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_051_public_transport_system/public_transport_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_051_public_transport_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Passenger\nactor Driver\n\
+    actor Administrator\n\nrectangle \"Public Transport System\" {\n  usecase \"Plan\
+    \ Journey\" as UC1\n  usecase \"Purchase Ticket\" as UC3\n  usecase \"View Live\
+    \ Schedule\" as UC5\n  usecase \"Register Account\" as UC6\n  usecase \"Report\
+    \ Delay\" as UC8\n  usecase \"Track Vehicle Location\" as UC9\n  usecase \"Manage\
+    \ Routes\" as UC10\n  usecase \"View Passenger Statistics\" as UC11\n  usecase\
+    \ \"Request Refund\" as UC12\n  usecase \"Rate Service\" as UC13\n  usecase \"\
+    Apply Discount\" as UC14\n}\n\nPassenger --> UC1\nPassenger --> UC3\nPassenger\
+    \ --> UC5\nPassenger --> UC6\nPassenger --> UC12\nPassenger --> UC13\n\nDriver\
+    \ --> UC8\nDriver --> UC9\n\nAdministrator --> UC10\nAdministrator --> UC11\n\n\
+    UC3 ..> UC14 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: public_transport_system
+
+  DOMAIN_DISPLAY: Public Transport System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Plan Journey, Validate Route Availability, include (Plan Journey
+  → Validate Route Availability)
+
+  EXPLANATION: "Validate Route Availability" is an inclusion use case included only
+  by "Plan Journey". It is not associated with any actor, is not included by any other
+  use case, does not include or extend any use case, is not extend …[truncated]'

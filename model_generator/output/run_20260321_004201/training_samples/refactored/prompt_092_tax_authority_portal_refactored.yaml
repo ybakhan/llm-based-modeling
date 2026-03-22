@@ -1,0 +1,61 @@
+metadata:
+  prompt_number: 92
+  domain: tax_authority_portal
+  domain_display: Tax Authority Portal
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:36:15.961441'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_092_tax_authority_portal/tax_authority_portal_refactored.puml
+    image: output/run_20260321_004201/models/prompt_092_tax_authority_portal/tax_authority_portal_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_092_tax_authority_portal_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Taxpayer\" as Taxpayer\nactor \"Tax Officer\" as TaxOfficer\nactor \"\
+    Auditor\" as Auditor\nactor \"System Administrator\" as SysAdmin\n\nrectangle\
+    \ \"Tax Authority Portal\" {\n  usecase \"Register Taxpayer Account\" as UC1\n\
+    \  usecase \"File Tax Return\" as UC3\n  usecase \"View Tax History\" as UC5\n\
+    \  usecase \"Make Tax Payment\" as UC6\n  usecase \"Process Refund\" as UC7\n\
+    \  usecase \"Conduct Tax Audit\" as UC9\n  usecase \"Generate Audit Report\" as\
+    \ UC10\n  usecase \"Send Tax Notice\" as UC11\n  usecase \"Manage User Accounts\"\
+    \ as UC12\n  usecase \"Appeal Tax Assessment\" as UC13\n  usecase \"Download Tax\
+    \ Certificate\" as UC14\n  usecase \"Schedule Appointment\" as UC15\n  usecase\
+    \ \"Update Tax Rates\" as UC16\n}\n\nTaxpayer --> UC1\nTaxpayer --> UC3\nTaxpayer\
+    \ --> UC5\nTaxpayer --> UC6\nTaxpayer --> UC13\nTaxpayer --> UC14\nTaxpayer -->\
+    \ UC15\n\nTaxOfficer --> UC7\nTaxOfficer --> UC11\nTaxOfficer --> UC9\n\nAuditor\
+    \ --> UC9\nAuditor --> UC10\n\nSysAdmin --> UC12\nSysAdmin --> UC16\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: tax_authority_portal
+
+  DOMAIN_DISPLAY: Tax Authority Portal
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: File Tax Return, Validate Taxpayer ID, include relationship
+  from File Tax Return to Validate Taxpayer ID
+
+  EXPLANATION: "Validate Taxpayer ID" is an inclusion use case included only by "File
+  Tax Return." It is not associated with any actor, does not include or extend any
+  other use case, is not extended by any use case, and is not par …[truncated]'

@@ -1,0 +1,109 @@
+
+
+DOMAIN: event_decoration_booking_system
+DOMAIN_DISPLAY: Event Decoration Booking System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Place Booking, Validate Payment Details, include relationship from Place Booking to Validate Payment Details
+EXPLANATION: "Validate Payment Details" is an inclusion use case included only by "Place Booking". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (payment validation) rather than a complete service observable to an actor, making it a functional decomposition of "Place Booking".
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Place Booking, Calculate Total Price, include relationship from Place Booking to Calculate Total Price
+EXPLANATION: "Calculate Total Price" is an inclusion use case included only by "Place Booking". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal computation step rather than a complete service offered to a user, making it a functional decomposition of "Place Booking".
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Browse Decoration Packages, Load Package Images, include relationship from Browse Decoration Packages to Load Package Images
+EXPLANATION: "Load Package Images" is an inclusion use case included only by "Browse Decoration Packages". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a technical sub-function (image loading) rather than a complete service observable to an actor, making it a functional decomposition of "Browse Decoration Packages".
+
+REFACTORING_RATIONALE: The three decomposed inclusion use cases must be merged back into their respective base use cases. "Validate Payment Details" and "Calculate Total Price" should be absorbed into "Place Booking" since they are merely sub-steps of placing a booking. "Load Package Images" should be absorbed into "Browse Decoration Packages" since it is merely a technical sub-function of browsing. This removes 3 use cases and 3 include relationships (6 constructs total), reducing the count from 28 to 22. The resulting model preserves all meaningful services while eliminating artificial decomposition.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Customer" as Customer
+actor "Event Planner" as Planner
+actor "Admin" as Admin
+
+rectangle "Event Decoration Booking System" {
+  usecase "Browse Decoration Packages" as UC1
+  usecase "Place Booking" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "View Booking History" as UC4
+  usecase "Manage Decoration Packages" as UC5
+  usecase "Generate Revenue Report" as UC6
+  usecase "Consult on Custom Decoration" as UC7
+  usecase "Schedule Site Visit" as UC8
+  usecase "Apply Discount Code" as UC9
+  usecase "Validate Payment Details" as UC10
+  usecase "Calculate Total Price" as UC11
+  usecase "Load Package Images" as UC12
+
+  UC2 ..> UC10 : <<include>>
+  UC2 ..> UC11 : <<include>>
+  UC1 ..> UC12 : <<include>>
+
+  UC9 ..> UC2 : <<extend>>
+  UC3 ..> UC2 : <<extend>>
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC3
+Customer -- UC4
+Planner -- UC7
+Planner -- UC8
+Planner -- UC1
+Admin -- UC5
+Admin -- UC6
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Customer" as Customer
+actor "Event Planner" as Planner
+actor "Admin" as Admin
+
+rectangle "Event Decoration Booking System" {
+  usecase "Browse Decoration Packages" as UC1
+  usecase "Place Booking" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "View Booking History" as UC4
+  usecase "Manage Decoration Packages" as UC5
+  usecase "Generate Revenue Report" as UC6
+  usecase "Consult on Custom Decoration" as UC7
+  usecase "Schedule Site Visit" as UC8
+  usecase "Apply Discount Code" as UC9
+
+  UC9 ..> UC2 : <<extend>>
+  UC3 ..> UC2 : <<extend>>
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC3
+Customer -- UC4
+Planner -- UC7
+Planner -- UC8
+Planner -- UC1
+Admin -- UC5
+Admin -- UC6
+
+@enduml
+```

@@ -1,0 +1,39 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Waiter" as Waiter
+actor "Chef" as Chef
+actor "Cashier" as Cashier
+actor "Manager" as Manager
+
+rectangle "Restaurant Management System" {
+  usecase "Place Order" as UC1
+  usecase "Validate Menu Items" as UC2
+  usecase "View Kitchen Queue" as UC3
+  usecase "Update Order Status" as UC4
+  usecase "Process Payment" as UC5
+  usecase "Calculate Total" as UC6
+  usecase "Manage Menu" as UC7
+  usecase "Generate Report" as UC8
+  usecase "Fetch Report Data" as UC9
+  usecase "Manage Reservations" as UC10
+  usecase "View Table Availability" as UC11
+  usecase "Apply Discount" as UC12
+
+  UC1 ..> UC2 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC8 ..> UC9 : <<include>>
+  UC5 ..> UC12 : <<extend>>
+}
+
+Waiter -- UC1
+Waiter -- UC10
+Waiter -- UC11
+Chef -- UC3
+Chef -- UC4
+Cashier -- UC5
+Manager -- UC7
+Manager -- UC8
+
+@enduml

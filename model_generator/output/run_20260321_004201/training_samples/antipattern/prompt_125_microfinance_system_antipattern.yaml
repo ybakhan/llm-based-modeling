@@ -1,0 +1,112 @@
+metadata:
+  prompt_number: 125
+  domain: microfinance_system
+  domain_display: Microfinance System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Process Loan Application, Verify Applicant Identity, include
+        relationship from "Process Loan Application" to "Verify Applicant Identity"
+      explanation: '"Verify Applicant Identity" is an inclusion use case included
+        only by "Process Loan Application". It is not associated with any actor, is
+        not included by any other use case, does not include or extend any other use
+        case, is not extended by any use case, and has no generalization relationships.
+        It represents a decomposed step of loan processing rather than a complete,
+        standalone service observable to any actor. This constitutes the Functional
+        Decomposition antipattern.'
+    - constructs_involved: Disburse Loan, Calculate Disbursement Amount, include relationship
+        from "Disburse Loan" to "Calculate Disbursement Amount"
+      explanation: '"Calculate Disbursement Amount" is an inclusion use case included
+        only by "Disburse Loan". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        a sub-step of the disbursement process rather than a complete service to any
+        user. This constitutes the Functional Decomposition antipattern.'
+    - constructs_involved: Manage Repayments, Send Payment Reminder, include relationship
+        from "Manage Repayments" to "Send Payment Reminder"
+      explanation: '"Send Payment Reminder" is an inclusion use case included only
+        by "Manage Repayments". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        a decomposed step of repayment management rather than a complete standalone
+        service. This constitutes the Functional Decomposition antipattern.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 26
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:59:35.466627'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_125_microfinance_system/microfinance_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_125_microfinance_system/microfinance_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_125_microfinance_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    skinparam packageStyle rectangle\n\nactor \"Loan Officer\" as LO\nactor \"Branch\
+    \ Manager\" as BM\nactor \"Borrower\" as BO\nactor \"Auditor\" as AU\n\nrectangle\
+    \ \"Microfinance System\" {\n  usecase \"Process Loan Application\" as UC1\n \
+    \ usecase \"Verify Applicant Identity\" as UC2\n  usecase \"Disburse Loan\" as\
+    \ UC3\n  usecase \"Calculate Disbursement Amount\" as UC4\n  usecase \"Manage\
+    \ Repayments\" as UC5\n  usecase \"Send Payment Reminder\" as UC6\n  usecase \"\
+    Register Borrower\" as UC7\n  usecase \"View Loan Status\" as UC8\n  usecase \"\
+    Generate Financial Report\" as UC9\n  usecase \"Approve Loan\" as UC10\n  usecase\
+    \ \"Close Loan Account\" as UC11\n  usecase \"Record Savings Deposit\" as UC12\n\
+    }\n\nLO -- UC1\nLO -- UC3\nLO -- UC5\nLO -- UC7\nLO -- UC12\nBO -- UC8\nBM --\
+    \ UC10\nBM -- UC9\nBM -- UC11\nAU -- UC9\n\nUC1 ..> UC2 : <<include>>\nUC3 ..>\
+    \ UC4 : <<include>>\nUC5 ..> UC6 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Process Loan Application, Verify Applicant\
+    \ Identity, include relationship from \"Process Loan Application\" to \"Verify\
+    \ Applicant Identity\"\n   Instance 1: Explanation: \"Verify Applicant Identity\"\
+    \ is an inclusion use case included only by \"Process Loan Application\". It is\
+    \ not associated with any actor, is not included by any other use case, does not\
+    \ include or extend any other use case, is not extended by any use case, and has\
+    \ no generalization relationships. It represents a decomposed step of loan processing\
+    \ rather than a complete, standalone service observable to any actor. This constitutes\
+    \ the Functional Decomposition antipattern.\n\n   Instance 2: Constructs Involved:\
+    \ Disburse Loan, Calculate Disbursement Amount, include relationship from \"Disburse\
+    \ Loan\" to \"Calculate Disbursement Amount\"\n   Instance 2: Explanation: \"\
+    Calculate Disbursement Amount\" is an inclusion use case included only by \"Disburse\
+    \ Loan\". It is not associated with any actor, is not included by any other use\
+    \ case, does not include or extend any other use case, is not extended by any\
+    \ use case, and has no generalization relationships. It represents a sub-step\
+    \ of the disbursement process rather than a complete service to any user. This\
+    \ constitutes the Functional Decomposition antipattern.\n\n   Instance 3: Constructs\
+    \ Involved: Manage Repayments, Send Payment Reminder, include relationship from\
+    \ \"Manage Repayments\" to \"Send Payment Reminder\"\n   Instance 3: Explanation:\
+    \ \"Send Payment Reminder\" is an inclusion use case included only by \"Manage\
+    \ Repayments\". It is not associated with any actor, is not included by any other\
+    \ use case, does not include or extend any other use case, is not extended by\
+    \ any use case, and has no generalization relationships. It represents a decomposed\
+    \ step of repayment management rather than a complete standalone service. This\
+    \ constitutes the Functional Decomposition antipattern."
+raw_response_excerpt: '
+
+
+  DOMAIN: microfinance_system
+
+  DOMAIN_DISPLAY: Microfinance System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Process Loan Application, Verify Applicant Identity, include
+  relationship from "Process Loan Application" to "Verify Applicant Identity"
+
+  EXPLANATION: "Verify Applicant Identity" is an inclusion use case included only
+  by "Process Loan Application". It is not associated with any actor, is not included
+  by any other use case, does not in …[truncated]'

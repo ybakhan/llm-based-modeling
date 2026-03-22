@@ -1,0 +1,111 @@
+metadata:
+  prompt_number: 123
+  domain: budgeting_application
+  domain_display: Budgeting Application
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Create Budget, Validate Budget Categories, include (Create
+        Budget → Validate Budget Categories)
+      explanation: '"Validate Budget Categories" is an inclusion use case included
+        only by "Create Budget". It is not associated with any actor, not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        a sub-step (validating categories) rather than a complete service observable
+        to any user. This is functional decomposition of "Create Budget" into an internal
+        processing step.'
+    - constructs_involved: Generate Report, Calculate Totals, include (Generate Report
+        → Calculate Totals)
+      explanation: '"Calculate Totals" is an inclusion use case included only by "Generate
+        Report". It is not associated with any actor, not included by any other use
+        case, does not include or extend any other use case, is not extended by any
+        use case, and has no generalization relationships. Calculating totals is an
+        internal computational step of report generation, not a standalone service
+        offering an observable result to a user. This is functional decomposition.'
+    - constructs_involved: Track Expenses, Retrieve Expense Data, include (Track Expenses
+        → Retrieve Expense Data)
+      explanation: '"Retrieve Expense Data" is an inclusion use case included only
+        by "Track Expenses". It is not associated with any actor, not included by
+        any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. Retrieving
+        data is an internal data-fetching step within expense tracking, not a complete
+        service providing an observable result to any actor. This is functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 26
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:47:41.671725'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_123_budgeting_application/budgeting_application_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_123_budgeting_application/budgeting_application_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_123_budgeting_application_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Budget Owner\"\
+    \ as Owner\nactor \"Financial Advisor\" as Advisor\nactor \"Administrator\" as\
+    \ Admin\n\nrectangle \"Budgeting Application\" {\n  usecase \"Create Budget\"\
+    \ as UC1\n  usecase \"Validate Budget Categories\" as UC2\n  usecase \"Track Expenses\"\
+    \ as UC3\n  usecase \"Retrieve Expense Data\" as UC4\n  usecase \"Set Savings\
+    \ Goals\" as UC5\n  usecase \"Generate Report\" as UC6\n  usecase \"Calculate\
+    \ Totals\" as UC7\n  usecase \"Review Budget Performance\" as UC8\n  usecase \"\
+    Manage User Accounts\" as UC9\n  usecase \"Send Budget Alerts\" as UC10\n  usecase\
+    \ \"Import Bank Transactions\" as UC11\n  usecase \"Categorize Transactions\"\
+    \ as UC12\n}\n\nOwner --> UC1\nOwner --> UC3\nOwner --> UC5\nOwner --> UC11\n\
+    Owner --> UC12\nAdvisor --> UC6\nAdvisor --> UC8\nAdmin --> UC9\nAdmin --> UC10\n\
+    \nUC1 ..> UC2 : <<include>>\nUC6 ..> UC7 : <<include>>\nUC3 ..> UC4 : <<include>>\n\
+    \nUC11 ..> UC12 : <<include>>\nUC8 ..> UC6 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Create Budget, Validate Budget Categories,\
+    \ include (Create Budget → Validate Budget Categories)\n   Instance 1: Explanation:\
+    \ \"Validate Budget Categories\" is an inclusion use case included only by \"\
+    Create Budget\". It is not associated with any actor, not included by any other\
+    \ use case, does not include or extend any other use case, is not extended by\
+    \ any use case, and has no generalization relationships. It represents a sub-step\
+    \ (validating categories) rather than a complete service observable to any user.\
+    \ This is functional decomposition of \"Create Budget\" into an internal processing\
+    \ step.\n\n   Instance 2: Constructs Involved: Generate Report, Calculate Totals,\
+    \ include (Generate Report → Calculate Totals)\n   Instance 2: Explanation: \"\
+    Calculate Totals\" is an inclusion use case included only by \"Generate Report\"\
+    . It is not associated with any actor, not included by any other use case, does\
+    \ not include or extend any other use case, is not extended by any use case, and\
+    \ has no generalization relationships. Calculating totals is an internal computational\
+    \ step of report generation, not a standalone service offering an observable result\
+    \ to a user. This is functional decomposition.\n\n   Instance 3: Constructs Involved:\
+    \ Track Expenses, Retrieve Expense Data, include (Track Expenses → Retrieve Expense\
+    \ Data)\n   Instance 3: Explanation: \"Retrieve Expense Data\" is an inclusion\
+    \ use case included only by \"Track Expenses\". It is not associated with any\
+    \ actor, not included by any other use case, does not include or extend any other\
+    \ use case, is not extended by any use case, and has no generalization relationships.\
+    \ Retrieving data is an internal data-fetching step within expense tracking, not\
+    \ a complete service providing an observable result to any actor. This is functional\
+    \ decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: budgeting_application
+
+  DOMAIN_DISPLAY: Budgeting Application
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Create Budget, Validate Budget Categories, include (Create
+  Budget → Validate Budget Categories)
+
+  EXPLANATION: "Validate Budget Categories" is an inclusion use case included only
+  by "Create Budget". It is not associated with any actor, not included by any other
+  use case, does not include or extend any other use case, is not extende …[truncated]'

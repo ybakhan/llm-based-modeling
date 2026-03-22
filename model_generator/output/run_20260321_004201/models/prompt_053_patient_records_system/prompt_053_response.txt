@@ -1,0 +1,72 @@
+
+
+DOMAIN: patient_records_system
+DOMAIN_DISPLAY: Patient Records System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register Patient, Validate Patient ID
+EXPLANATION: The use case "Register Patient" includes "Validate Patient ID" via an <<include>> relationship. "Validate Patient ID" is included by only one use case ("Register Patient"), is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is neither a generalization nor a specialization. It represents a sub-step of registration rather than a complete, independently meaningful service observable to any actor. This constitutes the Functional Decomposition: Using the include relationship antipattern.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Patient ID" must be merged into its sole base use case "Register Patient," since it does not provide a standalone service to any actor and is only included by one use case. The <<include>> relationship between "Register Patient" and "Validate Patient ID" is removed, and the validation behavior becomes part of "Register Patient." This eliminates 1 use case and 1 include relationship, reducing the construct count by 2.
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Doctor" as Doctor
+actor "Receptionist" as Receptionist
+
+rectangle "Patient Records System" {
+  usecase "View Patient Record" as UC1
+  usecase "Update Patient Record" as UC2
+  usecase "Register Patient" as UC3
+  usecase "Validate Patient ID" as UC4
+  usecase "Schedule Appointment" as UC5
+  usecase "Search Patient" as UC6
+}
+
+Doctor -- UC1
+Doctor -- UC2
+Receptionist -- UC3
+Receptionist -- UC5
+Receptionist -- UC6
+
+UC3 ..> UC4 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 9
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Doctor" as Doctor
+actor "Receptionist" as Receptionist
+
+rectangle "Patient Records System" {
+  usecase "View Patient Record" as UC1
+  usecase "Update Patient Record" as UC2
+  usecase "Register Patient" as UC3
+  usecase "Schedule Appointment" as UC5
+  usecase "Search Patient" as UC6
+}
+
+Doctor -- UC1
+Doctor -- UC2
+Receptionist -- UC3
+Receptionist -- UC5
+Receptionist -- UC6
+@enduml
+```

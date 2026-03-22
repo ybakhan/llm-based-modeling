@@ -1,0 +1,105 @@
+metadata:
+  prompt_number: 76
+  domain: catering_service_system
+  domain_display: Catering Service System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Place Catering Order, Validate Customer Address
+      explanation: '"Validate Customer Address" is an inclusion use case included
+        only by "Place Catering Order". It is not associated with any actor, is not
+        included by any other use case, does not include or extend any use case, is
+        not extended by any use case, and has no generalization relationships. It
+        represents a sub-step (address validation) rather than a complete service
+        observable to an actor, making this a clear instance of functional decomposition
+        via the include relationship.'
+    - constructs_involved: Process Payment, Calculate Tax
+      explanation: '"Calculate Tax" is an inclusion use case included only by "Process
+        Payment". It is not associated with any actor, is not included by any other
+        use case, does not include or extend any use case, is not extended by any
+        use case, and has no generalization relationships. Calculating tax is a computational
+        sub-step of payment processing, not a standalone service providing an observable
+        result to any user.'
+    - constructs_involved: Create Menu Package, List Available Ingredients
+      explanation: '"List Available Ingredients" is an inclusion use case included
+        only by "Create Menu Package". It is not associated with any actor, is not
+        included by any other use case, does not include or extend any use case, is
+        not extended by any use case, and has no generalization relationships. Listing
+        ingredients is an internal procedural step within menu package creation, not
+        a complete service yielding an observable result to an actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:30:26.616592'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_076_catering_service_system/catering_service_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_076_catering_service_system/catering_service_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_076_catering_service_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Customer\"\
+    \ as Customer\nactor \"Chef\" as Chef\nactor \"Event Coordinator\" as EC\nactor\
+    \ \"Payment Gateway\" as PG\n\nrectangle \"Catering Service System\" {\n  usecase\
+    \ \"Browse Menu\" as UC1\n  usecase \"Place Catering Order\" as UC2\n  usecase\
+    \ \"Process Payment\" as UC3\n  usecase \"Track Order Status\" as UC4\n  usecase\
+    \ \"Create Menu Package\" as UC5\n  usecase \"Manage Event Schedule\" as UC6\n\
+    \  usecase \"Generate Invoice\" as UC7\n  usecase \"Validate Customer Address\"\
+    \ as UC8\n  usecase \"Calculate Tax\" as UC9\n  usecase \"List Available Ingredients\"\
+    \ as UC10\n  usecase \"Request Custom Menu\" as UC11\n  usecase \"Rate Service\"\
+    \ as UC12\n}\n\nCustomer --> UC1\nCustomer --> UC2\nCustomer --> UC3\nCustomer\
+    \ --> UC4\nCustomer --> UC11\nCustomer --> UC12\nChef --> UC5\nEC --> UC6\nEC\
+    \ --> UC7\nPG --> UC3\n\nUC2 ..> UC8 : <<include>>\nUC3 ..> UC9 : <<include>>\n\
+    UC5 ..> UC10 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Place Catering Order, Validate Customer\
+    \ Address\n   Instance 1: Explanation: \"Validate Customer Address\" is an inclusion\
+    \ use case included only by \"Place Catering Order\". It is not associated with\
+    \ any actor, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ It represents a sub-step (address validation) rather than a complete service\
+    \ observable to an actor, making this a clear instance of functional decomposition\
+    \ via the include relationship.\n\n   Instance 2: Constructs Involved: Process\
+    \ Payment, Calculate Tax\n   Instance 2: Explanation: \"Calculate Tax\" is an\
+    \ inclusion use case included only by \"Process Payment\". It is not associated\
+    \ with any actor, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ Calculating tax is a computational sub-step of payment processing, not a standalone\
+    \ service providing an observable result to any user.\n\n   Instance 3: Constructs\
+    \ Involved: Create Menu Package, List Available Ingredients\n   Instance 3: Explanation:\
+    \ \"List Available Ingredients\" is an inclusion use case included only by \"\
+    Create Menu Package\". It is not associated with any actor, is not included by\
+    \ any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. Listing ingredients\
+    \ is an internal procedural step within menu package creation, not a complete\
+    \ service yielding an observable result to an actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: catering_service_system
+
+  DOMAIN_DISPLAY: Catering Service System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Catering Order, Validate Customer Address
+
+  EXPLANATION: "Validate Customer Address" is an inclusion use case included only
+  by "Place Catering Order". It is not associated with any actor, is not included
+  by any other use case, does not include or extend any use case, is not extended
+  by any use case, and has no generalizat …[truncated]'

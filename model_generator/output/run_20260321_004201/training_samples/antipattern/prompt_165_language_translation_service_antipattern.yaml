@@ -1,0 +1,116 @@
+metadata:
+  prompt_number: 165
+  domain: language_translation_service
+  domain_display: Language Translation Service
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Submit Translation Request, Parse Source Text, include
+        relationship from "Submit Translation Request" to "Parse Source Text"
+      explanation: '"Parse Source Text" is an inclusion use case included only by
+        "Submit Translation Request". It is not associated with any actor, does not
+        include or extend any other use case, is not extended by any use case, and
+        has no generalization relationships. "Parse Source Text" represents a sub-step
+        (parsing input) rather than a complete, independently valuable service to
+        any actor, making this a functional decomposition of "Submit Translation Request"
+        via the include relationship.'
+    - constructs_involved: Translate Document, Apply Grammar Rules, include relationship
+        from "Translate Document" to "Apply Grammar Rules"
+      explanation: '"Apply Grammar Rules" is an inclusion use case included only by
+        "Translate Document". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and has no
+        generalization relationships. Applying grammar rules is an internal processing
+        step within translation, not a standalone service observable by a user. This
+        constitutes functional decomposition of "Translate Document" via the include
+        relationship.'
+    - constructs_involved: Download Translated File, Format Output File, include relationship
+        from "Download Translated File" to "Format Output File"
+      explanation: '"Format Output File" is an inclusion use case included only by
+        "Download Translated File". It is not associated with any actor, does not
+        include or extend any other use case, is not extended by any use case, and
+        has no generalization relationships. Formatting the output file is an internal
+        step of preparing a download, not a complete service to any user. This is
+        functional decomposition of "Download Translated File" via the include relationship.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 28
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:06:01.345357'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_165_language_translation_service/language_translation_service_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_165_language_translation_service/language_translation_service_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_165_language_translation_service_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Customer\"\
+    \ as Customer\nactor \"Professional Translator\" as Translator\nactor \"Administrator\"\
+    \ as Admin\n\nrectangle \"Language Translation Service\" {\n  usecase \"Register\
+    \ Account\" as UC1\n  usecase \"Submit Translation Request\" as UC2\n  usecase\
+    \ \"Parse Source Text\" as UC3\n  usecase \"Select Target Language\" as UC4\n\
+    \  usecase \"Translate Document\" as UC5\n  usecase \"Apply Grammar Rules\" as\
+    \ UC6\n  usecase \"Review Translation\" as UC7\n  usecase \"Download Translated\
+    \ File\" as UC8\n  usecase \"Format Output File\" as UC9\n  usecase \"Rate Translation\
+    \ Quality\" as UC10\n  usecase \"Manage Translator Profiles\" as UC11\n  usecase\
+    \ \"View Translation History\" as UC12\n  usecase \"Request Human Review\" as\
+    \ UC13\n  usecase \"Manage Supported Languages\" as UC14\n}\n\nCustomer --> UC1\n\
+    Customer --> UC2\nCustomer --> UC4\nCustomer --> UC8\nCustomer --> UC10\nCustomer\
+    \ --> UC12\nCustomer --> UC13\n\nTranslator --> UC5\nTranslator --> UC7\n\nAdmin\
+    \ --> UC11\nAdmin --> UC14\n\nUC2 ..> UC3 : <<include>>\nUC5 ..> UC6 : <<include>>\n\
+    UC8 ..> UC9 : <<include>>\n\nUC13 ..> UC7 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Submit Translation Request, Parse Source\
+    \ Text, include relationship from \"Submit Translation Request\" to \"Parse Source\
+    \ Text\"\n   Instance 1: Explanation: \"Parse Source Text\" is an inclusion use\
+    \ case included only by \"Submit Translation Request\". It is not associated with\
+    \ any actor, does not include or extend any other use case, is not extended by\
+    \ any use case, and has no generalization relationships. \"Parse Source Text\"\
+    \ represents a sub-step (parsing input) rather than a complete, independently\
+    \ valuable service to any actor, making this a functional decomposition of \"\
+    Submit Translation Request\" via the include relationship.\n\n   Instance 2: Constructs\
+    \ Involved: Translate Document, Apply Grammar Rules, include relationship from\
+    \ \"Translate Document\" to \"Apply Grammar Rules\"\n   Instance 2: Explanation:\
+    \ \"Apply Grammar Rules\" is an inclusion use case included only by \"Translate\
+    \ Document\". It is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and has no generalization\
+    \ relationships. Applying grammar rules is an internal processing step within\
+    \ translation, not a standalone service observable by a user. This constitutes\
+    \ functional decomposition of \"Translate Document\" via the include relationship.\n\
+    \n   Instance 3: Constructs Involved: Download Translated File, Format Output\
+    \ File, include relationship from \"Download Translated File\" to \"Format Output\
+    \ File\"\n   Instance 3: Explanation: \"Format Output File\" is an inclusion use\
+    \ case included only by \"Download Translated File\". It is not associated with\
+    \ any actor, does not include or extend any other use case, is not extended by\
+    \ any use case, and has no generalization relationships. Formatting the output\
+    \ file is an internal step of preparing a download, not a complete service to\
+    \ any user. This is functional decomposition of \"Download Translated File\" via\
+    \ the include relationship."
+raw_response_excerpt: '
+
+
+  DOMAIN: language_translation_service
+
+  DOMAIN_DISPLAY: Language Translation Service
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Translation Request, Parse Source Text, include relationship
+  from "Submit Translation Request" to "Parse Source Text"
+
+  EXPLANATION: "Parse Source Text" is an inclusion use case included only by "Submit
+  Translation Request". It is not associated with any actor, does not include or extend
+  any other use case, is  …[truncated]'

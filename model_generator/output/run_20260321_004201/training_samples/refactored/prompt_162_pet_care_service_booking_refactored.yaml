@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 162
+  domain: pet_care_service_booking
+  domain_display: Pet Care Service Booking
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:04:48.348633'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_162_pet_care_service_booking/pet_care_service_booking_refactored.puml
+    image: output/run_20260321_004201/models/prompt_162_pet_care_service_booking/pet_care_service_booking_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_162_pet_care_service_booking_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Pet Owner\" as PO\n\
+    actor \"Service Provider\" as SP\n\nrectangle \"Pet Care Service Booking System\"\
+    \ {\n  usecase \"Browse Services\" as UC1\n  usecase \"Book Grooming Appointment\"\
+    \ as UC2\n  usecase \"Cancel Booking\" as UC4\n  usecase \"View Bookings\" as\
+    \ UC5\n  usecase \"Manage Availability\" as UC6\n  usecase \"Confirm Booking\"\
+    \ as UC7\n}\n\nPO --> UC1\nPO --> UC2\nPO --> UC4\nPO --> UC5\nSP --> UC6\nSP\
+    \ --> UC7\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: pet_care_service_booking
+
+  DOMAIN_DISPLAY: Pet Care Service Booking
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Grooming Appointment, Select Time Slot
+
+  EXPLANATION: The use case "Select Time Slot" is an inclusion use case that is included
+  by only one use case ("Book Grooming Appointment"). "Select Time Slot" is not associated
+  with any actor directly, does not include or extend any other use case, is not extended
+  by any use case, a …[truncated]'

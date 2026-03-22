@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 144
+  domain: athlete_training_system
+  domain_display: Athlete Training System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:43:21.445624'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_144_athlete_training_system/athlete_training_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_144_athlete_training_system/athlete_training_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_144_athlete_training_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Athlete\" as Athlete\nactor \"Coach\" as Coach\nactor \"Medical Staff\"\
+    \ as MedicalStaff\n\nrectangle \"Athlete Training System\" {\n  usecase \"Schedule\
+    \ Training Session\" as UC1\n  usecase \"Log Workout Results\" as UC3\n  usecase\
+    \ \"Monitor Injury Status\" as UC5\n  usecase \"Create Training Plan\" as UC7\n\
+    \  usecase \"View Progress Report\" as UC8\n  usecase \"Manage Nutrition Plan\"\
+    \ as UC9\n  usecase \"Send Alert Notification\" as UC10\n  usecase \"Assign Exercise\
+    \ Routine\" as UC11\n  usecase \"Track Recovery Progress\" as UC12\n}\n\nAthlete\
+    \ -- UC1\nAthlete -- UC3\nAthlete -- UC8\nAthlete -- UC9\n\nCoach -- UC1\nCoach\
+    \ -- UC7\nCoach -- UC8\nCoach -- UC11\n\nMedicalStaff -- UC5\nMedicalStaff --\
+    \ UC12\n\nUC7 ..> UC11 : <<include>>\nUC10 ..> UC5 : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: athlete_training_system
+
+  DOMAIN_DISPLAY: Athlete Training System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Training Session, Validate Time Slot, include relationship
+  from Schedule Training Session to Validate Time Slot
+
+  EXPLANATION: "Validate Time Slot" is an inclusion use case included only by "Schedule
+  Training Session". It is not associated with any actor, not included by any other
+  use case, and does not include, extend …[truncated]'

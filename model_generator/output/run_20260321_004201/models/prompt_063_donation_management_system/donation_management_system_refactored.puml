@@ -1,0 +1,35 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor Donor
+actor Administrator
+actor "Finance Officer" as FO
+
+rectangle "Donation Management System" {
+  usecase "Register Donor" as UC1
+  usecase "Process Donation" as UC3
+  usecase "View Donation History" as UC6
+  usecase "Generate Donation Report" as UC7
+  usecase "Manage Campaigns" as UC8
+  usecase "Allocate Funds" as UC9
+  usecase "Issue Tax Receipt" as UC10
+  usecase "Update Donor Profile" as UC11
+  usecase "Process Recurring Donation" as UC12
+  usecase "Search Donors" as UC13
+}
+
+Donor -- UC1
+Donor -- UC3
+Donor -- UC6
+Donor -- UC11
+Donor -- UC12
+
+Administrator -- UC8
+Administrator -- UC13
+Administrator -- UC7
+
+FO -- UC9
+FO -- UC10
+FO -- UC7
+@enduml

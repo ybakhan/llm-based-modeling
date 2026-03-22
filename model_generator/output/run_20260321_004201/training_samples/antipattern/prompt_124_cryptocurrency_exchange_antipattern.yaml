@@ -1,0 +1,111 @@
+metadata:
+  prompt_number: 124
+  domain: cryptocurrency_exchange
+  domain_display: Cryptocurrency Exchange
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Place Trade, Validate Order Parameters, include (Place
+        Trade → Validate Order Parameters)
+      explanation: '"Validate Order Parameters" is an inclusion use case included
+        only by "Place Trade". It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (validating parameters) rather than a complete service observable
+        to an actor, making it a functional decomposition of "Place Trade".'
+    - constructs_involved: Withdraw Funds, Generate Blockchain Transaction, include
+        (Withdraw Funds → Generate Blockchain Transaction)
+      explanation: '"Generate Blockchain Transaction" is an inclusion use case included
+        only by "Withdraw Funds". It is not associated with any actor, not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents an
+        internal implementation step rather than a standalone service, making it a
+        functional decomposition of "Withdraw Funds".'
+    - constructs_involved: Register Account, Send Verification Email, include (Register
+        Account → Send Verification Email)
+      explanation: '"Send Verification Email" is an inclusion use case included only
+        by "Register Account". It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It is a sub-step
+        of registration rather than a complete user-facing service, making it a functional
+        decomposition of "Register Account".'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 28
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:48:04.857841'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_124_cryptocurrency_exchange/cryptocurrency_exchange_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_124_cryptocurrency_exchange/cryptocurrency_exchange_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_124_cryptocurrency_exchange_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Trader\nactor\
+    \ \"System Admin\" as Admin\nactor \"Payment Gateway\" as PG\n\nrectangle \"Cryptocurrency\
+    \ Exchange\" {\n  usecase \"Register Account\" as UC1\n  usecase \"Send Verification\
+    \ Email\" as UC2\n  usecase \"Login\" as UC3\n  usecase \"View Portfolio\" as\
+    \ UC4\n  usecase \"Deposit Funds\" as UC5\n  usecase \"Withdraw Funds\" as UC6\n\
+    \  usecase \"Generate Blockchain Transaction\" as UC7\n  usecase \"Place Trade\"\
+    \ as UC8\n  usecase \"Validate Order Parameters\" as UC9\n  usecase \"View Order\
+    \ History\" as UC10\n  usecase \"Set Price Alert\" as UC11\n  usecase \"Complete\
+    \ KYC Verification\" as UC12\n  usecase \"Monitor Platform Activity\" as UC13\n\
+    \  usecase \"Manage User Accounts\" as UC14\n  usecase \"View Market Data\" as\
+    \ UC15\n  usecase \"Process Payment\" as UC16\n}\n\nTrader --> UC1\nTrader -->\
+    \ UC3\nTrader --> UC4\nTrader --> UC5\nTrader --> UC6\nTrader --> UC8\nTrader\
+    \ --> UC10\nTrader --> UC11\nTrader --> UC12\nTrader --> UC15\nAdmin --> UC13\n\
+    Admin --> UC14\nPG --> UC16\n\nUC5 ..> UC16 : <<include>>\nUC1 ..> UC2 : <<include>>\n\
+    UC6 ..> UC7 : <<include>>\nUC8 ..> UC9 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Place Trade, Validate Order Parameters,\
+    \ include (Place Trade → Validate Order Parameters)\n   Instance 1: Explanation:\
+    \ \"Validate Order Parameters\" is an inclusion use case included only by \"Place\
+    \ Trade\". It is not associated with any actor, not included by any other use\
+    \ case, does not include or extend any use case, is not extended by any use case,\
+    \ and has no generalization relationships. It represents a sub-step (validating\
+    \ parameters) rather than a complete service observable to an actor, making it\
+    \ a functional decomposition of \"Place Trade\".\n\n   Instance 2: Constructs\
+    \ Involved: Withdraw Funds, Generate Blockchain Transaction, include (Withdraw\
+    \ Funds → Generate Blockchain Transaction)\n   Instance 2: Explanation: \"Generate\
+    \ Blockchain Transaction\" is an inclusion use case included only by \"Withdraw\
+    \ Funds\". It is not associated with any actor, not included by any other use\
+    \ case, does not include or extend any use case, is not extended by any use case,\
+    \ and has no generalization relationships. It represents an internal implementation\
+    \ step rather than a standalone service, making it a functional decomposition\
+    \ of \"Withdraw Funds\".\n\n   Instance 3: Constructs Involved: Register Account,\
+    \ Send Verification Email, include (Register Account → Send Verification Email)\n\
+    \   Instance 3: Explanation: \"Send Verification Email\" is an inclusion use case\
+    \ included only by \"Register Account\". It is not associated with any actor,\
+    \ not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ is a sub-step of registration rather than a complete user-facing service, making\
+    \ it a functional decomposition of \"Register Account\"."
+raw_response_excerpt: '
+
+
+  DOMAIN: cryptocurrency_exchange
+
+  DOMAIN_DISPLAY: Cryptocurrency Exchange
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Trade, Validate Order Parameters, include (Place Trade
+  → Validate Order Parameters)
+
+  EXPLANATION: "Validate Order Parameters" is an inclusion use case included only
+  by "Place Trade". It is not associated with any actor, not included by any other
+  use case, does not include or extend any use case, is not extended by any us …[truncated]'

@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Home Buyer" as Buyer
+actor "Property Agent" as Agent
+
+rectangle "Real Estate Listing Platform" {
+  usecase "Browse Listings" as UC1
+  usecase "Search Properties" as UC2
+  usecase "Create Listing" as UC3
+  usecase "Contact Agent" as UC4
+  usecase "Edit Listing" as UC6
+}
+
+Buyer -- UC1
+Buyer -- UC2
+Buyer -- UC4
+Agent -- UC3
+Agent -- UC6
+
+@enduml

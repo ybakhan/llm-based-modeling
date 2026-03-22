@@ -1,0 +1,56 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Passenger" as Passenger
+actor "Travel Agent" as TravelAgent
+actor "Payment Gateway" as PaymentGateway
+
+rectangle "Cruise Booking System" {
+  usecase "Browse Cruises" as UC1
+  usecase "Book Cruise" as UC2
+  usecase "Validate Passenger Details" as UC3
+  usecase "Select Cabin" as UC4
+  usecase "Process Payment" as UC5
+  usecase "Calculate Total Price" as UC6
+  usecase "Cancel Booking" as UC7
+  usecase "View Itinerary" as UC8
+  usecase "Manage Passenger Profile" as UC9
+  usecase "Search Excursions" as UC10
+  usecase "Apply Discount" as UC11
+}
+
+Passenger --> UC1
+Passenger --> UC2
+Passenger --> UC5
+Passenger --> UC7
+Passenger --> UC8
+Passenger --> UC9
+Passenger --> UC10
+TravelAgent --> UC2
+TravelAgent --> UC7
+PaymentGateway --> UC5
+
+UC2 ..> UC3 : <<include>>
+UC2 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC5 ..> UC11 : <<extend>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Book Cruise, Validate Passenger Details, include (Book Cruise → Validate Passenger Details)
+   Instance 1: Explanation: "Validate Passenger Details" is an inclusion use case included only by "Book Cruise". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step (validating passenger info) rather than a complete, independently valuable service observable to an actor. This is functional decomposition of "Book Cruise" into a procedural sub-task.
+
+   Instance 2: Constructs Involved: Book Cruise, Select Cabin, include (Book Cruise → Select Cabin)
+   Instance 2: Explanation: "Select Cabin" is an inclusion use case included only by "Book Cruise". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Selecting a cabin is an internal step of the booking process, not a standalone service providing an observable result to any actor. This is functional decomposition.
+
+   Instance 3: Constructs Involved: Process Payment, Calculate Total Price, include (Process Payment → Calculate Total Price)
+   Instance 3: Explanation: "Calculate Total Price" is an inclusion use case included only by "Process Payment". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Calculating the total price is a computational sub-step within payment processing, not a complete service to any actor. This is functional decomposition.

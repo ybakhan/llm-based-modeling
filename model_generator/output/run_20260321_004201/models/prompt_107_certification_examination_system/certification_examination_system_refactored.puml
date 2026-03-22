@@ -1,0 +1,38 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Candidate" as Candidate
+actor "Examiner" as Examiner
+actor "Administrator" as Admin
+actor "Certification Authority" as CertAuth
+
+rectangle "Certification Examination System" {
+  usecase "Register for Exam" as UC1
+  usecase "Browse Available Exams" as UC3
+  usecase "Take Exam" as UC4
+  usecase "View Exam Results" as UC6
+  usecase "Grade Exam" as UC7
+  usecase "Manage Question Bank" as UC8
+  usecase "Issue Certificate" as UC9
+  usecase "Revoke Certificate" as UC11
+  usecase "Schedule Exam Session" as UC12
+  usecase "Appeal Exam Result" as UC13
+  usecase "Monitor Exam Session" as UC14
+
+  UC13 ..> UC7 : <<extend>>
+}
+
+Candidate -- UC1
+Candidate -- UC3
+Candidate -- UC4
+Candidate -- UC6
+Candidate -- UC13
+Examiner -- UC7
+Examiner -- UC14
+Admin -- UC8
+Admin -- UC12
+CertAuth -- UC9
+CertAuth -- UC11
+
+@enduml

@@ -1,0 +1,36 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Employee
+actor Manager
+
+rectangle "Expense Tracking System" {
+  usecase "Submit Expense Report" as UC1
+  usecase "Attach Receipt" as UC2
+  usecase "View Expense History" as UC3
+  usecase "Approve Expense" as UC4
+  usecase "Categorize Expense" as UC5
+  usecase "Generate Spending Report" as UC6
+}
+
+Employee --> UC1
+Employee --> UC3
+Employee --> UC5
+Manager --> UC4
+Manager --> UC6
+
+UC1 ..> UC2 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Submit Expense Report, Attach Receipt
+   Explanation: The use case "Attach Receipt" is an inclusion use case that is included by only one use case ("Submit Expense Report"). "Attach Receipt" is not associated with any actor directly, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a sub-step of submitting an expense report rather than a complete, standalone service providing an observable result to a user. This is a textbook example of functional decomposition — breaking down the "Submit Expense Report" behavior into an artificially separated inclusion fragment that has no independent value.

@@ -1,0 +1,43 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Passenger
+actor Driver
+actor Administrator
+
+rectangle "Public Transport System" {
+  usecase "Plan Journey" as UC1
+  usecase "Validate Route Availability" as UC2
+  usecase "Purchase Ticket" as UC3
+  usecase "Calculate Fare" as UC4
+  usecase "View Live Schedule" as UC5
+  usecase "Register Account" as UC6
+  usecase "Send Confirmation Email" as UC7
+  usecase "Report Delay" as UC8
+  usecase "Track Vehicle Location" as UC9
+  usecase "Manage Routes" as UC10
+  usecase "View Passenger Statistics" as UC11
+  usecase "Request Refund" as UC12
+  usecase "Rate Service" as UC13
+  usecase "Apply Discount" as UC14
+}
+
+Passenger -- UC1
+Passenger -- UC3
+Passenger -- UC5
+Passenger -- UC6
+Passenger -- UC12
+Passenger -- UC13
+
+Driver -- UC8
+Driver -- UC9
+
+Administrator -- UC10
+Administrator -- UC11
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC3 ..> UC14 : <<extend>>
+
+@enduml

@@ -1,0 +1,58 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Clinical Investigator" as CI
+actor "Study Coordinator" as SC
+actor "Data Manager" as DM
+actor "Sponsor" as SP
+actor "Regulatory Authority" as RA
+
+rectangle "Clinical Trial Management System" {
+  usecase "Enroll Patient" as UC1
+  usecase "Validate Eligibility Criteria" as UC2
+  usecase "Randomize Patient" as UC3
+  usecase "Record Adverse Event" as UC4
+  usecase "Generate Adverse Event Notification" as UC5
+  usecase "Submit Case Report Form" as UC6
+  usecase "Monitor Trial Progress" as UC7
+  usecase "Review Data Queries" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Manage Study Protocol" as UC10
+  usecase "Audit Trial Data" as UC11
+  usecase "Close Study Site" as UC12
+}
+
+CI -- UC1
+CI -- UC4
+SC -- UC6
+SC -- UC1
+DM -- UC8
+DM -- UC7
+SP -- UC7
+SP -- UC10
+SP -- UC12
+RA -- UC9
+RA -- UC11
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Enroll Patient, Validate Eligibility Criteria, include relationship from Enroll Patient to Validate Eligibility Criteria
+   Instance 1: Explanation: "Validate Eligibility Criteria" is included only by "Enroll Patient", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step of enrollment rather than a complete, independently valuable service. This is functional decomposition of the "Enroll Patient" use case.
+
+   Instance 2: Constructs Involved: Enroll Patient, Randomize Patient, include relationship from Enroll Patient to Randomize Patient
+   Instance 2: Explanation: "Randomize Patient" is included only by "Enroll Patient", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a procedural sub-step of enrollment rather than a standalone service observable to any user. This is functional decomposition of the "Enroll Patient" use case.
+
+   Instance 3: Constructs Involved: Record Adverse Event, Generate Adverse Event Notification, include relationship from Record Adverse Event to Generate Adverse Event Notification
+   Instance 3: Explanation: "Generate Adverse Event Notification" is included only by "Record Adverse Event", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal sub-step of recording an adverse event rather than a complete service offered to a user. This is functional decomposition of the "Record Adverse Event" use case.

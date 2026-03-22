@@ -1,0 +1,110 @@
+metadata:
+  prompt_number: 62
+  domain: e_voting_system
+  domain_display: E-Voting System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Cast Vote, Validate Ballot Selections, include relationship
+        from Cast Vote to Validate Ballot Selections
+      explanation: '"Validate Ballot Selections" is included only by "Cast Vote",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not part of any generalization.
+        It represents an internal substep (validating the voter''s selections) rather
+        than a complete, independently valuable service. This is functional decomposition
+        of "Cast Vote" into a substep via <<include>>.'
+    - constructs_involved: Register Voter, Verify Identity Documents, include relationship
+        from Register Voter to Verify Identity Documents
+      explanation: '"Verify Identity Documents" is included only by "Register Voter",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not part of any generalization.
+        It represents an internal verification substep of the registration process,
+        not a standalone service offering an observable result to any user. This is
+        functional decomposition of "Register Voter" into a substep via <<include>>.'
+    - constructs_involved: Generate Election Report, Aggregate Vote Counts, include
+        relationship from Generate Election Report to Aggregate Vote Counts
+      explanation: '"Aggregate Vote Counts" is included only by "Generate Election
+        Report", is not associated with any actor, does not include or extend any
+        other use case, is not extended by any use case, and is not part of any generalization.
+        It represents an internal data-processing substep of report generation rather
+        than a complete service. This is functional decomposition of "Generate Election
+        Report" into a substep via <<include>>.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:45:37.254680'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_062_e_voting_system/e_voting_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_062_e_voting_system/e_voting_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_062_e_voting_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Voter\nactor\
+    \ \"Election Administrator\" as Admin\nactor \"Election Auditor\" as Auditor\n\
+    \nrectangle \"E-Voting System\" {\n  usecase \"Register Voter\" as UC1\n  usecase\
+    \ \"Verify Identity Documents\" as UC2\n  usecase \"Authenticate Voter\" as UC3\n\
+    \  usecase \"Cast Vote\" as UC4\n  usecase \"Validate Ballot Selections\" as UC5\n\
+    \  usecase \"View Election Candidates\" as UC6\n  usecase \"Track Voting Status\"\
+    \ as UC7\n  usecase \"Configure Election\" as UC8\n  usecase \"Manage Candidates\"\
+    \ as UC9\n  usecase \"Generate Election Report\" as UC10\n  usecase \"Aggregate\
+    \ Vote Counts\" as UC11\n  usecase \"Audit Election Logs\" as UC12\n  usecase\
+    \ \"Verify Election Integrity\" as UC13\n  usecase \"Request Recount\" as UC14\n\
+    }\n\nVoter -- UC1\nVoter -- UC3\nVoter -- UC4\nVoter -- UC6\nVoter -- UC7\nAdmin\
+    \ -- UC8\nAdmin -- UC9\nAdmin -- UC10\nAuditor -- UC12\nAuditor -- UC13\nAuditor\
+    \ -- UC14\n\nUC1 ..> UC2 : <<include>>\nUC4 ..> UC5 : <<include>>\nUC10 ..> UC11\
+    \ : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Cast Vote, Validate Ballot Selections, include\
+    \ relationship from Cast Vote to Validate Ballot Selections\n   Instance 1: Explanation:\
+    \ \"Validate Ballot Selections\" is included only by \"Cast Vote\", is not associated\
+    \ with any actor, does not include or extend any other use case, is not extended\
+    \ by any use case, and is not part of any generalization. It represents an internal\
+    \ substep (validating the voter's selections) rather than a complete, independently\
+    \ valuable service. This is functional decomposition of \"Cast Vote\" into a substep\
+    \ via <<include>>.\n\n   Instance 2: Constructs Involved: Register Voter, Verify\
+    \ Identity Documents, include relationship from Register Voter to Verify Identity\
+    \ Documents\n   Instance 2: Explanation: \"Verify Identity Documents\" is included\
+    \ only by \"Register Voter\", is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. It represents an internal verification substep of the\
+    \ registration process, not a standalone service offering an observable result\
+    \ to any user. This is functional decomposition of \"Register Voter\" into a substep\
+    \ via <<include>>.\n\n   Instance 3: Constructs Involved: Generate Election Report,\
+    \ Aggregate Vote Counts, include relationship from Generate Election Report to\
+    \ Aggregate Vote Counts\n   Instance 3: Explanation: \"Aggregate Vote Counts\"\
+    \ is included only by \"Generate Election Report\", is not associated with any\
+    \ actor, does not include or extend any other use case, is not extended by any\
+    \ use case, and is not part of any generalization. It represents an internal data-processing\
+    \ substep of report generation rather than a complete service. This is functional\
+    \ decomposition of \"Generate Election Report\" into a substep via <<include>>."
+raw_response_excerpt: '
+
+
+  DOMAIN: e_voting_system
+
+  DOMAIN_DISPLAY: E-Voting System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Cast Vote, Validate Ballot Selections, include relationship
+  from Cast Vote to Validate Ballot Selections
+
+  EXPLANATION: "Validate Ballot Selections" is included only by "Cast Vote", is not
+  associated with any actor, does not include or extend any other use case, is not
+  extended by any use case, and is not part of any generalization. It represe …[truncated]'

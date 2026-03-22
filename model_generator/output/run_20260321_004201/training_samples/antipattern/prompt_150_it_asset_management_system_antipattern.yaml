@@ -1,0 +1,80 @@
+metadata:
+  prompt_number: 150
+  domain: it_asset_management_system
+  domain_display: IT Asset Management System
+  size: small
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Register Asset, Validate Asset Details, include relationship
+        from "Register Asset" to "Validate Asset Details"
+      explanation: '"Validate Asset Details" is an inclusion use case that (1) is
+        included by only one use case ("Register Asset"), (2) is not associated with
+        any actor, (3) does not include or extend any other use case, (4) is not extended
+        by any other use case, and (5) is neither a generalization nor a specialization
+        of any use case. "Validate Asset Details" does not represent a complete, independently
+        meaningful service — it is merely a decomposed sub-step of the "Register Asset"
+        workflow. This is a textbook example of functional decomposition via the include
+        relationship, where internal procedural logic has been incorrectly extracted
+        into a separate use case that provides no observable value to any actor on
+        its own.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 13
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:00:21.882738'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_150_it_asset_management_system/it_asset_management_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_150_it_asset_management_system/it_asset_management_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_150_it_asset_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"IT Administrator\"\
+    \ as Admin\nactor \"Auditor\" as Auditor\n\nrectangle \"IT Asset Management System\"\
+    \ {\n  usecase \"Register Asset\" as UC1\n  usecase \"Validate Asset Details\"\
+    \ as UC2\n  usecase \"Retire Asset\" as UC3\n  usecase \"Search Assets\" as UC4\n\
+    \  usecase \"Track Asset Location\" as UC5\n  usecase \"Generate Audit Report\"\
+    \ as UC6\n  usecase \"Assign Asset to Employee\" as UC7\n}\n\nAdmin --> UC1\n\
+    Admin --> UC3\nAdmin --> UC4\nAdmin --> UC5\nAdmin --> UC7\nAuditor --> UC6\n\
+    UC1 ..> UC2 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Constructs Involved: Register Asset, Validate Asset Details, include relationship\
+    \ from \"Register Asset\" to \"Validate Asset Details\"\n   Explanation: \"Validate\
+    \ Asset Details\" is an inclusion use case that (1) is included by only one use\
+    \ case (\"Register Asset\"), (2) is not associated with any actor, (3) does not\
+    \ include or extend any other use case, (4) is not extended by any other use case,\
+    \ and (5) is neither a generalization nor a specialization of any use case. \"\
+    Validate Asset Details\" does not represent a complete, independently meaningful\
+    \ service — it is merely a decomposed sub-step of the \"Register Asset\" workflow.\
+    \ This is a textbook example of functional decomposition via the include relationship,\
+    \ where internal procedural logic has been incorrectly extracted into a separate\
+    \ use case that provides no observable value to any actor on its own."
+raw_response_excerpt: '
+
+
+  DOMAIN: it_asset_management_system
+
+  DOMAIN_DISPLAY: IT Asset Management System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Asset, Validate Asset Details, include relationship
+  from "Register Asset" to "Validate Asset Details"
+
+  EXPLANATION: "Validate Asset Details" is an inclusion use case that (1) is included
+  by only one use case ("Register Asset"), (2) is not associated with any actor, (3)
+  does not include or extend any other use cas …[truncated]'

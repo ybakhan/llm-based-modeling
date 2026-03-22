@@ -1,0 +1,116 @@
+
+
+DOMAIN: freight_tracking_system
+DOMAIN_DISPLAY: Freight Tracking System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register Shipment, Validate Sender Address
+EXPLANATION: "Validate Sender Address" is an inclusion use case included only by "Register Shipment". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (address validation) rather than a complete service observable to an actor, making it a functional decomposition of "Register Shipment".
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Update Shipment Status, Log Status Timestamp
+EXPLANATION: "Log Status Timestamp" is an inclusion use case included only by "Update Shipment Status". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Logging a timestamp is an internal sub-step of updating status, not a standalone service providing an observable result to any user, making this a functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Generate Delivery Report, Calculate Delivery Metrics
+EXPLANATION: "Calculate Delivery Metrics" is an inclusion use case included only by "Generate Delivery Report". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Calculating metrics is an internal computational sub-step of report generation, not a complete service to any actor, constituting functional decomposition.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Sender Address", "Log Status Timestamp", "Calculate Delivery Metrics") must be merged into their respective base use cases ("Register Shipment", "Update Shipment Status", "Generate Delivery Report"). Each inclusion use case is included by exactly one use case, has no actor associations, and participates in no other relationships — they represent internal steps, not standalone services. Removing these three use cases and their three include relationships eliminates 6 constructs, producing a cleaner model where each use case represents a complete, actor-observable service.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Shipper" as Shipper
+actor "Carrier" as Carrier
+actor "Recipient" as Recipient
+actor "Logistics Manager" as Manager
+actor "Customer Service Agent" as Agent
+
+rectangle "Freight Tracking System" {
+  usecase "Register Shipment" as UC1
+  usecase "Validate Sender Address" as UC2
+  usecase "Track Shipment Location" as UC3
+  usecase "Update Shipment Status" as UC4
+  usecase "Log Status Timestamp" as UC5
+  usecase "Receive Delivery Notification" as UC6
+  usecase "Generate Delivery Report" as UC7
+  usecase "Calculate Delivery Metrics" as UC8
+  usecase "Search Shipment" as UC9
+  usecase "Raise Shipment Issue" as UC10
+  usecase "Assign Carrier" as UC11
+  usecase "View Shipment History" as UC12
+  usecase "Escalate Delayed Shipment" as UC13
+}
+
+Shipper --> UC1
+Shipper --> UC3
+Carrier --> UC4
+Carrier --> UC11
+Recipient --> UC3
+Recipient --> UC6
+Manager --> UC7
+Manager --> UC12
+Agent --> UC9
+Agent --> UC10
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC10 ..> UC13 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Shipper" as Shipper
+actor "Carrier" as Carrier
+actor "Recipient" as Recipient
+actor "Logistics Manager" as Manager
+actor "Customer Service Agent" as Agent
+
+rectangle "Freight Tracking System" {
+  usecase "Register Shipment" as UC1
+  usecase "Track Shipment Location" as UC3
+  usecase "Update Shipment Status" as UC4
+  usecase "Receive Delivery Notification" as UC6
+  usecase "Generate Delivery Report" as UC7
+  usecase "Search Shipment" as UC9
+  usecase "Raise Shipment Issue" as UC10
+  usecase "Assign Carrier" as UC11
+  usecase "View Shipment History" as UC12
+  usecase "Escalate Delayed Shipment" as UC13
+}
+
+Shipper --> UC1
+Shipper --> UC3
+Carrier --> UC4
+Carrier --> UC11
+Recipient --> UC3
+Recipient --> UC6
+Manager --> UC7
+Manager --> UC12
+Agent --> UC9
+Agent --> UC10
+
+UC10 ..> UC13 : <<extend>>
+
+@enduml
+```

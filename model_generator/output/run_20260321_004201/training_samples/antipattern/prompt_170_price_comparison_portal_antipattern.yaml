@@ -1,0 +1,109 @@
+metadata:
+  prompt_number: 170
+  domain: price_comparison_portal
+  domain_display: Price Comparison Portal
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Search Products, Validate Search Input, include relationship
+        from Search Products to Validate Search Input
+      explanation: '"Validate Search Input" is an inclusion use case included only
+        by "Search Products". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. It represents an internal sub-step (input validation)
+        rather than a complete service observable to a user, making this a functional
+        decomposition of "Search Products".'
+    - constructs_involved: Compare Prices, Fetch Retailer Data, include relationship
+        from Compare Prices to Fetch Retailer Data
+      explanation: '"Fetch Retailer Data" is an inclusion use case included only by
+        "Compare Prices". It is not associated with any actor, does not include or
+        extend any other use case, is not extended by any use case, and is not part
+        of any generalization. It represents an internal data retrieval step rather
+        than a complete service observable to a user, making this a functional decomposition
+        of "Compare Prices".'
+    - constructs_involved: Set Price Alert, Store Alert Preferences, include relationship
+        from Set Price Alert to Store Alert Preferences
+      explanation: '"Store Alert Preferences" is an inclusion use case included only
+        by "Set Price Alert". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. It represents an internal persistence step rather
+        than a complete service observable to a user, making this a functional decomposition
+        of "Set Price Alert".'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 29
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T01:05:49.533199'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_170_price_comparison_portal/price_comparison_portal_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_170_price_comparison_portal/price_comparison_portal_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_170_price_comparison_portal_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Shopper\" as Shopper\nactor \"Retailer\" as Retailer\nactor \"Admin\"\
+    \ as Admin\n\nrectangle \"Price Comparison Portal\" {\n  usecase \"Search Products\"\
+    \ as UC1\n  usecase \"Validate Search Input\" as UC2\n  usecase \"Compare Prices\"\
+    \ as UC3\n  usecase \"Fetch Retailer Data\" as UC4\n  usecase \"View Product Details\"\
+    \ as UC5\n  usecase \"Filter Results\" as UC6\n  usecase \"Set Price Alert\" as\
+    \ UC7\n  usecase \"Store Alert Preferences\" as UC8\n  usecase \"Write Review\"\
+    \ as UC9\n  usecase \"Register Account\" as UC10\n  usecase \"Manage Retailer\
+    \ Listings\" as UC11\n  usecase \"View Price History\" as UC12\n  usecase \"Moderate\
+    \ Reviews\" as UC13\n  usecase \"Generate Analytics Report\" as UC14\n}\n\nShopper\
+    \ -- UC1\nShopper -- UC3\nShopper -- UC5\nShopper -- UC6\nShopper -- UC7\nShopper\
+    \ -- UC9\nShopper -- UC10\nShopper -- UC12\nRetailer -- UC11\nRetailer -- UC10\n\
+    Admin -- UC13\nAdmin -- UC14\n\nUC1 ..> UC2 : <<include>>\nUC3 ..> UC4 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Search Products, Validate Search Input,\
+    \ include relationship from Search Products to Validate Search Input\n   Instance\
+    \ 1: Explanation: \"Validate Search Input\" is an inclusion use case included\
+    \ only by \"Search Products\". It is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. It represents an internal sub-step (input validation)\
+    \ rather than a complete service observable to a user, making this a functional\
+    \ decomposition of \"Search Products\".\n\n   Instance 2: Constructs Involved:\
+    \ Compare Prices, Fetch Retailer Data, include relationship from Compare Prices\
+    \ to Fetch Retailer Data\n   Instance 2: Explanation: \"Fetch Retailer Data\"\
+    \ is an inclusion use case included only by \"Compare Prices\". It is not associated\
+    \ with any actor, does not include or extend any other use case, is not extended\
+    \ by any use case, and is not part of any generalization. It represents an internal\
+    \ data retrieval step rather than a complete service observable to a user, making\
+    \ this a functional decomposition of \"Compare Prices\".\n\n   Instance 3: Constructs\
+    \ Involved: Set Price Alert, Store Alert Preferences, include relationship from\
+    \ Set Price Alert to Store Alert Preferences\n   Instance 3: Explanation: \"Store\
+    \ Alert Preferences\" is an inclusion use case included only by \"Set Price Alert\"\
+    . It is not associated with any actor, does not include or extend any other use\
+    \ case, is not extended by any use case, and is not part of any generalization.\
+    \ It represents an internal persistence step rather than a complete service observable\
+    \ to a user, making this a functional decomposition of \"Set Price Alert\"."
+raw_response_excerpt: '
+
+
+  DOMAIN: price_comparison_portal
+
+  DOMAIN_DISPLAY: Price Comparison Portal
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Search Products, Validate Search Input, include relationship
+  from Search Products to Validate Search Input
+
+  EXPLANATION: "Validate Search Input" is an inclusion use case included only by "Search
+  Products". It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case, and i …[truncated]'

@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 184
+  domain: factory_floor_management_system
+  domain_display: Factory Floor Management System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 8
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:48:06.553681'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_184_factory_floor_management_system/factory_floor_management_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_184_factory_floor_management_system/factory_floor_management_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_184_factory_floor_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Floor Supervisor\" as Supervisor\nactor \"Maintenance Technician\" as\
+    \ Technician\n\nrectangle \"Factory Floor Management System\" {\n  usecase \"\
+    Monitor Production Line\" as UC1\n  usecase \"Schedule Production Run\" as UC2\n\
+    \  usecase \"Report Equipment Fault\" as UC4\n  usecase \"Log Maintenance Activity\"\
+    \ as UC5\n}\n\nSupervisor -- UC1\nSupervisor -- UC2\nTechnician -- UC4\nTechnician\
+    \ -- UC5\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: factory_floor_management_system
+
+  DOMAIN_DISPLAY: Factory Floor Management System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Production Run (UC2), Allocate Machine Resources (UC3),
+  Include relationship from UC2 to UC3
+
+  EXPLANATION: "Allocate Machine Resources" (UC3) is an inclusion use case that is
+  included by only one use case ("Schedule Production Run" / UC2). UC3 is not associated
+  with any actor directly — no actor interac …[truncated]'

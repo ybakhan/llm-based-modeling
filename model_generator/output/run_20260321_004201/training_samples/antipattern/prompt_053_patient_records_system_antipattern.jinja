@@ -1,0 +1,36 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Doctor" as Doctor
+actor "Receptionist" as Receptionist
+
+rectangle "Patient Records System" {
+  usecase "View Patient Record" as UC1
+  usecase "Update Patient Record" as UC2
+  usecase "Register Patient" as UC3
+  usecase "Validate Patient ID" as UC4
+  usecase "Schedule Appointment" as UC5
+  usecase "Search Patient" as UC6
+}
+
+Doctor -- UC1
+Doctor -- UC2
+Receptionist -- UC3
+Receptionist -- UC5
+Receptionist -- UC6
+
+UC3 ..> UC4 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Register Patient, Validate Patient ID
+   Explanation: The use case "Register Patient" includes "Validate Patient ID" via an <<include>> relationship. "Validate Patient ID" is included by only one use case ("Register Patient"), is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is neither a generalization nor a specialization. It represents a sub-step of registration rather than a complete, independently meaningful service observable to any actor. This constitutes the Functional Decomposition: Using the include relationship antipattern.

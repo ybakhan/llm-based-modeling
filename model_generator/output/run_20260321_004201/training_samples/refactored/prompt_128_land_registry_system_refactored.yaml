@@ -1,0 +1,56 @@
+metadata:
+  prompt_number: 128
+  domain: land_registry_system
+  domain_display: Land Registry System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:42:34.651674'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_128_land_registry_system/land_registry_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_128_land_registry_system/land_registry_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_128_land_registry_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Land Owner\" as LO\nactor \"Buyer\" as BU\nactor \"Notary\" as NO\nactor\
+    \ \"Bank Officer\" as BO\nactor \"Registry Clerk\" as RC\n\nrectangle \"Land Registry\
+    \ System\" {\n  usecase \"Register Property\" as UC1\n  usecase \"Transfer Ownership\"\
+    \ as UC3\n  usecase \"Search Land Records\" as UC5\n  usecase \"Process Mortgage\
+    \ Registration\" as UC6\n  usecase \"Issue Title Certificate\" as UC8\n  usecase\
+    \ \"Update Cadastral Map\" as UC9\n  usecase \"Generate Ownership Report\" as\
+    \ UC10\n}\n\nLO -- UC1\nLO -- UC3\nBU -- UC3\nBU -- UC5\nNO -- UC3\nNO -- UC8\n\
+    BO -- UC6\nRC -- UC1\nRC -- UC9\nRC -- UC10\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: land_registry_system
+
+  DOMAIN_DISPLAY: Land Registry System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Property, Validate Property Documents
+
+  EXPLANATION: "Register Property" includes "Validate Property Documents", but "Validate
+  Property Documents" is only included by "Register Property", is not associated with
+  any actor, does not include or extend any other use case, is not extended by any
+  use case, and is not involved in a …[truncated]'

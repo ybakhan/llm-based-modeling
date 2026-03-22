@@ -1,0 +1,67 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Resident" as Resident
+actor "Waste Collector" as Collector
+actor "Municipal Admin" as Admin
+actor "Inspector" as Inspector
+
+rectangle "Municipal Waste Management System" {
+  usecase "Schedule Pickup" as UC1
+  usecase "Validate Address" as UC2
+  usecase "Track Collection Route" as UC3
+  usecase "Report Illegal Dumping" as UC4
+  usecase "Capture GPS Coordinates" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Calculate Fee" as UC7
+  usecase "View Collection Calendar" as UC8
+  usecase "Manage Waste Categories" as UC9
+  usecase "Generate Recycling Report" as UC10
+  usecase "Submit Complaint" as UC11
+  usecase "Assign Collection Zone" as UC12
+  usecase "Conduct Site Inspection" as UC13
+  usecase "Request Special Pickup" as UC14
+  usecase "Update Pickup Status" as UC15
+}
+
+Resident --> UC1
+Resident --> UC4
+Resident --> UC6
+Resident --> UC8
+Resident --> UC11
+Resident --> UC14
+
+Collector --> UC3
+Collector --> UC15
+
+Admin --> UC9
+Admin --> UC10
+Admin --> UC12
+
+Inspector --> UC13
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+UC14 ..> UC1 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Schedule Pickup, Validate Address
+   Instance 1: Explanation: "Validate Address" is an inclusion use case included only by "Schedule Pickup". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (address validation) rather than a complete, observable service to any actor. This is functional decomposition of "Schedule Pickup" into an internal processing step.
+
+   Instance 2: Constructs Involved: Report Illegal Dumping, Capture GPS Coordinates
+   Instance 2: Explanation: "Capture GPS Coordinates" is an inclusion use case included only by "Report Illegal Dumping". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Capturing GPS coordinates is an internal sub-function of reporting illegal dumping, not a standalone service offering an observable result to a user.
+
+   Instance 3: Constructs Involved: Process Payment, Calculate Fee
+   Instance 3: Explanation: "Calculate Fee" is an inclusion use case included only by "Process Payment". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Fee calculation is an internal computational step within payment processing, not a complete service visible to any actor.

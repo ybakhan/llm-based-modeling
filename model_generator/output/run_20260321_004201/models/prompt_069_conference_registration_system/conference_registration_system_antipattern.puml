@@ -1,0 +1,23 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Attendee" as A1
+actor "Organizer" as A2
+actor "Speaker" as A3
+
+rectangle "Conference Registration System" {
+  usecase "Browse Conference Schedule" as UC1
+  usecase "Register for Conference" as UC2
+  usecase "Submit Paper Abstract" as UC3
+  usecase "Manage Registrations" as UC4
+  usecase "Validate Payment Details" as UC5
+  usecase "Cancel Registration" as UC6
+}
+
+A1 -- UC1
+A1 -- UC2
+A3 -- UC3
+A2 -- UC4
+A1 -- UC6
+UC2 ..> UC5 : <<include>>
+@enduml

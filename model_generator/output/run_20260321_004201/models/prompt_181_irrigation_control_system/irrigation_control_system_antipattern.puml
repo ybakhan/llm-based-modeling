@@ -1,0 +1,40 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Farm Manager" as FM
+actor "Technician" as Tech
+actor "Weather Service" as WS
+actor "Moisture Sensor" as MS
+
+rectangle "Irrigation Control System" {
+  usecase "Schedule Irrigation" as UC1
+  usecase "Validate Time Slots" as UC2
+  usecase "Configure Zones" as UC3
+  usecase "Load Zone Parameters" as UC4
+  usecase "Monitor Soil Moisture" as UC5
+  usecase "Parse Sensor Data" as UC6
+  usecase "Activate Manual Irrigation" as UC7
+  usecase "View Irrigation Dashboard" as UC8
+  usecase "Generate Water Usage Report" as UC9
+  usecase "Receive Weather Forecast" as UC10
+  usecase "Set Alert Thresholds" as UC11
+  usecase "Trigger Drought Alert" as UC12
+
+  UC1 ..> UC2 : <<include>>
+  UC3 ..> UC4 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC12 ..> UC5 : <<include>>
+  UC8 .> UC12 : <<extend>>
+}
+
+FM -- UC1
+FM -- UC3
+FM -- UC7
+FM -- UC8
+FM -- UC9
+Tech -- UC3
+Tech -- UC11
+WS -- UC10
+MS -- UC5
+
+@enduml

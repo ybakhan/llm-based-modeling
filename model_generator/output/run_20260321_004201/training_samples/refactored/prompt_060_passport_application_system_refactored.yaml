@@ -1,0 +1,55 @@
+metadata:
+  prompt_number: 60
+  domain: passport_application_system
+  domain_display: Passport Application System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:24:07.367861'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_060_passport_application_system/passport_application_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_060_passport_application_system/passport_application_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_060_passport_application_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Applicant\" as Applicant\n\
+    actor \"Passport Officer\" as Officer\n\nrectangle \"Passport Application System\"\
+    \ {\n  usecase \"Submit Passport Application\" as UC1\n  usecase \"Check Application\
+    \ Status\" as UC3\n  usecase \"Review Application\" as UC4\n  usecase \"Schedule\
+    \ Appointment\" as UC5\n  usecase \"Issue Passport\" as UC6\n  usecase \"Reject\
+    \ Application\" as UC7\n}\n\nApplicant --> UC1\nApplicant --> UC3\nApplicant -->\
+    \ UC5\nOfficer --> UC4\nOfficer --> UC6\nUC6 ..> UC4 : <<include>>\nUC4 ..> UC7\
+    \ : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: passport_application_system
+
+  DOMAIN_DISPLAY: Passport Application System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Passport Application, Upload Photo
+
+  EXPLANATION: The use case "Upload Photo" is an inclusion use case that is included
+  by only one use case ("Submit Passport Application"). "Upload Photo" is not associated
+  with any actor directly — no actor has a direct association to it. It does not include
+  or extend any other u …[truncated]'

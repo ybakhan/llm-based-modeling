@@ -1,0 +1,30 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Member" as A1
+actor "Instructor" as A2
+
+rectangle "Yoga Class Booking System" {
+  usecase "Browse Classes" as UC1
+  usecase "Book Class" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "View My Schedule" as UC4
+  usecase "Manage Class Offerings" as UC6
+}
+
+A1 --> UC1
+A1 --> UC2
+A1 --> UC3
+A1 --> UC4
+A2 --> UC6
+
+@enduml
+
+
+Answer:
+No antipattern detected.

@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 27
+  domain: human_resources_system
+  domain_display: Human Resources System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:55:25.086110'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_027_human_resources_system/human_resources_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_027_human_resources_system/human_resources_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_027_human_resources_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"HR Manager\" as HRM\n\
+    actor \"Employee\" as EMP\nactor \"Payroll Officer\" as PAY\n\nrectangle \"Human\
+    \ Resources System\" {\n  usecase \"Hire Employee\" as UC1\n  usecase \"Terminate\
+    \ Employee\" as UC3\n  usecase \"Process Payroll\" as UC5\n  usecase \"Manage\
+    \ Leave Requests\" as UC7\n  usecase \"View Employee Profile\" as UC8\n  usecase\
+    \ \"Update Personal Information\" as UC9\n  usecase \"Submit Leave Request\" as\
+    \ UC10\n  usecase \"Generate HR Report\" as UC11\n  usecase \"Conduct Performance\
+    \ Review\" as UC12\n  usecase \"Manage Benefits Enrollment\" as UC13\n  usecase\
+    \ \"Track Attendance\" as UC14\n}\n\nHRM --> UC1\nHRM --> UC3\nHRM --> UC7\nHRM\
+    \ --> UC11\nHRM --> UC12\nHRM --> UC14\n\nPAY --> UC5\nPAY --> UC13\n\nEMP -->\
+    \ UC8\nEMP --> UC9\nEMP --> UC10\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: human_resources_system
+
+  DOMAIN_DISPLAY: Human Resources System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Hire Employee, Validate Candidate Documents, include relationship
+  from Hire Employee to Validate Candidate Documents
+
+  EXPLANATION: "Validate Candidate Documents" is included only by "Hire Employee",
+  is not associated with any actor, does not include or extend any other use case,
+  is not extended by any use case, and is not involv …[truncated]'

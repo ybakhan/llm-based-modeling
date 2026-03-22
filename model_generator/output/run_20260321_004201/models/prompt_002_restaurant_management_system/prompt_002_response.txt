@@ -1,0 +1,107 @@
+
+
+DOMAIN: restaurant_management_system
+DOMAIN_DISPLAY: Restaurant Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Place Order, Validate Menu Items, include relationship from Place Order to Validate Menu Items
+EXPLANATION: "Validate Menu Items" is an inclusion use case included only by "Place Order". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal validation step—not a complete, independently valuable service to any actor—making this a functional decomposition of the "Place Order" use case.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Payment, Calculate Total, include relationship from Process Payment to Calculate Total
+EXPLANATION: "Calculate Total" is an inclusion use case included only by "Process Payment". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Calculating a total is an internal computational step within payment processing, not a standalone service observable to any user, making this a functional decomposition of "Process Payment".
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Generate Report, Fetch Report Data, include relationship from Generate Report to Fetch Report Data
+EXPLANATION: "Fetch Report Data" is an inclusion use case included only by "Generate Report". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Fetching data is an internal sub-step of report generation and does not provide a complete, observable result to any actor on its own, constituting functional decomposition.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Menu Items", "Calculate Total", "Fetch Report Data") must be merged back into their respective base use cases ("Place Order", "Process Payment", "Generate Report"). These inclusion use cases each represent an internal implementation step that is only included by a single use case, is not associated with any actor, and provides no standalone observable value. Removing these three use cases and their three include relationships eliminates 6 constructs, resulting in a cleaner model where each base use case fully encapsulates its own behavior. This follows the "Drop Functional Decomposition" refactoring strategy.
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Waiter" as Waiter
+actor "Chef" as Chef
+actor "Cashier" as Cashier
+actor "Manager" as Manager
+
+rectangle "Restaurant Management System" {
+  usecase "Place Order" as UC1
+  usecase "Validate Menu Items" as UC2
+  usecase "View Kitchen Queue" as UC3
+  usecase "Update Order Status" as UC4
+  usecase "Process Payment" as UC5
+  usecase "Calculate Total" as UC6
+  usecase "Manage Menu" as UC7
+  usecase "Generate Report" as UC8
+  usecase "Fetch Report Data" as UC9
+  usecase "Manage Reservations" as UC10
+  usecase "View Table Availability" as UC11
+  usecase "Apply Discount" as UC12
+
+  UC1 ..> UC2 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC8 ..> UC9 : <<include>>
+  UC5 ..> UC12 : <<extend>>
+}
+
+Waiter --> UC1
+Waiter --> UC10
+Waiter --> UC11
+Chef --> UC3
+Chef --> UC4
+Cashier --> UC5
+Manager --> UC7
+Manager --> UC8
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 18
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Waiter" as Waiter
+actor "Chef" as Chef
+actor "Cashier" as Cashier
+actor "Manager" as Manager
+
+rectangle "Restaurant Management System" {
+  usecase "Place Order" as UC1
+  usecase "View Kitchen Queue" as UC3
+  usecase "Update Order Status" as UC4
+  usecase "Process Payment" as UC5
+  usecase "Manage Menu" as UC7
+  usecase "Generate Report" as UC8
+  usecase "Manage Reservations" as UC10
+  usecase "View Table Availability" as UC11
+  usecase "Apply Discount" as UC12
+
+  UC5 ..> UC12 : <<extend>>
+}
+
+Waiter --> UC1
+Waiter --> UC10
+Waiter --> UC11
+Chef --> UC3
+Chef --> UC4
+Cashier --> UC5
+Manager --> UC7
+Manager --> UC8
+
+@enduml
+```

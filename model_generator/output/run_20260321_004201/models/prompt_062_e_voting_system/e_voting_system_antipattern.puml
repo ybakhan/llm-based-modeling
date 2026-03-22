@@ -1,0 +1,41 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Voter
+actor "Election Administrator" as Admin
+actor "Election Auditor" as Auditor
+
+rectangle "E-Voting System" {
+  usecase "Register Voter" as UC1
+  usecase "Verify Identity Documents" as UC2
+  usecase "Authenticate Voter" as UC3
+  usecase "Cast Vote" as UC4
+  usecase "Validate Ballot Selections" as UC5
+  usecase "View Election Candidates" as UC6
+  usecase "Track Voting Status" as UC7
+  usecase "Configure Election" as UC8
+  usecase "Manage Candidates" as UC9
+  usecase "Generate Election Report" as UC10
+  usecase "Aggregate Vote Counts" as UC11
+  usecase "Audit Election Logs" as UC12
+  usecase "Verify Election Integrity" as UC13
+  usecase "Request Recount" as UC14
+}
+
+Voter -- UC1
+Voter -- UC3
+Voter -- UC4
+Voter -- UC6
+Voter -- UC7
+Admin -- UC8
+Admin -- UC9
+Admin -- UC10
+Auditor -- UC12
+Auditor -- UC13
+Auditor -- UC14
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC10 ..> UC11 : <<include>>
+
+@enduml

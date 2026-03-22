@@ -1,0 +1,103 @@
+
+
+DOMAIN: port_management_system
+DOMAIN_DISPLAY: Port Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register Vessel Arrival, Validate Vessel Documents
+EXPLANATION: "Register Vessel Arrival" includes "Validate Vessel Documents". "Validate Vessel Documents" is included by only one use case ("Register Vessel Arrival"), is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a decomposed step of vessel registration rather than a complete standalone service, constituting the Functional Decomposition antipattern.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Allocate Berth, Check Berth Availability
+EXPLANATION: "Allocate Berth" includes "Check Berth Availability". "Check Berth Availability" is included by only one use case ("Allocate Berth"), is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Checking berth availability is merely a sub-step of berth allocation and does not provide an observable, complete result to any user on its own, constituting the Functional Decomposition antipattern.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Conduct Customs Inspection, Verify Cargo Manifest
+EXPLANATION: "Conduct Customs Inspection" includes "Verify Cargo Manifest". "Verify Cargo Manifest" is included by only one use case ("Conduct Customs Inspection"), is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Verifying cargo manifest is a decomposed procedural step within customs inspection rather than a complete service, constituting the Functional Decomposition antipattern.
+
+REFACTORING_RATIONALE: The three inclusion use cases — "Validate Vessel Documents", "Check Berth Availability", and "Verify Cargo Manifest" — must each be merged into their respective base use cases ("Register Vessel Arrival", "Allocate Berth", and "Conduct Customs Inspection"). Each inclusion use case is only included by one base use case, has no actor association, and represents a decomposed sub-step rather than a complete service. Removing these three use cases and their three include relationships eliminates 6 constructs total, yielding a cleaner model where each base use case encapsulates its full behavior.
+
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Harbor Master" as HM
+actor "Customs Officer" as CO
+actor "Crane Operator" as CrOp
+actor "Shipping Agent" as SA
+actor "Port Administrator" as PA
+
+rectangle "Port Management System" {
+  usecase "Register Vessel Arrival" as UC1
+  usecase "Validate Vessel Documents" as UC2
+  usecase "Allocate Berth" as UC3
+  usecase "Check Berth Availability" as UC4
+  usecase "Schedule Cargo Loading" as UC5
+  usecase "Schedule Cargo Unloading" as UC6
+  usecase "Conduct Customs Inspection" as UC7
+  usecase "Verify Cargo Manifest" as UC8
+  usecase "Handle Hazardous Cargo" as UC9
+  usecase "Generate Port Activity Report" as UC10
+  usecase "Manage Vessel Departure" as UC11
+}
+
+SA -- UC1
+HM -- UC3
+CrOp -- UC5
+CrOp -- UC6
+CO -- UC7
+PA -- UC10
+HM -- UC11
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+UC9 ..> UC7 : <<extend>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 18
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Harbor Master" as HM
+actor "Customs Officer" as CO
+actor "Crane Operator" as CrOp
+actor "Shipping Agent" as SA
+actor "Port Administrator" as PA
+
+rectangle "Port Management System" {
+  usecase "Register Vessel Arrival" as UC1
+  usecase "Allocate Berth" as UC3
+  usecase "Schedule Cargo Loading" as UC5
+  usecase "Schedule Cargo Unloading" as UC6
+  usecase "Conduct Customs Inspection" as UC7
+  usecase "Handle Hazardous Cargo" as UC9
+  usecase "Generate Port Activity Report" as UC10
+  usecase "Manage Vessel Departure" as UC11
+}
+
+SA -- UC1
+HM -- UC3
+CrOp -- UC5
+CrOp -- UC6
+CO -- UC7
+PA -- UC10
+HM -- UC11
+
+UC9 ..> UC7 : <<extend>>
+@enduml
+```

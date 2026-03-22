@@ -1,0 +1,55 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Harbor Master" as HM
+actor "Customs Officer" as CO
+actor "Crane Operator" as CrOp
+actor "Shipping Agent" as SA
+actor "Port Administrator" as PA
+
+rectangle "Port Management System" {
+  usecase "Register Vessel Arrival" as UC1
+  usecase "Validate Vessel Documents" as UC2
+  usecase "Allocate Berth" as UC3
+  usecase "Check Berth Availability" as UC4
+  usecase "Schedule Cargo Loading" as UC5
+  usecase "Schedule Cargo Unloading" as UC6
+  usecase "Conduct Customs Inspection" as UC7
+  usecase "Verify Cargo Manifest" as UC8
+  usecase "Handle Hazardous Cargo" as UC9
+  usecase "Generate Port Activity Report" as UC10
+  usecase "Manage Vessel Departure" as UC11
+}
+
+SA -- UC1
+HM -- UC3
+CrOp -- UC5
+CrOp -- UC6
+CO -- UC7
+PA -- UC10
+HM -- UC11
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+UC9 ..> UC7 : <<extend>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Register Vessel Arrival, Validate Vessel Documents
+   Instance 1: Explanation: "Register Vessel Arrival" includes "Validate Vessel Documents". "Validate Vessel Documents" is included by only one use case ("Register Vessel Arrival"), is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a decomposed step of vessel registration rather than a complete standalone service, constituting the Functional Decomposition antipattern.
+
+   Instance 2: Constructs Involved: Allocate Berth, Check Berth Availability
+   Instance 2: Explanation: "Allocate Berth" includes "Check Berth Availability". "Check Berth Availability" is included by only one use case ("Allocate Berth"), is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Checking berth availability is merely a sub-step of berth allocation and does not provide an observable, complete result to any user on its own, constituting the Functional Decomposition antipattern.
+
+   Instance 3: Constructs Involved: Conduct Customs Inspection, Verify Cargo Manifest
+   Instance 3: Explanation: "Conduct Customs Inspection" includes "Verify Cargo Manifest". "Verify Cargo Manifest" is included by only one use case ("Conduct Customs Inspection"), is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Verifying cargo manifest is a decomposed procedural step within customs inspection rather than a complete service, constituting the Functional Decomposition antipattern.

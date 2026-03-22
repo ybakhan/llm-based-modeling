@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 42
+  domain: cloud_storage_service
+  domain_display: Cloud Storage Service
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 8
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:15:45.796029'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_042_cloud_storage_service/cloud_storage_service_refactored.puml
+    image: output/run_20260321_004201/models/prompt_042_cloud_storage_service/cloud_storage_service_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_042_cloud_storage_service_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"User\" as A1\nactor\
+    \ \"Administrator\" as A2\n\nrectangle \"Cloud Storage Service\" {\n  usecase\
+    \ \"Browse Files\" as UC1\n  usecase \"Upload File\" as UC2\n  usecase \"Download\
+    \ File\" as UC3\n  usecase \"Manage User Accounts\" as UC4\n}\n\nA1 --> UC1\n\
+    A1 --> UC2\nA1 --> UC3\nA2 --> UC4\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: cloud_storage_service
+
+  DOMAIN_DISPLAY: Cloud Storage Service
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Upload File (UC2), Validate File Size (UC5), include relationship
+  from UC2 to UC5
+
+  EXPLANATION: "Validate File Size" (UC5) is an inclusion use case that is included
+  by only one use case ("Upload File" / UC2). It is not associated with any actor
+  directly. It does not include or extend any other use case, is not extended by any
+  use c …[truncated]'

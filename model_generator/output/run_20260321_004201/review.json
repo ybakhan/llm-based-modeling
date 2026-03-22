@@ -1,0 +1,974 @@
+{
+  "prompts": {
+    "1": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T01:56:22.289924"
+    },
+    "2": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T01:58:16.605248"
+    },
+    "3": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:13:03.193385"
+    },
+    "4": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T02:00:10.908840"
+    },
+    "5": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T02:00:38.995654"
+    },
+    "6": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T02:01:10.248442"
+    },
+    "7": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:06:13.463083"
+    },
+    "8": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:07:11.837519"
+    },
+    "9": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:13:20.579725"
+    },
+    "10": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:07:49.411390"
+    },
+    "11": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:13:32.331033"
+    },
+    "12": {
+      "notes": "the refactored model has invented new use cases \"View Recommendations\" and \"Manage Notifications\". New constructs should not be invented in this refactoring.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:58:19.207883"
+    },
+    "13": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:01:18.466288"
+    },
+    "14": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T02:04:49.517841"
+    },
+    "15": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:09:32.216974"
+    },
+    "16": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:14:01.349724"
+    },
+    "17": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:03:18.010419"
+    },
+    "18": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T02:05:57.870317"
+    },
+    "19": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:10:09.994561"
+    },
+    "20": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:04:51.905500"
+    },
+    "21": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:05:55.223104"
+    },
+    "22": {
+      "notes": "the refactored model added two new use cases \"view player statistics\" and \"update game settings\". this refactoring should not invent new use cases.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:58:34.592810"
+    },
+    "23": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:09:07.767261"
+    },
+    "24": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:10:21.748834"
+    },
+    "25": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:10:45.825529"
+    },
+    "26": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:11:23.353665"
+    },
+    "27": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:12:15.080862"
+    },
+    "28": {
+      "notes": "the original model is incorrect. use case \"Export Contacts\" is not associated with any actor.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:59:08.311861"
+    },
+    "29": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:11:00.734103"
+    },
+    "30": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:14:14.417065"
+    },
+    "31": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:11:18.876019"
+    },
+    "32": {
+      "notes": "the refactored model, has missed one functional decomposition. \"Generate Loan Agreement\" is a functional decomposition and must be dropped in the refactored model.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:59:42.159649"
+    },
+    "33": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:16:52.774875"
+    },
+    "34": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:11:39.277440"
+    },
+    "35": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:15:27.570936"
+    },
+    "36": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:12:10.245961"
+    },
+    "37": {
+      "notes": "in the refactored model, use case \"generate receipt\" is functional decomposition and should be dropped",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:17:42.817212"
+    },
+    "38": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:18:32.816990"
+    },
+    "39": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:19:00.683638"
+    },
+    "40": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:19:07.912698"
+    },
+    "41": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:18:56.885473"
+    },
+    "42": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:12:48.307320"
+    },
+    "43": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:13:26.334953"
+    },
+    "44": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:19:22.744202"
+    },
+    "45": {
+      "notes": "the refactored model has an error. in the original model actor \"Guest\" is not associated with use case \"Lock/Unlock Doors\". However, in the refactored model they are associated. They should not be associaed in the refactored model.\nMoreover, in the refactored model use case \"Manage Notifications\" is added which did not exist in the original source. Please remove it.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:19:32.746312"
+    },
+    "46": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:14:35.989671"
+    },
+    "47": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:24:03.627184"
+    },
+    "48": {
+      "notes": "in the refactored model, use case \"Manage Versions\" is added. The refactored model should not invent new use cases. please remove them.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:19:50.623625"
+    },
+    "49": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:26:09.301827"
+    },
+    "50": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:20:35.659527"
+    },
+    "51": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:21:17.974512"
+    },
+    "52": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:26:31.743463"
+    },
+    "53": {
+      "notes": "the refactored model, created an association which did not exist in the original model. actor \"Receptionist\" should not be associated with \"View Patient Record\" in the refactored model.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:00:18.917720"
+    },
+    "54": {
+      "notes": "the refactored model added a use case which does not exist in the original model. use \"generate reports\" did not exist in the original model. this refactoring should not invent new constructs.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:01:08.937169"
+    },
+    "55": {
+      "notes": "the refactoring is not complete, \"prescribe medication\" is functional decomposition and should be dropped in the refactored model.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:01:30.087500"
+    },
+    "56": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:27:25.219471"
+    },
+    "57": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:27:48.333846"
+    },
+    "58": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:25:58.067000"
+    },
+    "59": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:16:29.998626"
+    },
+    "60": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:16:50.046938"
+    },
+    "61": {
+      "notes": "the refactoring is incomplete, use case \"Check eligibiity\" is incomplete and should be dropped. The refactored model created a new extension relationship between use case \"Reject Renewal\" and \"Request Additional Documents\". This did not exist in the original model. This refactoring should not create new constructs.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:02:38.687938"
+    },
+    "62": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:31:08.116120"
+    },
+    "63": {
+      "notes": "the refactorig is incomplete, the use \"Send Thank You Notification\" is a functional decomposition and should be dropped.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:03:01.755674"
+    },
+    "64": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:28:32.759213"
+    },
+    "65": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:33:21.461094"
+    },
+    "66": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:28:41.675933"
+    },
+    "67": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:34:05.699853"
+    },
+    "68": {
+      "notes": "the source model is invalid. use case \"Send Client Notification\" is not associated with any actor.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:05:15.709765"
+    },
+    "69": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:18:40.673709"
+    },
+    "70": {
+      "notes": "the refactoring is still not complete, in the refactored model use case \"check ticket validity\" is a functional decomposition and should be dropped.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:35:16.605269"
+    },
+    "71": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:30:28.552804"
+    },
+    "72": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:30:39.419812"
+    },
+    "73": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:30:47.438835"
+    },
+    "74": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:20:05.614442"
+    },
+    "75": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:31:00.044382"
+    },
+    "76": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:36:20.417889"
+    },
+    "77": {
+      "notes": "in the refactored model, use case \"cancel order\" is added. this use case did not exist in original model. this refacoring should not introduce or invent new constructs.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:36:34.795609"
+    },
+    "78": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:37:19.697745"
+    },
+    "79": {
+      "notes": "the refactored model, created a new association which did  not exist in the original model. Actor \"Tournament Organizer\" is associated with use case \"Withdraw from Tournament\". This association did not exist in the oringal model. Please drop this association. This refactoring should not introduce new constructs.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:37:36.349487"
+    },
+    "80": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:34:40.064157"
+    },
+    "81": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:38:22.140220"
+    },
+    "82": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:20:58.557310"
+    },
+    "83": {
+      "notes": "the source model has an error, i think the direction of the extend relationship between \"Handle Hazardous Cargo\" and \"Conduct Customs Inspection\" should be inverted.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:06:15.338131"
+    },
+    "84": {
+      "notes": "the refactoring isn't complete. use case \"Send Bid Notification\" is a functional decomposition and should be dropped.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:06:35.445378"
+    },
+    "85": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:35:25.428740"
+    },
+    "86": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:36:30.724190"
+    },
+    "87": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:21:13.289725"
+    },
+    "88": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:21:28.501433"
+    },
+    "89": {
+      "notes": "the original model is wrong. the extension relationship between \"place bulk order\" and \"apply volume discount\" must be inverted",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:41:44.477303"
+    },
+    "90": {
+      "notes": "the refactoring is incomplete, \"configure transmission\" use case is a functional decomposition and should be dropped.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:43:01.055036"
+    },
+    "91": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:21:54.137079"
+    },
+    "92": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:22:41.773620"
+    },
+    "93": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:22:52.520871"
+    },
+    "94": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:45:44.001810"
+    },
+    "95": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:37:06.776761"
+    },
+    "96": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:46:19.656108"
+    },
+    "97": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:46:50.024803"
+    },
+    "98": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:47:43.762684"
+    },
+    "99": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:48:42.249600"
+    },
+    "100": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:23:21.669389"
+    },
+    "101": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:37:23.674439"
+    },
+    "102": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:37:29.402623"
+    },
+    "103": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:49:14.854120"
+    },
+    "104": {
+      "notes": "the refactoring is incomplete. use case \"Randomize Patient\" is a functional decomposition and should be dropped.",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:43:55.170605"
+    },
+    "105": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:10:48.886557"
+    },
+    "106": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:46:56.307480"
+    },
+    "107": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:24:47.807645"
+    },
+    "108": {
+      "notes": "the refactored model added 3 new use case constructs. this refactoring should not add new use cases.",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:47:00.244717"
+    },
+    "109": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:49:17.023301"
+    },
+    "110": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:49:46.920278"
+    },
+    "111": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:25:06.022043"
+    },
+    "112": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:25:25.005999"
+    },
+    "113": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:51:18.588742"
+    },
+    "114": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:25:52.666998"
+    },
+    "115": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:26:05.265521"
+    },
+    "116": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:51:59.395222"
+    },
+    "117": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:26:26.904235"
+    },
+    "118": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:26:40.480106"
+    },
+    "119": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:37:58.759527"
+    },
+    "120": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:52:26.942648"
+    },
+    "121": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:53:14.425851"
+    },
+    "122": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T23:54:26.160749"
+    },
+    "123": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:00:13.763750"
+    },
+    "124": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:03:14.531862"
+    },
+    "125": {
+      "notes": "the refactoring is still not complete, \"Send Payment Reminder\" is a functional decomposition and should be dropped.",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T01:01:54.758236"
+    },
+    "126": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:07:22.107987"
+    },
+    "127": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:08:06.568958"
+    },
+    "128": {
+      "notes": "the refactored model added new constructs. this refactoring should not add new constructs",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:48:12.150213"
+    },
+    "129": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:09:08.986008"
+    },
+    "130": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:09:45.270345"
+    },
+    "131": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:27:37.742594"
+    },
+    "132": {
+      "notes": "the refactoring is still not complete.\"Process Payment\" is a functional decomposition and needs to be dropped.",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T01:02:33.279399"
+    },
+    "133": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:27:59.379743"
+    },
+    "134": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:38:12.432759"
+    },
+    "135": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:28:41.104239"
+    },
+    "136": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:29:17.517021"
+    },
+    "137": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:38:23.975927"
+    },
+    "138": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:29:38.786062"
+    },
+    "139": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:11:25.794691"
+    },
+    "140": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:29:49.488348"
+    },
+    "141": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T14:30:28.971579"
+    },
+    "142": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:12:07.166977"
+    },
+    "143": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:12:41.308834"
+    },
+    "144": {
+      "notes": "in the original model the direction of the extend relationship is wrong. \"Send Alert Notification\" should be directed to \"Monitor Injury Status\"",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:50:12.981636"
+    },
+    "145": {
+      "notes": "the direction of the extend relationship is wrong. \"apply late fee\" should be directed towards \"Return equipment\"",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:51:25.903227"
+    },
+    "146": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:15:11.885178"
+    },
+    "147": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:15:52.059164"
+    },
+    "148": {
+      "notes": "the direction of the exted relationship is wrong. use case \"escalate incident\" should be directed towards \"repond to alert\"",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:52:07.599308"
+    },
+    "149": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:17:33.079385"
+    },
+    "150": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:18:00.724730"
+    },
+    "151": {
+      "notes": "the direction of the extend relationship is wrong. \"Notify Expiring Licenses\" should be directed towards \"Renew License\"",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:52:46.909115"
+    },
+    "152": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:19:58.641483"
+    },
+    "153": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:20:27.810322"
+    },
+    "154": {
+      "notes": "the refactored model added new uses cases. this refactoring should not add new constructs.",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:52:57.806124"
+    },
+    "155": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:21:56.184795"
+    },
+    "156": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:22:48.872469"
+    },
+    "157": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:11:20.085964"
+    },
+    "158": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:11:31.771704"
+    },
+    "159": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:12:14.499707"
+    },
+    "160": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:13:33.004176"
+    },
+    "161": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:23:55.482069"
+    },
+    "162": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:24:07.970579"
+    },
+    "163": {
+      "notes": "the direction of the extend relationship is wrong. \"Apply Promo Code\" should be directed towards \"Process Payment\"",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:53:46.562807"
+    },
+    "164": {
+      "notes": "the source model is wrong. the direction of the extend relationship between \"Process Payment\" and \"Apply Late Fee\" should be inverted.",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:26:40.742359"
+    },
+    "165": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:27:28.607251"
+    },
+    "166": {
+      "notes": "the direction of extend relationship is wrong. \"Apply Discount Code\" should be directed towards \"Place Booking\"",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:54:34.989078"
+    },
+    "167": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:29:02.114144"
+    },
+    "168": {
+      "notes": "the refactored model added new constructs. use case \"Manage Service Types\" did not exist in the original model. this refactoring should not add new constructs. Drop the new invented use case \"Manage Service Types\" which did not exist in the orignial model.",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:56:12.360145"
+    },
+    "169": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:31:00.748702"
+    },
+    "170": {
+      "notes": "the refactoring is not complete. all functional decompositions must be dropped. Use \"Filter Results\" is a functional decomposition and must be dropped. The other functional decompositions were correctly dropped. They are \"Fetch Retailer Data\", \"Validate Search Input\", \"Store Alert Preferences\"",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T01:07:35.474688"
+    },
+    "171": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:14:58.502159"
+    },
+    "172": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:32:20.350668"
+    },
+    "173": {
+      "notes": "the direction of the extend relationship is wrong in the source model. \"Process Card Payment\" should be directed towards \"Purchase Product\"",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:58:04.301651"
+    },
+    "174": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:35:02.673862"
+    },
+    "175": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:16:09.440201"
+    },
+    "176": {
+      "notes": "the refactored model has introduced new construct  \"generate yield report\" which did not exist in the source model. this refactoring should not invent new constructs.",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:35:30.075709"
+    },
+    "177": {
+      "notes": "the refactored model has introduced new construct  \"track shipment\" which did not exist in the source model. this refactoring should not invent new constructs.",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:35:49.031498"
+    },
+    "178": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:17:51.461059"
+    },
+    "179": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:18:07.961427"
+    },
+    "180": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:36:51.597298"
+    },
+    "181": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:37:52.097803"
+    },
+    "182": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:50:15.264895"
+    },
+    "183": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:50:33.244913"
+    },
+    "184": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:50:45.410139"
+    },
+    "185": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T20:50:53.557020"
+    },
+    "186": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:41:10.906568"
+    },
+    "187": {
+      "notes": "the direction of the extend relationship is wrong. \"Escalate Critical Alert\" should be directed towards \"Acknowledge Alarm\". Fix the direction of the extend relationship.",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T01:05:20.434951"
+    },
+    "188": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:18:39.290353"
+    },
+    "189": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T21:19:26.916428"
+    },
+    "190": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:41:26.679912"
+    },
+    "191": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:41:35.749938"
+    },
+    "192": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-22T00:40:12.564796"
+    },
+    "193": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:41:44.673264"
+    },
+    "194": {
+      "notes": "",
+      "status": "approved",
+      "reviewed_at": "2026-03-21T19:41:53.124946"
+    }
+  }
+}

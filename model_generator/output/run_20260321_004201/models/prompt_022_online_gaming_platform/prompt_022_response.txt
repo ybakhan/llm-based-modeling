@@ -1,0 +1,69 @@
+
+
+DOMAIN: online_gaming_platform
+DOMAIN_DISPLAY: Online Gaming Platform
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Join Match, Validate Player Credentials, include relationship from "Join Match" to "Validate Player Credentials"
+EXPLANATION: "Validate Player Credentials" is an inclusion use case that is included by only one use case ("Join Match"), is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a sub-step of joining a match rather than a complete, standalone service observable to any actor. This is classic functional decomposition — breaking "Join Match" into an internal procedural step that has no independent value to a user.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Player Credentials" must be merged back into "Join Match" because it represents an internal step, not a complete service. The <<include>> relationship from "Join Match" to "Validate Player Credentials" and the "Validate Player Credentials" use case itself must be removed. The validation logic is simply absorbed into the "Join Match" use case. This reduces the model by one use case and one include relationship, resulting in 7 constructs.
+CONSTRUCT_COUNT: 9
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Player" as Player
+actor "Game Admin" as Admin
+
+rectangle "Online Gaming Platform" {
+  usecase "Join Match" as UC1
+  usecase "Browse Games" as UC2
+  usecase "Validate Player Credentials" as UC3
+  usecase "Create Tournament" as UC4
+  usecase "Chat with Players" as UC5
+}
+
+Player -- UC1
+Player -- UC2
+Player -- UC5
+Admin -- UC4
+UC1 ..> UC3 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 7
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Player" as Player
+actor "Game Admin" as Admin
+
+rectangle "Online Gaming Platform" {
+  usecase "Join Match" as UC1
+  usecase "Browse Games" as UC2
+  usecase "Create Tournament" as UC4
+  usecase "Chat with Players" as UC5
+}
+
+Player -- UC1
+Player -- UC2
+Player -- UC5
+Admin -- UC4
+
+@enduml
+```

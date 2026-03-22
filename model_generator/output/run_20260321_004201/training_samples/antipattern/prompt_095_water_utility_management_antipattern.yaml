@@ -1,0 +1,108 @@
+metadata:
+  prompt_number: 95
+  domain: water_utility_management
+  domain_display: Water Utility Management
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Process Water Bill, Validate Meter Reading
+      explanation: '"Process Water Bill" includes "Validate Meter Reading" via an
+        <<include>> relationship. "Validate Meter Reading" is only included by "Process
+        Water Bill", is not associated with any actor, does not include or extend
+        any other use case, is not extended by any use case, and is not involved in
+        any generalization. It represents a sub-step (validation) rather than a complete,
+        independently valuable service to any actor, making this a functional decomposition
+        of billing into procedural steps.'
+    - constructs_involved: Register New Customer, Verify Address
+      explanation: '"Register New Customer" includes "Verify Address" via an <<include>>
+        relationship. "Verify Address" is only included by "Register New Customer",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not involved in any generalization.
+        Address verification is merely a procedural sub-step of registration, not
+        a standalone service offering an observable result to any user.'
+    - constructs_involved: Schedule Maintenance, Check Crew Availability
+      explanation: '"Schedule Maintenance" includes "Check Crew Availability" via
+        an <<include>> relationship. "Check Crew Availability" is only included by
+        "Schedule Maintenance", is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        involved in any generalization. Checking crew availability is an internal
+        procedural step of scheduling, not a complete service providing an observable
+        result to any actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:09:48.688832'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_095_water_utility_management/water_utility_management_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_095_water_utility_management/water_utility_management_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_095_water_utility_management_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Customer\"\
+    \ as Customer\nactor \"Billing Clerk\" as BillingClerk\nactor \"Field Technician\"\
+    \ as FieldTech\nactor \"Operations Manager\" as OpsMgr\n\nrectangle \"Water Utility\
+    \ Management System\" {\n  usecase \"Submit Meter Reading\" as UC1\n  usecase\
+    \ \"Process Water Bill\" as UC2\n  usecase \"Validate Meter Reading\" as UC3\n\
+    \  usecase \"Register New Customer\" as UC4\n  usecase \"Verify Address\" as UC5\n\
+    \  usecase \"View Consumption History\" as UC6\n  usecase \"Report Water Leak\"\
+    \ as UC7\n  usecase \"Schedule Maintenance\" as UC8\n  usecase \"Check Crew Availability\"\
+    \ as UC9\n  usecase \"Generate Usage Report\" as UC10\n  usecase \"Manage Water\
+    \ Shutoff\" as UC11\n  usecase \"Pay Bill Online\" as UC12\n}\n\nCustomer -- UC6\n\
+    Customer -- UC7\nCustomer -- UC12\nBillingClerk -- UC2\nBillingClerk -- UC4\n\
+    FieldTech -- UC1\nFieldTech -- UC7\nOpsMgr -- UC8\nOpsMgr -- UC10\nOpsMgr -- UC11\n\
+    \nUC2 ..> UC3 : <<include>>\nUC4 ..> UC5 : <<include>>\nUC8 ..> UC9 : <<include>>\n\
+    \n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Process Water Bill, Validate Meter Reading\n\
+    \   Instance 1: Explanation: \"Process Water Bill\" includes \"Validate Meter\
+    \ Reading\" via an <<include>> relationship. \"Validate Meter Reading\" is only\
+    \ included by \"Process Water Bill\", is not associated with any actor, does not\
+    \ include or extend any other use case, is not extended by any use case, and is\
+    \ not involved in any generalization. It represents a sub-step (validation) rather\
+    \ than a complete, independently valuable service to any actor, making this a\
+    \ functional decomposition of billing into procedural steps.\n\n   Instance 2:\
+    \ Constructs Involved: Register New Customer, Verify Address\n   Instance 2: Explanation:\
+    \ \"Register New Customer\" includes \"Verify Address\" via an <<include>> relationship.\
+    \ \"Verify Address\" is only included by \"Register New Customer\", is not associated\
+    \ with any actor, does not include or extend any other use case, is not extended\
+    \ by any use case, and is not involved in any generalization. Address verification\
+    \ is merely a procedural sub-step of registration, not a standalone service offering\
+    \ an observable result to any user.\n\n   Instance 3: Constructs Involved: Schedule\
+    \ Maintenance, Check Crew Availability\n   Instance 3: Explanation: \"Schedule\
+    \ Maintenance\" includes \"Check Crew Availability\" via an <<include>> relationship.\
+    \ \"Check Crew Availability\" is only included by \"Schedule Maintenance\", is\
+    \ not associated with any actor, does not include or extend any other use case,\
+    \ is not extended by any use case, and is not involved in any generalization.\
+    \ Checking crew availability is an internal procedural step of scheduling, not\
+    \ a complete service providing an observable result to any actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: water_utility_management
+
+  DOMAIN_DISPLAY: Water Utility Management
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Process Water Bill, Validate Meter Reading
+
+  EXPLANATION: "Process Water Bill" includes "Validate Meter Reading" via an <<include>>
+  relationship. "Validate Meter Reading" is only included by "Process Water Bill",
+  is not associated with any actor, does not include or extend any other use case,
+  is not extended by any use case,  …[truncated]'

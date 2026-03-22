@@ -1,0 +1,56 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Author" as Author
+actor "Reviewer" as Reviewer
+actor "Program Chair" as ProgramChair
+actor "Attendee" as Attendee
+
+rectangle "Academic Conference Management System" {
+  usecase "Submit Paper" as UC1
+  usecase "Validate Paper Format" as UC2
+  usecase "Review Paper" as UC3
+  usecase "Assign Reviewers" as UC4
+  usecase "Check Reviewer Expertise" as UC5
+  usecase "Manage Conference Schedule" as UC6
+  usecase "Register for Conference" as UC7
+  usecase "Process Payment" as UC8
+  usecase "View Accepted Papers" as UC9
+  usecase "Submit Camera Ready" as UC10
+  usecase "Send Notifications" as UC11
+  usecase "View Schedule" as UC12
+}
+
+Author --> UC1
+Author --> UC10
+Reviewer --> UC3
+ProgramChair --> UC4
+ProgramChair --> UC6
+ProgramChair --> UC11
+Attendee --> UC7
+Attendee --> UC9
+Attendee --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC4 ..> UC5 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Submit Paper, Validate Paper Format, include (Submit Paper → Validate Paper Format)
+   Instance 1: Explanation: "Validate Paper Format" is an inclusion use case included only by "Submit Paper." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (format validation) of the paper submission process rather than a complete, standalone service observable to any user. This is functional decomposition of "Submit Paper" into a procedural step.
+
+   Instance 2: Constructs Involved: Register for Conference, Process Payment, include (Register for Conference → Process Payment)
+   Instance 2: Explanation: "Process Payment" is an inclusion use case included only by "Register for Conference." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Processing payment is an internal procedural step of registration, not a complete service offered independently to any actor. This decomposes registration into a sub-function.
+
+   Instance 3: Constructs Involved: Assign Reviewers, Check Reviewer Expertise, include (Assign Reviewers → Check Reviewer Expertise)
+   Instance 3: Explanation: "Check Reviewer Expertise" is an inclusion use case included only by "Assign Reviewers." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Checking expertise is an internal step within reviewer assignment, not a standalone service providing an observable result to any user.

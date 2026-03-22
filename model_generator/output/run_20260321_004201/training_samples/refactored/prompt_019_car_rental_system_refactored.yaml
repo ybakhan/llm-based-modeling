@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 19
+  domain: car_rental_system
+  domain_display: Car Rental System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:50:19.372346'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_019_car_rental_system/car_rental_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_019_car_rental_system/car_rental_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_019_car_rental_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Customer\" as Customer\nactor \"Rental Agent\" as Agent\nactor \"Manager\"\
+    \ as Manager\n\nrectangle \"Car Rental System\" {\n  usecase \"Browse Available\
+    \ Cars\" as UC1\n  usecase \"Make Reservation\" as UC2\n  usecase \"Pick Up Vehicle\"\
+    \ as UC4\n  usecase \"Return Vehicle\" as UC5\n  usecase \"Process Payment\" as\
+    \ UC7\n  usecase \"Cancel Reservation\" as UC9\n  usecase \"Manage Fleet\" as\
+    \ UC10\n  usecase \"Generate Reports\" as UC11\n  usecase \"View Rental History\"\
+    \ as UC12\n  usecase \"Apply Late Fee\" as UC13\n}\n\nCustomer --> UC1\nCustomer\
+    \ --> UC2\nCustomer --> UC9\nCustomer --> UC7\nCustomer --> UC12\n\nAgent -->\
+    \ UC4\nAgent --> UC5\nAgent --> UC2\n\nManager --> UC10\nManager --> UC11\n\n\
+    UC5 ..> UC13 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: car_rental_system
+
+  DOMAIN_DISPLAY: Car Rental System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Make Reservation, Validate Driver License
+
+  EXPLANATION: "Validate Driver License" is an inclusion use case included only by
+  "Make Reservation". It is not associated with any actor, not included by any other
+  use case, does not include or extend any use case, is not extended by any use case,
+  and has no generalization relationships. It repre …[truncated]'

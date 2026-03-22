@@ -1,0 +1,110 @@
+metadata:
+  prompt_number: 131
+  domain: carpooling_app
+  domain_display: Carpooling App
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Search Rides, Validate Search Criteria, include (Search
+        Rides → Validate Search Criteria)
+      explanation: '"Validate Search Criteria" is an inclusion use case included only
+        by "Search Rides". It is not associated with any actor, does not include or
+        extend any other use case, is not extended by any use case, and is not part
+        of any generalization. It represents a sub-step (input validation) of searching
+        for rides rather than a complete, independently meaningful service observable
+        to a user. This is functional decomposition of the "Search Rides" use case.'
+    - constructs_involved: Book Ride, Calculate Fare Split, include (Book Ride → Calculate
+        Fare Split)
+      explanation: '"Calculate Fare Split" is an inclusion use case included only
+        by "Book Ride". It is not associated with any actor, does not include or extend
+        any other use case, is not extended by any use case, and is not part of any
+        generalization. It represents an internal computation step within the booking
+        process rather than a standalone service with an observable result to a user.
+        This is functional decomposition of the "Book Ride" use case.'
+    - constructs_involved: Create Ride Offer, Validate Route Details, include (Create
+        Ride Offer → Validate Route Details)
+      explanation: '"Validate Route Details" is an inclusion use case included only
+        by "Create Ride Offer". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. It represents an internal validation sub-step
+        rather than a complete service. This is functional decomposition of the "Create
+        Ride Offer" use case.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 26
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:53:33.827775'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_131_carpooling_app/carpooling_app_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_131_carpooling_app/carpooling_app_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_131_carpooling_app_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Rider\" as Rider\nactor \"Driver\" as Driver\nactor \"Admin\" as Admin\n\
+    \nrectangle \"Carpooling App\" {\n  usecase \"Register Account\" as UC1\n  usecase\
+    \ \"Search Rides\" as UC2\n  usecase \"Validate Search Criteria\" as UC3\n  usecase\
+    \ \"Book Ride\" as UC4\n  usecase \"Calculate Fare Split\" as UC5\n  usecase \"\
+    Rate Driver\" as UC6\n  usecase \"Create Ride Offer\" as UC7\n  usecase \"Validate\
+    \ Route Details\" as UC8\n  usecase \"Manage Ride Requests\" as UC9\n  usecase\
+    \ \"View Ride History\" as UC10\n  usecase \"Process Payment\" as UC11\n  usecase\
+    \ \"Manage Users\" as UC12\n  usecase \"View Reports\" as UC13\n}\n\nRider -->\
+    \ UC1\nRider --> UC2\nRider --> UC4\nRider --> UC6\nRider --> UC10\nRider -->\
+    \ UC11\n\nDriver --> UC1\nDriver --> UC7\nDriver --> UC9\nDriver --> UC10\n\n\
+    Admin --> UC12\nAdmin --> UC13\n\nUC2 ..> UC3 : <<include>>\nUC4 ..> UC5 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Search Rides, Validate Search Criteria,\
+    \ include (Search Rides → Validate Search Criteria)\n   Instance 1: Explanation:\
+    \ \"Validate Search Criteria\" is an inclusion use case included only by \"Search\
+    \ Rides\". It is not associated with any actor, does not include or extend any\
+    \ other use case, is not extended by any use case, and is not part of any generalization.\
+    \ It represents a sub-step (input validation) of searching for rides rather than\
+    \ a complete, independently meaningful service observable to a user. This is functional\
+    \ decomposition of the \"Search Rides\" use case.\n\n   Instance 2: Constructs\
+    \ Involved: Book Ride, Calculate Fare Split, include (Book Ride → Calculate Fare\
+    \ Split)\n   Instance 2: Explanation: \"Calculate Fare Split\" is an inclusion\
+    \ use case included only by \"Book Ride\". It is not associated with any actor,\
+    \ does not include or extend any other use case, is not extended by any use case,\
+    \ and is not part of any generalization. It represents an internal computation\
+    \ step within the booking process rather than a standalone service with an observable\
+    \ result to a user. This is functional decomposition of the \"Book Ride\" use\
+    \ case.\n\n   Instance 3: Constructs Involved: Create Ride Offer, Validate Route\
+    \ Details, include (Create Ride Offer → Validate Route Details)\n   Instance 3:\
+    \ Explanation: \"Validate Route Details\" is an inclusion use case included only\
+    \ by \"Create Ride Offer\". It is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. It represents an internal validation sub-step rather\
+    \ than a complete service. This is functional decomposition of the \"Create Ride\
+    \ Offer\" use case."
+raw_response_excerpt: '
+
+
+  DOMAIN: carpooling_app
+
+  DOMAIN_DISPLAY: Carpooling App
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Search Rides, Validate Search Criteria, include (Search Rides
+  → Validate Search Criteria)
+
+  EXPLANATION: "Validate Search Criteria" is an inclusion use case included only by
+  "Search Rides". It is not associated with any actor, does not include or extend
+  any other use case, is not extended by any use case, and is not part of any generalization.
+  I …[truncated]'

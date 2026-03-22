@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Applicant" as Applicant
+actor "Loan Officer" as LoanOfficer
+
+rectangle "Mortgage Application System" {
+  usecase "Submit Mortgage Application" as UC1
+  usecase "Check Credit Score" as UC3
+  usecase "Review Application" as UC4
+  usecase "Approve Mortgage" as UC5
+  usecase "Reject Mortgage" as UC6
+}
+
+Applicant -- UC1
+LoanOfficer -- UC4
+LoanOfficer -- UC5
+LoanOfficer -- UC3
+LoanOfficer -- UC6
+@enduml

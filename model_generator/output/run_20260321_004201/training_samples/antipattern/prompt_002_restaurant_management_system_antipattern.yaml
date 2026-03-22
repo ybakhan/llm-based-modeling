@@ -1,0 +1,109 @@
+metadata:
+  prompt_number: 2
+  domain: restaurant_management_system
+  domain_display: Restaurant Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Place Order, Validate Menu Items, include relationship
+        from Place Order to Validate Menu Items
+      explanation: '"Validate Menu Items" is an inclusion use case included only by
+        "Place Order". It is not associated with any actor, does not include or extend
+        any other use case, is not extended by any use case, and is not part of any
+        generalization. It represents an internal validation step—not a complete,
+        independently valuable service to any actor—making this a functional decomposition
+        of the "Place Order" use case.'
+    - constructs_involved: Process Payment, Calculate Total, include relationship
+        from Process Payment to Calculate Total
+      explanation: '"Calculate Total" is an inclusion use case included only by "Process
+        Payment". It is not associated with any actor, does not include or extend
+        any other use case, is not extended by any use case, and is not part of any
+        generalization. Calculating a total is an internal computational step within
+        payment processing, not a standalone service observable to any user, making
+        this a functional decomposition of "Process Payment".'
+    - constructs_involved: Generate Report, Fetch Report Data, include relationship
+        from Generate Report to Fetch Report Data
+      explanation: '"Fetch Report Data" is an inclusion use case included only by
+        "Generate Report". It is not associated with any actor, does not include or
+        extend any other use case, is not extended by any use case, and is not part
+        of any generalization. Fetching data is an internal sub-step of report generation
+        and does not provide a complete, observable result to any actor on its own,
+        constituting functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:42:36.622015'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_002_restaurant_management_system/restaurant_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_002_restaurant_management_system/restaurant_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_002_restaurant_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Waiter\" as Waiter\nactor \"Chef\" as Chef\nactor \"Cashier\" as Cashier\n\
+    actor \"Manager\" as Manager\n\nrectangle \"Restaurant Management System\" {\n\
+    \  usecase \"Place Order\" as UC1\n  usecase \"Validate Menu Items\" as UC2\n\
+    \  usecase \"View Kitchen Queue\" as UC3\n  usecase \"Update Order Status\" as\
+    \ UC4\n  usecase \"Process Payment\" as UC5\n  usecase \"Calculate Total\" as\
+    \ UC6\n  usecase \"Manage Menu\" as UC7\n  usecase \"Generate Report\" as UC8\n\
+    \  usecase \"Fetch Report Data\" as UC9\n  usecase \"Manage Reservations\" as\
+    \ UC10\n  usecase \"View Table Availability\" as UC11\n  usecase \"Apply Discount\"\
+    \ as UC12\n\n  UC1 ..> UC2 : <<include>>\n  UC5 ..> UC6 : <<include>>\n  UC8 ..>\
+    \ UC9 : <<include>>\n  UC5 ..> UC12 : <<extend>>\n}\n\nWaiter --> UC1\nWaiter\
+    \ --> UC10\nWaiter --> UC11\nChef --> UC3\nChef --> UC4\nCashier --> UC5\nManager\
+    \ --> UC7\nManager --> UC8\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Place Order, Validate Menu Items, include\
+    \ relationship from Place Order to Validate Menu Items\n   Instance 1: Explanation:\
+    \ \"Validate Menu Items\" is an inclusion use case included only by \"Place Order\"\
+    . It is not associated with any actor, does not include or extend any other use\
+    \ case, is not extended by any use case, and is not part of any generalization.\
+    \ It represents an internal validation step—not a complete, independently valuable\
+    \ service to any actor—making this a functional decomposition of the \"Place Order\"\
+    \ use case.\n\n   Instance 2: Constructs Involved: Process Payment, Calculate\
+    \ Total, include relationship from Process Payment to Calculate Total\n   Instance\
+    \ 2: Explanation: \"Calculate Total\" is an inclusion use case included only by\
+    \ \"Process Payment\". It is not associated with any actor, does not include or\
+    \ extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. Calculating a total is an internal computational step\
+    \ within payment processing, not a standalone service observable to any user,\
+    \ making this a functional decomposition of \"Process Payment\".\n\n   Instance\
+    \ 3: Constructs Involved: Generate Report, Fetch Report Data, include relationship\
+    \ from Generate Report to Fetch Report Data\n   Instance 3: Explanation: \"Fetch\
+    \ Report Data\" is an inclusion use case included only by \"Generate Report\"\
+    . It is not associated with any actor, does not include or extend any other use\
+    \ case, is not extended by any use case, and is not part of any generalization.\
+    \ Fetching data is an internal sub-step of report generation and does not provide\
+    \ a complete, observable result to any actor on its own, constituting functional\
+    \ decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: restaurant_management_system
+
+  DOMAIN_DISPLAY: Restaurant Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Order, Validate Menu Items, include relationship from
+  Place Order to Validate Menu Items
+
+  EXPLANATION: "Validate Menu Items" is an inclusion use case included only by "Place
+  Order". It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case, and is not pa …[truncated]'

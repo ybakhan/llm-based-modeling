@@ -1,0 +1,24 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Applicant" as A1
+actor "Reviewer" as A2
+actor "Administrator" as A3
+
+rectangle "Scholarship Application System" {
+  usecase "Register Account" as UC1
+  usecase "Submit Application" as UC2
+  usecase "Upload Transcript" as UC3
+  usecase "Review Application" as UC4
+  usecase "Award Scholarship" as UC5
+  usecase "Check Application Status" as UC6
+}
+
+A1 -- UC1
+A1 -- UC2
+UC2 ..> UC3 : <<include>>
+A1 -- UC6
+A2 -- UC4
+A3 -- UC5
+
+@enduml

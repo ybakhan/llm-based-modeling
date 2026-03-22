@@ -1,0 +1,38 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Streamer
+actor Viewer
+actor Moderator
+
+rectangle "Livestreaming Platform" {
+  usecase "Start Livestream" as UC1
+  usecase "Initialize Encoding" as UC2
+  usecase "Watch Livestream" as UC3
+  usecase "Send Chat Message" as UC4
+  usecase "Donate to Streamer" as UC5
+  usecase "Ban User" as UC6
+  usecase "End Livestream" as UC7
+}
+
+Streamer --> UC1
+UC1 ..> UC2 : <<include>>
+Streamer --> UC7
+Viewer --> UC3
+Viewer --> UC4
+Viewer --> UC5
+Moderator --> UC6
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Start Livestream, Initialize Encoding
+   Explanation: The use case "Initialize Encoding" is an inclusion use case that is included by only one use case ("Start Livestream"). "Initialize Encoding" is not associated with any actor directly — no actor triggers it independently. It does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. "Initialize Encoding" represents a technical sub-step (setting up the video encoder) rather than a complete, observable service to any user. This is a classic functional decomposition where a coherent service ("Start Livestream") has been artificially broken into procedural steps via the <<include>> relationship.

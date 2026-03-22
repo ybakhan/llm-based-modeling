@@ -1,0 +1,116 @@
+metadata:
+  prompt_number: 52
+  domain: investment_portfolio_system
+  domain_display: Investment Portfolio System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Buy Securities, Validate Funds Availability, include relationship
+        from Buy Securities to Validate Funds Availability
+      explanation: '"Validate Funds Availability" is an inclusion use case included
+        only by "Buy Securities". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (checking if funds are sufficient) rather than a complete service
+        observable to a user, making this a functional decomposition of the "Buy Securities"
+        use case.'
+    - constructs_involved: Generate Portfolio Report, Fetch Historical Data, include
+        relationship from Generate Portfolio Report to Fetch Historical Data
+      explanation: '"Fetch Historical Data" is an inclusion use case included only
+        by "Generate Portfolio Report". It is not associated with any actor, is not
+        included by any other use case, does not include or extend any use case, is
+        not extended by any use case, and has no generalization relationships. It
+        represents an internal data retrieval step rather than a complete user-facing
+        service, making this a functional decomposition of "Generate Portfolio Report".'
+    - constructs_involved: Rebalance Portfolio, Calculate Target Allocation, include
+        relationship from Rebalance Portfolio to Calculate Target Allocation
+      explanation: '"Calculate Target Allocation" is an inclusion use case included
+        only by "Rebalance Portfolio". It is not associated with any actor, is not
+        included by any other use case, does not include or extend any use case, is
+        not extended by any use case, and has no generalization relationships. It
+        represents an internal computation step rather than a standalone service providing
+        an observable result to any user, making this a functional decomposition of
+        "Rebalance Portfolio".'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 26
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:20:04.745813'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_052_investment_portfolio_system/investment_portfolio_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_052_investment_portfolio_system/investment_portfolio_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_052_investment_portfolio_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Investor\" as Investor\nactor \"Financial Advisor\" as Advisor\nactor\
+    \ \"System Administrator\" as Admin\n\nrectangle \"Investment Portfolio System\"\
+    \ {\n  usecase \"Create Portfolio\" as UC1\n  usecase \"Buy Securities\" as UC2\n\
+    \  usecase \"Sell Securities\" as UC3\n  usecase \"View Portfolio Holdings\" as\
+    \ UC4\n  usecase \"Generate Portfolio Report\" as UC5\n  usecase \"Rebalance Portfolio\"\
+    \ as UC6\n  usecase \"Set Risk Profile\" as UC7\n  usecase \"Manage User Accounts\"\
+    \ as UC8\n  usecase \"Monitor Market Alerts\" as UC9\n  usecase \"Validate Funds\
+    \ Availability\" as UC10\n  usecase \"Fetch Historical Data\" as UC11\n  usecase\
+    \ \"Calculate Target Allocation\" as UC12\n  usecase \"Transfer Funds\" as UC13\n\
+    }\n\nInvestor --> UC1\nInvestor --> UC2\nInvestor --> UC3\nInvestor --> UC4\n\
+    Investor --> UC9\nInvestor --> UC13\n\nAdvisor --> UC5\nAdvisor --> UC6\nAdvisor\
+    \ --> UC7\nAdvisor --> UC4\n\nAdmin --> UC8\n\nUC2 ..> UC10 : <<include>>\nUC5\
+    \ ..> UC11 : <<include>>\nUC6 ..> UC12 : <<include>>\n\nUC3 .> UC2 : <<extend>>\n\
+    @enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Buy Securities, Validate Funds Availability,\
+    \ include relationship from Buy Securities to Validate Funds Availability\n  \
+    \ Instance 1: Explanation: \"Validate Funds Availability\" is an inclusion use\
+    \ case included only by \"Buy Securities\". It is not associated with any actor,\
+    \ is not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ represents a sub-step (checking if funds are sufficient) rather than a complete\
+    \ service observable to a user, making this a functional decomposition of the\
+    \ \"Buy Securities\" use case.\n\n   Instance 2: Constructs Involved: Generate\
+    \ Portfolio Report, Fetch Historical Data, include relationship from Generate\
+    \ Portfolio Report to Fetch Historical Data\n   Instance 2: Explanation: \"Fetch\
+    \ Historical Data\" is an inclusion use case included only by \"Generate Portfolio\
+    \ Report\". It is not associated with any actor, is not included by any other\
+    \ use case, does not include or extend any use case, is not extended by any use\
+    \ case, and has no generalization relationships. It represents an internal data\
+    \ retrieval step rather than a complete user-facing service, making this a functional\
+    \ decomposition of \"Generate Portfolio Report\".\n\n   Instance 3: Constructs\
+    \ Involved: Rebalance Portfolio, Calculate Target Allocation, include relationship\
+    \ from Rebalance Portfolio to Calculate Target Allocation\n   Instance 3: Explanation:\
+    \ \"Calculate Target Allocation\" is an inclusion use case included only by \"\
+    Rebalance Portfolio\". It is not associated with any actor, is not included by\
+    \ any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. It represents an internal\
+    \ computation step rather than a standalone service providing an observable result\
+    \ to any user, making this a functional decomposition of \"Rebalance Portfolio\"\
+    ."
+raw_response_excerpt: '
+
+
+  DOMAIN: investment_portfolio_system
+
+  DOMAIN_DISPLAY: Investment Portfolio System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Buy Securities, Validate Funds Availability, include relationship
+  from Buy Securities to Validate Funds Availability
+
+  EXPLANATION: "Validate Funds Availability" is an inclusion use case included only
+  by "Buy Securities". It is not associated with any actor, is not included by any
+  other use case, does not include or ext …[truncated]'

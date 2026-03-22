@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 85
+  domain: second_hand_marketplace
+  domain_display: Second-Hand Marketplace
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:33:39.049290'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_085_second_hand_marketplace/second_hand_marketplace_refactored.puml
+    image: output/run_20260321_004201/models/prompt_085_second_hand_marketplace/second_hand_marketplace_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_085_second_hand_marketplace_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Seller\nactor Buyer\n\
+    actor Admin\n\nrectangle \"Second-Hand Marketplace\" {\n  usecase \"Create Listing\"\
+    \ as UC1\n  usecase \"Manage My Listings\" as UC3\n  usecase \"Search Items\"\
+    \ as UC4\n  usecase \"Purchase Item\" as UC6\n  usecase \"Rate Seller\" as UC8\n\
+    \  usecase \"Send Message\" as UC9\n  usecase \"Browse Categories\" as UC10\n\
+    \  usecase \"Manage Users\" as UC11\n  usecase \"Resolve Dispute\" as UC12\n \
+    \ usecase \"View Item Details\" as UC13\n}\n\nSeller --> UC1\nSeller --> UC3\n\
+    Seller --> UC9\n\nBuyer --> UC4\nBuyer --> UC6\nBuyer --> UC8\nBuyer --> UC9\n\
+    Buyer --> UC10\nBuyer --> UC13\n\nAdmin --> UC11\nAdmin --> UC12\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: second_hand_marketplace
+
+  DOMAIN_DISPLAY: Second-Hand Marketplace
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Create Listing, Upload Photos, include (Create Listing → Upload
+  Photos)
+
+  EXPLANATION: "Upload Photos" is an inclusion use case included only by "Create Listing".
+  It is not associated with any actor directly, is not included by any other use case,
+  does not include or extend any other use case, and is not extended by or generali
+  …[truncated]'

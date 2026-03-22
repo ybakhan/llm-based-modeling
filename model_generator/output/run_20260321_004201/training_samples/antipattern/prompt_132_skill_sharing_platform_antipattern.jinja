@@ -1,0 +1,60 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor Learner
+actor Instructor
+actor Admin
+
+rectangle "Skill Sharing Platform" {
+  usecase "Browse Skills" as UC1
+  usecase "Search Instructors" as UC2
+  usecase "Book Session" as UC3
+  usecase "Validate Availability" as UC4
+  usecase "Process Payment" as UC5
+  usecase "Leave Review" as UC6
+  usecase "Create Skill Listing" as UC7
+  usecase "Upload Portfolio Media" as UC8
+  usecase "Manage Schedule" as UC9
+  usecase "View Earnings" as UC10
+  usecase "Send Message" as UC11
+  usecase "Moderate Content" as UC12
+  usecase "Manage Users" as UC13
+  usecase "View Analytics Dashboard" as UC14
+}
+
+Learner -- UC1
+Learner -- UC2
+Learner -- UC3
+Learner -- UC6
+Learner -- UC11
+Instructor -- UC7
+Instructor -- UC9
+Instructor -- UC10
+Instructor -- UC11
+Admin -- UC12
+Admin -- UC13
+Admin -- UC14
+
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Book Session, Validate Availability
+   Instance 1: Explanation: "Book Session" includes "Validate Availability". "Validate Availability" is included by only "Book Session", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It is a decomposed sub-step of booking rather than a complete service offering an observable result to a user.
+
+   Instance 2: Constructs Involved: Book Session, Process Payment
+   Instance 2: Explanation: "Book Session" includes "Process Payment". "Process Payment" is included by only "Book Session", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents an internal processing step decomposed out of the booking flow, not a standalone service with an observable result to any actor.
+
+   Instance 3: Constructs Involved: Create Skill Listing, Upload Portfolio Media
+   Instance 3: Explanation: "Create Skill Listing" includes "Upload Portfolio Media". "Upload Portfolio Media" is included by only "Create Skill Listing", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It is a decomposed sub-step of creating a listing rather than a complete service.

@@ -1,0 +1,105 @@
+
+
+DOMAIN: restaurant_reservation_system
+DOMAIN_DISPLAY: Restaurant Reservation System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Make Reservation, Check Table Availability, include relationship from Make Reservation to Check Table Availability
+EXPLANATION: "Check Table Availability" is an inclusion use case included only by "Make Reservation." It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed sub-step of making a reservation rather than a complete, independently valuable service observable to any actor.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Make Reservation, Send Confirmation Email, include relationship from Make Reservation to Send Confirmation Email
+EXPLANATION: "Send Confirmation Email" is an inclusion use case included only by "Make Reservation." It has no actor association, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It is a functional decomposition of the reservation process — sending a confirmation is a sub-step, not a standalone service providing an observable result to a user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Cancel Reservation, Validate Cancellation Policy, include relationship from Cancel Reservation to Validate Cancellation Policy
+EXPLANATION: "Validate Cancellation Policy" is an inclusion use case included only by "Cancel Reservation." It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Validating a cancellation policy is an internal procedural step decomposed out of cancellation, not a complete service with an observable result to any actor.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Check Table Availability," "Send Confirmation Email," and "Validate Cancellation Policy" — each represent internal sub-steps improperly extracted from their respective base use cases. Each is included by exactly one use case, has no actor association, and participates in no other relationships. Applying "Drop Functional Decomposition": (1) Merge "Check Table Availability" into "Make Reservation" and remove the include relationship. (2) Merge "Send Confirmation Email" into "Make Reservation" and remove the include relationship. (3) Merge "Validate Cancellation Policy" into "Cancel Reservation" and remove the include relationship. This eliminates 3 use cases and 3 include relationships (6 constructs), yielding a cleaner model where each use case represents a complete service.
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Restaurant Manager" as Manager
+actor "Receptionist" as Receptionist
+
+rectangle "Restaurant Reservation System" {
+  usecase "Make Reservation" as UC1
+  usecase "Cancel Reservation" as UC2
+  usecase "Modify Reservation" as UC3
+  usecase "View Reservations" as UC4
+  usecase "Manage Table Layout" as UC5
+  usecase "Generate Reports" as UC6
+  usecase "Leave Review" as UC7
+  usecase "Check Table Availability" as UC8
+  usecase "Send Confirmation Email" as UC9
+  usecase "Validate Cancellation Policy" as UC10
+  usecase "Request Special Seating" as UC11
+  usecase "View Waitlist" as UC12
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC3
+Customer --> UC7
+Manager --> UC5
+Manager --> UC6
+Manager --> UC4
+Receptionist --> UC4
+Receptionist --> UC12
+
+UC1 ..> UC8 : <<include>>
+UC1 ..> UC9 : <<include>>
+UC2 ..> UC10 : <<include>>
+UC1 <.. UC11 : <<extend>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 18
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Customer" as Customer
+actor "Restaurant Manager" as Manager
+actor "Receptionist" as Receptionist
+
+rectangle "Restaurant Reservation System" {
+  usecase "Make Reservation" as UC1
+  usecase "Cancel Reservation" as UC2
+  usecase "Modify Reservation" as UC3
+  usecase "View Reservations" as UC4
+  usecase "Manage Table Layout" as UC5
+  usecase "Generate Reports" as UC6
+  usecase "Leave Review" as UC7
+  usecase "Request Special Seating" as UC8
+  usecase "View Waitlist" as UC9
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC3
+Customer --> UC7
+Manager --> UC5
+Manager --> UC6
+Manager --> UC4
+Receptionist --> UC4
+Receptionist --> UC9
+
+UC1 <.. UC8 : <<extend>>
+@enduml
+```

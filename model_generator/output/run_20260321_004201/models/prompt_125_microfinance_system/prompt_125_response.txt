@@ -1,0 +1,108 @@
+
+
+DOMAIN: microfinance_system
+DOMAIN_DISPLAY: Microfinance System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Process Loan Application, Verify Applicant Identity, include relationship from "Process Loan Application" to "Verify Applicant Identity"
+EXPLANATION: "Verify Applicant Identity" is an inclusion use case included only by "Process Loan Application". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed step of loan processing rather than a complete, standalone service observable to any actor. This constitutes the Functional Decomposition antipattern.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Disburse Loan, Calculate Disbursement Amount, include relationship from "Disburse Loan" to "Calculate Disbursement Amount"
+EXPLANATION: "Calculate Disbursement Amount" is an inclusion use case included only by "Disburse Loan". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step of the disbursement process rather than a complete service to any user. This constitutes the Functional Decomposition antipattern.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Manage Repayments, Send Payment Reminder, include relationship from "Manage Repayments" to "Send Payment Reminder"
+EXPLANATION: "Send Payment Reminder" is an inclusion use case included only by "Manage Repayments". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed step of repayment management rather than a complete standalone service. This constitutes the Functional Decomposition antipattern.
+
+REFACTORING_RATIONALE: All three functional decomposition instances must be resolved by merging the inclusion use cases into their respective base use cases. (1) "Verify Applicant Identity" must be merged into "Process Loan Application" — identity verification is an internal step of processing a loan application, not an independent service. The use case, the include relationship, and the orphan use case are removed. (2) "Calculate Disbursement Amount" must be merged into "Disburse Loan" — calculating the amount is an internal step of disbursement. The use case and include relationship are removed. (3) "Send Payment Reminder" must be merged into "Manage Repayments" — sending a reminder is an internal sub-step of managing repayments, not a standalone service offered to any actor. The use case and include relationship are removed. This eliminates 3 use cases and 3 include relationships, reducing the construct count from 26 to 20.
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Loan Officer" as LO
+actor "Branch Manager" as BM
+actor "Borrower" as BO
+actor "Auditor" as AU
+
+rectangle "Microfinance System" {
+  usecase "Process Loan Application" as UC1
+  usecase "Verify Applicant Identity" as UC2
+  usecase "Disburse Loan" as UC3
+  usecase "Calculate Disbursement Amount" as UC4
+  usecase "Manage Repayments" as UC5
+  usecase "Send Payment Reminder" as UC6
+  usecase "Register Borrower" as UC7
+  usecase "View Loan Status" as UC8
+  usecase "Generate Financial Report" as UC9
+  usecase "Approve Loan" as UC10
+  usecase "Close Loan Account" as UC11
+  usecase "Record Savings Deposit" as UC12
+}
+
+LO -- UC1
+LO -- UC3
+LO -- UC5
+LO -- UC7
+LO -- UC12
+BO -- UC8
+BM -- UC10
+BM -- UC9
+BM -- UC11
+AU -- UC9
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Loan Officer" as LO
+actor "Branch Manager" as BM
+actor "Borrower" as BO
+actor "Auditor" as AU
+
+rectangle "Microfinance System" {
+  usecase "Process Loan Application" as UC1
+  usecase "Disburse Loan" as UC3
+  usecase "Manage Repayments" as UC5
+  usecase "Register Borrower" as UC7
+  usecase "View Loan Status" as UC8
+  usecase "Generate Financial Report" as UC9
+  usecase "Approve Loan" as UC10
+  usecase "Close Loan Account" as UC11
+  usecase "Record Savings Deposit" as UC12
+}
+
+LO -- UC1
+LO -- UC3
+LO -- UC5
+LO -- UC7
+LO -- UC12
+BO -- UC8
+BM -- UC10
+BM -- UC9
+BM -- UC11
+AU -- UC9
+@enduml
+```

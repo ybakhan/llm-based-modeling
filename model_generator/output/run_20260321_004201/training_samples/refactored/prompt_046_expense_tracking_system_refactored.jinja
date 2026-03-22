@@ -1,0 +1,30 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Employee
+actor Manager
+
+rectangle "Expense Tracking System" {
+  usecase "Submit Expense Report" as UC1
+  usecase "View Expense History" as UC3
+  usecase "Approve Expense" as UC4
+  usecase "Categorize Expense" as UC5
+  usecase "Generate Spending Report" as UC6
+}
+
+Employee --> UC1
+Employee --> UC3
+Employee --> UC5
+Manager --> UC4
+Manager --> UC6
+
+@enduml
+
+
+Answer:
+No antipattern detected.

@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Subscriber" as Sub
+actor "Admin" as Admin
+
+rectangle "Subscription Box Service" {
+  usecase "Browse Available Boxes" as UC1
+  usecase "Select Subscription Plan" as UC2
+  usecase "Manage Delivery Preferences" as UC4
+  usecase "Cancel Subscription" as UC5
+  usecase "Manage Box Inventory" as UC6
+}
+
+Sub -- UC1
+Sub -- UC2
+Sub -- UC4
+Sub -- UC5
+Admin -- UC6
+
+@enduml

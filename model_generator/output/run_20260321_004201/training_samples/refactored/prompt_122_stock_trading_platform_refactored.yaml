@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 122
+  domain: stock_trading_platform
+  domain_display: Stock Trading Platform
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:47:18.429552'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_122_stock_trading_platform/stock_trading_platform_refactored.puml
+    image: output/run_20260321_004201/models/prompt_122_stock_trading_platform/stock_trading_platform_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_122_stock_trading_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Trader\" as Trader\n\
+    actor \"Broker\" as Broker\nactor \"System Administrator\" as Admin\n\nrectangle\
+    \ \"Stock Trading Platform\" {\n  usecase \"Place Order\" as UC1\n  usecase \"\
+    Execute Trade\" as UC3\n  usecase \"View Portfolio\" as UC5\n  usecase \"Cancel\
+    \ Order\" as UC7\n  usecase \"View Market Data\" as UC8\n  usecase \"Set Price\
+    \ Alert\" as UC9\n  usecase \"Manage User Accounts\" as UC10\n  usecase \"Generate\
+    \ Trade Report\" as UC11\n  usecase \"Place Limit Order\" as UC12\n  usecase \"\
+    Place Market Order\" as UC13\n\n  UC12 --|> UC1\n  UC13 --|> UC1\n\n  UC7 ..>\
+    \ UC1 : <<extend>>\n}\n\nTrader --> UC1\nTrader --> UC5\nTrader --> UC8\nTrader\
+    \ --> UC9\nBroker --> UC3\nBroker --> UC11\nAdmin --> UC10\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: stock_trading_platform
+
+  DOMAIN_DISPLAY: Stock Trading Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Order, Validate Order Parameters, include relationship
+  from Place Order to Validate Order Parameters
+
+  EXPLANATION: "Validate Order Parameters" is an inclusion use case included only
+  by "Place Order". It is not associated with any actor, does not include or extend
+  any other use case, is not extended by any use case, and is  …[truncated]'

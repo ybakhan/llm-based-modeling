@@ -1,0 +1,48 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Network Admin" as Admin
+actor "NOC Operator" as NOC
+actor "Manager" as Manager
+actor "Monitoring Agent" as Agent
+
+rectangle "Network Monitoring System" {
+  usecase "Monitor Network Traffic" as UC1
+  usecase "Configure Device Thresholds" as UC3
+  usecase "Respond to Alert" as UC4
+  usecase "Escalate Incident" as UC6
+  usecase "Generate Performance Report" as UC7
+  usecase "View Dashboard" as UC9
+  usecase "Manage Device Inventory" as UC10
+  usecase "Discover Network Devices" as UC11
+  usecase "Schedule Maintenance Window" as UC12
+}
+
+Admin -- UC1
+Admin -- UC3
+Admin -- UC10
+Admin -- UC11
+
+NOC -- UC4
+NOC -- UC9
+
+Manager -- UC7
+Manager -- UC9
+
+Agent -- UC1
+Agent -- UC11
+
+UC6 .> UC4 : <<extend>>
+
+Admin -- UC12
+
+@enduml
+
+
+Answer:
+No antipattern detected.

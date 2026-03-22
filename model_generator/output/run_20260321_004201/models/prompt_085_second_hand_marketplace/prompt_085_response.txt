@@ -1,0 +1,113 @@
+
+
+DOMAIN: second_hand_marketplace
+DOMAIN_DISPLAY: Second-Hand Marketplace
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Create Listing, Upload Photos, include (Create Listing → Upload Photos)
+EXPLANATION: "Upload Photos" is an inclusion use case included only by "Create Listing". It is not associated with any actor directly, is not included by any other use case, does not include or extend any other use case, and is not extended by or generalized with any use case. This represents functional decomposition where the act of uploading photos — a sub-step of creating a listing — has been improperly separated into its own use case that provides no standalone observable result to any actor.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Purchase Item, Process Payment, include (Purchase Item → Process Payment)
+EXPLANATION: "Process Payment" is an inclusion use case included only by "Purchase Item". It has no direct actor association, is not included by any other use case, does not include or extend any other use case, and is not extended by or generalized with any use case. Processing payment is a sub-step of purchasing an item and has been functionally decomposed into a separate use case that does not represent a complete, independently valuable service to any user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Search Items, Apply Filters, include (Search Items → Apply Filters)
+EXPLANATION: "Apply Filters" is an inclusion use case included only by "Search Items". It has no direct actor association, is not included by any other use case, does not include or extend any other use case, and is not extended by or generalized with any use case. Applying filters is an internal step within the search process and has been decomposed into its own use case, providing no independently observable result to any actor.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Upload Photos", "Process Payment", and "Apply Filters" — must each be merged back into their respective base use cases ("Create Listing", "Purchase Item", and "Search Items"). Each of these inclusion use cases is included by only one base use case, has no actor association, and neither includes, extends, nor generalizes any other use case. By merging them, we eliminate 3 use cases and 3 include relationships (removing 6 constructs total), resulting in a cleaner model where each use case represents a complete, actor-observable service. The behavior of uploading photos becomes part of "Create Listing", payment processing becomes part of "Purchase Item", and filter application becomes part of "Search Items".
+
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Seller
+actor Buyer
+actor Admin
+
+rectangle "Second-Hand Marketplace" {
+  usecase "Create Listing" as UC1
+  usecase "Upload Photos" as UC2
+  usecase "Manage My Listings" as UC3
+  usecase "Search Items" as UC4
+  usecase "Apply Filters" as UC5
+  usecase "Purchase Item" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Rate Seller" as UC8
+  usecase "Send Message" as UC9
+  usecase "Browse Categories" as UC10
+  usecase "Manage Users" as UC11
+  usecase "Resolve Dispute" as UC12
+  usecase "View Item Details" as UC13
+}
+
+Seller --> UC1
+Seller --> UC3
+Seller --> UC9
+
+Buyer --> UC4
+Buyer --> UC6
+Buyer --> UC8
+Buyer --> UC9
+Buyer --> UC10
+Buyer --> UC13
+
+Admin --> UC11
+Admin --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 18
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Seller
+actor Buyer
+actor Admin
+
+rectangle "Second-Hand Marketplace" {
+  usecase "Create Listing" as UC1
+  usecase "Manage My Listings" as UC3
+  usecase "Search Items" as UC4
+  usecase "Purchase Item" as UC6
+  usecase "Rate Seller" as UC8
+  usecase "Send Message" as UC9
+  usecase "Browse Categories" as UC10
+  usecase "Manage Users" as UC11
+  usecase "Resolve Dispute" as UC12
+  usecase "View Item Details" as UC13
+}
+
+Seller --> UC1
+Seller --> UC3
+Seller --> UC9
+
+Buyer --> UC4
+Buyer --> UC6
+Buyer --> UC8
+Buyer --> UC9
+Buyer --> UC10
+Buyer --> UC13
+
+Admin --> UC11
+Admin --> UC12
+
+@enduml
+```

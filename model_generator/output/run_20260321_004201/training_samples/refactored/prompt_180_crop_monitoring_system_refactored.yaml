@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 180
+  domain: crop_monitoring_system
+  domain_display: Crop Monitoring System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:11:19.740831'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_180_crop_monitoring_system/crop_monitoring_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_180_crop_monitoring_system/crop_monitoring_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_180_crop_monitoring_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Farm Manager\" as\
+    \ FM\nactor \"Agronomist\" as AG\nactor \"Field Technician\" as FT\nactor \"Weather\
+    \ Service\" as WS\n\nrectangle \"Crop Monitoring System\" {\n  usecase \"Monitor\
+    \ Crop Health\" as UC1\n  usecase \"Generate Yield Report\" as UC3\n  usecase\
+    \ \"Schedule Irrigation\" as UC5\n  usecase \"Detect Pest Outbreak\" as UC7\n\
+    \  usecase \"Configure Field Zones\" as UC8\n  usecase \"View Weather Forecast\"\
+    \ as UC9\n  usecase \"Manage Crop Profiles\" as UC10\n  usecase \"Set Alert Thresholds\"\
+    \ as UC11\n  usecase \"Review Historical Data\" as UC12\n}\n\nFM --> UC1\nFM -->\
+    \ UC3\nFM --> UC5\nFM --> UC11\nAG --> UC7\nAG --> UC10\nAG --> UC12\nFT --> UC8\n\
+    WS --> UC9\n\nUC7 ..> UC9 : <<include>>\nUC9 ..> UC1 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: crop_monitoring_system
+
+  DOMAIN_DISPLAY: Crop Monitoring System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Monitor Crop Health, Capture Sensor Data, include (Monitor
+  Crop Health → Capture Sensor Data)
+
+  EXPLANATION: "Capture Sensor Data" is an inclusion use case included only by "Monitor
+  Crop Health." It is not associated with any actor, does not include or extend any
+  other use case, is not extended by any use case, and is not part of …[truncated]'

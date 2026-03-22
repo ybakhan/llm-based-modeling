@@ -1,0 +1,59 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Fitness User" as User
+actor "Personal Trainer" as Trainer
+actor "Admin" as Admin
+
+rectangle "Fitness Tracking App" {
+  usecase "Register Account" as UC1
+  usecase "Log Workout" as UC2
+  usecase "Validate Exercise Input" as UC3
+  usecase "Track Nutrition" as UC4
+  usecase "Calculate Calorie Totals" as UC5
+  usecase "View Progress Report" as UC6
+  usecase "Fetch Historical Data" as UC7
+  usecase "Set Fitness Goal" as UC8
+  usecase "Share Workout Summary" as UC9
+  usecase "Manage User Accounts" as UC10
+  usecase "Create Training Plan" as UC11
+  usecase "Monitor Client Progress" as UC12
+  usecase "Sync Wearable Device" as UC13
+}
+
+User -- UC1
+User -- UC2
+User -- UC4
+User -- UC6
+User -- UC8
+User -- UC9
+User -- UC13
+
+Trainer -- UC11
+Trainer -- UC12
+
+Admin -- UC10
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Log Workout, Validate Exercise Input, include (Log Workout → Validate Exercise Input)
+   Instance 1: Explanation: "Validate Exercise Input" is an inclusion use case included only by "Log Workout". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (input validation) rather than a complete service observable to an actor, constituting functional decomposition of "Log Workout" via the include relationship.
+
+   Instance 2: Constructs Involved: Track Nutrition, Calculate Calorie Totals, include (Track Nutrition → Calculate Calorie Totals)
+   Instance 2: Explanation: "Calculate Calorie Totals" is an inclusion use case included only by "Track Nutrition". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents an internal calculation step rather than a complete, independently useful service, constituting functional decomposition of "Track Nutrition" via the include relationship.
+
+   Instance 3: Constructs Involved: View Progress Report, Fetch Historical Data, include (View Progress Report → Fetch Historical Data)
+   Instance 3: Explanation: "Fetch Historical Data" is an inclusion use case included only by "View Progress Report". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents an internal data retrieval step rather than a complete service with an observable result to a user, constituting functional decomposition of "View Progress Report" via the include relationship.

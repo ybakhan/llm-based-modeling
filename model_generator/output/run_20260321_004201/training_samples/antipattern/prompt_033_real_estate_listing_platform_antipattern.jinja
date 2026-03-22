@@ -1,0 +1,36 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Home Buyer" as Buyer
+actor "Property Agent" as Agent
+
+rectangle "Real Estate Listing Platform" {
+  usecase "Browse Listings" as UC1
+  usecase "Search Properties" as UC2
+  usecase "Create Listing" as UC3
+  usecase "Contact Agent" as UC4
+  usecase "Apply Filters" as UC5
+  usecase "Edit Listing" as UC6
+}
+
+Buyer -- UC1
+Buyer -- UC2
+Buyer -- UC4
+Agent -- UC3
+Agent -- UC6
+
+UC2 ..> UC5 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Search Properties (UC2), Apply Filters (UC5), UC2 --include--> UC5
+   Explanation: "Apply Filters" (UC5) is an inclusion use case that is included by only one use case ("Search Properties" / UC2). "Apply Filters" is not associated with any actor directly, it does not include or extend any other use case, it is not extended by any use case, and it is not involved in any generalization. It represents a sub-step of searching rather than a complete, independently valuable service to any actor. This is a textbook functional decomposition — the designer has broken the search functionality into an artificial sub-function that has no standalone value.

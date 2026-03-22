@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 71
+  domain: property_management_system
+  domain_display: Property Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 21
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:28:44.837269'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_071_property_management_system/property_management_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_071_property_management_system/property_management_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_071_property_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Property Manager\"\
+    \ as PM\nactor \"Tenant\" as T\nactor \"Owner\" as O\nactor \"Maintenance Staff\"\
+    \ as MS\n\nrectangle \"Property Management System\" {\n  usecase \"List Property\"\
+    \ as UC1\n  usecase \"Manage Lease Agreement\" as UC3\n  usecase \"Collect Rent\"\
+    \ as UC4\n  usecase \"Schedule Maintenance\" as UC6\n  usecase \"Submit Maintenance\
+    \ Request\" as UC8\n  usecase \"View Property Reports\" as UC9\n  usecase \"View\
+    \ Payment History\" as UC10\n  usecase \"Generate Financial Report\" as UC11\n\
+    \  usecase \"Inspect Property\" as UC12\n  usecase \"Renew Lease\" as UC13\n}\n\
+    \nPM --> UC1\nPM --> UC3\nPM --> UC4\nPM --> UC6\nPM --> UC9\nPM --> UC12\n\n\
+    T --> UC8\nT --> UC10\nT --> UC13\n\nO --> UC9\nO --> UC11\n\nMS --> UC6\n\nUC13\
+    \ ..> UC3 : <<include>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: property_management_system
+
+  DOMAIN_DISPLAY: Property Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Collect Rent, Validate Payment Details, include relationship
+  from Collect Rent to Validate Payment Details
+
+  EXPLANATION: "Validate Payment Details" is an inclusion use case included only by
+  "Collect Rent". It is not associated with any actor, not included by any other use
+  case, does not include or extend any other use ca …[truncated]'

@@ -1,0 +1,24 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Nurse" as Nurse
+actor "Administrator" as Admin
+actor "Doctor" as Doctor
+
+rectangle "Nursing Home Management System" {
+  usecase "Admit Resident" as UC1
+  usecase "Record Personal Details" as UC2
+  usecase "Assign Room" as UC3
+  usecase "Administer Medication" as UC4
+  usecase "Schedule Care Plan" as UC5
+  usecase "Generate Reports" as UC6
+}
+
+Admin -- UC1
+UC1 ..> UC2 : <<include>>
+Admin -- UC3
+Nurse -- UC4
+Doctor -- UC5
+Admin -- UC6
+
+@enduml

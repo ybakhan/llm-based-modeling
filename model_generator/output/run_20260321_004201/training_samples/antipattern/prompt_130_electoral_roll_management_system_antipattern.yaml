@@ -1,0 +1,109 @@
+metadata:
+  prompt_number: 130
+  domain: electoral_roll_management_system
+  domain_display: Electoral Roll Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Register Voter, Validate ID Documents
+      explanation: '"Validate ID Documents" is an inclusion use case included only
+        by "Register Voter". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step of voter registration (validating documents) rather than a complete,
+        standalone service observable by an actor. This is functional decomposition
+        — breaking "Register Voter" into procedural steps via <<include>>.'
+    - constructs_involved: Update Voter Record, Verify Address Change
+      explanation: '"Verify Address Change" is an inclusion use case included only
+        by "Update Voter Record". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Verifying an address
+        change is an internal step of updating a voter record, not a complete service
+        to any actor. This constitutes functional decomposition of the update process.'
+    - constructs_involved: Remove Voter, Confirm Removal Eligibility
+      explanation: '"Confirm Removal Eligibility" is an inclusion use case included
+        only by "Remove Voter". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Confirming eligibility
+        for removal is an internal procedural check, not a standalone service providing
+        an observable result to a user. This is functional decomposition of the removal
+        process.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:53:10.903898'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_130_electoral_roll_management_system/electoral_roll_management_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_130_electoral_roll_management_system/electoral_roll_management_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_130_electoral_roll_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Election\
+    \ Officer\" as EO\nactor \"Voter\" as V\nactor \"System Administrator\" as SA\n\
+    \nrectangle \"Electoral Roll Management System\" {\n  usecase \"Register Voter\"\
+    \ as UC1\n  usecase \"Validate ID Documents\" as UC1a\n  usecase \"Update Voter\
+    \ Record\" as UC2\n  usecase \"Verify Address Change\" as UC2a\n  usecase \"Remove\
+    \ Voter\" as UC3\n  usecase \"Confirm Removal Eligibility\" as UC3a\n  usecase\
+    \ \"Search Electoral Roll\" as UC4\n  usecase \"Generate Voter List\" as UC5\n\
+    \  usecase \"View Registration Status\" as UC6\n  usecase \"Submit Registration\
+    \ Application\" as UC7\n  usecase \"Manage Polling Districts\" as UC8\n  usecase\
+    \ \"Audit Electoral Roll\" as UC9\n  usecase \"Export Roll Data\" as UC10\n  usecase\
+    \ \"Manage User Accounts\" as UC11\n}\n\nEO --> UC1\nEO --> UC2\nEO --> UC3\n\
+    EO --> UC4\nEO --> UC5\nEO --> UC9\n\nV --> UC6\nV --> UC7\n\nSA --> UC8\nSA -->\
+    \ UC10\nSA --> UC11\n\nUC1 ..> UC1a : <<include>>\nUC2 ..> UC2a : <<include>>\n\
+    UC3 ..> UC3a : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Register Voter, Validate ID Documents\n\
+    \   Instance 1: Explanation: \"Validate ID Documents\" is an inclusion use case\
+    \ included only by \"Register Voter\". It is not associated with any actor, is\
+    \ not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ represents a sub-step of voter registration (validating documents) rather than\
+    \ a complete, standalone service observable by an actor. This is functional decomposition\
+    \ — breaking \"Register Voter\" into procedural steps via <<include>>.\n\n   Instance\
+    \ 2: Constructs Involved: Update Voter Record, Verify Address Change\n   Instance\
+    \ 2: Explanation: \"Verify Address Change\" is an inclusion use case included\
+    \ only by \"Update Voter Record\". It is not associated with any actor, is not\
+    \ included by any other use case, does not include or extend any use case, is\
+    \ not extended by any use case, and has no generalization relationships. Verifying\
+    \ an address change is an internal step of updating a voter record, not a complete\
+    \ service to any actor. This constitutes functional decomposition of the update\
+    \ process.\n\n   Instance 3: Constructs Involved: Remove Voter, Confirm Removal\
+    \ Eligibility\n   Instance 3: Explanation: \"Confirm Removal Eligibility\" is\
+    \ an inclusion use case included only by \"Remove Voter\". It is not associated\
+    \ with any actor, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ Confirming eligibility for removal is an internal procedural check, not a standalone\
+    \ service providing an observable result to a user. This is functional decomposition\
+    \ of the removal process."
+raw_response_excerpt: '
+
+
+  DOMAIN: electoral_roll_management_system
+
+  DOMAIN_DISPLAY: Electoral Roll Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Voter, Validate ID Documents
+
+  EXPLANATION: "Validate ID Documents" is an inclusion use case included only by "Register
+  Voter". It is not associated with any actor, is not included by any other use case,
+  does not include or extend any use case, is not extended by any use case, and has
+  no generalizatio …[truncated]'

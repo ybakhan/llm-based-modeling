@@ -1,0 +1,111 @@
+metadata:
+  prompt_number: 109
+  domain: academic_conference_management_system
+  domain_display: Academic Conference Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Submit Paper, Validate Paper Format, include (Submit Paper
+        → Validate Paper Format)
+      explanation: '"Validate Paper Format" is an inclusion use case included only
+        by "Submit Paper." It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. It represents a sub-step
+        (format validation) of the paper submission process rather than a complete,
+        standalone service observable to any user. This is functional decomposition
+        of "Submit Paper" into a procedural step.'
+    - constructs_involved: Register for Conference, Process Payment, include (Register
+        for Conference → Process Payment)
+      explanation: '"Process Payment" is an inclusion use case included only by "Register
+        for Conference." It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. Processing payment
+        is an internal procedural step of registration, not a complete service offered
+        independently to any actor. This decomposes registration into a sub-function.'
+    - constructs_involved: Assign Reviewers, Check Reviewer Expertise, include (Assign
+        Reviewers → Check Reviewer Expertise)
+      explanation: '"Check Reviewer Expertise" is an inclusion use case included only
+        by "Assign Reviewers." It is not associated with any actor, not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Checking expertise
+        is an internal step within reviewer assignment, not a standalone service providing
+        an observable result to any user.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:42:37.236803'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_109_academic_conference_management_system/academic_conference_management_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_109_academic_conference_management_system/academic_conference_management_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_109_academic_conference_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Author\"\
+    \ as Author\nactor \"Reviewer\" as Reviewer\nactor \"Program Chair\" as ProgramChair\n\
+    actor \"Attendee\" as Attendee\n\nrectangle \"Academic Conference Management System\"\
+    \ {\n  usecase \"Submit Paper\" as UC1\n  usecase \"Validate Paper Format\" as\
+    \ UC2\n  usecase \"Review Paper\" as UC3\n  usecase \"Assign Reviewers\" as UC4\n\
+    \  usecase \"Check Reviewer Expertise\" as UC5\n  usecase \"Manage Conference\
+    \ Schedule\" as UC6\n  usecase \"Register for Conference\" as UC7\n  usecase \"\
+    Process Payment\" as UC8\n  usecase \"View Accepted Papers\" as UC9\n  usecase\
+    \ \"Submit Camera Ready\" as UC10\n  usecase \"Send Notifications\" as UC11\n\
+    \  usecase \"View Schedule\" as UC12\n}\n\nAuthor --> UC1\nAuthor --> UC10\nReviewer\
+    \ --> UC3\nProgramChair --> UC4\nProgramChair --> UC6\nProgramChair --> UC11\n\
+    Attendee --> UC7\nAttendee --> UC9\nAttendee --> UC12\n\nUC1 ..> UC2 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\nUC4 ..> UC5 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Submit Paper, Validate Paper Format, include\
+    \ (Submit Paper → Validate Paper Format)\n   Instance 1: Explanation: \"Validate\
+    \ Paper Format\" is an inclusion use case included only by \"Submit Paper.\" It\
+    \ is not associated with any actor, not included by any other use case, does not\
+    \ include or extend any use case, is not extended by any use case, and has no\
+    \ generalization relationships. It represents a sub-step (format validation) of\
+    \ the paper submission process rather than a complete, standalone service observable\
+    \ to any user. This is functional decomposition of \"Submit Paper\" into a procedural\
+    \ step.\n\n   Instance 2: Constructs Involved: Register for Conference, Process\
+    \ Payment, include (Register for Conference → Process Payment)\n   Instance 2:\
+    \ Explanation: \"Process Payment\" is an inclusion use case included only by \"\
+    Register for Conference.\" It is not associated with any actor, not included by\
+    \ any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. Processing payment\
+    \ is an internal procedural step of registration, not a complete service offered\
+    \ independently to any actor. This decomposes registration into a sub-function.\n\
+    \n   Instance 3: Constructs Involved: Assign Reviewers, Check Reviewer Expertise,\
+    \ include (Assign Reviewers → Check Reviewer Expertise)\n   Instance 3: Explanation:\
+    \ \"Check Reviewer Expertise\" is an inclusion use case included only by \"Assign\
+    \ Reviewers.\" It is not associated with any actor, not included by any other\
+    \ use case, does not include or extend any use case, is not extended by any use\
+    \ case, and has no generalization relationships. Checking expertise is an internal\
+    \ step within reviewer assignment, not a standalone service providing an observable\
+    \ result to any user."
+raw_response_excerpt: '
+
+
+  DOMAIN: academic_conference_management_system
+
+  DOMAIN_DISPLAY: Academic Conference Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Paper, Validate Paper Format, include (Submit Paper
+  → Validate Paper Format)
+
+  EXPLANATION: "Validate Paper Format" is an inclusion use case included only by "Submit
+  Paper." It is not associated with any actor, not included by any other use case,
+  does not include or extend any use case, is not …[truncated]'

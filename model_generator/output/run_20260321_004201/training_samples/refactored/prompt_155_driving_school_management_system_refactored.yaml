@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 155
+  domain: driving_school_management_system
+  domain_display: Driving School Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 20
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:02:14.637375'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_155_driving_school_management_system/driving_school_management_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_155_driving_school_management_system/driving_school_management_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_155_driving_school_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Student\" as Student\n\
+    actor \"Instructor\" as Instructor\nactor \"Administrator\" as Admin\nactor \"\
+    Cashier\" as Cashier\n\nrectangle \"Driving School Management System\" {\n  usecase\
+    \ \"Register Student\" as UC1\n  usecase \"Schedule Driving Lesson\" as UC3\n\
+    \  usecase \"Record Lesson Outcome\" as UC5\n  usecase \"Process Payment\" as\
+    \ UC6\n  usecase \"Take Theory Exam\" as UC8\n  usecase \"Take Practical Exam\"\
+    \ as UC9\n  usecase \"Manage Instructor Roster\" as UC10\n  usecase \"Generate\
+    \ Progress Report\" as UC11\n  usecase \"View Schedule\" as UC12\n\n  UC8 ..>\
+    \ UC3 : <<extend>>\n}\n\nAdmin --> UC1\nAdmin --> UC3\nAdmin --> UC10\nAdmin -->\
+    \ UC11\nInstructor --> UC5\nInstructor --> UC12\nStudent --> UC8\nStudent -->\
+    \ UC9\nStudent --> UC12\nCashier --> UC6\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: driving_school_management_system
+
+  DOMAIN_DISPLAY: Driving School Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Driving Lesson, Check Instructor Availability, include
+  relationship from "Schedule Driving Lesson" to "Check Instructor Availability"
+
+  EXPLANATION: "Check Instructor Availability" is an inclusion use case included only
+  by "Schedule Driving Lesson." It is not associated with any actor, not included
+  by …[truncated]'

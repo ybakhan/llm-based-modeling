@@ -1,0 +1,111 @@
+
+
+DOMAIN: tour_package_booking_system
+DOMAIN_DISPLAY: Tour Package Booking System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Tour Package, Validate Payment Details, include relationship from Book Tour Package to Validate Payment Details
+EXPLANATION: "Validate Payment Details" is an inclusion use case included only by "Book Tour Package". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed sub-step of the booking process rather than a complete, standalone service offering an observable result to any actor. This constitutes functional decomposition via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Search Tour Packages, Apply Search Filters, include relationship from Search Tour Packages to Apply Search Filters
+EXPLANATION: "Apply Search Filters" is an inclusion use case included only by "Search Tour Packages". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Applying search filters is merely a sub-step of searching for tour packages, not a complete service delivering an observable result to a user. This is functional decomposition via the include relationship.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Cancel Booking, Generate Cancellation Reference, include relationship from Cancel Booking to Generate Cancellation Reference
+EXPLANATION: "Generate Cancellation Reference" is an inclusion use case included only by "Cancel Booking". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a cancellation reference number is an internal sub-step of the cancellation process, not a standalone service providing an observable result to any actor. This constitutes functional decomposition via the include relationship.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Payment Details", "Apply Search Filters", and "Generate Cancellation Reference" — each represent decomposed sub-steps that are included by only one base use case, are not connected to any actor, and have no other relationships. Per the "Drop Functional Decomposition" refactoring: (1) "Validate Payment Details" must be merged into "Book Tour Package", removing the include relationship and the orphan use case; (2) "Apply Search Filters" must be merged into "Search Tour Packages", removing the include relationship and the orphan use case; (3) "Generate Cancellation Reference" must be merged into "Cancel Booking", removing the include relationship and the orphan use case. This eliminates 3 use cases and 3 include relationships (6 constructs), resulting in a cleaner model where each use case represents a complete service.
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Travel Agent" as Agent
+actor "Payment Gateway" as Gateway
+
+rectangle "Tour Package Booking System" {
+  usecase "Search Tour Packages" as UC1
+  usecase "Apply Search Filters" as UC2
+  usecase "View Package Details" as UC3
+  usecase "Book Tour Package" as UC4
+  usecase "Validate Payment Details" as UC5
+  usecase "Cancel Booking" as UC6
+  usecase "Generate Cancellation Reference" as UC7
+  usecase "View Booking History" as UC8
+  usecase "Manage Tour Packages" as UC9
+  usecase "Process Refund" as UC10
+  usecase "Leave Review" as UC11
+  usecase "Apply Discount Code" as UC12
+}
+
+Customer --> UC1
+Customer --> UC3
+Customer --> UC4
+Customer --> UC6
+Customer --> UC8
+Customer --> UC11
+
+Agent --> UC9
+Agent --> UC10
+
+Gateway --> UC4
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC4 ..> UC12 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 18
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Customer" as Customer
+actor "Travel Agent" as Agent
+actor "Payment Gateway" as Gateway
+
+rectangle "Tour Package Booking System" {
+  usecase "Search Tour Packages" as UC1
+  usecase "View Package Details" as UC3
+  usecase "Book Tour Package" as UC4
+  usecase "Cancel Booking" as UC6
+  usecase "View Booking History" as UC8
+  usecase "Manage Tour Packages" as UC9
+  usecase "Process Refund" as UC10
+  usecase "Leave Review" as UC11
+  usecase "Apply Discount Code" as UC12
+}
+
+Customer --> UC1
+Customer --> UC3
+Customer --> UC4
+Customer --> UC6
+Customer --> UC8
+Customer --> UC11
+
+Agent --> UC9
+Agent --> UC10
+
+Gateway --> UC4
+
+UC4 ..> UC12 : <<extend>>
+
+@enduml
+```

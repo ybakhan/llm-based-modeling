@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 38
+  domain: telemedicine_system
+  domain_display: Telemedicine System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:14:31.250555'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_038_telemedicine_system/telemedicine_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_038_telemedicine_system/telemedicine_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_038_telemedicine_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Patient\" as Patient\n\
+    actor \"Doctor\" as Doctor\nactor \"Admin\" as Admin\nactor \"Pharmacist\" as\
+    \ Pharmacist\n\nrectangle \"Telemedicine System\" {\n  usecase \"Register Account\"\
+    \ as UC1\n  usecase \"Schedule Appointment\" as UC2\n  usecase \"Conduct Video\
+    \ Consultation\" as UC4\n  usecase \"View Medical Records\" as UC6\n  usecase\
+    \ \"Write Prescription\" as UC7\n  usecase \"Process Prescription\" as UC9\n \
+    \ usecase \"Manage User Accounts\" as UC10\n  usecase \"Generate Reports\" as\
+    \ UC11\n  usecase \"Request Refill\" as UC12\n  usecase \"Rate Consultation\"\
+    \ as UC13\n}\n\nPatient --> UC1\nPatient --> UC2\nPatient --> UC4\nPatient -->\
+    \ UC6\nPatient --> UC12\nPatient --> UC13\nDoctor --> UC4\nDoctor --> UC6\nDoctor\
+    \ --> UC7\nPharmacist --> UC9\nAdmin --> UC10\nAdmin --> UC11\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: telemedicine_system
+
+  DOMAIN_DISPLAY: Telemedicine System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Appointment, Validate Patient Insurance
+
+  EXPLANATION: "Validate Patient Insurance" is an inclusion use case included only
+  by "Schedule Appointment". It is not associated with any actor, not included by
+  any other use case, does not include or extend any other use case, is not extended
+  by any use case, and has no generalization …[truncated]'

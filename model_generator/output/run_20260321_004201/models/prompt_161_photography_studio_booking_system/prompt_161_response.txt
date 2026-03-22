@@ -1,0 +1,122 @@
+
+
+DOMAIN: photography_studio_booking_system
+DOMAIN_DISPLAY: Photography Studio Booking System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Studio Session, Validate Time Slot Availability, include relationship from Book Studio Session to Validate Time Slot Availability
+EXPLANATION: "Validate Time Slot Availability" is an inclusion use case included only by "Book Studio Session." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (checking slot availability) that is not a complete service on its own — it is a functional decomposition of the booking process into an internal step that provides no observable result to any user independently.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Payment, Generate Payment Receipt, include relationship from Process Payment to Generate Payment Receipt
+EXPLANATION: "Generate Payment Receipt" is an inclusion use case included only by "Process Payment." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a receipt is a sub-step of payment processing, not a standalone service — it decomposes "Process Payment" into an internal procedural step that delivers no independent observable result to any actor.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Register Customer, Send Confirmation Email, include relationship from Register Customer to Send Confirmation Email
+EXPLANATION: "Send Confirmation Email" is an inclusion use case included only by "Register Customer." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Sending a confirmation email is an internal implementation step of registration, not a complete service — it functionally decomposes the registration use case into a granular sub-task with no independent value to any actor.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Time Slot Availability," "Generate Payment Receipt," "Send Confirmation Email") must be merged back into their respective base use cases ("Book Studio Session," "Process Payment," "Register Customer"). These inclusion use cases each serve only one base use case, are not connected to any actor, and represent internal procedural steps rather than complete services. By applying "Drop Functional Decomposition," we absorb the sub-step behavior into the base use case, removing 3 use cases and 3 include relationships (6 constructs total), yielding a cleaner model where each use case represents a complete, observable service.
+
+CONSTRUCT_COUNT: 29
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Customer
+actor Photographer
+actor "Studio Manager" as Manager
+actor "Payment Gateway" as Gateway
+
+rectangle "Photography Studio Booking System" {
+  usecase "Register Customer" as UC1
+  usecase "Send Confirmation Email" as UC2
+  usecase "Browse Studio Packages" as UC3
+  usecase "Book Studio Session" as UC4
+  usecase "Validate Time Slot Availability" as UC5
+  usecase "Cancel Booking" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Generate Payment Receipt" as UC8
+  usecase "View Booking Schedule" as UC9
+  usecase "Upload Portfolio" as UC10
+  usecase "Manage Studio Rooms" as UC11
+  usecase "Generate Revenue Report" as UC12
+  usecase "Apply Discount" as UC13
+}
+
+Customer --> UC1
+Customer --> UC3
+Customer --> UC4
+Customer --> UC6
+Customer --> UC7
+
+Photographer --> UC9
+Photographer --> UC10
+
+Manager --> UC11
+Manager --> UC12
+Manager --> UC9
+
+Gateway --> UC7
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC7 ..> UC4 : <<extend>>
+UC13 ..> UC7 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 23
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Customer
+actor Photographer
+actor "Studio Manager" as Manager
+actor "Payment Gateway" as Gateway
+
+rectangle "Photography Studio Booking System" {
+  usecase "Register Customer" as UC1
+  usecase "Browse Studio Packages" as UC3
+  usecase "Book Studio Session" as UC4
+  usecase "Cancel Booking" as UC6
+  usecase "Process Payment" as UC7
+  usecase "View Booking Schedule" as UC9
+  usecase "Upload Portfolio" as UC10
+  usecase "Manage Studio Rooms" as UC11
+  usecase "Generate Revenue Report" as UC12
+  usecase "Apply Discount" as UC13
+}
+
+Customer --> UC1
+Customer --> UC3
+Customer --> UC4
+Customer --> UC6
+Customer --> UC7
+
+Photographer --> UC9
+Photographer --> UC10
+
+Manager --> UC11
+Manager --> UC12
+Manager --> UC9
+
+Gateway --> UC7
+
+UC7 ..> UC4 : <<extend>>
+UC13 ..> UC7 : <<extend>>
+
+@enduml
+```

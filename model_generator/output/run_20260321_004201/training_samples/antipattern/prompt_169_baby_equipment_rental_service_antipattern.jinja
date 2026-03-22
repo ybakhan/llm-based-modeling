@@ -1,0 +1,59 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Parent" as Parent
+actor "Staff Member" as Staff
+actor "Delivery Driver" as Driver
+
+rectangle "Baby Equipment Rental Service" {
+  usecase "Browse Equipment Catalog" as UC1
+  usecase "Reserve Equipment" as UC2
+  usecase "Check Equipment Availability" as UC3
+  usecase "Process Payment" as UC4
+  usecase "Validate Payment Details" as UC5
+  usecase "Return Equipment" as UC6
+  usecase "Generate Return Receipt" as UC7
+  usecase "Manage Inventory" as UC8
+  usecase "Deliver Equipment" as UC9
+  usecase "Track Rental Orders" as UC10
+  usecase "Rate Equipment" as UC11
+  usecase "Extend Rental Period" as UC12
+  usecase "Apply Late Fee" as UC13
+}
+
+Parent --> UC1
+Parent --> UC2
+Parent --> UC4
+Parent --> UC6
+Parent --> UC11
+Parent --> UC12
+
+Staff --> UC8
+Staff --> UC10
+
+Driver --> UC9
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC6 <.. UC13 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Reserve Equipment, Check Equipment Availability
+   Instance 1: Explanation: "Check Equipment Availability" is an inclusion use case included only by "Reserve Equipment". It is not associated with any actor directly, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (checking stock) rather than a complete service observable to a user, making it a functional decomposition of "Reserve Equipment".
+
+   Instance 2: Constructs Involved: Process Payment, Validate Payment Details
+   Instance 2: Explanation: "Validate Payment Details" is an inclusion use case included only by "Process Payment". It is not associated with any actor directly, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal validation step rather than a standalone service, making it a functional decomposition of "Process Payment".
+
+   Instance 3: Constructs Involved: Return Equipment, Generate Return Receipt
+   Instance 3: Explanation: "Generate Return Receipt" is an inclusion use case included only by "Return Equipment". It is not associated with any actor directly, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-task (printing a receipt) rather than a complete service to any actor, making it a functional decomposition of "Return Equipment".

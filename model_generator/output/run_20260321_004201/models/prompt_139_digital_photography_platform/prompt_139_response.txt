@@ -1,0 +1,119 @@
+
+
+DOMAIN: digital_photography_platform
+DOMAIN_DISPLAY: Digital Photography Platform
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Upload Photo, Validate File Format, include relationship from Upload Photo to Validate File Format
+EXPLANATION: "Validate File Format" is an inclusion use case included only by "Upload Photo." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (file validation) rather than a complete, independently valuable service to any actor, making this a clear instance of functional decomposition via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Purchase Print, Process Payment Details, include relationship from Purchase Print to Process Payment Details
+EXPLANATION: "Process Payment Details" is an inclusion use case included only by "Purchase Print." It has no direct association with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Extracting payment detail processing as a separate use case without it serving any other base use case or actor represents functional decomposition — it is merely a sub-step of purchasing a print.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Edit Photo, Apply Filter Settings, include relationship from Edit Photo to Apply Filter Settings
+EXPLANATION: "Apply Filter Settings" is an inclusion use case included only by "Edit Photo." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Applying filter settings is an internal step of photo editing, not a standalone service observable to any user, making this a functional decomposition antipattern.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases — "Validate File Format," "Process Payment Details," and "Apply Filter Settings" — must be merged back into their respective base use cases ("Upload Photo," "Purchase Print," and "Edit Photo"). These inclusion use cases each serve only one base use case, have no actor associations, and represent internal sub-steps rather than complete services. Merging them eliminates 3 use cases and 3 include relationships (6 constructs removed), producing a cleaner model where each use case represents a complete, actor-observable service.
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Photographer
+actor Viewer
+actor Administrator
+
+rectangle "Digital Photography Platform" {
+  usecase "Upload Photo" as UC1
+  usecase "Validate File Format" as UC2
+  usecase "Edit Photo" as UC3
+  usecase "Apply Filter Settings" as UC4
+  usecase "Browse Gallery" as UC5
+  usecase "Search Photos" as UC6
+  usecase "Rate Photo" as UC7
+  usecase "Comment on Photo" as UC8
+  usecase "Create Album" as UC9
+  usecase "Purchase Print" as UC10
+  usecase "Process Payment Details" as UC11
+  usecase "Manage User Accounts" as UC12
+  usecase "Moderate Content" as UC13
+  usecase "Share Photo" as UC14
+  usecase "Download Photo" as UC15
+}
+
+Photographer --> UC1
+Photographer --> UC3
+Photographer --> UC9
+Photographer --> UC10
+Photographer --> UC14
+Photographer --> UC5
+
+Viewer --> UC5
+Viewer --> UC6
+Viewer --> UC7
+Viewer --> UC8
+Viewer --> UC15
+
+Administrator --> UC12
+Administrator --> UC13
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC10 ..> UC11 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Photographer
+actor Viewer
+actor Administrator
+
+rectangle "Digital Photography Platform" {
+  usecase "Upload Photo" as UC1
+  usecase "Edit Photo" as UC3
+  usecase "Browse Gallery" as UC5
+  usecase "Search Photos" as UC6
+  usecase "Rate Photo" as UC7
+  usecase "Comment on Photo" as UC8
+  usecase "Create Album" as UC9
+  usecase "Purchase Print" as UC10
+  usecase "Manage User Accounts" as UC12
+  usecase "Moderate Content" as UC13
+  usecase "Share Photo" as UC14
+  usecase "Download Photo" as UC15
+}
+
+Photographer --> UC1
+Photographer --> UC3
+Photographer --> UC9
+Photographer --> UC10
+Photographer --> UC14
+Photographer --> UC5
+
+Viewer --> UC5
+Viewer --> UC6
+Viewer --> UC7
+Viewer --> UC8
+Viewer --> UC15
+
+Administrator --> UC12
+Administrator --> UC13
+@enduml
+```

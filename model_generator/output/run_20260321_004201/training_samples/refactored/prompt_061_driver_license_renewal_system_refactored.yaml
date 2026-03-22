@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 61
+  domain: driver_license_renewal_system
+  domain_display: Driver License Renewal System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 21
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:54:02.214619'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_061_driver_license_renewal_system/driver_license_renewal_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_061_driver_license_renewal_system/driver_license_renewal_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_061_driver_license_renewal_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Applicant\" as Applicant\n\
+    actor \"DMV Clerk\" as Clerk\nactor \"Payment Gateway\" as Gateway\nactor \"Vision\
+    \ Examiner\" as Examiner\n\nrectangle \"Driver License Renewal System\" {\n  usecase\
+    \ \"Submit Renewal Application\" as UC1\n  usecase \"Upload Documents\" as UC3\n\
+    \  usecase \"Process Payment\" as UC4\n  usecase \"Schedule Vision Test\" as UC6\n\
+    \  usecase \"Conduct Vision Test\" as UC8\n  usecase \"Review Application\" as\
+    \ UC9\n  usecase \"Approve Renewal\" as UC10\n  usecase \"Reject Renewal\" as\
+    \ UC11\n  usecase \"Issue Renewed License\" as UC12\n  usecase \"Request Additional\
+    \ Documents\" as UC13\n}\n\nApplicant -- UC1\nApplicant -- UC3\nApplicant -- UC4\n\
+    Applicant -- UC6\nGateway -- UC4\nExaminer -- UC8\nClerk -- UC9\nClerk -- UC10\n\
+    Clerk -- UC11\nClerk -- UC12\n\nUC9 ..> UC1 : <<include>>\nUC11 .> UC13 : <<extend>>\n\
+    \n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: driver_license_renewal_system
+
+  DOMAIN_DISPLAY: Driver License Renewal System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Renewal Application, Validate Personal Information,
+  include relationship from "Submit Renewal Application" to "Validate Personal Information"
+
+  EXPLANATION: "Validate Personal Information" is an inclusion use case included only
+  by "Submit Renewal Application". It is not associated with any actor, is not inclu
+  …[truncated]'

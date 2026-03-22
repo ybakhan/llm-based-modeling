@@ -1,0 +1,19 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "User" as A1
+actor "Administrator" as A2
+
+rectangle "Cloud Storage Service" {
+  usecase "Browse Files" as UC1
+  usecase "Upload File" as UC2
+  usecase "Download File" as UC3
+  usecase "Manage User Accounts" as UC4
+}
+
+A1 -- UC1
+A1 -- UC2
+A1 -- UC3
+A2 -- UC4
+
+@enduml

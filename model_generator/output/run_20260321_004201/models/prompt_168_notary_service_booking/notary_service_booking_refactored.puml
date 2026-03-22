@@ -1,0 +1,24 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Client" as Client
+actor "Notary" as Notary
+
+rectangle "Notary Service Booking System" {
+  usecase "Book Appointment" as UC1
+  usecase "Cancel Appointment" as UC3
+  usecase "View Upcoming Appointments" as UC4
+  usecase "Upload Documents" as UC5
+  usecase "Review Client Documents" as UC6
+  usecase "Manage Service Types" as UC7
+}
+
+Client -- UC1
+Client -- UC3
+Client -- UC4
+Client -- UC5
+Notary -- UC4
+Notary -- UC6
+Notary -- UC7
+
+@enduml

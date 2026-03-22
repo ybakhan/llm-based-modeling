@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Customer
+actor "Delivery Driver" as Driver
+actor Admin
+
+rectangle "Grocery Delivery Service" {
+  usecase "Browse Products" as UC1
+  usecase "Place Order" as UC2
+  usecase "Track Delivery" as UC3
+  usecase "Update Delivery Status" as UC4
+  usecase "Manage Inventory" as UC6
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC3
+Driver -- UC4
+Admin -- UC6
+@enduml

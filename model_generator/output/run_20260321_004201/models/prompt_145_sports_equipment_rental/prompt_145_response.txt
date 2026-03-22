@@ -1,0 +1,100 @@
+
+
+DOMAIN: sports_equipment_rental
+DOMAIN_DISPLAY: Sports Equipment Rental
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Browse Catalog, Search Inventory
+EXPLANATION: "Browse Catalog" includes "Search Inventory" via an <<include>> relationship. "Search Inventory" is only included by "Browse Catalog", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a decomposed step of browsing rather than a complete, independently valuable service. This constitutes functional decomposition via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Rent Equipment, Verify Availability
+EXPLANATION: "Rent Equipment" includes "Verify Availability" via an <<include>> relationship. "Verify Availability" is only included by "Rent Equipment", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal procedural step of the rental process rather than a standalone service, constituting functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Payment, Validate Payment Details
+EXPLANATION: "Process Payment" includes "Validate Payment Details" via an <<include>> relationship. "Validate Payment Details" is only included by "Process Payment", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It is a decomposed sub-step of payment processing, not a complete service observable to any actor.
+
+REFACTORING_RATIONALE: The three inclusion use cases — "Search Inventory", "Verify Availability", and "Validate Payment Details" — must each be merged into their respective base use cases ("Browse Catalog", "Rent Equipment", and "Process Payment"). Each inclusion use case is only included by one base use case, has no actor association, and participates in no other relationships, making them pure functional decompositions. Merging them removes 3 use cases and 3 include relationships (6 constructs total), simplifying the model while preserving all functionality within the base use cases.
+
+CONSTRUCT_COUNT: 25
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Customer
+actor Staff
+
+rectangle "Sports Equipment Rental System" {
+  usecase "Browse Catalog" as UC1
+  usecase "Search Inventory" as UC2
+  usecase "Rent Equipment" as UC3
+  usecase "Verify Availability" as UC4
+  usecase "Return Equipment" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Validate Payment Details" as UC7
+  usecase "Apply Late Fee" as UC8
+  usecase "Manage Inventory" as UC9
+  usecase "View Rental History" as UC10
+  usecase "Register Account" as UC11
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC5
+Customer -- UC6
+Customer -- UC10
+Customer -- UC11
+Staff -- UC9
+Staff -- UC5
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC5 <.. UC8 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 19
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Customer
+actor Staff
+
+rectangle "Sports Equipment Rental System" {
+  usecase "Browse Catalog" as UC1
+  usecase "Rent Equipment" as UC3
+  usecase "Return Equipment" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Apply Late Fee" as UC8
+  usecase "Manage Inventory" as UC9
+  usecase "View Rental History" as UC10
+  usecase "Register Account" as UC11
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC5
+Customer -- UC6
+Customer -- UC10
+Customer -- UC11
+Staff -- UC9
+Staff -- UC5
+
+UC5 <.. UC8 : <<extend>>
+
+@enduml
+```

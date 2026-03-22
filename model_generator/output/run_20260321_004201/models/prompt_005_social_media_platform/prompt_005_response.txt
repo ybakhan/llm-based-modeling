@@ -1,0 +1,67 @@
+
+
+DOMAIN: social_media_platform
+DOMAIN_DISPLAY: Social Media Platform
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Create Post, Validate Post Content, include relationship from "Create Post" to "Validate Post Content"
+EXPLANATION: The use case "Validate Post Content" is an inclusion use case that is included by only one use case ("Create Post"). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and is neither a generalization nor a specialization of any use case. "Validate Post Content" does not represent a complete service observable to a user — it is merely a sub-step of "Create Post" that has been improperly decomposed into a separate use case. This constitutes the Functional Decomposition antipattern via the include relationship.
+
+REFACTORING_RATIONALE: The use case "Validate Post Content" must be merged back into "Create Post" because it serves no independent purpose — it is only included by one use case, has no actor association, and provides no standalone observable result. By absorbing the validation behavior into "Create Post," we eliminate the unnecessary decomposition and the associated include relationship, reducing the model by two constructs (one use case and one include arrow) while preserving all functionality.
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "User" as User
+actor "Moderator" as Moderator
+
+rectangle "Social Media Platform" {
+  usecase "Create Post" as UC1
+  usecase "Validate Post Content" as UC2
+  usecase "View Feed" as UC3
+  usecase "Send Message" as UC4
+  usecase "Remove Post" as UC5
+}
+
+User --> UC1
+User --> UC3
+User --> UC4
+Moderator --> UC5
+UC1 ..> UC2 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 8
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "User" as User
+actor "Moderator" as Moderator
+
+rectangle "Social Media Platform" {
+  usecase "Create Post" as UC1
+  usecase "View Feed" as UC3
+  usecase "Send Message" as UC4
+  usecase "Remove Post" as UC5
+}
+
+User --> UC1
+User --> UC3
+User --> UC4
+Moderator --> UC5
+
+@enduml
+```

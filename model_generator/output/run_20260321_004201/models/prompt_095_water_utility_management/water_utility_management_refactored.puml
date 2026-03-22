@@ -1,0 +1,32 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Customer" as Customer
+actor "Billing Clerk" as BillingClerk
+actor "Field Technician" as FieldTech
+actor "Operations Manager" as OpsMgr
+
+rectangle "Water Utility Management System" {
+  usecase "Submit Meter Reading" as UC1
+  usecase "Process Water Bill" as UC2
+  usecase "Register New Customer" as UC4
+  usecase "View Consumption History" as UC6
+  usecase "Report Water Leak" as UC7
+  usecase "Schedule Maintenance" as UC8
+  usecase "Generate Usage Report" as UC10
+  usecase "Manage Water Shutoff" as UC11
+  usecase "Pay Bill Online" as UC12
+}
+
+Customer -- UC6
+Customer -- UC7
+Customer -- UC12
+BillingClerk -- UC2
+BillingClerk -- UC4
+FieldTech -- UC1
+FieldTech -- UC7
+OpsMgr -- UC8
+OpsMgr -- UC10
+OpsMgr -- UC11
+
+@enduml

@@ -849,6 +849,7 @@ def append_training_record(
     if yaml_path.exists():
         existing = yaml.safe_load(yaml_path.read_text(encoding="utf-8")) or []
     existing.append(flat)
+    existing.sort(key=lambda r: (int(r.get("prompt_num", 0)), r.get("sample_type", "")))
     yaml_path.write_text(
         yaml.dump(existing, allow_unicode=True, sort_keys=False, default_flow_style=False),
         encoding="utf-8",

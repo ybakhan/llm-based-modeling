@@ -1,0 +1,60 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor Donor
+actor Administrator
+actor "Finance Officer" as FO
+
+rectangle "Donation Management System" {
+  usecase "Register Donor" as UC1
+  usecase "Verify Donor Identity" as UC2
+  usecase "Process Donation" as UC3
+  usecase "Validate Payment Details" as UC4
+  usecase "Send Thank You Notification" as UC5
+  usecase "View Donation History" as UC6
+  usecase "Generate Donation Report" as UC7
+  usecase "Manage Campaigns" as UC8
+  usecase "Allocate Funds" as UC9
+  usecase "Issue Tax Receipt" as UC10
+  usecase "Update Donor Profile" as UC11
+  usecase "Process Recurring Donation" as UC12
+  usecase "Search Donors" as UC13
+}
+
+Donor -- UC1
+Donor -- UC3
+Donor -- UC6
+Donor -- UC11
+Donor -- UC12
+
+Administrator -- UC8
+Administrator -- UC13
+Administrator -- UC7
+
+FO -- UC9
+FO -- UC10
+FO -- UC7
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Process Donation, Validate Payment Details, <<include>> from Process Donation to Validate Payment Details
+   Instance 1: Explanation: "Validate Payment Details" is an inclusion use case included only by "Process Donation". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by any use case. It represents a sub-step of processing a donation rather than a complete, independently valuable service. This is functional decomposition of "Process Donation" into a procedural sub-task.
+
+   Instance 2: Constructs Involved: Process Donation, Send Thank You Notification, <<include>> from Process Donation to Send Thank You Notification
+   Instance 2: Explanation: "Send Thank You Notification" is an inclusion use case included only by "Process Donation". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by any use case. It represents a procedural step within donation processing rather than a standalone service observable to an actor. This is functional decomposition.
+
+   Instance 3: Constructs Involved: Register Donor, Verify Donor Identity, <<include>> from Register Donor to Verify Donor Identity
+   Instance 3: Explanation: "Verify Donor Identity" is an inclusion use case included only by "Register Donor". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by any use case. It decomposes the registration process into a procedural verification sub-step rather than representing a complete service. This is functional decomposition.

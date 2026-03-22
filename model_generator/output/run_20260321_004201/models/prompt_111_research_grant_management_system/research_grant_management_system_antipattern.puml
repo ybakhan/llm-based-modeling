@@ -1,0 +1,24 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Researcher" as Researcher
+actor "Grant Reviewer" as Reviewer
+actor "Department Head" as DeptHead
+
+rectangle "Research Grant Management System" {
+  usecase "Submit Grant Proposal" as UC1
+  usecase "Validate Budget Details" as UC2
+  usecase "Review Grant Application" as UC3
+  usecase "Approve Grant" as UC4
+  usecase "Track Grant Status" as UC5
+  usecase "Generate Grant Report" as UC6
+}
+
+Researcher -- UC1
+UC1 ..> UC2 : <<include>>
+Reviewer -- UC3
+DeptHead -- UC4
+Researcher -- UC5
+DeptHead -- UC6
+
+@enduml

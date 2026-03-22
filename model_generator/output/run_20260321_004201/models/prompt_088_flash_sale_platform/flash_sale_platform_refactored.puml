@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Shopper
+actor "Sale Admin" as Admin
+
+rectangle "Flash Sale Platform" {
+  usecase "Browse Flash Sales" as UC1
+  usecase "Purchase Item" as UC2
+  usecase "Create Flash Sale" as UC3
+  usecase "View Order History" as UC4
+  usecase "Apply Coupon" as UC5
+}
+
+Shopper -- UC1
+Shopper -- UC2
+Shopper -- UC4
+Admin -- UC3
+UC2 .> UC5 : <<extend>>
+
+@enduml

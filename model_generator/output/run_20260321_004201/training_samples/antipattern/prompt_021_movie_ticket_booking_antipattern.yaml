@@ -1,0 +1,114 @@
+metadata:
+  prompt_number: 21
+  domain: movie_ticket_booking
+  domain_display: Movie Ticket Booking
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Book Tickets, Validate Seat Availability, include (Book
+        Tickets → Validate Seat Availability)
+      explanation: '"Validate Seat Availability" is an inclusion use case included
+        only by "Book Tickets". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. It represents an internal sub-step (checking if
+        seats are free) rather than a complete, observable service to any actor. This
+        is functional decomposition of the booking process into an isolated procedural
+        step.'
+    - constructs_involved: Process Payment, Generate Payment Token, include (Process
+        Payment → Generate Payment Token)
+      explanation: '"Generate Payment Token" is an inclusion use case included only
+        by "Process Payment". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. Generating a payment token is an internal technical
+        step within payment processing, not a standalone service offering an observable
+        result to a user. This is functional decomposition of the payment flow.'
+    - constructs_involved: Cancel Booking, Calculate Refund Amount, include (Cancel
+        Booking → Calculate Refund Amount)
+      explanation: '"Calculate Refund Amount" is an inclusion use case included only
+        by "Cancel Booking". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. Calculating the refund amount is an internal computational
+        step within the cancellation workflow, not a complete service with an observable
+        result for any actor. This is functional decomposition of the cancellation
+        process.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 30
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:51:07.399143'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_021_movie_ticket_booking/movie_ticket_booking_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_021_movie_ticket_booking/movie_ticket_booking_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_021_movie_ticket_booking_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Customer\n\
+    actor Admin\nactor \"Payment Gateway\" as PG\n\nrectangle \"Movie Ticket Booking\
+    \ System\" {\n  usecase \"Browse Movies\" as UC1\n  usecase \"Search Movies\"\
+    \ as UC2\n  usecase \"Select Showtime\" as UC3\n  usecase \"Book Tickets\" as\
+    \ UC4\n  usecase \"Validate Seat Availability\" as UC5\n  usecase \"Process Payment\"\
+    \ as UC6\n  usecase \"Generate Payment Token\" as UC7\n  usecase \"View Booking\
+    \ History\" as UC8\n  usecase \"Cancel Booking\" as UC9\n  usecase \"Calculate\
+    \ Refund Amount\" as UC10\n  usecase \"Rate Movie\" as UC11\n  usecase \"Manage\
+    \ Movies\" as UC12\n  usecase \"Manage Showtimes\" as UC13\n  usecase \"Generate\
+    \ Sales Report\" as UC14\n  usecase \"Apply Promo Code\" as UC15\n}\n\nCustomer\
+    \ --> UC1\nCustomer --> UC2\nCustomer --> UC3\nCustomer --> UC4\nCustomer -->\
+    \ UC6\nCustomer --> UC8\nCustomer --> UC9\nCustomer --> UC11\n\nAdmin --> UC12\n\
+    Admin --> UC13\nAdmin --> UC14\n\nPG --> UC6\n\nUC4 ..> UC5 : <<include>>\nUC6\
+    \ ..> UC7 : <<include>>\nUC9 ..> UC10 : <<include>>\n\nUC4 ..> UC15 : <<extend>>\n\
+    @enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Book Tickets, Validate Seat Availability,\
+    \ include (Book Tickets → Validate Seat Availability)\n   Instance 1: Explanation:\
+    \ \"Validate Seat Availability\" is an inclusion use case included only by \"\
+    Book Tickets\". It is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and is not part of any\
+    \ generalization. It represents an internal sub-step (checking if seats are free)\
+    \ rather than a complete, observable service to any actor. This is functional\
+    \ decomposition of the booking process into an isolated procedural step.\n\n \
+    \  Instance 2: Constructs Involved: Process Payment, Generate Payment Token, include\
+    \ (Process Payment → Generate Payment Token)\n   Instance 2: Explanation: \"Generate\
+    \ Payment Token\" is an inclusion use case included only by \"Process Payment\"\
+    . It is not associated with any actor, does not include or extend any other use\
+    \ case, is not extended by any use case, and is not part of any generalization.\
+    \ Generating a payment token is an internal technical step within payment processing,\
+    \ not a standalone service offering an observable result to a user. This is functional\
+    \ decomposition of the payment flow.\n\n   Instance 3: Constructs Involved: Cancel\
+    \ Booking, Calculate Refund Amount, include (Cancel Booking → Calculate Refund\
+    \ Amount)\n   Instance 3: Explanation: \"Calculate Refund Amount\" is an inclusion\
+    \ use case included only by \"Cancel Booking\". It is not associated with any\
+    \ actor, does not include or extend any other use case, is not extended by any\
+    \ use case, and is not part of any generalization. Calculating the refund amount\
+    \ is an internal computational step within the cancellation workflow, not a complete\
+    \ service with an observable result for any actor. This is functional decomposition\
+    \ of the cancellation process."
+raw_response_excerpt: '
+
+
+  DOMAIN: movie_ticket_booking
+
+  DOMAIN_DISPLAY: Movie Ticket Booking
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Tickets, Validate Seat Availability, include (Book Tickets
+  → Validate Seat Availability)
+
+  EXPLANATION: "Validate Seat Availability" is an inclusion use case included only
+  by "Book Tickets". It is not associated with any actor, does not include or extend
+  any other use case, is not extended by any use case, and is not part of any …[truncated]'

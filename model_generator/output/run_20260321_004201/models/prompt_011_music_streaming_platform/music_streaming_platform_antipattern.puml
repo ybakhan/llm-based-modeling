@@ -1,0 +1,22 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor Listener
+actor Admin
+
+rectangle "Music Streaming Platform" {
+    usecase "Play Song" as UC1
+    usecase "Search Music" as UC2
+    usecase "Create Playlist" as UC3
+    usecase "Manage Catalog" as UC4
+    usecase "Load Audio Stream" as UC5
+}
+
+Listener -- UC1
+Listener -- UC2
+Listener -- UC3
+Admin -- UC4
+
+UC1 ..> UC5 : <<include>>
+@enduml

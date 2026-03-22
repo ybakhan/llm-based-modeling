@@ -1,0 +1,58 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Visitor" as Visitor
+actor "Museum Staff" as Staff
+actor "Manager" as Manager
+actor "Payment Gateway" as Gateway
+
+rectangle "Museum Ticketing System" {
+  usecase "Browse Exhibitions" as UC1
+  usecase "Purchase Ticket" as UC2
+  usecase "Calculate Price" as UC3
+  usecase "Generate Receipt" as UC4
+  usecase "Cancel Ticket" as UC5
+  usecase "Apply Discount" as UC6
+  usecase "Scan Ticket at Entry" as UC7
+  usecase "Check Ticket Validity" as UC8
+  usecase "View Sales Report" as UC9
+  usecase "Manage Exhibition Schedule" as UC10
+  usecase "Process Payment" as UC11
+  usecase "Book Group Visit" as UC12
+}
+
+Visitor -- UC1
+Visitor -- UC2
+Visitor -- UC5
+Visitor -- UC12
+Staff -- UC7
+Manager -- UC9
+Manager -- UC10
+Gateway -- UC11
+
+UC2 ..> UC3 : <<include>>
+UC2 ..> UC4 : <<include>>
+UC2 ..> UC11 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC2 ..> UC6 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Purchase Ticket, Calculate Price, <<include>> from Purchase Ticket to Calculate Price
+   Instance 1: Explanation: "Calculate Price" is an inclusion use case included only by "Purchase Ticket". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step of purchasing rather than a complete service observable to an actor, making it a functional decomposition.
+
+   Instance 2: Constructs Involved: Purchase Ticket, Generate Receipt, <<include>> from Purchase Ticket to Generate Receipt
+   Instance 2: Explanation: "Generate Receipt" is an inclusion use case included only by "Purchase Ticket". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step of the purchase process rather than a standalone service, making it a functional decomposition.
+
+   Instance 3: Constructs Involved: Scan Ticket at Entry, Check Ticket Validity, <<include>> from Scan Ticket at Entry to Check Ticket Validity
+   Instance 3: Explanation: "Check Ticket Validity" is an inclusion use case included only by "Scan Ticket at Entry". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step of the scanning process rather than a complete service, making it a functional decomposition.

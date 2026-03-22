@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Author" as Author
+actor "Reader" as Reader
+
+rectangle "Fan Fiction Community" {
+  usecase "Publish Story" as UC1
+  usecase "Browse Stories" as UC3
+  usecase "Leave Review" as UC4
+  usecase "Bookmark Story" as UC5
+  usecase "Search by Fandom" as UC6
+}
+
+Author -- UC1
+Reader -- UC3
+Reader -- UC4
+Reader -- UC5
+Reader -- UC6
+
+@enduml

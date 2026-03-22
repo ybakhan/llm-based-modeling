@@ -1,0 +1,33 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Maintenance Technician" as Tech
+actor "Supervisor" as Sup
+
+rectangle "Equipment Maintenance System" {
+  usecase "Submit Work Order" as UC1
+  usecase "Validate Equipment ID" as UC2
+  usecase "Schedule Maintenance" as UC3
+  usecase "View Maintenance History" as UC4
+  usecase "Approve Work Order" as UC5
+}
+
+Tech --> UC1
+Tech --> UC3
+Tech --> UC4
+Sup --> UC5
+
+UC1 ..> UC2 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Submit Work Order, Validate Equipment ID
+   Explanation: The use case "Validate Equipment ID" is an inclusion use case that is included by only one use case ("Submit Work Order"). It is not associated with any actor directly, it does not include or extend any other use case, it is not extended by any other use case, and it is not involved in any generalization. "Validate Equipment ID" represents a sub-step of submitting a work order — validating the equipment identifier — rather than a complete, standalone service that delivers an observable result to any user. This is a textbook instance of functional decomposition via the include relationship, where a single use case's internal logic has been improperly broken out into a separate inclusion use case.

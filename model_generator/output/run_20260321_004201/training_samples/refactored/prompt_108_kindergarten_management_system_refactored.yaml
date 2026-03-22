@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 108
+  domain: kindergarten_management_system
+  domain_display: Kindergarten Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:41:50.868486'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_108_kindergarten_management_system/kindergarten_management_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_108_kindergarten_management_system/kindergarten_management_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_108_kindergarten_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Administrator\" as Admin\nactor \"Teacher\" as Teacher\nactor \"Parent\"\
+    \ as Parent\n\nrectangle \"Kindergarten Management System\" {\n  usecase \"Enroll\
+    \ Child\" as UC1\n  usecase \"Manage Class Schedule\" as UC3\n  usecase \"Record\
+    \ Attendance\" as UC4\n  usecase \"Send Notifications\" as UC6\n  usecase \"View\
+    \ Child Progress\" as UC7\n  usecase \"Generate Report\" as UC8\n  usecase \"\
+    Manage Staff\" as UC10\n  usecase \"Process Payments\" as UC11\n  usecase \"Update\
+    \ Child Profile\" as UC12\n  usecase \"Plan Activities\" as UC13\n}\n\nAdmin --\
+    \ UC1\nAdmin -- UC3\nAdmin -- UC8\nAdmin -- UC10\nAdmin -- UC11\nTeacher -- UC4\n\
+    Teacher -- UC6\nTeacher -- UC7\nTeacher -- UC13\nParent -- UC7\nParent -- UC12\n\
+    @enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: kindergarten_management_system
+
+  DOMAIN_DISPLAY: Kindergarten Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Enroll Child, Validate Child Age
+
+  EXPLANATION: "Validate Child Age" is an inclusion use case included only by "Enroll
+  Child". It is not associated with any actor, not included by any other use case,
+  does not include or extend any use case, is not extended by any use case, and has
+  no generalization relationships.  …[truncated]'

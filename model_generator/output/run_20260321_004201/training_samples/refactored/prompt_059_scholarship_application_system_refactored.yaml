@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 59
+  domain: scholarship_application_system
+  domain_display: Scholarship Application System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:23:48.372295'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_059_scholarship_application_system/scholarship_application_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_059_scholarship_application_system/scholarship_application_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_059_scholarship_application_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Applicant\" as A1\n\
+    actor \"Reviewer\" as A2\nactor \"Administrator\" as A3\n\nrectangle \"Scholarship\
+    \ Application System\" {\n  usecase \"Register Account\" as UC1\n  usecase \"\
+    Submit Application\" as UC2\n  usecase \"Review Application\" as UC4\n  usecase\
+    \ \"Award Scholarship\" as UC5\n  usecase \"Check Application Status\" as UC6\n\
+    }\n\nA1 --> UC1\nA1 --> UC2\nA1 --> UC6\nA2 --> UC4\nA3 --> UC5\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: scholarship_application_system
+
+  DOMAIN_DISPLAY: Scholarship Application System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Application (UC2), Upload Transcript (UC3), include
+  relationship from UC2 to UC3
+
+  EXPLANATION: "Upload Transcript" (UC3) is an inclusion use case that is included
+  by only one use case ("Submit Application" / UC2). It is not associated with any
+  actor directly, does not include or extend any other use case, i …[truncated]'

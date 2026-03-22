@@ -1,0 +1,40 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Program Director" as PD
+actor "Broadcast Engineer" as BE
+actor "Content Manager" as CM
+actor "Advertiser" as AD
+
+rectangle "Broadcasting Management System" {
+  usecase "Schedule Broadcast" as UC1
+  usecase "Validate Time Slot" as UC2
+  usecase "Manage Content Library" as UC3
+  usecase "Verify Content Format" as UC4
+  usecase "Start Live Transmission" as UC5
+  usecase "Configure Transmission" as UC6
+  usecase "Monitor Signal Quality" as UC7
+  usecase "Generate Broadcast Report" as UC8
+  usecase "Manage Ad Placements" as UC9
+  usecase "Review Program Ratings" as UC10
+  usecase "Manage Channel Lineup" as UC11
+  usecase "Archive Broadcast" as UC12
+
+  UC1 ..> UC2 : <<include>>
+  UC3 ..> UC4 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC9 ..> UC1 : <<extend>>
+}
+
+PD -- UC1
+PD -- UC10
+PD -- UC11
+CM -- UC3
+CM -- UC12
+BE -- UC5
+BE -- UC7
+BE -- UC8
+AD -- UC9
+
+@enduml

@@ -1,0 +1,77 @@
+
+
+DOMAIN: travel_insurance_system
+DOMAIN_DISPLAY: Travel Insurance System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Purchase Policy, Validate Traveler Details
+EXPLANATION: The use case "Validate Traveler Details" is an inclusion use case that is included by only one use case ("Purchase Policy"). It is not associated with any actor directly, does not include or extend any other use case, is not extended by any other use case, and is not involved in any generalization relationship. "Validate Traveler Details" does not represent a complete service observable to any actor — it is merely a decomposed sub-step of the "Purchase Policy" process. This constitutes the Functional Decomposition antipattern because the inclusion use case exists solely as a broken-out internal step rather than a reusable, actor-facing service.
+
+REFACTORING_RATIONALE: The use case "Validate Traveler Details" must be merged back into "Purchase Policy" because it is a non-reusable internal step that serves no independent purpose to any actor. By absorbing the validation behavior into "Purchase Policy," we eliminate the unnecessary include relationship and the orphaned inclusion use case, restoring a clean model where every use case delivers a complete, observable result to an actor. This removes 1 use case ("Validate Traveler Details") and 1 include relationship, reducing the construct count by 2.
+CONSTRUCT_COUNT: 13
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Traveler" as Traveler
+actor "Insurance Agent" as Agent
+actor "Claims Adjuster" as Adjuster
+
+rectangle "Travel Insurance System" {
+  usecase "Purchase Policy" as UC1
+  usecase "Validate Traveler Details" as UC2
+  usecase "Browse Insurance Plans" as UC3
+  usecase "File Claim" as UC4
+  usecase "Review Claim" as UC5
+  usecase "Cancel Policy" as UC6
+  usecase "Get Quote" as UC7
+}
+
+Traveler --> UC3
+Traveler --> UC1
+Traveler --> UC4
+Traveler --> UC7
+Agent --> UC6
+Adjuster --> UC5
+UC1 ..> UC2 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Traveler" as Traveler
+actor "Insurance Agent" as Agent
+actor "Claims Adjuster" as Adjuster
+
+rectangle "Travel Insurance System" {
+  usecase "Purchase Policy" as UC1
+  usecase "Browse Insurance Plans" as UC3
+  usecase "File Claim" as UC4
+  usecase "Review Claim" as UC5
+  usecase "Cancel Policy" as UC6
+  usecase "Get Quote" as UC7
+}
+
+Traveler --> UC3
+Traveler --> UC1
+Traveler --> UC4
+Traveler --> UC7
+Agent --> UC6
+Adjuster --> UC5
+
+@enduml
+```

@@ -1,0 +1,55 @@
+metadata:
+  prompt_number: 136
+  domain: book_club_platform
+  domain_display: Book Club Platform
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 9
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:55:11.886354'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_136_book_club_platform/book_club_platform_refactored.puml
+    image: output/run_20260321_004201/models/prompt_136_book_club_platform/book_club_platform_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_136_book_club_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Club Organizer\" as Organizer\nactor \"Member\" as Member\n\nrectangle\
+    \ \"Book Club Platform\" {\n  usecase \"Create Book Club\" as UC1\n  usecase \"\
+    Browse Book Clubs\" as UC2\n  usecase \"Join Book Club\" as UC3\n  usecase \"\
+    Schedule Meeting\" as UC4\n  usecase \"Submit Book Review\" as UC6\n}\n\nOrganizer\
+    \ --> UC1\nOrganizer --> UC4\nMember --> UC2\nMember --> UC3\nMember --> UC6\n\
+    @enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: book_club_platform
+
+  DOMAIN_DISPLAY: Book Club Platform
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Meeting (UC4), Select Date and Time (UC5), include
+  relationship from UC4 to UC5
+
+  EXPLANATION: "Select Date and Time" (UC5) is an inclusion use case that is included
+  by only one use case ("Schedule Meeting", UC4). UC5 is not associated with any actor
+  directly — no actor interacts with it. UC5 does not include, extend, generalize,
+  …[truncated]'

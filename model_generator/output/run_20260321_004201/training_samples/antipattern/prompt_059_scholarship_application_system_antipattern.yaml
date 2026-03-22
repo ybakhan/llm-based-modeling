@@ -1,0 +1,76 @@
+metadata:
+  prompt_number: 59
+  domain: scholarship_application_system
+  domain_display: Scholarship Application System
+  size: small
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Submit Application (UC2), Upload Transcript (UC3), include
+        relationship from UC2 to UC3
+      explanation: '"Upload Transcript" (UC3) is an inclusion use case that is included
+        by only one use case ("Submit Application" / UC2). It is not associated with
+        any actor directly, does not include or extend any other use case, is not
+        extended by any other use case, and is not involved in any generalization.
+        "Upload Transcript" does not represent a complete, independently valuable
+        service to any actor — it is merely a procedural step of submitting an application
+        that has been improperly decomposed into a separate use case. This is a textbook
+        instance of Functional Decomposition via the include relationship.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 12
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:23:48.372295'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_059_scholarship_application_system/scholarship_application_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_059_scholarship_application_system/scholarship_application_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_059_scholarship_application_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Applicant\"\
+    \ as A1\nactor \"Reviewer\" as A2\nactor \"Administrator\" as A3\n\nrectangle\
+    \ \"Scholarship Application System\" {\n  usecase \"Register Account\" as UC1\n\
+    \  usecase \"Submit Application\" as UC2\n  usecase \"Upload Transcript\" as UC3\n\
+    \  usecase \"Review Application\" as UC4\n  usecase \"Award Scholarship\" as UC5\n\
+    \  usecase \"Check Application Status\" as UC6\n}\n\nA1 --> UC1\nA1 --> UC2\n\
+    UC2 ..> UC3 : <<include>>\nA1 --> UC6\nA2 --> UC4\nA3 --> UC5\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Constructs Involved: Submit Application (UC2), Upload Transcript (UC3), include\
+    \ relationship from UC2 to UC3\n   Explanation: \"Upload Transcript\" (UC3) is\
+    \ an inclusion use case that is included by only one use case (\"Submit Application\"\
+    \ / UC2). It is not associated with any actor directly, does not include or extend\
+    \ any other use case, is not extended by any other use case, and is not involved\
+    \ in any generalization. \"Upload Transcript\" does not represent a complete,\
+    \ independently valuable service to any actor — it is merely a procedural step\
+    \ of submitting an application that has been improperly decomposed into a separate\
+    \ use case. This is a textbook instance of Functional Decomposition via the include\
+    \ relationship."
+raw_response_excerpt: '
+
+
+  DOMAIN: scholarship_application_system
+
+  DOMAIN_DISPLAY: Scholarship Application System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Application (UC2), Upload Transcript (UC3), include
+  relationship from UC2 to UC3
+
+  EXPLANATION: "Upload Transcript" (UC3) is an inclusion use case that is included
+  by only one use case ("Submit Application" / UC2). It is not associated with any
+  actor directly, does not include or extend any other use case, i …[truncated]'

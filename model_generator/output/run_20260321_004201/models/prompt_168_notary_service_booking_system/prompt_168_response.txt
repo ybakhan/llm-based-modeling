@@ -1,0 +1,77 @@
+
+
+DOMAIN: notary_service_booking_system
+DOMAIN_DISPLAY: Notary Service Booking System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Appointment, Select Time Slot, Book Appointment --include--> Select Time Slot
+EXPLANATION: "Select Time Slot" is an inclusion use case that is included by only one use case ("Book Appointment"). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Select Time Slot" does not represent a complete, standalone service observable to any actor — it is merely a decomposed step of the booking process. This constitutes the Functional Decomposition: Using the include relationship antipattern.
+
+REFACTORING_RATIONALE: The inclusion use case "Select Time Slot" must be merged back into "Book Appointment" since it is only a sub-step of booking and provides no independent service to any actor. The <<include>> relationship between "Book Appointment" and "Select Time Slot" must be removed. This eliminates 1 use case and 1 include relationship, reducing the construct count by 2.
+CONSTRUCT_COUNT: 13
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Client" as Client
+actor "Notary" as Notary
+
+rectangle "Notary Service Booking System" {
+  usecase "Book Appointment" as UC1
+  usecase "Select Time Slot" as UC2
+  usecase "Cancel Appointment" as UC3
+  usecase "View Appointments" as UC4
+  usecase "Upload Documents" as UC5
+  usecase "Confirm Appointment" as UC6
+  usecase "View Client Documents" as UC7
+}
+
+Client -- UC1
+UC1 ..> UC2 : <<include>>
+Client -- UC3
+Client -- UC4
+Client -- UC5
+Notary -- UC4
+Notary -- UC6
+Notary -- UC7
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Client" as Client
+actor "Notary" as Notary
+
+rectangle "Notary Service Booking System" {
+  usecase "Book Appointment" as UC1
+  usecase "Cancel Appointment" as UC3
+  usecase "View Appointments" as UC4
+  usecase "Upload Documents" as UC5
+  usecase "Confirm Appointment" as UC6
+  usecase "View Client Documents" as UC7
+}
+
+Client -- UC1
+Client -- UC3
+Client -- UC4
+Client -- UC5
+Notary -- UC4
+Notary -- UC6
+Notary -- UC7
+@enduml
+```

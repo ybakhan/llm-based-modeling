@@ -1,0 +1,47 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+left to right direction
+
+actor "Quality Manager" as QM
+actor "Regulatory Authority" as RA
+actor "Warehouse Manager" as WM
+actor "Customer Service Rep" as CSR
+actor "Executive" as EX
+
+rectangle "Product Recall Management System" {
+  usecase "Initiate Recall" as UC1
+  usecase "Validate Product Batch" as UC2
+  usecase "Track Affected Products" as UC3
+  usecase "Notify Stakeholders" as UC4
+  usecase "Compose Notification Message" as UC5
+  usecase "Submit Regulatory Filing" as UC6
+  usecase "Manage Return Logistics" as UC7
+  usecase "Process Customer Complaint" as UC8
+  usecase "Generate Recall Report" as UC9
+  usecase "Aggregate Recall Data" as UC10
+  usecase "Monitor Recall Progress" as UC11
+  usecase "Close Recall Case" as UC12
+  usecase "Escalate Recall Severity" as UC13
+  usecase "Review Recall History" as UC14
+}
+
+QM -- UC1
+QM -- UC3
+QM -- UC4
+QM -- UC11
+QM -- UC12
+RA -- UC6
+RA -- UC14
+WM -- UC7
+CSR -- UC8
+EX -- UC9
+EX -- UC14
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC9 ..> UC10 : <<include>>
+UC12 ..> UC9 : <<include>>
+UC11 ..> UC3 : <<include>>
+UC13 ..> UC1 : <<extend>>
+@enduml

@@ -1,0 +1,57 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Resident" as Resident
+actor "Watch Coordinator" as Coordinator
+actor "Police Liaison" as Police
+
+rectangle "Neighbourhood Watch App" {
+  usecase "Register Account" as UC1
+  usecase "Report Incident" as UC2
+  usecase "Capture GPS Location" as UC3
+  usecase "Send Alert to Neighbours" as UC4
+  usecase "Format Notification Message" as UC5
+  usecase "View Crime Map" as UC6
+  usecase "Load Map Markers" as UC7
+  usecase "Manage Watch Zones" as UC8
+  usecase "Review Incident Reports" as UC9
+  usecase "Escalate to Police" as UC10
+  usecase "Post Safety Tip" as UC11
+  usecase "Schedule Patrol" as UC12
+}
+
+Resident --> UC1
+Resident --> UC2
+Resident --> UC4
+Resident --> UC6
+Resident --> UC11
+
+Coordinator --> UC8
+Coordinator --> UC9
+Coordinator --> UC12
+
+Police --> UC10
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Report Incident, Capture GPS Location, include (Report Incident → Capture GPS Location)
+   Instance 1: Explanation: "Capture GPS Location" is an inclusion use case included only by "Report Incident". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalisation. "Capture GPS Location" is not a complete service on its own — it is merely a sub-step of reporting an incident, representing functional decomposition of "Report Incident" into a technical sub-function.
+
+   Instance 2: Constructs Involved: Send Alert to Neighbours, Format Notification Message, include (Send Alert to Neighbours → Format Notification Message)
+   Instance 2: Explanation: "Format Notification Message" is an inclusion use case included only by "Send Alert to Neighbours". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalisation. Formatting a notification message is an internal processing step, not a standalone service observable to any user — this is functional decomposition of the alerting behaviour.
+
+   Instance 3: Constructs Involved: View Crime Map, Load Map Markers, include (View Crime Map → Load Map Markers)
+   Instance 3: Explanation: "Load Map Markers" is an inclusion use case included only by "View Crime Map". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalisation. Loading map markers is an implementation detail of viewing the crime map, not a service that delivers an observable result to any user — this is functional decomposition.

@@ -1,0 +1,20 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Customer as A1
+actor Admin as A2
+
+rectangle "Online Store" {
+  usecase "Browse Products" as UC1
+  usecase "Place Order" as UC2
+  usecase "Track Order" as UC3
+  usecase "Manage Inventory" as UC4
+  usecase "View Sales Reports" as UC6
+}
+
+A1 -- UC1
+A1 -- UC2
+A1 -- UC3
+A2 -- UC4
+A2 -- UC6
+@enduml

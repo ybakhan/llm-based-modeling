@@ -1,0 +1,111 @@
+
+
+DOMAIN: stock_trading_platform
+DOMAIN_DISPLAY: Stock Trading Platform
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Place Order, Validate Order Parameters, include relationship from Place Order to Validate Order Parameters
+EXPLANATION: "Validate Order Parameters" is an inclusion use case included only by "Place Order". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. It represents a sub-step (validating parameters) of placing an order rather than a complete, standalone service observable to any actor. This is functional decomposition of "Place Order" into a procedural sub-step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Execute Trade, Route to Exchange, include relationship from Execute Trade to Route to Exchange
+EXPLANATION: "Route to Exchange" is an inclusion use case included only by "Execute Trade". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. Routing to an exchange is an internal implementation step of executing a trade, not a complete service yielding an observable result to a user. This is functional decomposition of "Execute Trade".
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: View Portfolio, Fetch Account Data, include relationship from View Portfolio to Fetch Account Data
+EXPLANATION: "Fetch Account Data" is an inclusion use case included only by "View Portfolio". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. Fetching account data is an internal retrieval step within viewing a portfolio, not a standalone service with an observable result to any user. This is functional decomposition of "View Portfolio".
+
+REFACTORING_RATIONALE: All three inclusion use cases — "Validate Order Parameters", "Route to Exchange", and "Fetch Account Data" — must be merged into their respective base use cases ("Place Order", "Execute Trade", and "View Portfolio"). Each inclusion use case is included by only one base use case, is not connected to any actor, and neither includes, extends, generalizes, nor is extended/specialized by any other use case. They represent internal procedural steps rather than complete services. Removing these three use cases and their three include relationships eliminates 6 constructs (3 use cases + 3 includes), reducing the count from 25 to 19. The resulting model preserves all meaningful services while removing the improper decomposition.
+
+CONSTRUCT_COUNT: 25
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Trader" as Trader
+actor "Broker" as Broker
+actor "System Administrator" as Admin
+
+rectangle "Stock Trading Platform" {
+  usecase "Place Order" as UC1
+  usecase "Validate Order Parameters" as UC2
+  usecase "Execute Trade" as UC3
+  usecase "Route to Exchange" as UC4
+  usecase "View Portfolio" as UC5
+  usecase "Fetch Account Data" as UC6
+  usecase "Cancel Order" as UC7
+  usecase "View Market Data" as UC8
+  usecase "Set Price Alert" as UC9
+  usecase "Manage User Accounts" as UC10
+  usecase "Generate Trade Report" as UC11
+  usecase "Place Limit Order" as UC12
+  usecase "Place Market Order" as UC13
+
+  UC1 ..> UC2 : <<include>>
+  UC3 ..> UC4 : <<include>>
+  UC5 ..> UC6 : <<include>>
+
+  UC12 --|> UC1
+  UC13 --|> UC1
+
+  UC7 ..> UC1 : <<extend>>
+}
+
+Trader --> UC1
+Trader --> UC5
+Trader --> UC8
+Trader --> UC9
+Broker --> UC3
+Broker --> UC11
+Admin --> UC10
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 19
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Trader" as Trader
+actor "Broker" as Broker
+actor "System Administrator" as Admin
+
+rectangle "Stock Trading Platform" {
+  usecase "Place Order" as UC1
+  usecase "Execute Trade" as UC3
+  usecase "View Portfolio" as UC5
+  usecase "Cancel Order" as UC7
+  usecase "View Market Data" as UC8
+  usecase "Set Price Alert" as UC9
+  usecase "Manage User Accounts" as UC10
+  usecase "Generate Trade Report" as UC11
+  usecase "Place Limit Order" as UC12
+  usecase "Place Market Order" as UC13
+
+  UC12 --|> UC1
+  UC13 --|> UC1
+
+  UC7 ..> UC1 : <<extend>>
+}
+
+Trader --> UC1
+Trader --> UC5
+Trader --> UC8
+Trader --> UC9
+Broker --> UC3
+Broker --> UC11
+Admin --> UC10
+
+@enduml
+```

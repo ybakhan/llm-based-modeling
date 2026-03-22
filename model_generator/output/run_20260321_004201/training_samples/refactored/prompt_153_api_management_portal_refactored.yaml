@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 153
+  domain: api_management_portal
+  domain_display: API Management Portal
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 20
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:01:32.546648'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_153_api_management_portal/api_management_portal_refactored.puml
+    image: output/run_20260321_004201/models/prompt_153_api_management_portal/api_management_portal_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_153_api_management_portal_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"API Developer\" as\
+    \ Dev\nactor \"API Admin\" as Admin\nactor \"Portal Visitor\" as Visitor\n\nrectangle\
+    \ \"API Management Portal\" {\n  usecase \"Register API\" as UC1\n  usecase \"\
+    Generate API Key\" as UC3\n  usecase \"Browse API Catalog\" as UC5\n  usecase\
+    \ \"View API Documentation\" as UC6\n  usecase \"Monitor API Usage\" as UC7\n\
+    \  usecase \"Configure Rate Limiting\" as UC8\n  usecase \"Manage API Versions\"\
+    \ as UC10\n  usecase \"Revoke API Key\" as UC11\n  usecase \"View Analytics Dashboard\"\
+    \ as UC12\n  usecase \"Set Deprecation Notice\" as UC13\n}\n\nDev --> UC1\nDev\
+    \ --> UC3\nDev --> UC5\nDev --> UC6\nDev --> UC7\n\nAdmin --> UC8\nAdmin --> UC10\n\
+    Admin --> UC11\nAdmin --> UC12\n\nVisitor --> UC5\nVisitor --> UC6\n\nUC10 ..>\
+    \ UC13 : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: api_management_portal
+
+  DOMAIN_DISPLAY: API Management Portal
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register API, Validate API Schema
+
+  EXPLANATION: "Register API" includes "Validate API Schema". "Validate API Schema"
+  is included only by "Register API", is not associated with any actor, does not include
+  or extend any other use case, is not extended by any use case, and has no generalization
+  relationships. This is functional decom …[truncated]'

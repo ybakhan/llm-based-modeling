@@ -1,0 +1,40 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Event Manager" as EM
+actor "Ticket Agent" as TA
+actor "Security Officer" as SO
+actor "Maintenance Staff" as MS
+actor "Fan" as FN
+
+rectangle "Stadium Management System" {
+  usecase "Schedule Event" as UC1
+  usecase "Cancel Event" as UC3
+  usecase "Process Ticket Sale" as UC4
+  usecase "Issue Refund" as UC6
+  usecase "Manage Security Patrol" as UC7
+  usecase "Monitor CCTV Feeds" as UC9
+  usecase "Submit Maintenance Request" as UC10
+  usecase "Track Repair Status" as UC11
+  usecase "View Event Schedule" as UC12
+  usecase "Purchase Ticket Online" as UC13
+  usecase "View Seating Map" as UC14
+  usecase "Generate Attendance Report" as UC15
+}
+
+EM -- UC1
+EM -- UC3
+EM -- UC15
+TA -- UC4
+TA -- UC6
+SO -- UC7
+SO -- UC9
+MS -- UC10
+MS -- UC11
+FN -- UC12
+FN -- UC13
+FN -- UC14
+
+UC3 ..> UC1 : <<extend>>
+@enduml

@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 53
+  domain: patient_records_system
+  domain_display: Patient Records System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 9
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:52:52.479362'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_053_patient_records_system/patient_records_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_053_patient_records_system/patient_records_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_053_patient_records_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Doctor\" as Doctor\nactor \"Receptionist\" as Receptionist\n\nrectangle\
+    \ \"Patient Records System\" {\n  usecase \"View Patient Record\" as UC1\n  usecase\
+    \ \"Update Patient Record\" as UC2\n  usecase \"Register Patient\" as UC3\n  usecase\
+    \ \"Schedule Appointment\" as UC5\n  usecase \"Search Patient\" as UC6\n}\n\n\
+    Doctor -- UC1\nDoctor -- UC2\nReceptionist -- UC3\nReceptionist -- UC5\nReceptionist\
+    \ -- UC6\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: patient_records_system
+
+  DOMAIN_DISPLAY: Patient Records System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Patient, Validate Patient ID
+
+  EXPLANATION: The use case "Register Patient" includes "Validate Patient ID" via
+  an <<include>> relationship. "Validate Patient ID" is included by only one use case
+  ("Register Patient"), is not associated with any actor, does not include or extend
+  any other use case, is not extended by any us …[truncated]'

@@ -1,0 +1,21 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Floor Supervisor" as Supervisor
+actor "Maintenance Technician" as Technician
+
+rectangle "Factory Floor Management System" {
+  usecase "Monitor Production Line" as UC1
+  usecase "Schedule Production Run" as UC2
+  usecase "Allocate Machine Resources" as UC3
+  usecase "Report Equipment Fault" as UC4
+  usecase "Log Maintenance Activity" as UC5
+}
+
+Supervisor -- UC1
+Supervisor -- UC2
+UC2 ..> UC3 : <<include>>
+Technician -- UC4
+Technician -- UC5
+@enduml

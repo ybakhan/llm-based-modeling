@@ -1,0 +1,41 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Viewer
+actor "Content Creator" as Creator
+actor Administrator
+
+rectangle "Video Streaming Platform" {
+  usecase "Register Account" as UC1
+  usecase "Search Content" as UC2
+  usecase "Play Video" as UC4
+  usecase "Rate Video" as UC6
+  usecase "Create Playlist" as UC7
+  usecase "Upload Video" as UC9
+  usecase "Manage Subscriptions" as UC10
+  usecase "Moderate Content" as UC11
+  usecase "View Watch History" as UC12
+  usecase "Add Subtitles" as UC13
+}
+
+Viewer -- UC1
+Viewer -- UC2
+Viewer -- UC4
+Viewer -- UC6
+Viewer -- UC7
+Viewer -- UC10
+Viewer -- UC12
+Creator -- UC9
+Creator -- UC13
+Administrator -- UC11
+
+@enduml
+
+
+Answer:
+No antipattern detected.

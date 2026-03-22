@@ -1,0 +1,109 @@
+metadata:
+  prompt_number: 4
+  domain: hospital_management_system
+  domain_display: Hospital Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Schedule Appointment, Check Doctor Availability
+      explanation: '"Check Doctor Availability" is an inclusion use case included
+        only by "Schedule Appointment". It is not associated with any actor directly,
+        is not included by any other use case, does not include or extend any use
+        case, is not extended by any use case, and has no generalization relationships.
+        It represents a sub-step (checking availability) rather than a complete, independently
+        valuable service to an actor. This is functional decomposition of "Schedule
+        Appointment" into a procedural step.'
+    - constructs_involved: Admit Patient, Assign Ward
+      explanation: '"Assign Ward" is an inclusion use case included only by "Admit
+        Patient". It is not associated with any actor directly, is not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Assigning a ward
+        is an internal sub-step of the admission process, not a standalone service
+        providing an observable result to a user. This is functional decomposition
+        of "Admit Patient".'
+    - constructs_involved: Discharge Patient, Generate Discharge Summary
+      explanation: '"Generate Discharge Summary" is an inclusion use case included
+        only by "Discharge Patient". It is not associated with any actor directly,
+        is not included by any other use case, does not include or extend any use
+        case, is not extended by any use case, and has no generalization relationships.
+        Generating a discharge summary is a procedural sub-step of discharging a patient
+        rather than an independently meaningful service to any actor. This is functional
+        decomposition of "Discharge Patient".'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:43:16.307345'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_004_hospital_management_system/hospital_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_004_hospital_management_system/hospital_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_004_hospital_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Receptionist\
+    \ as R\nactor Doctor as D\nactor Nurse as N\nactor \"Lab Technician\" as LT\n\
+    actor Administrator as A\n\nrectangle \"Hospital Management System\" {\n  usecase\
+    \ \"Register Patient\" as UC1\n  usecase \"Schedule Appointment\" as UC2\n  usecase\
+    \ \"Check Doctor Availability\" as UC3\n  usecase \"Admit Patient\" as UC4\n \
+    \ usecase \"Assign Ward\" as UC5\n  usecase \"Discharge Patient\" as UC6\n  usecase\
+    \ \"Generate Discharge Summary\" as UC7\n  usecase \"Record Diagnosis\" as UC8\n\
+    \  usecase \"Prescribe Medication\" as UC9\n  usecase \"Record Vital Signs\" as\
+    \ UC10\n  usecase \"Order Lab Test\" as UC11\n  usecase \"Process Lab Results\"\
+    \ as UC12\n  usecase \"Manage Staff Records\" as UC13\n}\n\nR --> UC1\nR --> UC2\n\
+    R --> UC4\nR --> UC6\nD --> UC8\nD --> UC9\nD --> UC11\nN --> UC10\nLT --> UC12\n\
+    A --> UC13\n\nUC2 ..> UC3 : <<include>>\nUC4 ..> UC5 : <<include>>\nUC6 ..> UC7\
+    \ : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Schedule Appointment, Check Doctor Availability\n\
+    \   Instance 1: Explanation: \"Check Doctor Availability\" is an inclusion use\
+    \ case included only by \"Schedule Appointment\". It is not associated with any\
+    \ actor directly, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ It represents a sub-step (checking availability) rather than a complete, independently\
+    \ valuable service to an actor. This is functional decomposition of \"Schedule\
+    \ Appointment\" into a procedural step.\n\n   Instance 2: Constructs Involved:\
+    \ Admit Patient, Assign Ward\n   Instance 2: Explanation: \"Assign Ward\" is an\
+    \ inclusion use case included only by \"Admit Patient\". It is not associated\
+    \ with any actor directly, is not included by any other use case, does not include\
+    \ or extend any use case, is not extended by any use case, and has no generalization\
+    \ relationships. Assigning a ward is an internal sub-step of the admission process,\
+    \ not a standalone service providing an observable result to a user. This is functional\
+    \ decomposition of \"Admit Patient\".\n\n   Instance 3: Constructs Involved: Discharge\
+    \ Patient, Generate Discharge Summary\n   Instance 3: Explanation: \"Generate\
+    \ Discharge Summary\" is an inclusion use case included only by \"Discharge Patient\"\
+    . It is not associated with any actor directly, is not included by any other use\
+    \ case, does not include or extend any use case, is not extended by any use case,\
+    \ and has no generalization relationships. Generating a discharge summary is a\
+    \ procedural sub-step of discharging a patient rather than an independently meaningful\
+    \ service to any actor. This is functional decomposition of \"Discharge Patient\"\
+    ."
+raw_response_excerpt: '
+
+
+  DOMAIN: hospital_management_system
+
+  DOMAIN_DISPLAY: Hospital Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Appointment, Check Doctor Availability
+
+  EXPLANATION: "Check Doctor Availability" is an inclusion use case included only
+  by "Schedule Appointment". It is not associated with any actor directly, is not
+  included by any other use case, does not include or extend any use case, is not
+  extended by any use case, and has …[truncated]'

@@ -1,0 +1,33 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "End User" as EU
+actor "Meteorologist" as MET
+actor "System Administrator" as SA
+
+rectangle "Weather Forecasting Service" {
+  usecase "View Weather Forecast" as UC1
+  usecase "Set Location Preferences" as UC3
+  usecase "Publish Forecast" as UC4
+  usecase "Manage Weather Stations" as UC5
+  usecase "Subscribe to Alerts" as UC6
+  usecase "Configure Alert Thresholds" as UC7
+}
+
+EU --> UC1
+EU --> UC3
+EU --> UC6
+MET --> UC4
+SA --> UC5
+UC7 ..|> UC6 : <<extend>>
+
+@enduml
+
+
+Answer:
+No antipattern detected.

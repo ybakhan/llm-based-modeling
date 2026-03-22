@@ -1,0 +1,76 @@
+
+
+DOMAIN: course_registration_system
+DOMAIN_DISPLAY: Course Registration System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register for Course (UC2), Check Prerequisites (UC5), UC2 --include--> UC5
+EXPLANATION: "Check Prerequisites" (UC5) is an inclusion use case that is included by only one use case ("Register for Course" / UC2). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and is neither a generalization nor a specialization of any use case. "Check Prerequisites" does not represent a complete, independently valuable service to any actor — it is merely a functional decomposition step of the registration process. This constitutes the "Functional Decomposition: Using the include relationship" antipattern.
+
+REFACTORING_RATIONALE: The inclusion use case "Check Prerequisites" (UC5) and the <<include>> relationship from "Register for Course" (UC2) to UC5 must be removed. The prerequisite checking behavior should be merged into "Register for Course" (UC2), since checking prerequisites is an internal step of registration and does not provide a standalone observable result to any actor. This eliminates 1 use case and 1 include relationship, reducing the construct count by 2.
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Student" as Student
+actor "Registrar" as Registrar
+
+rectangle "Course Registration System" {
+  usecase "Browse Course Catalog" as UC1
+  usecase "Register for Course" as UC2
+  usecase "Drop Course" as UC3
+  usecase "View Student Schedule" as UC4
+  usecase "Check Prerequisites" as UC5
+  usecase "Approve Registration" as UC6
+  usecase "Generate Class Roster" as UC7
+}
+
+Student -- UC1
+Student -- UC2
+Student -- UC3
+Student -- UC4
+Registrar -- UC6
+Registrar -- UC7
+
+UC2 ..> UC5 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Student" as Student
+actor "Registrar" as Registrar
+
+rectangle "Course Registration System" {
+  usecase "Browse Course Catalog" as UC1
+  usecase "Register for Course" as UC2
+  usecase "Drop Course" as UC3
+  usecase "View Student Schedule" as UC4
+  usecase "Approve Registration" as UC6
+  usecase "Generate Class Roster" as UC7
+}
+
+Student -- UC1
+Student -- UC2
+Student -- UC3
+Student -- UC4
+Registrar -- UC6
+Registrar -- UC7
+@enduml
+```

@@ -1,0 +1,45 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor Bidder
+actor Seller
+actor Admin
+actor "Payment Gateway" as PG
+
+rectangle "Online Auction Platform" {
+    usecase "Register Account" as UC1
+    usecase "Browse Auctions" as UC2
+    usecase "Place Bid" as UC3
+    usecase "Validate Bid Amount" as UC4
+    usecase "Send Bid Notification" as UC5
+    usecase "Create Auction Listing" as UC6
+    usecase "Upload Item Photos" as UC7
+    usecase "Close Auction" as UC8
+    usecase "Process Payment" as UC9
+    usecase "View Bid History" as UC10
+    usecase "Manage User Accounts" as UC11
+    usecase "Resolve Dispute" as UC12
+    usecase "Leave Feedback" as UC13
+    usecase "Search Auctions" as UC14
+}
+
+Bidder -- UC1
+Bidder -- UC2
+Bidder -- UC3
+Bidder -- UC10
+Bidder -- UC13
+Bidder -- UC14
+Seller -- UC1
+Seller -- UC6
+Seller -- UC8
+Seller -- UC13
+Admin -- UC11
+Admin -- UC12
+PG -- UC9
+
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC8 ..> UC9 : <<include>>
+@enduml

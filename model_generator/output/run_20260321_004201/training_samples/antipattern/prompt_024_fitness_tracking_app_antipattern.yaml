@@ -1,0 +1,115 @@
+metadata:
+  prompt_number: 24
+  domain: fitness_tracking_app
+  domain_display: Fitness Tracking App
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Log Workout, Validate Exercise Input, include (Log Workout
+        → Validate Exercise Input)
+      explanation: '"Validate Exercise Input" is an inclusion use case included only
+        by "Log Workout". It is not associated with any actor, is not included by
+        any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        a sub-step (input validation) rather than a complete service observable to
+        an actor, constituting functional decomposition of "Log Workout" via the include
+        relationship.'
+    - constructs_involved: Track Nutrition, Calculate Calorie Totals, include (Track
+        Nutrition → Calculate Calorie Totals)
+      explanation: '"Calculate Calorie Totals" is an inclusion use case included only
+        by "Track Nutrition". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        an internal calculation step rather than a complete, independently useful
+        service, constituting functional decomposition of "Track Nutrition" via the
+        include relationship.'
+    - constructs_involved: View Progress Report, Fetch Historical Data, include (View
+        Progress Report → Fetch Historical Data)
+      explanation: '"Fetch Historical Data" is an inclusion use case included only
+        by "View Progress Report". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        an internal data retrieval step rather than a complete service with an observable
+        result to a user, constituting functional decomposition of "View Progress
+        Report" via the include relationship.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:43:24.534410'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_024_fitness_tracking_app/fitness_tracking_app_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_024_fitness_tracking_app/fitness_tracking_app_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_024_fitness_tracking_app_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Fitness\
+    \ User\" as User\nactor \"Personal Trainer\" as Trainer\nactor \"Admin\" as Admin\n\
+    \nrectangle \"Fitness Tracking App\" {\n  usecase \"Register Account\" as UC1\n\
+    \  usecase \"Log Workout\" as UC2\n  usecase \"Validate Exercise Input\" as UC3\n\
+    \  usecase \"Track Nutrition\" as UC4\n  usecase \"Calculate Calorie Totals\"\
+    \ as UC5\n  usecase \"View Progress Report\" as UC6\n  usecase \"Fetch Historical\
+    \ Data\" as UC7\n  usecase \"Set Fitness Goal\" as UC8\n  usecase \"Share Workout\
+    \ Summary\" as UC9\n  usecase \"Manage User Accounts\" as UC10\n  usecase \"Create\
+    \ Training Plan\" as UC11\n  usecase \"Monitor Client Progress\" as UC12\n  usecase\
+    \ \"Sync Wearable Device\" as UC13\n}\n\nUser -- UC1\nUser -- UC2\nUser -- UC4\n\
+    User -- UC6\nUser -- UC8\nUser -- UC9\nUser -- UC13\n\nTrainer -- UC11\nTrainer\
+    \ -- UC12\n\nAdmin -- UC10\n\nUC2 ..> UC3 : <<include>>\nUC4 ..> UC5 : <<include>>\n\
+    UC6 ..> UC7 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Log Workout, Validate Exercise Input, include\
+    \ (Log Workout → Validate Exercise Input)\n   Instance 1: Explanation: \"Validate\
+    \ Exercise Input\" is an inclusion use case included only by \"Log Workout\".\
+    \ It is not associated with any actor, is not included by any other use case,\
+    \ does not include or extend any other use case, is not extended by any use case,\
+    \ and has no generalization relationships. It represents a sub-step (input validation)\
+    \ rather than a complete service observable to an actor, constituting functional\
+    \ decomposition of \"Log Workout\" via the include relationship.\n\n   Instance\
+    \ 2: Constructs Involved: Track Nutrition, Calculate Calorie Totals, include (Track\
+    \ Nutrition → Calculate Calorie Totals)\n   Instance 2: Explanation: \"Calculate\
+    \ Calorie Totals\" is an inclusion use case included only by \"Track Nutrition\"\
+    . It is not associated with any actor, is not included by any other use case,\
+    \ does not include or extend any other use case, is not extended by any use case,\
+    \ and has no generalization relationships. It represents an internal calculation\
+    \ step rather than a complete, independently useful service, constituting functional\
+    \ decomposition of \"Track Nutrition\" via the include relationship.\n\n   Instance\
+    \ 3: Constructs Involved: View Progress Report, Fetch Historical Data, include\
+    \ (View Progress Report → Fetch Historical Data)\n   Instance 3: Explanation:\
+    \ \"Fetch Historical Data\" is an inclusion use case included only by \"View Progress\
+    \ Report\". It is not associated with any actor, is not included by any other\
+    \ use case, does not include or extend any other use case, is not extended by\
+    \ any use case, and has no generalization relationships. It represents an internal\
+    \ data retrieval step rather than a complete service with an observable result\
+    \ to a user, constituting functional decomposition of \"View Progress Report\"\
+    \ via the include relationship."
+raw_response_excerpt: '
+
+
+  DOMAIN: fitness_tracking_app
+
+  DOMAIN_DISPLAY: Fitness Tracking App
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Log Workout, Validate Exercise Input, include (Log Workout
+  → Validate Exercise Input)
+
+  EXPLANATION: "Validate Exercise Input" is an inclusion use case included only by
+  "Log Workout". It is not associated with any actor, is not included by any other
+  use case, does not include or extend any other use case, is not extended by any
+  use c …[truncated]'

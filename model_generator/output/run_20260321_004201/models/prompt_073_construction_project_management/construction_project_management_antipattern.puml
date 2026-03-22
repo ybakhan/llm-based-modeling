@@ -1,0 +1,24 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Project Manager" as PM
+actor "Inspector" as Inspector
+actor "Contractor" as Contractor
+
+rectangle "Construction Project Management System" {
+  usecase "Create Project Schedule" as UC1
+  usecase "Assign Subcontractor" as UC2
+  usecase "Submit Inspection Request" as UC3
+  usecase "Select Inspection Type" as UC4
+  usecase "Log Daily Progress" as UC5
+  usecase "Review Budget" as UC6
+}
+
+PM -- UC1
+PM -- UC2
+PM -- UC6
+Inspector -- UC3
+Contractor -- UC5
+UC3 ..> UC4 : <<include>>
+
+@enduml

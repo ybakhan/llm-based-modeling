@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 40
+  domain: exam_management_system
+  domain_display: Exam Management System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 7
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:15:07.583845'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_040_exam_management_system/exam_management_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_040_exam_management_system/exam_management_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_040_exam_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Instructor\" as Instructor\nactor \"Student\" as Student\n\nrectangle\
+    \ \"Exam Management System\" {\n  usecase \"Schedule Exam\" as UC1\n  usecase\
+    \ \"Take Exam\" as UC3\n  usecase \"Grade Exam\" as UC4\n  usecase \"View Results\"\
+    \ as UC5\n}\n\nInstructor --> UC1\nInstructor --> UC4\nStudent --> UC3\nStudent\
+    \ --> UC5\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: exam_management_system
+
+  DOMAIN_DISPLAY: Exam Management System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Exam, Select Exam Date
+
+  EXPLANATION: The use case "Select Exam Date" is an inclusion use case that is included
+  by only one use case ("Schedule Exam"). "Select Exam Date" is not associated with
+  any actor directly — no actor has a direct association to it. It does not include
+  or extend any other use case, is not extended b …[truncated]'

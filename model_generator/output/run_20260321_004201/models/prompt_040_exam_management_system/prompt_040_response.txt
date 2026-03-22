@@ -1,0 +1,68 @@
+
+
+DOMAIN: exam_management_system
+DOMAIN_DISPLAY: Exam Management System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Schedule Exam, Select Exam Date
+EXPLANATION: The use case "Select Exam Date" is an inclusion use case that is included by only one use case ("Schedule Exam"). "Select Exam Date" is not associated with any actor directly — no actor has a direct association to it. It does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization relationship. "Select Exam Date" does not represent a complete, independently valuable service to any user; it is merely a sub-step of scheduling an exam. This is a textbook example of functional decomposition — breaking the "Schedule Exam" use case into a procedural sub-step via an unnecessary <<include>> relationship, rather than keeping the behavior as part of the base use case where it naturally belongs.
+
+REFACTORING_RATIONALE: The inclusion use case "Select Exam Date" should be merged back into "Schedule Exam" because selecting a date is an internal step of scheduling, not a standalone service. The <<include>> relationship between "Schedule Exam" and "Select Exam Date" must be removed, and the "Select Exam Date" use case must be deleted. This eliminates one use case and one include relationship, reducing the total construct count by 2 while preserving all meaningful system behavior within "Schedule Exam."
+CONSTRUCT_COUNT: 9
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Instructor" as Instructor
+actor "Student" as Student
+
+rectangle "Exam Management System" {
+  usecase "Schedule Exam" as UC1
+  usecase "Select Exam Date" as UC2
+  usecase "Take Exam" as UC3
+  usecase "Grade Exam" as UC4
+  usecase "View Results" as UC5
+}
+
+Instructor --> UC1
+Instructor --> UC4
+Student --> UC3
+Student --> UC5
+
+UC1 ..> UC2 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 7
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Instructor" as Instructor
+actor "Student" as Student
+
+rectangle "Exam Management System" {
+  usecase "Schedule Exam" as UC1
+  usecase "Take Exam" as UC3
+  usecase "Grade Exam" as UC4
+  usecase "View Results" as UC5
+}
+
+Instructor --> UC1
+Instructor --> UC4
+Student --> UC3
+Student --> UC5
+@enduml
+```

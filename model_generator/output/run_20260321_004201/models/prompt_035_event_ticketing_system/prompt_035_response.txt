@@ -1,0 +1,71 @@
+
+
+DOMAIN: event_ticketing_system
+DOMAIN_DISPLAY: Event Ticketing System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Purchase Ticket, Validate Payment Details
+EXPLANATION: The use case "Validate Payment Details" is an inclusion use case that is included by only one use case ("Purchase Ticket"). "Validate Payment Details" is not associated with any actor directly — it has no independent actor relationship. It does not include, extend, generalize, or get extended by any other use case. It represents a sub-step of purchasing a ticket rather than a complete, independently valuable service observable to a user. This is a textbook case of functional decomposition where a single use case's internal behavior has been improperly broken out into a separate inclusion use case that provides no standalone value.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Payment Details" must be merged back into "Purchase Ticket" because it serves only as an internal step of that use case and provides no complete service on its own. By applying Drop Functional Decomposition, we remove "Validate Payment Details" and the <<include>> relationship between "Purchase Ticket" and "Validate Payment Details". The payment validation logic becomes an internal step within "Purchase Ticket," which already represents the complete service from the customer's perspective. This reduces the model by one use case and one include relationship.
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Customer
+actor "Event Organizer" as Organizer
+
+rectangle "Event Ticketing System" {
+  usecase "Browse Events" as UC1
+  usecase "Purchase Ticket" as UC2
+  usecase "Validate Payment Details" as UC3
+  usecase "Cancel Ticket" as UC4
+  usecase "Create Event" as UC5
+  usecase "View Sales Report" as UC6
+}
+
+Customer -- UC1
+Customer -- UC2
+UC2 ..> UC3 : <<include>>
+Customer -- UC4
+Organizer -- UC5
+Organizer -- UC6
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 8
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Customer
+actor "Event Organizer" as Organizer
+
+rectangle "Event Ticketing System" {
+  usecase "Browse Events" as UC1
+  usecase "Purchase Ticket" as UC2
+  usecase "Cancel Ticket" as UC4
+  usecase "Create Event" as UC5
+  usecase "View Sales Report" as UC6
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC4
+Organizer -- UC5
+Organizer -- UC6
+
+@enduml
+```

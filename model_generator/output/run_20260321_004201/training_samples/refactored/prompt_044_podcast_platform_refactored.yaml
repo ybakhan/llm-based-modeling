@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 44
+  domain: podcast_platform
+  domain_display: Podcast Platform
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:17:14.716390'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_044_podcast_platform/podcast_platform_refactored.puml
+    image: output/run_20260321_004201/models/prompt_044_podcast_platform/podcast_platform_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_044_podcast_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Listener\nactor Podcaster\n\
+    actor Admin\n\nrectangle \"Podcast Platform\" {\n  usecase \"Browse Catalog\"\
+    \ as UC1\n  usecase \"Search Podcasts\" as UC2\n  usecase \"Play Episode\" as\
+    \ UC4\n  usecase \"Subscribe to Podcast\" as UC5\n  usecase \"Rate and Review\"\
+    \ as UC7\n  usecase \"Download Episode\" as UC8\n  usecase \"Publish Episode\"\
+    \ as UC9\n  usecase \"Manage Podcast Profile\" as UC11\n  usecase \"View Analytics\"\
+    \ as UC12\n  usecase \"Moderate Content\" as UC13\n  usecase \"Manage Users\"\
+    \ as UC14\n}\n\nListener --> UC1\nListener --> UC2\nListener --> UC4\nListener\
+    \ --> UC5\nListener --> UC7\nListener --> UC8\n\nPodcaster --> UC9\nPodcaster\
+    \ --> UC11\nPodcaster --> UC12\n\nAdmin --> UC13\nAdmin --> UC14\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: podcast_platform
+
+  DOMAIN_DISPLAY: Podcast Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Search Podcasts, Parse Search Query, include relationship from
+  "Search Podcasts" to "Parse Search Query"
+
+  EXPLANATION: "Parse Search Query" is an inclusion use case included only by "Search
+  Podcasts." It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case, and is not involved in a …[truncated]'

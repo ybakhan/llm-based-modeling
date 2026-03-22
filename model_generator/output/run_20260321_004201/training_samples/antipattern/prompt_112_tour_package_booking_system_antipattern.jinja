@@ -1,0 +1,59 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Travel Agent" as Agent
+actor "Payment Gateway" as Gateway
+
+rectangle "Tour Package Booking System" {
+  usecase "Search Tour Packages" as UC1
+  usecase "Apply Search Filters" as UC2
+  usecase "View Package Details" as UC3
+  usecase "Book Tour Package" as UC4
+  usecase "Validate Payment Details" as UC5
+  usecase "Cancel Booking" as UC6
+  usecase "Generate Cancellation Reference" as UC7
+  usecase "View Booking History" as UC8
+  usecase "Manage Tour Packages" as UC9
+  usecase "Process Refund" as UC10
+  usecase "Leave Review" as UC11
+  usecase "Apply Discount Code" as UC12
+}
+
+Customer --> UC1
+Customer --> UC3
+Customer --> UC4
+Customer --> UC6
+Customer --> UC8
+Customer --> UC11
+
+Agent --> UC9
+Agent --> UC10
+
+Gateway --> UC4
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC4 ..> UC12 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Book Tour Package, Validate Payment Details, include relationship from Book Tour Package to Validate Payment Details
+   Instance 1: Explanation: "Validate Payment Details" is an inclusion use case included only by "Book Tour Package". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed sub-step of the booking process rather than a complete, standalone service offering an observable result to any actor. This constitutes functional decomposition via the include relationship.
+
+   Instance 2: Constructs Involved: Search Tour Packages, Apply Search Filters, include relationship from Search Tour Packages to Apply Search Filters
+   Instance 2: Explanation: "Apply Search Filters" is an inclusion use case included only by "Search Tour Packages". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Applying search filters is merely a sub-step of searching for tour packages, not a complete service delivering an observable result to a user. This is functional decomposition via the include relationship.
+
+   Instance 3: Constructs Involved: Cancel Booking, Generate Cancellation Reference, include relationship from Cancel Booking to Generate Cancellation Reference
+   Instance 3: Explanation: "Generate Cancellation Reference" is an inclusion use case included only by "Cancel Booking". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a cancellation reference number is an internal sub-step of the cancellation process, not a standalone service providing an observable result to any actor. This constitutes functional decomposition via the include relationship.

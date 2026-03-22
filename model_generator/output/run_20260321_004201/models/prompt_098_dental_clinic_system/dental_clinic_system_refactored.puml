@@ -1,0 +1,37 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Patient" as Patient
+actor "Dentist" as Dentist
+actor "Receptionist" as Receptionist
+actor "Dental Hygienist" as Hygienist
+
+rectangle "Dental Clinic System" {
+  usecase "Schedule Appointment" as UC1
+  usecase "Cancel Appointment" as UC2
+  usecase "Register Patient" as UC4
+  usecase "Perform Dental Examination" as UC5
+  usecase "Prescribe Treatment" as UC7
+  usecase "Perform Teeth Cleaning" as UC8
+  usecase "Process Payment" as UC9
+  usecase "View Patient Records" as UC11
+  usecase "Request Emergency Appointment" as UC12
+  usecase "Manage Treatment Plan" as UC13
+}
+
+Patient -- UC1
+Patient -- UC2
+Patient -- UC12
+Receptionist -- UC1
+Receptionist -- UC4
+Receptionist -- UC9
+Receptionist -- UC2
+Dentist -- UC5
+Dentist -- UC7
+Dentist -- UC11
+Dentist -- UC13
+Hygienist -- UC8
+
+UC12 ..> UC1 : <<extend>>
+
+@enduml

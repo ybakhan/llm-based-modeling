@@ -1,0 +1,69 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Reporter" as Reporter
+actor "Project Manager" as PM
+actor "Developer" as Dev
+actor "QA Tester" as QA
+
+rectangle "Software Bug Tracking System" {
+  usecase "Report Bug" as UC1
+  usecase "Validate Bug Fields" as UC2
+  usecase "View Bug List" as UC3
+  usecase "Search Bugs" as UC4
+  usecase "Assign Bug" as UC5
+  usecase "Select Developer" as UC6
+  usecase "Update Bug Status" as UC7
+  usecase "Add Comment" as UC8
+  usecase "Close Bug" as UC9
+  usecase "Record Resolution Details" as UC10
+  usecase "Reopen Bug" as UC11
+  usecase "Generate Bug Report" as UC12
+  usecase "Verify Fix" as UC13
+  usecase "Set Bug Priority" as UC14
+  usecase "Attach File" as UC15
+}
+
+Reporter --> UC1
+Reporter --> UC3
+Reporter --> UC4
+Reporter --> UC11
+
+PM --> UC5
+PM --> UC12
+PM --> UC14
+PM --> UC3
+
+Dev --> UC7
+Dev --> UC8
+Dev --> UC9
+Dev --> UC15
+
+QA --> UC13
+QA --> UC3
+
+UC1 ..> UC2 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC9 ..> UC10 : <<include>>
+
+UC1 ..> UC15 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Report Bug, Validate Bug Fields, include relationship from Report Bug to Validate Bug Fields
+   Instance 1: Explanation: "Validate Bug Fields" is an inclusion use case included only by "Report Bug". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (field validation) of reporting a bug rather than a complete, independently meaningful service. This is functional decomposition — breaking "Report Bug" into procedural steps via <<include>>.
+
+   Instance 2: Constructs Involved: Assign Bug, Select Developer, include relationship from Assign Bug to Select Developer
+   Instance 2: Explanation: "Select Developer" is an inclusion use case included only by "Assign Bug". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Selecting a developer is merely a sub-step of assigning a bug, not a standalone service delivering an observable result to any actor. This is functional decomposition.
+
+   Instance 3: Constructs Involved: Close Bug, Record Resolution Details, include relationship from Close Bug to Record Resolution Details
+   Instance 3: Explanation: "Record Resolution Details" is an inclusion use case included only by "Close Bug". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Recording resolution details is a procedural sub-step of closing a bug, not an independent service. This is functional decomposition.

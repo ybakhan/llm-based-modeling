@@ -1,0 +1,37 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Pet Owner" as PO
+actor "Service Provider" as SP
+
+rectangle "Pet Care Service Booking System" {
+  usecase "Browse Services" as UC1
+  usecase "Book Grooming Appointment" as UC2
+  usecase "Select Time Slot" as UC3
+  usecase "Cancel Booking" as UC4
+  usecase "View Bookings" as UC5
+  usecase "Manage Availability" as UC6
+  usecase "Confirm Booking" as UC7
+}
+
+PO --> UC1
+PO --> UC2
+PO --> UC4
+PO --> UC5
+UC2 ..> UC3 : <<include>>
+SP --> UC6
+SP --> UC7
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Book Grooming Appointment, Select Time Slot
+   Explanation: The use case "Select Time Slot" is an inclusion use case that is included by only one use case ("Book Grooming Appointment"). "Select Time Slot" is not associated with any actor directly, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a sub-step of booking rather than a complete, independently valuable service. Selecting a time slot alone provides no observable result to the user — it only makes sense as part of the booking process. This is a textbook example of functional decomposition where a single use case's internal logic has been artificially split into a separate inclusion use case.

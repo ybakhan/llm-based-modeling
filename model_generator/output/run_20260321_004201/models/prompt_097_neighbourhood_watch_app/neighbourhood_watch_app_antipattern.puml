@@ -1,0 +1,39 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Resident" as Resident
+actor "Watch Coordinator" as Coordinator
+actor "Police Liaison" as Police
+
+rectangle "Neighbourhood Watch App" {
+  usecase "Register Account" as UC1
+  usecase "Report Incident" as UC2
+  usecase "Capture GPS Location" as UC3
+  usecase "Send Alert to Neighbours" as UC4
+  usecase "Format Notification Message" as UC5
+  usecase "View Crime Map" as UC6
+  usecase "Load Map Markers" as UC7
+  usecase "Manage Watch Zones" as UC8
+  usecase "Review Incident Reports" as UC9
+  usecase "Escalate to Police" as UC10
+  usecase "Post Safety Tip" as UC11
+  usecase "Schedule Patrol" as UC12
+}
+
+Resident -- UC1
+Resident -- UC2
+Resident -- UC4
+Resident -- UC6
+Resident -- UC11
+
+Coordinator -- UC8
+Coordinator -- UC9
+Coordinator -- UC12
+
+Police -- UC10
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+@enduml

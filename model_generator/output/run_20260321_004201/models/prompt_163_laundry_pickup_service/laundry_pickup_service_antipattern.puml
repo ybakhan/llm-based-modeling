@@ -1,0 +1,41 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Driver" as Driver
+actor "Admin" as Admin
+
+rectangle "Laundry Pickup Service" {
+  usecase "Register Account" as UC1
+  usecase "Schedule Pickup" as UC2
+  usecase "Select Time Slot" as UC3
+  usecase "Track Order" as UC4
+  usecase "Fetch GPS Location" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Validate Payment Details" as UC7
+  usecase "Apply Promo Code" as UC8
+  usecase "Rate Service" as UC9
+  usecase "Accept Pickup Request" as UC10
+  usecase "Update Order Status" as UC11
+  usecase "Manage Pricing" as UC12
+  usecase "View Reports" as UC13
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC4
+Customer -- UC6
+Customer -- UC9
+
+Driver -- UC10
+Driver -- UC11
+
+Admin -- UC12
+Admin -- UC13
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC8 ..> UC6 : <<extend>>
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Traveler" as Traveler
+actor "Insurance Agent" as Agent
+actor "Claims Adjuster" as Adjuster
+
+rectangle "Travel Insurance System" {
+  usecase "Purchase Policy" as UC1
+  usecase "Validate Traveler Details" as UC2
+  usecase "Browse Insurance Plans" as UC3
+  usecase "File Claim" as UC4
+  usecase "Review Claim" as UC5
+  usecase "Cancel Policy" as UC6
+  usecase "Get Quote" as UC7
+}
+
+Traveler -- UC3
+Traveler -- UC1
+Traveler -- UC4
+Traveler -- UC7
+Agent -- UC6
+Adjuster -- UC5
+UC1 ..> UC2 : <<include>>
+
+@enduml

@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 113
+  domain: vacation_rental_platform
+  domain_display: Vacation Rental Platform
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 23
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:44:01.695332'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_113_vacation_rental_platform/vacation_rental_platform_refactored.puml
+    image: output/run_20260321_004201/models/prompt_113_vacation_rental_platform/vacation_rental_platform_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_113_vacation_rental_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Guest\nactor \"Property\
+    \ Owner\" as Owner\nactor \"Platform Admin\" as Admin\nactor \"Payment Gateway\"\
+    \ as PG\n\nrectangle \"Vacation Rental Platform\" {\n  usecase \"Search Properties\"\
+    \ as UC1\n  usecase \"View Property Details\" as UC2\n  usecase \"Book Property\"\
+    \ as UC3\n  usecase \"Process Payment\" as UC4\n  usecase \"Leave Review\" as\
+    \ UC5\n  usecase \"List Property\" as UC6\n  usecase \"Manage Availability\" as\
+    \ UC7\n  usecase \"Respond to Reviews\" as UC8\n  usecase \"Manage Listings\"\
+    \ as UC9\n  usecase \"Handle Disputes\" as UC10\n}\n\nGuest --> UC1\nGuest -->\
+    \ UC2\nGuest --> UC3\nGuest --> UC4\nGuest --> UC5\n\nOwner --> UC6\nOwner -->\
+    \ UC7\nOwner --> UC8\n\nAdmin --> UC9\nAdmin --> UC10\n\nPG --> UC4\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: vacation_rental_platform
+
+  DOMAIN_DISPLAY: Vacation Rental Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Search Properties, Validate Search Filters, include relationship
+  from Search Properties to Validate Search Filters
+
+  EXPLANATION: "Validate Search Filters" is an inclusion use case included only by
+  "Search Properties". It is not associated with any actor, does not include or extend
+  any other use case, is not extended by any u …[truncated]'

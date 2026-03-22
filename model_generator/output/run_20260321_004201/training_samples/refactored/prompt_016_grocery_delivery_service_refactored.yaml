@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 16
+  domain: grocery_delivery_service
+  domain_display: Grocery Delivery Service
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 11
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:05:56.395216'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_016_grocery_delivery_service/grocery_delivery_service_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_016_grocery_delivery_service/grocery_delivery_service_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_016_grocery_delivery_service_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Customer\nactor \"Delivery\
+    \ Driver\" as Driver\nactor Admin\n\nrectangle \"Grocery Delivery Service\" {\n\
+    \  usecase \"Browse Products\" as UC1\n  usecase \"Place Order\" as UC2\n  usecase\
+    \ \"Track Delivery\" as UC3\n  usecase \"Update Delivery Status\" as UC4\n  usecase\
+    \ \"Manage Inventory\" as UC6\n}\n\nCustomer -- UC1\nCustomer -- UC2\nCustomer\
+    \ -- UC3\nDriver -- UC4\nAdmin -- UC6\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: grocery_delivery_service
+
+  DOMAIN_DISPLAY: Grocery Delivery Service
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Order (UC2), Validate Payment Details (UC5), the <<include>>
+  relationship from UC2 to UC5
+
+  EXPLANATION: "Validate Payment Details" (UC5) is an inclusion use case that is included
+  by only one use case ("Place Order" / UC2). It is not associated with any actor
+  directly, it does not include or extend any other use case, it …[truncated]'

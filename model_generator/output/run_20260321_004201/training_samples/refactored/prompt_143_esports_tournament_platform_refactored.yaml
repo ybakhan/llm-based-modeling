@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 143
+  domain: esports_tournament_platform
+  domain_display: Esports Tournament Platform
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:57:42.970178'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_143_esports_tournament_platform/esports_tournament_platform_refactored.puml
+    image: output/run_20260321_004201/models/prompt_143_esports_tournament_platform/esports_tournament_platform_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_143_esports_tournament_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nleft to right direction\n\n\
+    actor \"Team Captain\" as TC\nactor \"Tournament Admin\" as TA\nactor \"Spectator\"\
+    \ as SP\nactor \"Finance Manager\" as FM\n\nrectangle \"Esports Tournament Platform\"\
+    \ {\n  usecase \"Register Team\" as UC1\n  usecase \"Browse Tournaments\" as UC3\n\
+    \  usecase \"Join Tournament\" as UC4\n  usecase \"Schedule Match\" as UC5\n \
+    \ usecase \"Report Match Result\" as UC7\n  usecase \"View Live Bracket\" as UC8\n\
+    \  usecase \"Watch Live Stream\" as UC9\n  usecase \"Manage Tournament Settings\"\
+    \ as UC10\n  usecase \"Process Prize Payout\" as UC11\n  usecase \"View Match\
+    \ History\" as UC13\n  usecase \"Submit Dispute\" as UC14\n}\n\nTC --> UC1\nTC\
+    \ --> UC3\nTC --> UC4\nTC --> UC7\nTC --> UC13\nTC --> UC14\n\nTA --> UC5\nTA\
+    \ --> UC10\nTA --> UC7\n\nSP --> UC8\nSP --> UC9\n\nFM --> UC11\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: esports_tournament_platform
+
+  DOMAIN_DISPLAY: Esports Tournament Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Team, Validate Team Roster, include relationship from
+  Register Team to Validate Team Roster
+
+  EXPLANATION: "Validate Team Roster" is an inclusion use case included only by "Register
+  Team." It is not associated with any actor, is not included by any other use case,
+  does not include or extend any use case, is not …[truncated]'

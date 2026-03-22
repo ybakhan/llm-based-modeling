@@ -1,0 +1,74 @@
+metadata:
+  prompt_number: 168
+  domain: notary_service_booking_system
+  domain_display: Notary Service Booking System
+  size: small
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Book Appointment, Select Time Slot, Book Appointment --include-->
+        Select Time Slot
+      explanation: '"Select Time Slot" is an inclusion use case that is included by
+        only one use case ("Book Appointment"). It is not associated with any actor
+        directly. It does not include or extend any other use case, is not extended
+        by any use case, and is not involved in any generalization. "Select Time Slot"
+        does not represent a complete, standalone service observable to any actor
+        — it is merely a decomposed step of the booking process. This constitutes
+        the Functional Decomposition: Using the include relationship antipattern.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 13
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:45:49.099825'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_168_notary_service_booking_system/notary_service_booking_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_168_notary_service_booking_system/notary_service_booking_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_168_notary_service_booking_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Client\" as Client\nactor \"Notary\" as Notary\n\nrectangle \"Notary\
+    \ Service Booking System\" {\n  usecase \"Book Appointment\" as UC1\n  usecase\
+    \ \"Select Time Slot\" as UC2\n  usecase \"Cancel Appointment\" as UC3\n  usecase\
+    \ \"View Appointments\" as UC4\n  usecase \"Upload Documents\" as UC5\n  usecase\
+    \ \"Confirm Appointment\" as UC6\n  usecase \"View Client Documents\" as UC7\n\
+    }\n\nClient -- UC1\nUC1 ..> UC2 : <<include>>\nClient -- UC3\nClient -- UC4\n\
+    Client -- UC5\nNotary -- UC4\nNotary -- UC6\nNotary -- UC7\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Constructs Involved: Book Appointment, Select Time Slot, Book Appointment\
+    \ --include--> Select Time Slot\n   Explanation: \"Select Time Slot\" is an inclusion\
+    \ use case that is included by only one use case (\"Book Appointment\"). It is\
+    \ not associated with any actor directly. It does not include or extend any other\
+    \ use case, is not extended by any use case, and is not involved in any generalization.\
+    \ \"Select Time Slot\" does not represent a complete, standalone service observable\
+    \ to any actor — it is merely a decomposed step of the booking process. This constitutes\
+    \ the Functional Decomposition: Using the include relationship antipattern."
+raw_response_excerpt: '
+
+
+  DOMAIN: notary_service_booking_system
+
+  DOMAIN_DISPLAY: Notary Service Booking System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Appointment, Select Time Slot, Book Appointment --include-->
+  Select Time Slot
+
+  EXPLANATION: "Select Time Slot" is an inclusion use case that is included by only
+  one use case ("Book Appointment"). It is not associated with any actor directly.
+  It does not include or extend any other use case, is not extended by a …[truncated]'

@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 193
+  domain: graphic_novel_platform
+  domain_display: Graphic Novel Platform
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:15:59.807842'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_193_graphic_novel_platform/graphic_novel_platform_refactored.puml
+    image: output/run_20260321_004201/models/prompt_193_graphic_novel_platform/graphic_novel_platform_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_193_graphic_novel_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Reader\" as Reader\nactor \"Author\" as Author\n\nrectangle \"Graphic\
+    \ Novel Platform\" {\n  usecase \"Browse Catalog\" as UC1\n  usecase \"Read Novel\"\
+    \ as UC2\n  usecase \"Rate Novel\" as UC3\n  usecase \"Upload Novel\" as UC4\n\
+    \  usecase \"Manage Chapters\" as UC5\n  usecase \"Search Novels\" as UC7\n}\n\
+    \nReader --> UC1\nReader --> UC2\nReader --> UC3\nReader --> UC7\nAuthor --> UC4\n\
+    Author --> UC5\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: graphic_novel_platform
+
+  DOMAIN_DISPLAY: Graphic Novel Platform
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Browse Catalog, Load Thumbnail Previews
+
+  EXPLANATION: The use case "Load Thumbnail Previews" is an inclusion use case that
+  is included by only one use case ("Browse Catalog"). It is not associated with any
+  actor directly, does not include or extend any other use case, is not extended by
+  any other use case, and has no generalizati …[truncated]'

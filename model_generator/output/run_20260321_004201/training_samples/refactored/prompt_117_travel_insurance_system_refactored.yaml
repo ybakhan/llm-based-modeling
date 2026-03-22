@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 117
+  domain: travel_insurance_system
+  domain_display: Travel Insurance System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 11
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:45:20.873204'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_117_travel_insurance_system/travel_insurance_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_117_travel_insurance_system/travel_insurance_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_117_travel_insurance_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Traveler\" as Traveler\n\
+    actor \"Insurance Agent\" as Agent\nactor \"Claims Adjuster\" as Adjuster\n\n\
+    rectangle \"Travel Insurance System\" {\n  usecase \"Purchase Policy\" as UC1\n\
+    \  usecase \"Browse Insurance Plans\" as UC3\n  usecase \"File Claim\" as UC4\n\
+    \  usecase \"Review Claim\" as UC5\n  usecase \"Cancel Policy\" as UC6\n  usecase\
+    \ \"Get Quote\" as UC7\n}\n\nTraveler --> UC3\nTraveler --> UC1\nTraveler -->\
+    \ UC4\nTraveler --> UC7\nAgent --> UC6\nAdjuster --> UC5\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: travel_insurance_system
+
+  DOMAIN_DISPLAY: Travel Insurance System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Purchase Policy, Validate Traveler Details
+
+  EXPLANATION: The use case "Validate Traveler Details" is an inclusion use case that
+  is included by only one use case ("Purchase Policy"). It is not associated with
+  any actor directly, does not include or extend any other use case, is not extended
+  by any other use case, and is not invo …[truncated]'

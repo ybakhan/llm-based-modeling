@@ -1,0 +1,27 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Safety Officer" as SO
+actor "Warehouse Manager" as WM
+actor "Regulatory Agency" as RA
+
+rectangle "Hazardous Materials Tracking System" {
+  usecase "Register Shipment" as UC1
+  usecase "Validate Hazard Classification" as UC2
+  usecase "Track Material Location" as UC3
+  usecase "Generate Compliance Report" as UC4
+  usecase "Dispose of Material" as UC5
+  usecase "View Inventory" as UC6
+  usecase "Receive Safety Alert" as UC7
+}
+
+SO -- UC1
+SO -- UC3
+SO -- UC5
+WM -- UC6
+WM -- UC3
+RA -- UC4
+SO -- UC7
+
+UC1 ..> UC2 : <<include>>
+@enduml

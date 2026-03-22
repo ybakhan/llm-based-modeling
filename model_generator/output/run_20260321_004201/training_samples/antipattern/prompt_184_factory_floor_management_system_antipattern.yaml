@@ -1,0 +1,78 @@
+metadata:
+  prompt_number: 184
+  domain: factory_floor_management_system
+  domain_display: Factory Floor Management System
+  size: small
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Schedule Production Run (UC2), Allocate Machine Resources
+        (UC3), Include relationship from UC2 to UC3
+      explanation: '"Allocate Machine Resources" (UC3) is an inclusion use case that
+        is included by only one use case ("Schedule Production Run" / UC2). UC3 is
+        not associated with any actor directly — no actor interacts with it. UC3 does
+        not include, extend, generalize, or get extended by any other use case. It
+        merely represents a sub-step of scheduling a production run (allocating the
+        machines), not a complete service observable to any user. This is a textbook
+        instance of Functional Decomposition via the include relationship: the base
+        use case''s internal behavior has been improperly decomposed into a separate
+        inclusion use case that provides no standalone value.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:48:06.553681'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_184_factory_floor_management_system/factory_floor_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_184_factory_floor_management_system/factory_floor_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_184_factory_floor_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Floor Supervisor\" as Supervisor\nactor \"Maintenance Technician\" as\
+    \ Technician\n\nrectangle \"Factory Floor Management System\" {\n  usecase \"\
+    Monitor Production Line\" as UC1\n  usecase \"Schedule Production Run\" as UC2\n\
+    \  usecase \"Allocate Machine Resources\" as UC3\n  usecase \"Report Equipment\
+    \ Fault\" as UC4\n  usecase \"Log Maintenance Activity\" as UC5\n}\n\nSupervisor\
+    \ -- UC1\nSupervisor -- UC2\nUC2 ..> UC3 : <<include>>\nTechnician -- UC4\nTechnician\
+    \ -- UC5\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Constructs Involved: Schedule Production Run (UC2), Allocate Machine Resources\
+    \ (UC3), Include relationship from UC2 to UC3\n   Explanation: \"Allocate Machine\
+    \ Resources\" (UC3) is an inclusion use case that is included by only one use\
+    \ case (\"Schedule Production Run\" / UC2). UC3 is not associated with any actor\
+    \ directly — no actor interacts with it. UC3 does not include, extend, generalize,\
+    \ or get extended by any other use case. It merely represents a sub-step of scheduling\
+    \ a production run (allocating the machines), not a complete service observable\
+    \ to any user. This is a textbook instance of Functional Decomposition via the\
+    \ include relationship: the base use case's internal behavior has been improperly\
+    \ decomposed into a separate inclusion use case that provides no standalone value."
+raw_response_excerpt: '
+
+
+  DOMAIN: factory_floor_management_system
+
+  DOMAIN_DISPLAY: Factory Floor Management System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Production Run (UC2), Allocate Machine Resources (UC3),
+  Include relationship from UC2 to UC3
+
+  EXPLANATION: "Allocate Machine Resources" (UC3) is an inclusion use case that is
+  included by only one use case ("Schedule Production Run" / UC2). UC3 is not associated
+  with any actor directly — no actor interac …[truncated]'

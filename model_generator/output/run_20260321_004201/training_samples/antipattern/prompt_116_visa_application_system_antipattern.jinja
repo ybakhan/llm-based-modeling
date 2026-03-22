@@ -1,0 +1,61 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Applicant" as Applicant
+actor "Visa Officer" as Officer
+actor "Embassy Manager" as Manager
+
+rectangle "Visa Application System" {
+  usecase "Register Account" as UC1
+  usecase "Submit Application" as UC2
+  usecase "Validate Passport Details" as UC3
+  usecase "Upload Supporting Documents" as UC4
+  usecase "Pay Application Fee" as UC5
+  usecase "Track Application Status" as UC6
+  usecase "Schedule Interview" as UC7
+  usecase "Process Application" as UC8
+  usecase "Verify Background Check" as UC9
+  usecase "Approve Application" as UC10
+  usecase "Reject Application" as UC11
+  usecase "Generate Reports" as UC12
+  usecase "Request Additional Documents" as UC13
+}
+
+Applicant --> UC1
+Applicant --> UC2
+Applicant --> UC5
+Applicant --> UC6
+Applicant --> UC7
+
+Officer --> UC8
+Officer --> UC10
+Officer --> UC11
+Officer --> UC13
+
+Manager --> UC12
+
+UC2 ..> UC3 : <<include>>
+UC2 ..> UC4 : <<include>>
+UC8 ..> UC9 : <<include>>
+
+UC10 .> UC8 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Submit Application, Validate Passport Details, include (Submit Application → Validate Passport Details)
+   Instance 1: Explanation: "Validate Passport Details" is an inclusion use case included only by "Submit Application". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (validating passport info) rather than a complete, independently valuable service to any actor. This is functional decomposition of "Submit Application" into an internal processing step.
+
+   Instance 2: Constructs Involved: Submit Application, Upload Supporting Documents, include (Submit Application → Upload Supporting Documents)
+   Instance 2: Explanation: "Upload Supporting Documents" is an inclusion use case included only by "Submit Application". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Uploading documents is an internal sub-step of submitting an application, not a standalone service observable to an actor. This is functional decomposition.
+
+   Instance 3: Constructs Involved: Process Application, Verify Background Check, include (Process Application → Verify Background Check)
+   Instance 3: Explanation: "Verify Background Check" is an inclusion use case included only by "Process Application". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal verification step within processing rather than a complete service to any actor. This is functional decomposition.

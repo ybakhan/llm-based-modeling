@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Editor" as Editor
+actor "Reader" as Reader
+actor "Journalist" as Journalist
+
+rectangle "News Publishing System" {
+  usecase "Write Article" as UC1
+  usecase "Publish Article" as UC2
+  usecase "Browse Articles" as UC4
+  usecase "Search Articles" as UC5
+  usecase "Manage Categories" as UC6
+}
+
+Journalist -- UC1
+Editor -- UC2
+Reader -- UC4
+Reader -- UC5
+Editor -- UC6
+@enduml

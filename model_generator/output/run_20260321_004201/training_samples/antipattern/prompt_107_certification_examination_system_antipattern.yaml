@@ -1,0 +1,111 @@
+metadata:
+  prompt_number: 107
+  domain: certification_examination_system
+  domain_display: Certification Examination System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Register for Exam, Validate Candidate ID, include (Register
+        for Exam → Validate Candidate ID)
+      explanation: '"Validate Candidate ID" is an inclusion use case included only
+        by "Register for Exam." It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization hierarchy. It represents a sub-step (ID validation)
+        rather than a complete, independently meaningful service observable by an
+        actor. This is functional decomposition of the registration process.'
+    - constructs_involved: Take Exam, Load Exam Questions, include (Take Exam → Load
+        Exam Questions)
+      explanation: '"Load Exam Questions" is an inclusion use case included only by
+        "Take Exam." It has no direct actor association, does not include or extend
+        any other use case, is not extended by any use case, and is not a generalization
+        or specialization. Loading questions is a technical sub-step of taking an
+        exam, not a complete service yielding an observable result to a user. This
+        is functional decomposition of the exam-taking process.'
+    - constructs_involved: Issue Certificate, Generate PDF Document, include (Issue
+        Certificate → Generate PDF Document)
+      explanation: '"Generate PDF Document" is an inclusion use case included only
+        by "Issue Certificate." It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and participates
+        in no generalization. Generating a PDF is an internal implementation step
+        of certificate issuance, not a standalone service. This is functional decomposition
+        of the certification issuance process.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 28
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:41:49.827476'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_107_certification_examination_system/certification_examination_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_107_certification_examination_system/certification_examination_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_107_certification_examination_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Candidate\" as Candidate\nactor \"Examiner\" as Examiner\nactor \"Administrator\"\
+    \ as Admin\nactor \"Certification Authority\" as CertAuth\n\nrectangle \"Certification\
+    \ Examination System\" {\n  usecase \"Register for Exam\" as UC1\n  usecase \"\
+    Validate Candidate ID\" as UC2\n  usecase \"Browse Available Exams\" as UC3\n\
+    \  usecase \"Take Exam\" as UC4\n  usecase \"Load Exam Questions\" as UC5\n  usecase\
+    \ \"View Exam Results\" as UC6\n  usecase \"Grade Exam\" as UC7\n  usecase \"\
+    Manage Question Bank\" as UC8\n  usecase \"Issue Certificate\" as UC9\n  usecase\
+    \ \"Generate PDF Document\" as UC10\n  usecase \"Revoke Certificate\" as UC11\n\
+    \  usecase \"Schedule Exam Session\" as UC12\n  usecase \"Appeal Exam Result\"\
+    \ as UC13\n  usecase \"Monitor Exam Session\" as UC14\n\n  UC1 ..> UC2 : <<include>>\n\
+    \  UC4 ..> UC5 : <<include>>\n  UC9 ..> UC10 : <<include>>\n  UC13 ..> UC7 : <<extend>>\n\
+    }\n\nCandidate --> UC1\nCandidate --> UC3\nCandidate --> UC4\nCandidate --> UC6\n\
+    Candidate --> UC13\nExaminer --> UC7\nExaminer --> UC14\nAdmin --> UC8\nAdmin\
+    \ --> UC12\nCertAuth --> UC9\nCertAuth --> UC11\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Register for Exam, Validate Candidate ID,\
+    \ include (Register for Exam → Validate Candidate ID)\n   Instance 1: Explanation:\
+    \ \"Validate Candidate ID\" is an inclusion use case included only by \"Register\
+    \ for Exam.\" It is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and is not part of any\
+    \ generalization hierarchy. It represents a sub-step (ID validation) rather than\
+    \ a complete, independently meaningful service observable by an actor. This is\
+    \ functional decomposition of the registration process.\n\n   Instance 2: Constructs\
+    \ Involved: Take Exam, Load Exam Questions, include (Take Exam → Load Exam Questions)\n\
+    \   Instance 2: Explanation: \"Load Exam Questions\" is an inclusion use case\
+    \ included only by \"Take Exam.\" It has no direct actor association, does not\
+    \ include or extend any other use case, is not extended by any use case, and is\
+    \ not a generalization or specialization. Loading questions is a technical sub-step\
+    \ of taking an exam, not a complete service yielding an observable result to a\
+    \ user. This is functional decomposition of the exam-taking process.\n\n   Instance\
+    \ 3: Constructs Involved: Issue Certificate, Generate PDF Document, include (Issue\
+    \ Certificate → Generate PDF Document)\n   Instance 3: Explanation: \"Generate\
+    \ PDF Document\" is an inclusion use case included only by \"Issue Certificate.\"\
+    \ It is not associated with any actor, does not include or extend any other use\
+    \ case, is not extended by any use case, and participates in no generalization.\
+    \ Generating a PDF is an internal implementation step of certificate issuance,\
+    \ not a standalone service. This is functional decomposition of the certification\
+    \ issuance process."
+raw_response_excerpt: '
+
+
+  DOMAIN: certification_examination_system
+
+  DOMAIN_DISPLAY: Certification Examination System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register for Exam, Validate Candidate ID, include (Register
+  for Exam → Validate Candidate ID)
+
+  EXPLANATION: "Validate Candidate ID" is an inclusion use case included only by "Register
+  for Exam." It is not associated with any actor, does not include or extend any other
+  use case, is not extended by any use case …[truncated]'

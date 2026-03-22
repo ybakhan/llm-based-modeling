@@ -1,0 +1,119 @@
+
+
+DOMAIN: language_translation_service
+DOMAIN_DISPLAY: Language Translation Service
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Submit Translation Request, Parse Source Text, include relationship from "Submit Translation Request" to "Parse Source Text"
+EXPLANATION: "Parse Source Text" is an inclusion use case included only by "Submit Translation Request". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. "Parse Source Text" represents a sub-step (parsing input) rather than a complete, independently valuable service to any actor, making this a functional decomposition of "Submit Translation Request" via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Translate Document, Apply Grammar Rules, include relationship from "Translate Document" to "Apply Grammar Rules"
+EXPLANATION: "Apply Grammar Rules" is an inclusion use case included only by "Translate Document". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Applying grammar rules is an internal processing step within translation, not a standalone service observable by a user. This constitutes functional decomposition of "Translate Document" via the include relationship.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Download Translated File, Format Output File, include relationship from "Download Translated File" to "Format Output File"
+EXPLANATION: "Format Output File" is an inclusion use case included only by "Download Translated File". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Formatting the output file is an internal step of preparing a download, not a complete service to any user. This is functional decomposition of "Download Translated File" via the include relationship.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Parse Source Text", "Apply Grammar Rules", and "Format Output File" — each represent internal processing steps decomposed out of their respective base use cases. Each is included by only one use case, has no actor association, and participates in no other relationships. To refactor: (1) Merge "Parse Source Text" back into "Submit Translation Request", since parsing is an inherent part of submitting a translation. (2) Merge "Apply Grammar Rules" back into "Translate Document", since grammar application is integral to translation. (3) Merge "Format Output File" back into "Download Translated File", since formatting is part of producing the download. This removes 3 use cases and 3 include relationships (6 constructs total), eliminating all functional decomposition instances while preserving the complete services offered to actors.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Customer" as Customer
+actor "Professional Translator" as Translator
+actor "Administrator" as Admin
+
+rectangle "Language Translation Service" {
+  usecase "Register Account" as UC1
+  usecase "Submit Translation Request" as UC2
+  usecase "Parse Source Text" as UC3
+  usecase "Select Target Language" as UC4
+  usecase "Translate Document" as UC5
+  usecase "Apply Grammar Rules" as UC6
+  usecase "Review Translation" as UC7
+  usecase "Download Translated File" as UC8
+  usecase "Format Output File" as UC9
+  usecase "Rate Translation Quality" as UC10
+  usecase "Manage Translator Profiles" as UC11
+  usecase "View Translation History" as UC12
+  usecase "Request Human Review" as UC13
+  usecase "Manage Supported Languages" as UC14
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC4
+Customer --> UC8
+Customer --> UC10
+Customer --> UC12
+Customer --> UC13
+
+Translator --> UC5
+Translator --> UC7
+
+Admin --> UC11
+Admin --> UC14
+
+UC2 ..> UC3 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC8 ..> UC9 : <<include>>
+
+UC13 ..> UC7 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Customer" as Customer
+actor "Professional Translator" as Translator
+actor "Administrator" as Admin
+
+rectangle "Language Translation Service" {
+  usecase "Register Account" as UC1
+  usecase "Submit Translation Request" as UC2
+  usecase "Select Target Language" as UC4
+  usecase "Translate Document" as UC5
+  usecase "Review Translation" as UC7
+  usecase "Download Translated File" as UC8
+  usecase "Rate Translation Quality" as UC10
+  usecase "Manage Translator Profiles" as UC11
+  usecase "View Translation History" as UC12
+  usecase "Request Human Review" as UC13
+  usecase "Manage Supported Languages" as UC14
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC4
+Customer --> UC8
+Customer --> UC10
+Customer --> UC12
+Customer --> UC13
+
+Translator --> UC5
+Translator --> UC7
+
+Admin --> UC11
+Admin --> UC14
+
+UC13 ..> UC7 : <<include>>
+
+@enduml
+```

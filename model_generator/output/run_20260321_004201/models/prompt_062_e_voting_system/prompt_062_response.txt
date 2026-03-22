@@ -1,0 +1,111 @@
+
+
+DOMAIN: e_voting_system
+DOMAIN_DISPLAY: E-Voting System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Cast Vote, Validate Ballot Selections, include relationship from Cast Vote to Validate Ballot Selections
+EXPLANATION: "Validate Ballot Selections" is included only by "Cast Vote", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal substep (validating the voter's selections) rather than a complete, independently valuable service. This is functional decomposition of "Cast Vote" into a substep via <<include>>.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Register Voter, Verify Identity Documents, include relationship from Register Voter to Verify Identity Documents
+EXPLANATION: "Verify Identity Documents" is included only by "Register Voter", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal verification substep of the registration process, not a standalone service offering an observable result to any user. This is functional decomposition of "Register Voter" into a substep via <<include>>.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Generate Election Report, Aggregate Vote Counts, include relationship from Generate Election Report to Aggregate Vote Counts
+EXPLANATION: "Aggregate Vote Counts" is included only by "Generate Election Report", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal data-processing substep of report generation rather than a complete service. This is functional decomposition of "Generate Election Report" into a substep via <<include>>.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Ballot Selections", "Verify Identity Documents", "Aggregate Vote Counts") must be merged back into its respective base use case ("Cast Vote", "Register Voter", "Generate Election Report"). Each inclusion use case is only included by one base use case, is not connected to any actor, and does not participate in any other relationship — making them pure functional decomposition substeps. Removing each inclusion use case and its corresponding <<include>> relationship eliminates 3 use cases and 3 include relationships (6 constructs total), resulting in a cleaner model where each base use case encapsulates its full behavior.
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Voter
+actor "Election Administrator" as Admin
+actor "Election Auditor" as Auditor
+
+rectangle "E-Voting System" {
+  usecase "Register Voter" as UC1
+  usecase "Verify Identity Documents" as UC2
+  usecase "Authenticate Voter" as UC3
+  usecase "Cast Vote" as UC4
+  usecase "Validate Ballot Selections" as UC5
+  usecase "View Election Candidates" as UC6
+  usecase "Track Voting Status" as UC7
+  usecase "Configure Election" as UC8
+  usecase "Manage Candidates" as UC9
+  usecase "Generate Election Report" as UC10
+  usecase "Aggregate Vote Counts" as UC11
+  usecase "Audit Election Logs" as UC12
+  usecase "Verify Election Integrity" as UC13
+  usecase "Request Recount" as UC14
+}
+
+Voter -- UC1
+Voter -- UC3
+Voter -- UC4
+Voter -- UC6
+Voter -- UC7
+Admin -- UC8
+Admin -- UC9
+Admin -- UC10
+Auditor -- UC12
+Auditor -- UC13
+Auditor -- UC14
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC10 ..> UC11 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Voter
+actor "Election Administrator" as Admin
+actor "Election Auditor" as Auditor
+
+rectangle "E-Voting System" {
+  usecase "Register Voter" as UC1
+  usecase "Authenticate Voter" as UC3
+  usecase "Cast Vote" as UC4
+  usecase "View Election Candidates" as UC6
+  usecase "Track Voting Status" as UC7
+  usecase "Configure Election" as UC8
+  usecase "Manage Candidates" as UC9
+  usecase "Generate Election Report" as UC10
+  usecase "Audit Election Logs" as UC12
+  usecase "Verify Election Integrity" as UC13
+  usecase "Request Recount" as UC14
+}
+
+Voter -- UC1
+Voter -- UC3
+Voter -- UC4
+Voter -- UC6
+Voter -- UC7
+Admin -- UC8
+Admin -- UC9
+Admin -- UC10
+Auditor -- UC12
+Auditor -- UC13
+Auditor -- UC14
+
+@enduml
+```

@@ -1,0 +1,120 @@
+
+
+DOMAIN: loan_approval_system
+DOMAIN_DISPLAY: Loan Approval System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Submit Loan Application, Validate Applicant Identity, include relationship from "Submit Loan Application" to "Validate Applicant Identity"
+EXPLANATION: "Validate Applicant Identity" is an inclusion use case included only by "Submit Loan Application". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a substep (identity validation) of the submission process rather than a complete, independently valuable service. This is functional decomposition — breaking down "Submit Loan Application" into procedural substeps via include.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Evaluate Loan Application, Calculate Credit Score, include relationship from "Evaluate Loan Application" to "Calculate Credit Score"
+EXPLANATION: "Calculate Credit Score" is an inclusion use case included only by "Evaluate Loan Application". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal computational substep of the evaluation process rather than a standalone service providing an observable result to any actor. This is functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Approve Loan, Generate Loan Agreement, include relationship from "Approve Loan" to "Generate Loan Agreement"
+EXPLANATION: "Generate Loan Agreement" is an inclusion use case included only by "Approve Loan". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a substep (document generation) of the approval process rather than a complete service observable to any user. This is functional decomposition.
+
+REFACTORING_RATIONALE: All three functional decomposition instances must be resolved by merging each isolated inclusion use case back into its single base use case. Specifically: (1) "Validate Applicant Identity" and its include relationship must be removed, with its behavior absorbed into "Submit Loan Application". (2) "Calculate Credit Score" and its include relationship must be removed, with its behavior absorbed into "Evaluate Loan Application". (3) "Generate Loan Agreement" and its include relationship must be removed, with its behavior absorbed into "Approve Loan". This eliminates 3 use cases and 3 include relationships (6 constructs total), resulting in a cleaner model where each use case represents a complete service.
+
+CONSTRUCT_COUNT: 30
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Applicant" as Applicant
+actor "Loan Officer" as LoanOfficer
+actor "Manager" as Manager
+actor "Credit Bureau" as CreditBureau
+
+rectangle "Loan Approval System" {
+    usecase "Submit Loan Application" as UC1
+    usecase "Validate Applicant Identity" as UC2
+    usecase "Track Application Status" as UC3
+    usecase "Evaluate Loan Application" as UC4
+    usecase "Calculate Credit Score" as UC5
+    usecase "Request Additional Documents" as UC6
+    usecase "Approve Loan" as UC7
+    usecase "Generate Loan Agreement" as UC8
+    usecase "Reject Loan" as UC9
+    usecase "Appeal Rejection" as UC10
+    usecase "Override Decision" as UC11
+    usecase "Retrieve Credit Report" as UC12
+    usecase "Disburse Funds" as UC13
+}
+
+Applicant -- UC1
+Applicant -- UC3
+Applicant -- UC10
+
+LoanOfficer -- UC4
+LoanOfficer -- UC6
+LoanOfficer -- UC7
+LoanOfficer -- UC9
+LoanOfficer -- UC13
+
+Manager -- UC11
+
+CreditBureau -- UC12
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC4 ..> UC12 : <<include>>
+UC7 ..> UC8 : <<include>>
+}
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Applicant" as Applicant
+actor "Loan Officer" as LoanOfficer
+actor "Manager" as Manager
+actor "Credit Bureau" as CreditBureau
+
+rectangle "Loan Approval System" {
+    usecase "Submit Loan Application" as UC1
+    usecase "Track Application Status" as UC3
+    usecase "Evaluate Loan Application" as UC4
+    usecase "Request Additional Documents" as UC6
+    usecase "Approve Loan" as UC7
+    usecase "Reject Loan" as UC9
+    usecase "Appeal Rejection" as UC10
+    usecase "Override Decision" as UC11
+    usecase "Retrieve Credit Report" as UC12
+    usecase "Disburse Funds" as UC13
+}
+
+Applicant -- UC1
+Applicant -- UC3
+Applicant -- UC10
+
+LoanOfficer -- UC4
+LoanOfficer -- UC6
+LoanOfficer -- UC7
+LoanOfficer -- UC9
+LoanOfficer -- UC13
+
+Manager -- UC11
+
+CreditBureau -- UC12
+
+UC4 ..> UC12 : <<include>>
+}
+@enduml
+```

@@ -1,0 +1,104 @@
+metadata:
+  prompt_number: 152
+  domain: data_backup_and_recovery_system
+  domain_display: Data Backup and Recovery System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Schedule Backup, Validate Backup Schedule
+      explanation: '"Validate Backup Schedule" is an inclusion use case included only
+        by "Schedule Backup". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It decomposes a
+        validation step out of "Schedule Backup" rather than representing a complete,
+        independently valuable service to any actor.'
+    - constructs_involved: Perform Full Backup, Compress Backup Data
+      explanation: '"Compress Backup Data" is an inclusion use case included only
+        by "Perform Full Backup". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        functional sub-step (compression) extracted from the backup process rather
+        than a standalone service observable to a user.'
+    - constructs_involved: Restore Data, Verify Data Integrity
+      explanation: '"Verify Data Integrity" is an inclusion use case included only
+        by "Restore Data". It is not associated with any actor, is not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It decomposes an
+        internal verification step from the restoration process and does not provide
+        a complete, independent service to any actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:01:10.228858'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_152_data_backup_and_recovery_system/data_backup_and_recovery_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_152_data_backup_and_recovery_system/data_backup_and_recovery_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_152_data_backup_and_recovery_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"System Administrator\"\
+    \ as Admin\nactor \"End User\" as User\nactor \"Monitoring Service\" as Monitor\n\
+    \nrectangle \"Data Backup and Recovery System\" {\n  usecase \"Schedule Backup\"\
+    \ as UC1\n  usecase \"Validate Backup Schedule\" as UC2\n  usecase \"Perform Full\
+    \ Backup\" as UC3\n  usecase \"Compress Backup Data\" as UC4\n  usecase \"Perform\
+    \ Incremental Backup\" as UC5\n  usecase \"Restore Data\" as UC6\n  usecase \"\
+    Verify Data Integrity\" as UC7\n  usecase \"View Backup History\" as UC8\n  usecase\
+    \ \"Configure Retention Policy\" as UC9\n  usecase \"Monitor Backup Status\" as\
+    \ UC10\n  usecase \"Generate Backup Report\" as UC11\n  usecase \"Manage Storage\
+    \ Locations\" as UC12\n  usecase \"Request File Recovery\" as UC13\n}\n\nAdmin\
+    \ --> UC1\nAdmin --> UC3\nAdmin --> UC5\nAdmin --> UC9\nAdmin --> UC12\nAdmin\
+    \ --> UC6\n\nUser --> UC8\nUser --> UC13\n\nMonitor --> UC10\nMonitor --> UC11\n\
+    \nUC1 ..> UC2 : <<include>>\nUC3 ..> UC4 : <<include>>\nUC6 ..> UC7 : <<include>>\n\
+    \nUC13 ..> UC6 : <<include>>\nUC10 .> UC11 : <<extend>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Schedule Backup, Validate Backup Schedule\n\
+    \   Instance 1: Explanation: \"Validate Backup Schedule\" is an inclusion use\
+    \ case included only by \"Schedule Backup\". It is not associated with any actor,\
+    \ is not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ decomposes a validation step out of \"Schedule Backup\" rather than representing\
+    \ a complete, independently valuable service to any actor.\n\n   Instance 2: Constructs\
+    \ Involved: Perform Full Backup, Compress Backup Data\n   Instance 2: Explanation:\
+    \ \"Compress Backup Data\" is an inclusion use case included only by \"Perform\
+    \ Full Backup\". It is not associated with any actor, is not included by any other\
+    \ use case, does not include or extend any use case, is not extended by any use\
+    \ case, and has no generalization relationships. It represents a functional sub-step\
+    \ (compression) extracted from the backup process rather than a standalone service\
+    \ observable to a user.\n\n   Instance 3: Constructs Involved: Restore Data, Verify\
+    \ Data Integrity\n   Instance 3: Explanation: \"Verify Data Integrity\" is an\
+    \ inclusion use case included only by \"Restore Data\". It is not associated with\
+    \ any actor, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ It decomposes an internal verification step from the restoration process and\
+    \ does not provide a complete, independent service to any actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: data_backup_and_recovery_system
+
+  DOMAIN_DISPLAY: Data Backup and Recovery System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Backup, Validate Backup Schedule
+
+  EXPLANATION: "Validate Backup Schedule" is an inclusion use case included only by
+  "Schedule Backup". It is not associated with any actor, is not included by any other
+  use case, does not include or extend any use case, is not extended by any use case,
+  and has no general …[truncated]'

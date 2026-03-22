@@ -1,0 +1,19 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Floor Supervisor" as Supervisor
+actor "Maintenance Technician" as Technician
+
+rectangle "Factory Floor Management System" {
+  usecase "Monitor Production Line" as UC1
+  usecase "Schedule Production Run" as UC2
+  usecase "Report Equipment Fault" as UC4
+  usecase "Log Maintenance Activity" as UC5
+}
+
+Supervisor -- UC1
+Supervisor -- UC2
+Technician -- UC4
+Technician -- UC5
+@enduml

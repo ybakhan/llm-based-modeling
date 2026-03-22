@@ -1,0 +1,54 @@
+metadata:
+  prompt_number: 73
+  domain: construction_project_management
+  domain_display: Construction Project Management
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:08:28.371098'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_073_construction_project_management/construction_project_management_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_073_construction_project_management/construction_project_management_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_073_construction_project_management_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Project Manager\"\
+    \ as PM\nactor \"Inspector\" as Inspector\nactor \"Contractor\" as Contractor\n\
+    \nrectangle \"Construction Project Management System\" {\n  usecase \"Create Project\
+    \ Schedule\" as UC1\n  usecase \"Assign Subcontractor\" as UC2\n  usecase \"Submit\
+    \ Inspection Request\" as UC3\n  usecase \"Log Daily Progress\" as UC5\n  usecase\
+    \ \"Review Budget\" as UC6\n}\n\nPM -- UC1\nPM -- UC2\nPM -- UC6\nInspector --\
+    \ UC3\nContractor -- UC5\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: construction_project_management
+
+  DOMAIN_DISPLAY: Construction Project Management
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Inspection Request, Select Inspection Type, Submit Inspection
+  Request --include--> Select Inspection Type
+
+  EXPLANATION: The use case "Select Inspection Type" is an inclusion use case that
+  is included by only one use case ("Submit Inspection Request"). It is not associated
+  with any actor directly. It does  …[truncated]'

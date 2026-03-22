@@ -1,0 +1,36 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "End User" as EU
+actor "IT Administrator" as Admin
+
+rectangle "Remote Desktop Service" {
+  usecase "Connect to Remote Desktop" as UC1
+  usecase "Establish VPN Tunnel" as UC2
+  usecase "Transfer Files" as UC3
+  usecase "Manage User Sessions" as UC4
+  usecase "View Session Logs" as UC5
+  usecase "Disconnect Session" as UC6
+}
+
+EU -- UC1
+EU -- UC3
+EU -- UC6
+Admin -- UC4
+Admin -- UC5
+
+UC1 ..> UC2 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Connect to Remote Desktop, Establish VPN Tunnel, Connect to Remote Desktop --include--> Establish VPN Tunnel
+   Explanation: "Establish VPN Tunnel" is an inclusion use case that is included by only one use case ("Connect to Remote Desktop"). It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a decomposed sub-step of connecting rather than a complete, independently valuable service observable to any user. This is a textbook case of Functional Decomposition via the include relationship.

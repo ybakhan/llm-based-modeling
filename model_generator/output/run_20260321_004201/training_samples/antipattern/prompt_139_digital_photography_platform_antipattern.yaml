@@ -1,0 +1,114 @@
+metadata:
+  prompt_number: 139
+  domain: digital_photography_platform
+  domain_display: Digital Photography Platform
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Upload Photo, Validate File Format, include relationship
+        from Upload Photo to Validate File Format
+      explanation: '"Validate File Format" is an inclusion use case included only
+        by "Upload Photo." It is not associated with any actor, is not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents a
+        sub-step (file validation) rather than a complete, independently valuable
+        service to any actor, making this a clear instance of functional decomposition
+        via the include relationship.'
+    - constructs_involved: Purchase Print, Process Payment Details, include relationship
+        from Purchase Print to Process Payment Details
+      explanation: '"Process Payment Details" is an inclusion use case included only
+        by "Purchase Print." It has no direct association with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Extracting payment
+        detail processing as a separate use case without it serving any other base
+        use case or actor represents functional decomposition — it is merely a sub-step
+        of purchasing a print.'
+    - constructs_involved: Edit Photo, Apply Filter Settings, include relationship
+        from Edit Photo to Apply Filter Settings
+      explanation: '"Apply Filter Settings" is an inclusion use case included only
+        by "Edit Photo." It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. Applying filter settings
+        is an internal step of photo editing, not a standalone service observable
+        to any user, making this a functional decomposition antipattern.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:56:09.988738'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_139_digital_photography_platform/digital_photography_platform_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_139_digital_photography_platform/digital_photography_platform_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_139_digital_photography_platform_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor Photographer\n\
+    actor Viewer\nactor Administrator\n\nrectangle \"Digital Photography Platform\"\
+    \ {\n  usecase \"Upload Photo\" as UC1\n  usecase \"Validate File Format\" as\
+    \ UC2\n  usecase \"Edit Photo\" as UC3\n  usecase \"Apply Filter Settings\" as\
+    \ UC4\n  usecase \"Browse Gallery\" as UC5\n  usecase \"Search Photos\" as UC6\n\
+    \  usecase \"Rate Photo\" as UC7\n  usecase \"Comment on Photo\" as UC8\n  usecase\
+    \ \"Create Album\" as UC9\n  usecase \"Purchase Print\" as UC10\n  usecase \"\
+    Process Payment Details\" as UC11\n  usecase \"Manage User Accounts\" as UC12\n\
+    \  usecase \"Moderate Content\" as UC13\n  usecase \"Share Photo\" as UC14\n \
+    \ usecase \"Download Photo\" as UC15\n}\n\nPhotographer --> UC1\nPhotographer\
+    \ --> UC3\nPhotographer --> UC9\nPhotographer --> UC10\nPhotographer --> UC14\n\
+    Photographer --> UC5\n\nViewer --> UC5\nViewer --> UC6\nViewer --> UC7\nViewer\
+    \ --> UC8\nViewer --> UC15\n\nAdministrator --> UC12\nAdministrator --> UC13\n\
+    \nUC1 ..> UC2 : <<include>>\nUC3 ..> UC4 : <<include>>\nUC10 ..> UC11 : <<include>>\n\
+    @enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Upload Photo, Validate File Format, include\
+    \ relationship from Upload Photo to Validate File Format\n   Instance 1: Explanation:\
+    \ \"Validate File Format\" is an inclusion use case included only by \"Upload\
+    \ Photo.\" It is not associated with any actor, is not included by any other use\
+    \ case, does not include or extend any use case, is not extended by any use case,\
+    \ and has no generalization relationships. It represents a sub-step (file validation)\
+    \ rather than a complete, independently valuable service to any actor, making\
+    \ this a clear instance of functional decomposition via the include relationship.\n\
+    \n   Instance 2: Constructs Involved: Purchase Print, Process Payment Details,\
+    \ include relationship from Purchase Print to Process Payment Details\n   Instance\
+    \ 2: Explanation: \"Process Payment Details\" is an inclusion use case included\
+    \ only by \"Purchase Print.\" It has no direct association with any actor, is\
+    \ not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. Extracting\
+    \ payment detail processing as a separate use case without it serving any other\
+    \ base use case or actor represents functional decomposition — it is merely a\
+    \ sub-step of purchasing a print.\n\n   Instance 3: Constructs Involved: Edit\
+    \ Photo, Apply Filter Settings, include relationship from Edit Photo to Apply\
+    \ Filter Settings\n   Instance 3: Explanation: \"Apply Filter Settings\" is an\
+    \ inclusion use case included only by \"Edit Photo.\" It is not associated with\
+    \ any actor, not included by any other use case, does not include or extend any\
+    \ use case, is not extended by any use case, and has no generalization relationships.\
+    \ Applying filter settings is an internal step of photo editing, not a standalone\
+    \ service observable to any user, making this a functional decomposition antipattern."
+raw_response_excerpt: '
+
+
+  DOMAIN: digital_photography_platform
+
+  DOMAIN_DISPLAY: Digital Photography Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Upload Photo, Validate File Format, include relationship from
+  Upload Photo to Validate File Format
+
+  EXPLANATION: "Validate File Format" is an inclusion use case included only by "Upload
+  Photo." It is not associated with any actor, is not included by any other use case,
+  does not include or extend any use case, is not  …[truncated]'

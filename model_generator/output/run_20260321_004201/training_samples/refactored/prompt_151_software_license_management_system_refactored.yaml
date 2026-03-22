@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 151
+  domain: software_license_management_system
+  domain_display: Software License Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:00:47.495936'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_151_software_license_management_system/software_license_management_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_151_software_license_management_system/software_license_management_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_151_software_license_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"License Administrator\"\
+    \ as Admin\nactor \"End User\" as EndUser\nactor \"Compliance Auditor\" as Auditor\n\
+    actor \"Vendor\" as Vendor\n\nrectangle \"Software License Management System\"\
+    \ {\n  usecase \"Purchase License\" as UC1\n  usecase \"Renew License\" as UC3\n\
+    \  usecase \"Assign License to User\" as UC4\n  usecase \"Revoke License\" as\
+    \ UC6\n  usecase \"View Assigned Licenses\" as UC7\n  usecase \"Request License\"\
+    \ as UC8\n  usecase \"Generate Compliance Report\" as UC9\n  usecase \"Monitor\
+    \ License Expiry\" as UC11\n  usecase \"Manage License Keys\" as UC12\n  usecase\
+    \ \"View License Catalog\" as UC13\n  usecase \"Notify Expiring Licenses\" as\
+    \ UC14\n}\n\nAdmin --> UC1\nAdmin --> UC3\nAdmin --> UC4\nAdmin --> UC6\nAdmin\
+    \ --> UC11\nAdmin --> UC12\n\nEndUser --> UC7\nEndUser --> UC8\nEndUser --> UC13\n\
+    \nAuditor --> UC9\n\nVendor --> UC1\n\nUC11 ..> UC14 : <<include>>\nUC3 ..> UC14\
+    \ : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: software_license_management_system
+
+  DOMAIN_DISPLAY: Software License Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Purchase License, Validate Payment Details, include (Purchase
+  License → Validate Payment Details)
+
+  EXPLANATION: "Validate Payment Details" is an inclusion use case included only by
+  "Purchase License." It is not associated with any actor directly, is not included
+  by any other use case, and does not include …[truncated]'

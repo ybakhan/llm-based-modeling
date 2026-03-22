@@ -1,0 +1,105 @@
+
+
+DOMAIN: vending_machine_management
+DOMAIN_DISPLAY: Vending Machine Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Restock Machine, Validate Inventory Levels
+EXPLANATION: "Restock Machine" includes "Validate Inventory Levels", but "Validate Inventory Levels" is not associated with any actor, is included by only "Restock Machine", does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed step of restocking rather than a complete, standalone service with an observable result to a user.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Payment, Verify Card Details
+EXPLANATION: "Process Payment" includes "Verify Card Details", but "Verify Card Details" is not associated with any actor, is included by only "Process Payment", does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It is a sub-step of payment processing decomposed into its own use case without providing a standalone service.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Generate Sales Report, Aggregate Transaction Data
+EXPLANATION: "Generate Sales Report" includes "Aggregate Transaction Data", but "Aggregate Transaction Data" is not associated with any actor, is included by only "Generate Sales Report", does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It is a functional decomposition of the report generation process rather than an independently meaningful service.
+
+REFACTORING_RATIONALE: The three inclusion use cases — "Validate Inventory Levels", "Verify Card Details", and "Aggregate Transaction Data" — must each be merged into their respective base use cases ("Restock Machine", "Process Payment", and "Generate Sales Report"). Each inclusion use case is included by exactly one base use case, is not connected to any actor, and participates in no other relationships, meaning it represents an internal step rather than a reusable or independently valuable service. Removing these three use cases and their three include relationships eliminates 6 constructs, reducing the count from 24 to 18.
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Customer
+actor Technician
+actor Manager
+
+rectangle "Vending Machine Management System" {
+  usecase "Select Product" as UC1
+  usecase "Process Payment" as UC2
+  usecase "Dispense Product" as UC3
+  usecase "Verify Card Details" as UC4
+  usecase "Restock Machine" as UC5
+  usecase "Validate Inventory Levels" as UC6
+  usecase "Generate Sales Report" as UC7
+  usecase "Aggregate Transaction Data" as UC8
+  usecase "Perform Maintenance" as UC9
+  usecase "Monitor Machine Status" as UC10
+  usecase "Report Malfunction" as UC11
+  usecase "Apply Discount" as UC12
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC3
+Technician -- UC5
+Technician -- UC9
+Technician -- UC11
+Manager -- UC7
+Manager -- UC10
+
+UC1 ..> UC2 : <<include>>
+UC2 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC12 ..> UC1 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 18
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Customer
+actor Technician
+actor Manager
+
+rectangle "Vending Machine Management System" {
+  usecase "Select Product" as UC1
+  usecase "Process Payment" as UC2
+  usecase "Dispense Product" as UC3
+  usecase "Restock Machine" as UC5
+  usecase "Generate Sales Report" as UC7
+  usecase "Perform Maintenance" as UC9
+  usecase "Monitor Machine Status" as UC10
+  usecase "Report Malfunction" as UC11
+  usecase "Apply Discount" as UC12
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC3
+Technician -- UC5
+Technician -- UC9
+Technician -- UC11
+Manager -- UC7
+Manager -- UC10
+
+UC1 ..> UC2 : <<include>>
+UC12 ..> UC1 : <<extend>>
+
+@enduml
+```

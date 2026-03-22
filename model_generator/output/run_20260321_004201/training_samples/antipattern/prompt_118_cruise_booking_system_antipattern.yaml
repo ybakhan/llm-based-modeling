@@ -1,0 +1,108 @@
+metadata:
+  prompt_number: 118
+  domain: cruise_booking_system
+  domain_display: Cruise Booking System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Book Cruise, Validate Passenger Details, include (Book
+        Cruise → Validate Passenger Details)
+      explanation: '"Validate Passenger Details" is an inclusion use case included
+        only by "Book Cruise". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. It represents a sub-step (validating passenger
+        info) rather than a complete, independently valuable service observable to
+        an actor. This is functional decomposition of "Book Cruise" into a procedural
+        sub-task.'
+    - constructs_involved: Book Cruise, Select Cabin, include (Book Cruise → Select
+        Cabin)
+      explanation: '"Select Cabin" is an inclusion use case included only by "Book
+        Cruise". It is not associated with any actor, does not include or extend any
+        other use case, is not extended by any use case, and is not part of any generalization.
+        Selecting a cabin is an internal step of the booking process, not a standalone
+        service providing an observable result to any actor. This is functional decomposition.'
+    - constructs_involved: Process Payment, Calculate Total Price, include (Process
+        Payment → Calculate Total Price)
+      explanation: '"Calculate Total Price" is an inclusion use case included only
+        by "Process Payment". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. Calculating the total price is a computational
+        sub-step within payment processing, not a complete service to any actor. This
+        is functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:45:43.686600'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_118_cruise_booking_system/cruise_booking_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_118_cruise_booking_system/cruise_booking_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_118_cruise_booking_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Passenger\" as Passenger\nactor \"Travel Agent\" as TravelAgent\nactor\
+    \ \"Payment Gateway\" as PaymentGateway\n\nrectangle \"Cruise Booking System\"\
+    \ {\n  usecase \"Browse Cruises\" as UC1\n  usecase \"Book Cruise\" as UC2\n \
+    \ usecase \"Validate Passenger Details\" as UC3\n  usecase \"Select Cabin\" as\
+    \ UC4\n  usecase \"Process Payment\" as UC5\n  usecase \"Calculate Total Price\"\
+    \ as UC6\n  usecase \"Cancel Booking\" as UC7\n  usecase \"View Itinerary\" as\
+    \ UC8\n  usecase \"Manage Passenger Profile\" as UC9\n  usecase \"Search Excursions\"\
+    \ as UC10\n  usecase \"Apply Discount\" as UC11\n}\n\nPassenger --> UC1\nPassenger\
+    \ --> UC2\nPassenger --> UC5\nPassenger --> UC7\nPassenger --> UC8\nPassenger\
+    \ --> UC9\nPassenger --> UC10\nTravelAgent --> UC2\nTravelAgent --> UC7\nPaymentGateway\
+    \ --> UC5\n\nUC2 ..> UC3 : <<include>>\nUC2 ..> UC4 : <<include>>\nUC5 ..> UC6\
+    \ : <<include>>\nUC5 ..> UC11 : <<extend>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Book Cruise, Validate Passenger Details,\
+    \ include (Book Cruise → Validate Passenger Details)\n   Instance 1: Explanation:\
+    \ \"Validate Passenger Details\" is an inclusion use case included only by \"\
+    Book Cruise\". It is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and is not part of any\
+    \ generalization. It represents a sub-step (validating passenger info) rather\
+    \ than a complete, independently valuable service observable to an actor. This\
+    \ is functional decomposition of \"Book Cruise\" into a procedural sub-task.\n\
+    \n   Instance 2: Constructs Involved: Book Cruise, Select Cabin, include (Book\
+    \ Cruise → Select Cabin)\n   Instance 2: Explanation: \"Select Cabin\" is an inclusion\
+    \ use case included only by \"Book Cruise\". It is not associated with any actor,\
+    \ does not include or extend any other use case, is not extended by any use case,\
+    \ and is not part of any generalization. Selecting a cabin is an internal step\
+    \ of the booking process, not a standalone service providing an observable result\
+    \ to any actor. This is functional decomposition.\n\n   Instance 3: Constructs\
+    \ Involved: Process Payment, Calculate Total Price, include (Process Payment →\
+    \ Calculate Total Price)\n   Instance 3: Explanation: \"Calculate Total Price\"\
+    \ is an inclusion use case included only by \"Process Payment\". It is not associated\
+    \ with any actor, does not include or extend any other use case, is not extended\
+    \ by any use case, and is not part of any generalization. Calculating the total\
+    \ price is a computational sub-step within payment processing, not a complete\
+    \ service to any actor. This is functional decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: cruise_booking_system
+
+  DOMAIN_DISPLAY: Cruise Booking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Cruise, Validate Passenger Details, include (Book Cruise
+  → Validate Passenger Details)
+
+  EXPLANATION: "Validate Passenger Details" is an inclusion use case included only
+  by "Book Cruise". It is not associated with any actor, does not include or extend
+  any other use case, is not extended by any use case, and is not part of any  …[truncated]'

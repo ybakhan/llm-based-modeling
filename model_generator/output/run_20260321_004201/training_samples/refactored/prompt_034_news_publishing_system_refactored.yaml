@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 34
+  domain: news_publishing_system
+  domain_display: News Publishing System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 11
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:09:26.686829'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_034_news_publishing_system/news_publishing_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_034_news_publishing_system/news_publishing_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_034_news_publishing_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Editor\" as Editor\n\
+    actor \"Reader\" as Reader\nactor \"Journalist\" as Journalist\n\nrectangle \"\
+    News Publishing System\" {\n  usecase \"Write Article\" as UC1\n  usecase \"Publish\
+    \ Article\" as UC2\n  usecase \"Browse Articles\" as UC4\n  usecase \"Search Articles\"\
+    \ as UC5\n  usecase \"Manage Categories\" as UC6\n}\n\nJournalist --> UC1\nEditor\
+    \ --> UC2\nReader --> UC4\nReader --> UC5\nEditor --> UC6\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: news_publishing_system
+
+  DOMAIN_DISPLAY: News Publishing System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Publish Article (base use case), Validate Content (inclusion
+  use case), <<include>> from "Publish Article" to "Validate Content"
+
+  EXPLANATION: "Validate Content" is an inclusion use case that is included by only
+  one use case ("Publish Article"). It is not associated with any actor directly —
+  no actor has an association to it. It  …[truncated]'

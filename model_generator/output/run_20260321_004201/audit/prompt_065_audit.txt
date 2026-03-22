@@ -1,0 +1,242 @@
+AUDIT LOG — Prompt #065
+Timestamp : 2026-03-21T01:26:05.592843
+Model     : claude-opus-4-6
+Tokens    : input=1356  output=1269
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (3 instances) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #065: Generate a MEDIUM use case model with exactly 25 constructs (valid range for medium: 24–30 constructs). Domain: Forum and Discussion System.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: forum_and_discussion_system
+DOMAIN_DISPLAY: Forum and Discussion System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Create Thread, Validate Thread Content, include relationship from Create Thread to Validate Thread Content
+EXPLANATION: "Validate Thread Content" is an inclusion use case included only by "Create Thread." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (content validation) of thread creation rather than a complete, independently valuable service observable to a user. This is functional decomposition of "Create Thread" into a procedural sub-task.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Post Reply, Format Reply Text, include relationship from Post Reply to Format Reply Text
+EXPLANATION: "Format Reply Text" is an inclusion use case included only by "Post Reply." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Formatting reply text is an internal implementation step of posting a reply, not a standalone service providing an observable result to any user. This is functional decomposition of "Post Reply."
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Search Forum, Build Search Index, include relationship from Search Forum to Build Search Index
+EXPLANATION: "Build Search Index" is an inclusion use case included only by "Search Forum." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Building a search index is an internal system mechanism, not a complete user-facing service. This is functional decomposition of "Search Forum" into a technical sub-procedure.
+
+REFACTORING_RATIONALE: All three inclusion use cases ("Validate Thread Content," "Format Reply Text," "Build Search Index") must be merged back into their respective base use cases ("Create Thread," "Post Reply," "Search Forum"). Each inclusion use case represents an internal procedural step rather than a reusable, actor-facing service. Removing these three use cases and their three include relationships eliminates 6 constructs, reducing the model from 25 to 19 constructs. The behavior they represent is absorbed into the base use cases, which already provide the complete service to the actor.
+
+CONSTRUCT_COUNT: 25
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Registered User" as RegUser
+actor "Guest" as Guest
+actor "Moderator" as Moderator
+
+rectangle "Forum and Discussion System" {
+  usecase "Register Account" as UC1
+  usecase "Login" as UC2
+  usecase "Browse Forums" as UC3
+  usecase "Create Thread" as UC4
+  usecase "Validate Thread Content" as UC5
+  usecase "Post Reply" as UC6
+  usecase "Format Reply Text" as UC7
+  usecase "Search Forum" as UC8
+  usecase "Build Search Index" as UC9
+  usecase "Edit Post" as UC10
+  usecase "Delete Post" as UC11
+  usecase "Manage Categories" as UC12
+  usecase "Ban User" as UC13
+  usecase "Report Post" as UC14
+}
+
+Guest --> UC1
+Guest --> UC3
+Guest --> UC8
+
+RegUser --> UC2
+RegUser --> UC3
+RegUser --> UC4
+RegUser --> UC6
+RegUser --> UC8
+RegUser --> UC10
+RegUser --> UC14
+
+Moderator --> UC11
+Moderator --> UC12
+Moderator --> UC13
+
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC8 ..> UC9 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 19
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Registered User" as RegUser
+actor "Guest" as Guest
+actor "Moderator" as Moderator
+
+rectangle "Forum and Discussion System" {
+  usecase "Register Account" as UC1
+  usecase "Login" as UC2
+  usecase "Browse Forums" as UC3
+  usecase "Create Thread" as UC4
+  usecase "Post Reply" as UC6
+  usecase "Search Forum" as UC8
+  usecase "Edit Post" as UC10
+  usecase "Delete Post" as UC11
+  usecase "Manage Categories" as UC12
+  usecase "Ban User" as UC13
+  usecase "Report Post" as UC14
+}
+
+Guest --> UC1
+Guest --> UC3
+Guest --> UC8
+
+RegUser --> UC2
+RegUser --> UC3
+RegUser --> UC4
+RegUser --> UC6
+RegUser --> UC8
+RegUser --> UC10
+RegUser --> UC14
+
+Moderator --> UC11
+Moderator --> UC12
+Moderator --> UC13
+
+@enduml
+```

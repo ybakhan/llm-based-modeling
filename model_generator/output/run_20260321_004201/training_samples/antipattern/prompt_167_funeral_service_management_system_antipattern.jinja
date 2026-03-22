@@ -1,0 +1,67 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Family Member" as FM
+actor "Funeral Director" as FD
+actor "Accountant" as ACC
+actor "Transport Coordinator" as TC
+
+rectangle "Funeral Service Management System" {
+    usecase "Register Deceased" as UC1
+    usecase "Schedule Funeral Service" as UC2
+    usecase "Select Time Slot" as UC3
+    usecase "Select Casket" as UC4
+    usecase "Manage Floral Arrangements" as UC5
+    usecase "Process Payment" as UC6
+    usecase "Generate Receipt" as UC7
+    usecase "Arrange Transportation" as UC8
+    usecase "Assign Vehicle" as UC9
+    usecase "Manage Obituary" as UC10
+    usecase "View Service Details" as UC11
+    usecase "Generate Financial Report" as UC12
+    usecase "Coordinate Clergy" as UC13
+    usecase "Request Cremation" as UC14
+    usecase "Cancel Service" as UC15
+
+    UC2 ..> UC3 : <<include>>
+    UC6 ..> UC7 : <<include>>
+    UC8 ..> UC9 : <<include>>
+    UC15 ..> UC6 : <<extend>>
+}
+
+FM --> UC1
+FM --> UC2
+FM --> UC4
+FM --> UC5
+FM --> UC10
+FM --> UC11
+FM --> UC14
+
+FD --> UC2
+FD --> UC13
+FD --> UC15
+
+ACC --> UC6
+ACC --> UC12
+
+TC --> UC8
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Schedule Funeral Service, Select Time Slot, include (Schedule Funeral Service → Select Time Slot)
+   Instance 1: Explanation: "Select Time Slot" is an inclusion use case included only by "Schedule Funeral Service". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (selecting a time slot) rather than a complete, independently valuable service — this is functional decomposition of "Schedule Funeral Service" into a procedural fragment.
+
+   Instance 2: Constructs Involved: Process Payment, Generate Receipt, include (Process Payment → Generate Receipt)
+   Instance 2: Explanation: "Generate Receipt" is an inclusion use case included only by "Process Payment". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a receipt is a sub-step of payment processing, not a standalone service offering an observable result to any actor — this is functional decomposition.
+
+   Instance 3: Constructs Involved: Arrange Transportation, Assign Vehicle, include (Arrange Transportation → Assign Vehicle)
+   Instance 3: Explanation: "Assign Vehicle" is an inclusion use case included only by "Arrange Transportation". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Assigning a vehicle is a procedural sub-task of arranging transportation, not a complete service visible to an actor — this constitutes functional decomposition.

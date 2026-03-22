@@ -1,0 +1,235 @@
+AUDIT LOG — Prompt #026
+Timestamp : 2026-03-21T00:55:01.894940
+Model     : claude-opus-4-6
+Tokens    : input=1357  output=1323
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (3 instances) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #026: Generate a MEDIUM use case model with exactly 28 constructs (valid range for medium: 24–30 constructs). Domain: Payroll Management System.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: payroll_management_system
+DOMAIN_DISPLAY: Payroll Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Process Payroll, Calculate Deductions, include(Process Payroll -> Calculate Deductions)
+EXPLANATION: "Calculate Deductions" is an inclusion use case included only by "Process Payroll." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step of payroll processing rather than a complete, independently valuable service to any actor. This is functional decomposition of "Process Payroll" into a procedural sub-task.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Payroll, Compute Gross Pay, include(Process Payroll -> Compute Gross Pay)
+EXPLANATION: "Compute Gross Pay" is an inclusion use case included only by "Process Payroll." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It decomposes the payroll process into a calculation step that provides no standalone observable result to any user. This is a classic functional decomposition fragment.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Generate Pay Stub, Format PDF Output, include(Generate Pay Stub -> Format PDF Output)
+EXPLANATION: "Format PDF Output" is an inclusion use case included only by "Generate Pay Stub." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Formatting a PDF is an internal implementation step of generating a pay stub, not a complete service visible to an actor. This is functional decomposition of "Generate Pay Stub" into a technical sub-function.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Calculate Deductions," "Compute Gross Pay," and "Format PDF Output" — must each be merged back into their respective base use cases. "Calculate Deductions" and "Compute Gross Pay" should be absorbed into "Process Payroll," since computing gross pay and calculating deductions are integral parts of processing payroll and do not independently serve any actor. "Format PDF Output" should be absorbed into "Generate Pay Stub," since PDF formatting is an internal step of pay stub generation. This removes three use cases and three include relationships (six constructs total), producing a cleaner model where each use case represents a complete, actor-meaningful service.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "HR Manager" as HR
+actor "Employee" as EMP
+actor "Accountant" as ACC
+actor "Bank System" as BANK
+
+rectangle "Payroll Management System" {
+  usecase "Manage Employee Records" as UC1
+  usecase "Process Payroll" as UC2
+  usecase "Compute Gross Pay" as UC3
+  usecase "Calculate Deductions" as UC4
+  usecase "Generate Pay Stub" as UC5
+  usecase "Format PDF Output" as UC6
+  usecase "View Pay History" as UC7
+  usecase "Submit Timesheet" as UC8
+  usecase "Approve Timesheet" as UC9
+  usecase "Generate Tax Report" as UC10
+  usecase "Transfer Salary" as UC11
+  usecase "Update Tax Settings" as UC12
+  usecase "Request Leave" as UC13
+}
+
+HR --> UC1
+HR --> UC2
+HR --> UC9
+HR --> UC12
+EMP --> UC7
+EMP --> UC8
+EMP --> UC13
+ACC --> UC5
+ACC --> UC10
+BANK --> UC11
+
+UC2 ..> UC3 : <<include>>
+UC2 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC2 ..> UC11 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "HR Manager" as HR
+actor "Employee" as EMP
+actor "Accountant" as ACC
+actor "Bank System" as BANK
+
+rectangle "Payroll Management System" {
+  usecase "Manage Employee Records" as UC1
+  usecase "Process Payroll" as UC2
+  usecase "Generate Pay Stub" as UC5
+  usecase "View Pay History" as UC7
+  usecase "Submit Timesheet" as UC8
+  usecase "Approve Timesheet" as UC9
+  usecase "Generate Tax Report" as UC10
+  usecase "Transfer Salary" as UC11
+  usecase "Update Tax Settings" as UC12
+  usecase "Request Leave" as UC13
+}
+
+HR --> UC1
+HR --> UC2
+HR --> UC9
+HR --> UC12
+EMP --> UC7
+EMP --> UC8
+EMP --> UC13
+ACC --> UC5
+ACC --> UC10
+BANK --> UC11
+
+UC2 ..> UC11 : <<include>>
+
+@enduml
+```

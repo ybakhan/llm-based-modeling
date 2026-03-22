@@ -1,0 +1,23 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Coordinator" as Coordinator
+actor "Volunteer" as Volunteer
+
+rectangle "Volunteer Management System" {
+  usecase "Register Volunteer" as UC1
+  usecase "Validate Personal Details" as UC2
+  usecase "Assign to Event" as UC3
+  usecase "View Schedule" as UC4
+  usecase "Log Volunteer Hours" as UC5
+  usecase "Browse Open Events" as UC6
+}
+
+Coordinator -- UC1
+UC1 ..> UC2 : <<include>>
+Coordinator -- UC3
+Coordinator -- UC5
+Volunteer -- UC4
+Volunteer -- UC6
+
+@enduml

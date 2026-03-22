@@ -1,0 +1,58 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Program Director" as PD
+actor "Broadcast Engineer" as BE
+actor "Content Manager" as CM
+actor "Advertiser" as AD
+
+rectangle "Broadcasting Management System" {
+  usecase "Schedule Broadcast" as UC1
+  usecase "Validate Time Slot" as UC2
+  usecase "Manage Content Library" as UC3
+  usecase "Verify Content Format" as UC4
+  usecase "Start Live Transmission" as UC5
+  usecase "Configure Transmission" as UC6
+  usecase "Monitor Signal Quality" as UC7
+  usecase "Generate Broadcast Report" as UC8
+  usecase "Manage Ad Placements" as UC9
+  usecase "Review Program Ratings" as UC10
+  usecase "Manage Channel Lineup" as UC11
+  usecase "Archive Broadcast" as UC12
+
+  UC1 ..> UC2 : <<include>>
+  UC3 ..> UC4 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC9 ..> UC1 : <<extend>>
+}
+
+PD -- UC1
+PD -- UC10
+PD -- UC11
+CM -- UC3
+CM -- UC12
+BE -- UC5
+BE -- UC7
+BE -- UC8
+AD -- UC9
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Schedule Broadcast, Validate Time Slot, <<include>> from Schedule Broadcast to Validate Time Slot
+   Instance 1: Explanation: "Validate Time Slot" is an inclusion use case included only by "Schedule Broadcast". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a decomposed sub-step (validating a time slot) rather than a complete service observable to a user, making this a clear functional decomposition via the include relationship.
+
+   Instance 2: Constructs Involved: Manage Content Library, Verify Content Format, <<include>> from Manage Content Library to Verify Content Format
+   Instance 2: Explanation: "Verify Content Format" is an inclusion use case included only by "Manage Content Library". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Verifying content format is an internal sub-step of managing the content library, not a standalone service providing an observable result to any user.
+
+   Instance 3: Constructs Involved: Start Live Transmission, Configure Transmission, <<include>> from Start Live Transmission to Configure Transmission
+   Instance 3: Explanation: "Configure Transmission" is an inclusion use case included only by "Start Live Transmission". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Configuring transmission parameters is a decomposed procedural step within starting a live transmission, not a complete service yielding an observable result to any actor.

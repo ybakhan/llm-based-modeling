@@ -1,0 +1,41 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Fitness User" as User
+actor "Personal Trainer" as Trainer
+actor "Admin" as Admin
+
+rectangle "Fitness Tracking App" {
+  usecase "Register Account" as UC1
+  usecase "Log Workout" as UC2
+  usecase "Validate Exercise Input" as UC3
+  usecase "Track Nutrition" as UC4
+  usecase "Calculate Calorie Totals" as UC5
+  usecase "View Progress Report" as UC6
+  usecase "Fetch Historical Data" as UC7
+  usecase "Set Fitness Goal" as UC8
+  usecase "Share Workout Summary" as UC9
+  usecase "Manage User Accounts" as UC10
+  usecase "Create Training Plan" as UC11
+  usecase "Monitor Client Progress" as UC12
+  usecase "Sync Wearable Device" as UC13
+}
+
+User -- UC1
+User -- UC2
+User -- UC4
+User -- UC6
+User -- UC8
+User -- UC9
+User -- UC13
+
+Trainer -- UC11
+Trainer -- UC12
+
+Admin -- UC10
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+@enduml

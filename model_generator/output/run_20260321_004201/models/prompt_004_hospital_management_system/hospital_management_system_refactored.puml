@@ -1,0 +1,33 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Receptionist as R
+actor Doctor as D
+actor Nurse as N
+actor "Lab Technician" as LT
+actor Administrator as A
+
+rectangle "Hospital Management System" {
+  usecase "Register Patient" as UC1
+  usecase "Schedule Appointment" as UC2
+  usecase "Admit Patient" as UC4
+  usecase "Discharge Patient" as UC6
+  usecase "Record Diagnosis" as UC8
+  usecase "Prescribe Medication" as UC9
+  usecase "Record Vital Signs" as UC10
+  usecase "Order Lab Test" as UC11
+  usecase "Process Lab Results" as UC12
+  usecase "Manage Staff Records" as UC13
+}
+
+R -- UC1
+R -- UC2
+R -- UC4
+R -- UC6
+D -- UC8
+D -- UC9
+D -- UC11
+N -- UC10
+LT -- UC12
+A -- UC13
+@enduml

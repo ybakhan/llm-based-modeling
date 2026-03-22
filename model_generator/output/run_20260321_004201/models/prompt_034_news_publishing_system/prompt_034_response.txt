@@ -1,0 +1,71 @@
+
+
+DOMAIN: news_publishing_system
+DOMAIN_DISPLAY: News Publishing System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Publish Article (base use case), Validate Content (inclusion use case), <<include>> from "Publish Article" to "Validate Content"
+EXPLANATION: "Validate Content" is an inclusion use case that is included by only one use case ("Publish Article"). It is not associated with any actor directly — no actor has an association to it. It does not include or extend any other use case, is not extended by any use case, and is neither a generalization nor a specialization. "Validate Content" does not represent a complete, standalone service offering an observable result to any user; it is merely a decomposed step of the "Publish Article" process. This constitutes the Functional Decomposition antipattern via the include relationship.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Content" and the <<include>> relationship from "Publish Article" to "Validate Content" must be removed. The validation behavior should be merged into the "Publish Article" use case, since content validation is an internal step of publishing and does not provide an independent, observable service to any actor. This eliminates the functional decomposition while preserving the system's intended behavior. The refactored model drops 1 use case and 1 include relationship, reducing the construct count from 13 to 11.
+CONSTRUCT_COUNT: 13
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Editor" as Editor
+actor "Reader" as Reader
+actor "Journalist" as Journalist
+
+rectangle "News Publishing System" {
+  usecase "Write Article" as UC1
+  usecase "Publish Article" as UC2
+  usecase "Validate Content" as UC3
+  usecase "Browse Articles" as UC4
+  usecase "Search Articles" as UC5
+  usecase "Manage Categories" as UC6
+}
+
+Journalist --> UC1
+Editor --> UC2
+UC2 ..> UC3 : <<include>>
+Reader --> UC4
+Reader --> UC5
+Editor --> UC6
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Editor" as Editor
+actor "Reader" as Reader
+actor "Journalist" as Journalist
+
+rectangle "News Publishing System" {
+  usecase "Write Article" as UC1
+  usecase "Publish Article" as UC2
+  usecase "Browse Articles" as UC4
+  usecase "Search Articles" as UC5
+  usecase "Manage Categories" as UC6
+}
+
+Journalist --> UC1
+Editor --> UC2
+Reader --> UC4
+Reader --> UC5
+Editor --> UC6
+@enduml
+```

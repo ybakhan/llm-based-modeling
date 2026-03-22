@@ -1,0 +1,117 @@
+
+
+DOMAIN: company_registration_system
+DOMAIN_DISPLAY: Company Registration System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register New Company, Validate Company Name
+EXPLANATION: "Validate Company Name" is an inclusion use case included only by "Register New Company". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step (name validation) rather than a complete, independently valuable service — this is functional decomposition of the registration process into an isolated validation fragment.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Register New Company, Generate Registration Number
+EXPLANATION: "Generate Registration Number" is an inclusion use case included only by "Register New Company". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Generating a registration number is an internal procedural step, not a standalone service offering an observable result to any user — this constitutes functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Submit Annual Return, Calculate Filing Fee
+EXPLANATION: "Calculate Filing Fee" is an inclusion use case included only by "Submit Annual Return". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Fee calculation is a computational sub-step of annual return submission, not an independently meaningful service — this is functional decomposition.
+
+REFACTORING_RATIONALE: The three inclusion use cases — "Validate Company Name", "Generate Registration Number", and "Calculate Filing Fee" — must each be merged back into their respective base use cases. "Validate Company Name" and "Generate Registration Number" are absorbed into "Register New Company", since name validation and number generation are internal steps of registration. "Calculate Filing Fee" is absorbed into "Submit Annual Return", since fee calculation is an integral part of the filing process. This eliminates 3 use cases and 3 include relationships (6 constructs total), producing a cleaner model where each use case represents a complete, actor-facing service.
+
+CONSTRUCT_COUNT: 29
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Company Applicant" as Applicant
+actor "Registrar" as Registrar
+actor "Company Director" as Director
+actor "System Administrator" as Admin
+
+rectangle "Company Registration System" {
+  usecase "Register New Company" as UC1
+  usecase "Validate Company Name" as UC2
+  usecase "Generate Registration Number" as UC3
+  usecase "Search Company Registry" as UC4
+  usecase "Submit Annual Return" as UC5
+  usecase "Calculate Filing Fee" as UC6
+  usecase "Update Company Details" as UC7
+  usecase "Dissolve Company" as UC8
+  usecase "Review Registration Application" as UC9
+  usecase "Process Payment" as UC10
+  usecase "Generate Compliance Report" as UC11
+  usecase "Manage User Accounts" as UC12
+  usecase "File Director Changes" as UC13
+  usecase "Request Company Certificate" as UC14
+}
+
+Applicant --> UC1
+Applicant --> UC4
+Applicant --> UC10
+Director --> UC5
+Director --> UC7
+Director --> UC13
+Director --> UC14
+Registrar --> UC9
+Registrar --> UC8
+Registrar --> UC11
+Admin --> UC12
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC8 ..> UC9 : <<extend>>
+}
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 23
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Company Applicant" as Applicant
+actor "Registrar" as Registrar
+actor "Company Director" as Director
+actor "System Administrator" as Admin
+
+rectangle "Company Registration System" {
+  usecase "Register New Company" as UC1
+  usecase "Search Company Registry" as UC4
+  usecase "Submit Annual Return" as UC5
+  usecase "Update Company Details" as UC7
+  usecase "Dissolve Company" as UC8
+  usecase "Review Registration Application" as UC9
+  usecase "Process Payment" as UC10
+  usecase "Generate Compliance Report" as UC11
+  usecase "Manage User Accounts" as UC12
+  usecase "File Director Changes" as UC13
+  usecase "Request Company Certificate" as UC14
+}
+
+Applicant --> UC1
+Applicant --> UC4
+Applicant --> UC10
+Director --> UC5
+Director --> UC7
+Director --> UC13
+Director --> UC14
+Registrar --> UC9
+Registrar --> UC8
+Registrar --> UC11
+Admin --> UC12
+
+UC8 ..> UC9 : <<extend>>
+}
+@enduml
+```

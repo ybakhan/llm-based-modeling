@@ -1,0 +1,108 @@
+metadata:
+  prompt_number: 99
+  domain: optometry_clinic_system
+  domain_display: Optometry Clinic System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Conduct Eye Exam, Measure Visual Acuity, include relationship
+        from Conduct Eye Exam to Measure Visual Acuity
+      explanation: '"Measure Visual Acuity" is an inclusion use case included only
+        by "Conduct Eye Exam." It is not associated with any actor directly, is not
+        included by any other use case, does not include or extend any use case, and
+        is not extended or generalized. It represents a sub-step of the exam rather
+        than a complete, independently observable service — a classic functional decomposition
+        of "Conduct Eye Exam."'
+    - constructs_involved: Conduct Eye Exam, Perform Refraction Test, include relationship
+        from Conduct Eye Exam to Perform Refraction Test
+      explanation: '"Perform Refraction Test" is an inclusion use case included only
+        by "Conduct Eye Exam." It has no direct actor association, is not included
+        by any other use case, does not include or extend any use case, and is not
+        extended or generalized. It decomposes the exam into a procedural sub-step
+        rather than representing a standalone service visible to any actor.'
+    - constructs_involved: Process Payment, Generate Receipt, include relationship
+        from Process Payment to Generate Receipt
+      explanation: '"Generate Receipt" is an inclusion use case included only by "Process
+        Payment." It has no direct actor association, is not included by any other
+        use case, does not include or extend any use case, and is not extended or
+        generalized. Generating a receipt is a sub-step of payment processing, not
+        an independently complete service offered to an actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 29
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:38:58.114623'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_099_optometry_clinic_system/optometry_clinic_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_099_optometry_clinic_system/optometry_clinic_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_099_optometry_clinic_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Patient\"\
+    \ as Patient\nactor \"Optometrist\" as Optometrist\nactor \"Receptionist\" as\
+    \ Receptionist\nactor \"Insurance Provider\" as InsProvider\n\nrectangle \"Optometry\
+    \ Clinic System\" {\n  usecase \"Schedule Appointment\" as UC1\n  usecase \"Check\
+    \ In Patient\" as UC2\n  usecase \"Conduct Eye Exam\" as UC3\n  usecase \"Measure\
+    \ Visual Acuity\" as UC4\n  usecase \"Perform Refraction Test\" as UC5\n  usecase\
+    \ \"Prescribe Corrective Lenses\" as UC6\n  usecase \"Order Contact Lenses\" as\
+    \ UC7\n  usecase \"Manage Patient Records\" as UC8\n  usecase \"Process Payment\"\
+    \ as UC9\n  usecase \"Generate Receipt\" as UC10\n  usecase \"Submit Insurance\
+    \ Claim\" as UC11\n  usecase \"View Prescription History\" as UC12\n  usecase\
+    \ \"Diagnose Eye Condition\" as UC13\n}\n\nPatient --> UC1\nPatient --> UC7\n\
+    Patient --> UC12\nReceptionist --> UC1\nReceptionist --> UC2\nReceptionist -->\
+    \ UC8\nReceptionist --> UC9\nOptometrist --> UC3\nOptometrist --> UC6\nOptometrist\
+    \ --> UC13\nInsProvider --> UC11\n\nUC3 ..> UC4 : <<include>>\nUC3 ..> UC5 : <<include>>\n\
+    UC9 ..> UC10 : <<include>>\nUC9 ..> UC11 : <<include>>\nUC7 ..> UC6 : <<extend>>\n\
+    @enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Conduct Eye Exam, Measure Visual Acuity,\
+    \ include relationship from Conduct Eye Exam to Measure Visual Acuity\n   Instance\
+    \ 1: Explanation: \"Measure Visual Acuity\" is an inclusion use case included\
+    \ only by \"Conduct Eye Exam.\" It is not associated with any actor directly,\
+    \ is not included by any other use case, does not include or extend any use case,\
+    \ and is not extended or generalized. It represents a sub-step of the exam rather\
+    \ than a complete, independently observable service — a classic functional decomposition\
+    \ of \"Conduct Eye Exam.\"\n\n   Instance 2: Constructs Involved: Conduct Eye\
+    \ Exam, Perform Refraction Test, include relationship from Conduct Eye Exam to\
+    \ Perform Refraction Test\n   Instance 2: Explanation: \"Perform Refraction Test\"\
+    \ is an inclusion use case included only by \"Conduct Eye Exam.\" It has no direct\
+    \ actor association, is not included by any other use case, does not include or\
+    \ extend any use case, and is not extended or generalized. It decomposes the exam\
+    \ into a procedural sub-step rather than representing a standalone service visible\
+    \ to any actor.\n\n   Instance 3: Constructs Involved: Process Payment, Generate\
+    \ Receipt, include relationship from Process Payment to Generate Receipt\n   Instance\
+    \ 3: Explanation: \"Generate Receipt\" is an inclusion use case included only\
+    \ by \"Process Payment.\" It has no direct actor association, is not included\
+    \ by any other use case, does not include or extend any use case, and is not extended\
+    \ or generalized. Generating a receipt is a sub-step of payment processing, not\
+    \ an independently complete service offered to an actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: optometry_clinic_system
+
+  DOMAIN_DISPLAY: Optometry Clinic System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Conduct Eye Exam, Measure Visual Acuity, include relationship
+  from Conduct Eye Exam to Measure Visual Acuity
+
+  EXPLANATION: "Measure Visual Acuity" is an inclusion use case included only by "Conduct
+  Eye Exam." It is not associated with any actor directly, is not included by any
+  other use case, does not include or extend any use …[truncated]'

@@ -1,0 +1,128 @@
+
+
+DOMAIN: funeral_service_management_system
+DOMAIN_DISPLAY: Funeral Service Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Schedule Funeral Service, Select Time Slot, include (Schedule Funeral Service → Select Time Slot)
+EXPLANATION: "Select Time Slot" is an inclusion use case included only by "Schedule Funeral Service". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (selecting a time slot) rather than a complete, independently valuable service — this is functional decomposition of "Schedule Funeral Service" into a procedural fragment.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Payment, Generate Receipt, include (Process Payment → Generate Receipt)
+EXPLANATION: "Generate Receipt" is an inclusion use case included only by "Process Payment". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a receipt is a sub-step of payment processing, not a standalone service offering an observable result to any actor — this is functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Arrange Transportation, Assign Vehicle, include (Arrange Transportation → Assign Vehicle)
+EXPLANATION: "Assign Vehicle" is an inclusion use case included only by "Arrange Transportation". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Assigning a vehicle is a procedural sub-task of arranging transportation, not a complete service visible to an actor — this constitutes functional decomposition.
+
+REFACTORING_RATIONALE: Each of the three decomposed inclusion use cases ("Select Time Slot", "Generate Receipt", "Assign Vehicle") must be merged back into their respective base use cases ("Schedule Funeral Service", "Process Payment", "Arrange Transportation"). This eliminates three use cases and three include relationships (6 constructs removed), because each inclusion use case is merely a procedural sub-step that does not provide a complete, independently observable service to any actor. After merging, the base use cases become self-contained services that fully encapsulate their behavior.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Family Member" as FM
+actor "Funeral Director" as FD
+actor "Accountant" as ACC
+actor "Transport Coordinator" as TC
+
+rectangle "Funeral Service Management System" {
+    usecase "Register Deceased" as UC1
+    usecase "Schedule Funeral Service" as UC2
+    usecase "Select Time Slot" as UC3
+    usecase "Select Casket" as UC4
+    usecase "Manage Floral Arrangements" as UC5
+    usecase "Process Payment" as UC6
+    usecase "Generate Receipt" as UC7
+    usecase "Arrange Transportation" as UC8
+    usecase "Assign Vehicle" as UC9
+    usecase "Manage Obituary" as UC10
+    usecase "View Service Details" as UC11
+    usecase "Generate Financial Report" as UC12
+    usecase "Coordinate Clergy" as UC13
+    usecase "Request Cremation" as UC14
+    usecase "Cancel Service" as UC15
+
+    UC2 ..> UC3 : <<include>>
+    UC6 ..> UC7 : <<include>>
+    UC8 ..> UC9 : <<include>>
+    UC15 ..> UC6 : <<extend>>
+}
+
+FM --> UC1
+FM --> UC2
+FM --> UC4
+FM --> UC5
+FM --> UC10
+FM --> UC11
+FM --> UC14
+
+FD --> UC2
+FD --> UC13
+FD --> UC15
+
+ACC --> UC6
+ACC --> UC12
+
+TC --> UC8
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Family Member" as FM
+actor "Funeral Director" as FD
+actor "Accountant" as ACC
+actor "Transport Coordinator" as TC
+
+rectangle "Funeral Service Management System" {
+    usecase "Register Deceased" as UC1
+    usecase "Schedule Funeral Service" as UC2
+    usecase "Select Casket" as UC4
+    usecase "Manage Floral Arrangements" as UC5
+    usecase "Process Payment" as UC6
+    usecase "Arrange Transportation" as UC8
+    usecase "Manage Obituary" as UC10
+    usecase "View Service Details" as UC11
+    usecase "Generate Financial Report" as UC12
+    usecase "Coordinate Clergy" as UC13
+    usecase "Request Cremation" as UC14
+    usecase "Cancel Service" as UC15
+
+    UC15 ..> UC6 : <<extend>>
+}
+
+FM --> UC1
+FM --> UC2
+FM --> UC4
+FM --> UC5
+FM --> UC10
+FM --> UC11
+FM --> UC14
+
+FD --> UC2
+FD --> UC13
+FD --> UC15
+
+ACC --> UC6
+ACC --> UC12
+
+TC --> UC8
+
+@enduml
+```

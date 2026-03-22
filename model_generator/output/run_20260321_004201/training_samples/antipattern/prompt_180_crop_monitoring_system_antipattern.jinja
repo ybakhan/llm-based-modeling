@@ -1,0 +1,59 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Farm Manager" as FM
+actor "Agronomist" as AG
+actor "Field Technician" as FT
+actor "Weather Service" as WS
+
+rectangle "Crop Monitoring System" {
+  usecase "Monitor Crop Health" as UC1
+  usecase "Capture Sensor Data" as UC2
+  usecase "Generate Yield Report" as UC3
+  usecase "Calculate Yield Statistics" as UC4
+  usecase "Schedule Irrigation" as UC5
+  usecase "Validate Water Levels" as UC6
+  usecase "Detect Pest Outbreak" as UC7
+  usecase "Configure Field Zones" as UC8
+  usecase "View Weather Forecast" as UC9
+  usecase "Manage Crop Profiles" as UC10
+  usecase "Set Alert Thresholds" as UC11
+  usecase "Review Historical Data" as UC12
+}
+
+FM --> UC1
+FM --> UC3
+FM --> UC5
+FM --> UC11
+AG --> UC7
+AG --> UC10
+AG --> UC12
+FT --> UC8
+WS --> UC9
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC7 ..> UC9 : <<include>>
+UC9 ..> UC1 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Monitor Crop Health, Capture Sensor Data, include (Monitor Crop Health → Capture Sensor Data)
+   Instance 1: Explanation: "Capture Sensor Data" is an inclusion use case included only by "Monitor Crop Health." It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step (capturing raw sensor readings) rather than a complete, independently valuable service to any actor. This is functional decomposition of "Monitor Crop Health" into an artificially separated procedural step.
+
+   Instance 2: Constructs Involved: Generate Yield Report, Calculate Yield Statistics, include (Generate Yield Report → Calculate Yield Statistics)
+   Instance 2: Explanation: "Calculate Yield Statistics" is an inclusion use case included only by "Generate Yield Report." It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal computational step rather than a standalone service observable to a user. This is functional decomposition breaking "Generate Yield Report" into an unnecessary sub-function.
+
+   Instance 3: Constructs Involved: Schedule Irrigation, Validate Water Levels, include (Schedule Irrigation → Validate Water Levels)
+   Instance 3: Explanation: "Validate Water Levels" is an inclusion use case included only by "Schedule Irrigation." It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal validation step within irrigation scheduling rather than a complete service. This is functional decomposition splitting a procedural sub-step out of "Schedule Irrigation."

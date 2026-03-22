@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 142
+  domain: swimming_pool_booking_system
+  domain_display: Swimming Pool Booking System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:57:17.235502'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_142_swimming_pool_booking_system/swimming_pool_booking_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_142_swimming_pool_booking_system/swimming_pool_booking_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_142_swimming_pool_booking_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Member\" as Member\n\
+    actor \"Guest\" as Guest\nactor \"Lifeguard\" as Lifeguard\nactor \"Administrator\"\
+    \ as Admin\nactor \"Payment Gateway\" as PGW\n\nrectangle \"Swimming Pool Booking\
+    \ System\" {\n  usecase \"Book Lane\" as UC1\n  usecase \"Cancel Booking\" as\
+    \ UC3\n  usecase \"Register for Swimming Lesson\" as UC4\n  usecase \"View Pool\
+    \ Schedule\" as UC6\n  usecase \"Process Payment\" as UC7\n  usecase \"Manage\
+    \ Pool Timetable\" as UC9\n  usecase \"Report Incident\" as UC10\n  usecase \"\
+    Purchase Day Pass\" as UC11\n  usecase \"View Booking History\" as UC12\n  usecase\
+    \ \"Manage Member Accounts\" as UC13\n}\n\nMember --> UC1\nMember --> UC3\nMember\
+    \ --> UC4\nMember --> UC6\nMember --> UC7\nMember --> UC12\n\nGuest --> UC6\n\
+    Guest --> UC11\n\nLifeguard --> UC10\n\nAdmin --> UC9\nAdmin --> UC13\n\nUC7 -->\
+    \ PGW\n\nUC11 ..> UC7 : <<include>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: swimming_pool_booking_system
+
+  DOMAIN_DISPLAY: Swimming Pool Booking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Lane, Validate Membership Status, include relationship
+  from Book Lane to Validate Membership Status
+
+  EXPLANATION: "Validate Membership Status" is an inclusion use case included only
+  by "Book Lane". It is not associated with any actor, not included by any other use
+  case, does not include or extend any other use c …[truncated]'

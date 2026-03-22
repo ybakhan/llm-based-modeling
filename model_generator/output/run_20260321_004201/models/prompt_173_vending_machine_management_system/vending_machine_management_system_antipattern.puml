@@ -1,0 +1,37 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Technician" as Technician
+actor "Manager" as Manager
+
+rectangle "Vending Machine Management System" {
+    usecase "Purchase Product" as UC1
+    usecase "Validate Payment" as UC2
+    usecase "Browse Products" as UC3
+    usecase "Restock Machine" as UC4
+    usecase "Verify Inventory Levels" as UC5
+    usecase "Perform Maintenance" as UC6
+    usecase "Generate Sales Report" as UC7
+    usecase "Aggregate Transaction Data" as UC8
+    usecase "Configure Pricing" as UC9
+    usecase "Monitor Machine Status" as UC10
+    usecase "Request Refund" as UC11
+    usecase "Manage Machine Locations" as UC12
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC11
+Technician -- UC4
+Technician -- UC6
+Manager -- UC7
+Manager -- UC9
+Manager -- UC10
+Manager -- UC12
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml

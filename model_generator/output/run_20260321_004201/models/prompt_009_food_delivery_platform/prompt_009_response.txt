@@ -1,0 +1,74 @@
+
+
+DOMAIN: food_delivery_platform
+DOMAIN_DISPLAY: Food Delivery Platform
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Place Order (UC2), Validate Delivery Address (UC5), the <<include>> relationship from UC2 to UC5
+EXPLANATION: "Validate Delivery Address" (UC5) is an inclusion use case that is included by only one use case ("Place Order" / UC2). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Validate Delivery Address" represents a sub-step of placing an order rather than a complete, independently valuable service observable to an actor. This is a textbook instance of Functional Decomposition via the include relationship — the designer has decomposed the "Place Order" behavior into a separate inclusion use case that has no standalone value.
+
+REFACTORING_RATIONALE: The "Validate Delivery Address" (UC5) use case and its <<include>> relationship from "Place Order" (UC2) must be removed. The address validation behavior should be absorbed into the "Place Order" use case, since it is merely a sub-step of placing an order and does not provide a complete, independently observable service to any actor. This eliminates 1 use case and 1 include relationship, reducing the construct count from 12 to 10.
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Restaurant" as Restaurant
+actor "Delivery Driver" as Driver
+
+rectangle "Food Delivery Platform" {
+  usecase "Browse Restaurants" as UC1
+  usecase "Place Order" as UC2
+  usecase "Track Delivery" as UC3
+  usecase "Update Menu" as UC4
+  usecase "Validate Delivery Address" as UC5
+  usecase "Accept Delivery" as UC6
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC3
+Restaurant -- UC4
+Driver -- UC6
+
+UC2 ..> UC5 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Customer" as Customer
+actor "Restaurant" as Restaurant
+actor "Delivery Driver" as Driver
+
+rectangle "Food Delivery Platform" {
+  usecase "Browse Restaurants" as UC1
+  usecase "Place Order" as UC2
+  usecase "Track Delivery" as UC3
+  usecase "Update Menu" as UC4
+  usecase "Accept Delivery" as UC6
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC3
+Restaurant -- UC4
+Driver -- UC6
+@enduml
+```

@@ -1,0 +1,61 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Shipper" as Shipper
+actor "Carrier" as Carrier
+actor "Recipient" as Recipient
+actor "Logistics Manager" as Manager
+actor "Customer Service Agent" as Agent
+
+rectangle "Freight Tracking System" {
+  usecase "Register Shipment" as UC1
+  usecase "Validate Sender Address" as UC2
+  usecase "Track Shipment Location" as UC3
+  usecase "Update Shipment Status" as UC4
+  usecase "Log Status Timestamp" as UC5
+  usecase "Receive Delivery Notification" as UC6
+  usecase "Generate Delivery Report" as UC7
+  usecase "Calculate Delivery Metrics" as UC8
+  usecase "Search Shipment" as UC9
+  usecase "Raise Shipment Issue" as UC10
+  usecase "Assign Carrier" as UC11
+  usecase "View Shipment History" as UC12
+  usecase "Escalate Delayed Shipment" as UC13
+}
+
+Shipper --> UC1
+Shipper --> UC3
+Carrier --> UC4
+Carrier --> UC11
+Recipient --> UC3
+Recipient --> UC6
+Manager --> UC7
+Manager --> UC12
+Agent --> UC9
+Agent --> UC10
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC10 ..> UC13 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Register Shipment, Validate Sender Address
+   Instance 1: Explanation: "Validate Sender Address" is an inclusion use case included only by "Register Shipment". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (address validation) rather than a complete service observable to an actor, making it a functional decomposition of "Register Shipment".
+
+   Instance 2: Constructs Involved: Update Shipment Status, Log Status Timestamp
+   Instance 2: Explanation: "Log Status Timestamp" is an inclusion use case included only by "Update Shipment Status". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Logging a timestamp is an internal sub-step of updating status, not a standalone service providing an observable result to any user, making this a functional decomposition.
+
+   Instance 3: Constructs Involved: Generate Delivery Report, Calculate Delivery Metrics
+   Instance 3: Explanation: "Calculate Delivery Metrics" is an inclusion use case included only by "Generate Delivery Report". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Calculating metrics is an internal computational sub-step of report generation, not a complete service to any actor, constituting functional decomposition.

@@ -1,0 +1,75 @@
+metadata:
+  prompt_number: 182
+  domain: wildlife_conservation_system
+  domain_display: Wildlife Conservation System
+  size: small
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Report Animal Sighting, Validate GPS Coordinates
+      explanation: 'The use case "Validate GPS Coordinates" is an inclusion use case
+        that is included by only one use case ("Report Animal Sighting"). It is not
+        associated with any actor directly, does not include or extend any other use
+        case, is not extended by any other use case, and is not involved in any generalization.
+        "Validate GPS Coordinates" does not represent a complete service observable
+        to any user — it is merely a sub-step of reporting a sighting, functionally
+        decomposing that use case into smaller procedural parts. This constitutes
+        the "Functional Decomposition: Using the include relationship" antipattern.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 12
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:47:30.550067'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_182_wildlife_conservation_system/wildlife_conservation_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_182_wildlife_conservation_system/wildlife_conservation_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_182_wildlife_conservation_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Field Ranger\"\
+    \ as Ranger\nactor \"Conservation Manager\" as Manager\nactor \"Veterinarian\"\
+    \ as Vet\n\nrectangle \"Wildlife Conservation System\" {\n  usecase \"Report Animal\
+    \ Sighting\" as UC1\n  usecase \"Validate GPS Coordinates\" as UC2\n  usecase\
+    \ \"Monitor Endangered Species\" as UC3\n  usecase \"Manage Protected Areas\"\
+    \ as UC4\n  usecase \"Record Animal Treatment\" as UC5\n  usecase \"Generate Conservation\
+    \ Report\" as UC6\n}\n\nRanger -- UC1\nUC1 ..> UC2 : <<include>>\nRanger -- UC3\n\
+    Manager -- UC4\nManager -- UC6\nVet -- UC5\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Constructs Involved: Report Animal Sighting, Validate GPS Coordinates\n \
+    \  Explanation: The use case \"Validate GPS Coordinates\" is an inclusion use\
+    \ case that is included by only one use case (\"Report Animal Sighting\"). It\
+    \ is not associated with any actor directly, does not include or extend any other\
+    \ use case, is not extended by any other use case, and is not involved in any\
+    \ generalization. \"Validate GPS Coordinates\" does not represent a complete service\
+    \ observable to any user — it is merely a sub-step of reporting a sighting, functionally\
+    \ decomposing that use case into smaller procedural parts. This constitutes the\
+    \ \"Functional Decomposition: Using the include relationship\" antipattern."
+raw_response_excerpt: '
+
+
+  DOMAIN: wildlife_conservation_system
+
+  DOMAIN_DISPLAY: Wildlife Conservation System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Report Animal Sighting, Validate GPS Coordinates
+
+  EXPLANATION: The use case "Validate GPS Coordinates" is an inclusion use case that
+  is included by only one use case ("Report Animal Sighting"). It is not associated
+  with any actor directly, does not include or extend any other use case, is not extended
+  by any other use …[truncated]'

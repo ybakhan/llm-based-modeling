@@ -1,0 +1,107 @@
+
+
+DOMAIN: video_streaming_platform
+DOMAIN_DISPLAY: Video Streaming Platform
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Search Content, Fetch Search Results
+EXPLANATION: "Search Content" includes "Fetch Search Results" via an <<include>> relationship. "Fetch Search Results" is only included by "Search Content", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a decomposed substep (fetching results) rather than a complete, independently valuable service — this is functional decomposition of "Search Content" into an artificial substep.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Play Video, Load Video Stream
+EXPLANATION: "Play Video" includes "Load Video Stream" via an <<include>> relationship. "Load Video Stream" is only included by "Play Video", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Loading the video stream is an internal technical substep of playing a video, not a complete service observable to a user — this constitutes functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Create Playlist, Validate Playlist Name
+EXPLANATION: "Create Playlist" includes "Validate Playlist Name" via an <<include>> relationship. "Validate Playlist Name" is only included by "Create Playlist", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Validating a playlist name is a granular internal step of playlist creation, not a standalone service — this is functional decomposition.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Fetch Search Results", "Load Video Stream", and "Validate Playlist Name" — must each be merged into their respective base use cases ("Search Content", "Play Video", and "Create Playlist"). Each of these inclusion use cases represents an internal substep rather than a complete service, is included by only one use case, has no actor association, and participates in no other relationships. Removing each inclusion use case and its corresponding <<include>> relationship eliminates 3 use cases and 3 include relationships (6 constructs total), producing a cleaner model where each base use case encapsulates its full behavior.
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Viewer
+actor "Content Creator" as Creator
+actor Administrator
+
+rectangle "Video Streaming Platform" {
+  usecase "Register Account" as UC1
+  usecase "Search Content" as UC2
+  usecase "Fetch Search Results" as UC3
+  usecase "Play Video" as UC4
+  usecase "Load Video Stream" as UC5
+  usecase "Rate Video" as UC6
+  usecase "Create Playlist" as UC7
+  usecase "Validate Playlist Name" as UC8
+  usecase "Upload Video" as UC9
+  usecase "Manage Subscriptions" as UC10
+  usecase "Moderate Content" as UC11
+  usecase "View Watch History" as UC12
+  usecase "Add Subtitles" as UC13
+}
+
+Viewer -- UC1
+Viewer -- UC2
+Viewer -- UC4
+Viewer -- UC6
+Viewer -- UC7
+Viewer -- UC10
+Viewer -- UC12
+Creator -- UC9
+Creator -- UC13
+Administrator -- UC11
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Viewer
+actor "Content Creator" as Creator
+actor Administrator
+
+rectangle "Video Streaming Platform" {
+  usecase "Register Account" as UC1
+  usecase "Search Content" as UC2
+  usecase "Play Video" as UC4
+  usecase "Rate Video" as UC6
+  usecase "Create Playlist" as UC7
+  usecase "Upload Video" as UC9
+  usecase "Manage Subscriptions" as UC10
+  usecase "Moderate Content" as UC11
+  usecase "View Watch History" as UC12
+  usecase "Add Subtitles" as UC13
+}
+
+Viewer -- UC1
+Viewer -- UC2
+Viewer -- UC4
+Viewer -- UC6
+Viewer -- UC7
+Viewer -- UC10
+Viewer -- UC12
+Creator -- UC9
+Creator -- UC13
+Administrator -- UC11
+
+@enduml
+```

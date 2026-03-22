@@ -1,0 +1,71 @@
+
+
+DOMAIN: subscription_box_service
+DOMAIN_DISPLAY: Subscription Box Service
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Select Subscription Plan, Validate Payment Details
+EXPLANATION: The use case "Select Subscription Plan" includes "Validate Payment Details" via an <<include>> relationship. "Validate Payment Details" is an inclusion use case that (1) is included by only one use case ("Select Subscription Plan"), (2) is not associated with any actor directly, (3) does not include or extend any other use case, (4) is not extended by any other use case, and (5) is neither a generalization nor a specialization of any use case. It represents a decomposed step of the subscription selection process rather than a complete, standalone service providing an observable result to a user. This is a classic functional decomposition — breaking a single coherent service into sub-steps modeled as separate use cases connected via include.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Payment Details" must be merged back into "Select Subscription Plan" because it does not provide an independent, complete service to any actor. The payment validation logic is an internal step of selecting a subscription plan and should not be a separate use case. Removing "Validate Payment Details" and the <<include>> relationship between "Select Subscription Plan" and "Validate Payment Details" eliminates the functional decomposition antipattern while preserving all meaningful system behavior.
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Subscriber" as Sub
+actor "Admin" as Admin
+
+rectangle "Subscription Box Service" {
+  usecase "Browse Available Boxes" as UC1
+  usecase "Select Subscription Plan" as UC2
+  usecase "Validate Payment Details" as UC3
+  usecase "Manage Delivery Preferences" as UC4
+  usecase "Cancel Subscription" as UC5
+  usecase "Manage Box Inventory" as UC6
+}
+
+Sub --> UC1
+Sub --> UC2
+Sub --> UC4
+Sub --> UC5
+Admin --> UC6
+UC2 ..> UC3 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Subscriber" as Sub
+actor "Admin" as Admin
+
+rectangle "Subscription Box Service" {
+  usecase "Browse Available Boxes" as UC1
+  usecase "Select Subscription Plan" as UC2
+  usecase "Manage Delivery Preferences" as UC4
+  usecase "Cancel Subscription" as UC5
+  usecase "Manage Box Inventory" as UC6
+}
+
+Sub --> UC1
+Sub --> UC2
+Sub --> UC4
+Sub --> UC5
+Admin --> UC6
+
+@enduml
+```

@@ -1,0 +1,107 @@
+metadata:
+  prompt_number: 105
+  domain: tutoring_marketplace
+  domain_display: Tutoring Marketplace
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Book Session, Validate Tutor Availability, include (Book
+        Session → Validate Tutor Availability)
+      explanation: '"Validate Tutor Availability" is included only by "Book Session",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not involved in any generalization.
+        It represents a sub-step (checking if a tutor is free) rather than a complete
+        service observable to a user. This is functional decomposition of "Book Session"
+        into an internal procedural step.'
+    - constructs_involved: Process Payment, Calculate Service Fee, include (Process
+        Payment → Calculate Service Fee)
+      explanation: '"Calculate Service Fee" is included only by "Process Payment",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not involved in any generalization.
+        Calculating a fee is an internal computation step within payment processing,
+        not a standalone service delivering an observable result to any user.'
+    - constructs_involved: Register As Tutor, Upload Credentials, include (Register
+        As Tutor → Upload Credentials)
+      explanation: '"Upload Credentials" is included only by "Register As Tutor",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not involved in any generalization.
+        Uploading credentials is a sub-step of tutor registration, not a complete
+        service offered to any actor independently.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 27
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:41:02.911471'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_105_tutoring_marketplace/tutoring_marketplace_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_105_tutoring_marketplace/tutoring_marketplace_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_105_tutoring_marketplace_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Student\" as Student\nactor \"Tutor\" as Tutor\nactor \"Admin\" as Admin\n\
+    \nrectangle \"Tutoring Marketplace\" {\n  usecase \"Search Tutors\" as UC1\n \
+    \ usecase \"Book Session\" as UC2\n  usecase \"Validate Tutor Availability\" as\
+    \ UC3\n  usecase \"Process Payment\" as UC4\n  usecase \"Calculate Service Fee\"\
+    \ as UC5\n  usecase \"Leave Review\" as UC6\n  usecase \"Register As Tutor\" as\
+    \ UC7\n  usecase \"Upload Credentials\" as UC8\n  usecase \"Manage Schedule\"\
+    \ as UC9\n  usecase \"View Earnings\" as UC10\n  usecase \"Conduct Session\" as\
+    \ UC11\n  usecase \"Manage Listings\" as UC12\n  usecase \"Resolve Dispute\" as\
+    \ UC13\n  usecase \"View Dashboard\" as UC14\n  usecase \"Send Message\" as UC15\n\
+    \  usecase \"Cancel Session\" as UC16\n}\n\nStudent --> UC1\nStudent --> UC2\n\
+    Student --> UC4\nStudent --> UC6\nStudent --> UC15\nStudent --> UC16\n\nTutor\
+    \ --> UC7\nTutor --> UC9\nTutor --> UC10\nTutor --> UC11\nTutor --> UC15\n\nAdmin\
+    \ --> UC12\nAdmin --> UC13\nAdmin --> UC14\n\nUC2 ..> UC3 : <<include>>\nUC4 ..>\
+    \ UC5 : <<include>>\nUC7 ..> UC8 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Book Session, Validate Tutor Availability,\
+    \ include (Book Session → Validate Tutor Availability)\n   Instance 1: Explanation:\
+    \ \"Validate Tutor Availability\" is included only by \"Book Session\", is not\
+    \ associated with any actor, does not include or extend any other use case, is\
+    \ not extended by any use case, and is not involved in any generalization. It\
+    \ represents a sub-step (checking if a tutor is free) rather than a complete service\
+    \ observable to a user. This is functional decomposition of \"Book Session\" into\
+    \ an internal procedural step.\n\n   Instance 2: Constructs Involved: Process\
+    \ Payment, Calculate Service Fee, include (Process Payment → Calculate Service\
+    \ Fee)\n   Instance 2: Explanation: \"Calculate Service Fee\" is included only\
+    \ by \"Process Payment\", is not associated with any actor, does not include or\
+    \ extend any other use case, is not extended by any use case, and is not involved\
+    \ in any generalization. Calculating a fee is an internal computation step within\
+    \ payment processing, not a standalone service delivering an observable result\
+    \ to any user.\n\n   Instance 3: Constructs Involved: Register As Tutor, Upload\
+    \ Credentials, include (Register As Tutor → Upload Credentials)\n   Instance 3:\
+    \ Explanation: \"Upload Credentials\" is included only by \"Register As Tutor\"\
+    , is not associated with any actor, does not include or extend any other use case,\
+    \ is not extended by any use case, and is not involved in any generalization.\
+    \ Uploading credentials is a sub-step of tutor registration, not a complete service\
+    \ offered to any actor independently."
+raw_response_excerpt: '
+
+
+  DOMAIN: tutoring_marketplace
+
+  DOMAIN_DISPLAY: Tutoring Marketplace
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Session, Validate Tutor Availability, include (Book Session
+  → Validate Tutor Availability)
+
+  EXPLANATION: "Validate Tutor Availability" is included only by "Book Session", is
+  not associated with any actor, does not include or extend any other use case, is
+  not extended by any use case, and is not involved in any generalization. I …[truncated]'

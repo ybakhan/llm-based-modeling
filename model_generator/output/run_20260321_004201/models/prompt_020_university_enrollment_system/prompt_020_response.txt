@@ -1,0 +1,120 @@
+
+
+DOMAIN: university_enrollment_system
+DOMAIN_DISPLAY: University Enrollment System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register for Course, Validate Prerequisites, include (Register for Course → Validate Prerequisites)
+EXPLANATION: "Validate Prerequisites" is an inclusion use case included only by "Register for Course". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Validate Prerequisites" does not represent a complete service observable to any actor — it is merely a decomposed step of the registration process. This constitutes a Functional Decomposition antipattern via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Tuition Payment, Calculate Tuition Fees, include (Process Tuition Payment → Calculate Tuition Fees)
+EXPLANATION: "Calculate Tuition Fees" is an inclusion use case included only by "Process Tuition Payment". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Calculate Tuition Fees" is not a standalone service — it is a sub-step of payment processing that provides no independently observable result to any user. This constitutes a Functional Decomposition antipattern.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Submit Application, Verify Application Data, include (Submit Application → Verify Application Data)
+EXPLANATION: "Verify Application Data" is an inclusion use case included only by "Submit Application". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Verify Application Data" is a decomposed internal step of submission rather than a complete service offered to a user. This constitutes a Functional Decomposition antipattern.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Prerequisites", "Calculate Tuition Fees", and "Verify Application Data" — each serve as decomposed sub-steps of their respective base use cases and provide no independent service to any actor. Per the Drop Functional Decomposition refactoring: (1) "Validate Prerequisites" must be merged into "Register for Course", eliminating the use case node and its include arrow. (2) "Calculate Tuition Fees" must be merged into "Process Tuition Payment", eliminating the use case node and its include arrow. (3) "Verify Application Data" must be merged into "Submit Application", eliminating the use case node and its include arrow. This removes 3 use cases and 3 include relationships (6 constructs total), resulting in a cleaner model where each use case represents a complete, actor-observable service.
+CONSTRUCT_COUNT: 29
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Student" as Student
+actor "Registrar" as Registrar
+actor "Financial Officer" as FinOfficer
+actor "Advisor" as Advisor
+
+rectangle "University Enrollment System" {
+  usecase "Submit Application" as UC1
+  usecase "Verify Application Data" as UC2
+  usecase "Register for Course" as UC3
+  usecase "Validate Prerequisites" as UC4
+  usecase "Drop Course" as UC5
+  usecase "View Enrollment Status" as UC6
+  usecase "Process Tuition Payment" as UC7
+  usecase "Calculate Tuition Fees" as UC8
+  usecase "Review Applications" as UC9
+  usecase "Generate Enrollment Report" as UC10
+  usecase "Approve Course Override" as UC11
+  usecase "View Academic Schedule" as UC12
+  usecase "Apply for Financial Aid" as UC13
+  usecase "Request Transcript" as UC14
+}
+
+Student --> UC1
+Student --> UC3
+Student --> UC5
+Student --> UC6
+Student --> UC7
+Student --> UC12
+Student --> UC13
+Student --> UC14
+
+Registrar --> UC9
+Registrar --> UC10
+
+FinOfficer --> UC7
+
+Advisor --> UC11
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 23
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Student" as Student
+actor "Registrar" as Registrar
+actor "Financial Officer" as FinOfficer
+actor "Advisor" as Advisor
+
+rectangle "University Enrollment System" {
+  usecase "Submit Application" as UC1
+  usecase "Register for Course" as UC3
+  usecase "Drop Course" as UC5
+  usecase "View Enrollment Status" as UC6
+  usecase "Process Tuition Payment" as UC7
+  usecase "Review Applications" as UC9
+  usecase "Generate Enrollment Report" as UC10
+  usecase "Approve Course Override" as UC11
+  usecase "View Academic Schedule" as UC12
+  usecase "Apply for Financial Aid" as UC13
+  usecase "Request Transcript" as UC14
+}
+
+Student --> UC1
+Student --> UC3
+Student --> UC5
+Student --> UC6
+Student --> UC7
+Student --> UC12
+Student --> UC13
+Student --> UC14
+
+Registrar --> UC9
+Registrar --> UC10
+
+FinOfficer --> UC7
+
+Advisor --> UC11
+
+@enduml
+```

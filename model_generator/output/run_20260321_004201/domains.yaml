@@ -1,0 +1,392 @@
+all_domains:
+- Banking System
+- Restaurant Management System
+- Hospital Management System
+- Social Media Platform
+- Messaging Application
+- Flight Booking System
+- Library Management System
+- E-Learning Platform
+- Medical Clinic System
+- Pharmacy Management System
+- Car Rental System
+- University Enrollment System
+- Movie Ticket Booking
+- Gym Membership System
+- Insurance Management System
+- Payroll Management System
+- Human Resources System
+- Inventory Management System
+- Tax Filing System
+- Credit Card Management System
+- News Publishing System
+- Dating Application
+- Telemedicine System
+- Exam Management System
+- Courier Delivery System
+- Cloud Storage Service
+- Weather Forecasting Service
+- Podcast Platform
+- Expense Tracking System
+- Freelance Marketplace
+- Supply Chain Management
+- Employee Performance Review System
+- Public Transport System
+- Investment Portfolio System
+- Mental Health Appointment System
+- Student Attendance System
+- Scholarship Application System
+- Passport Application System
+- Forum and Discussion System
+- Software Bug Tracking System
+- Conference Registration System
+- Property Management System
+- Restaurant Reservation System
+- Catering Service System
+- Sports League Management
+- Freight Tracking System
+- Bike Sharing System
+- Electric Vehicle Charging Network
+- Second-Hand Marketplace
+- Loyalty Rewards Program
+- Subscription Box Service
+- Flash Sale Platform
+- Public Complaint Management System
+- Tax Authority Portal
+- Social Benefits Management System
+- Municipal Waste Management
+- Pet Adoption System
+- Neighbourhood Watch App
+- Dental Clinic System
+- Optometry Clinic System
+- Emergency Dispatch System
+- Medical Imaging System
+- Tutoring Marketplace
+- Language Learning App
+- Certification Examination System
+- Academic Conference Management System
+- Plagiarism Detection System
+- Research Grant Management System
+- Tour Package Booking System
+- Vacation Rental Platform
+- Hostel Booking System
+- City Tour Guide App
+- Visa Application System
+- Travel Insurance System
+- Cruise Booking System
+- Crowdfunding Platform
+- Accounting System
+- Stock Trading Platform
+- Budgeting Application
+- Cryptocurrency Exchange
+- Court Case Management System
+- Company Registration System
+- Legal Aid Management System
+- Electoral Roll Management System
+- Carpooling App
+- Mentorship Platform
+- Lost and Found System
+- Book Club Platform
+- Livestreaming Platform
+- Digital Photography Platform
+- E-Book Publishing System
+- Stadium Management System
+- Swimming Pool Booking System
+- Esports Tournament Platform
+- Yoga Class Booking
+- Climbing Gym Management System
+- Cybersecurity Incident Reporting System
+- IT Asset Management System
+- Data Backup and Recovery System
+- API Management Portal
+- Driving School Management System
+- Wedding Planning Platform
+- Spa and Wellness Booking System
+- Coworking Space Booking System
+- Parking Lot Management System
+- Escape Room Booking System
+- Photography Studio Booking System
+- Pet Care Service Booking
+- Language Translation Service
+- Funeral Service Management System
+- Baby Equipment Rental Service
+- Gift Registry System
+- Print-on-Demand Platform
+- Second-Hand Clothing Marketplace
+- Furniture Rental Service
+- Air Quality Monitoring System
+- Crop Monitoring System
+- Irrigation Control System
+- Equipment Maintenance System
+- Industrial Safety Reporting System
+- Product Recall Management System
+- Hazardous Materials Tracking System
+- Military Personnel Management System
+- Border Control System
+- Graphic Novel Platform
+- Fan Fiction Community
+- Hotel Booking System
+- Ride Sharing Service
+- Job Portal
+- Online Store
+- Food Delivery Platform
+- Music Streaming Platform
+- Grocery Delivery Service
+- Event Ticketing System
+- School Administration System
+- Volunteer Management System
+- IT Help Desk System
+- Home Services Booking
+- Construction Project Management
+- Cafe Order Management
+- Water Utility Management
+- Nursing Home Management System
+- Rehabilitation Centre System
+- Mortgage Application System
+- Alumni Network System
+- Community Garden Management System
+- Fitness Tracking App
+- Real Estate Listing Platform
+- Digital Wallet System
+- Smart Home Management System
+- Document Management System
+- Course Registration System
+- E-Voting System
+- Museum Ticketing System
+- Room Service Management
+- Tournament Registration System
+- Solar Energy Management System
+- Wildlife Conservation System
+- Forest Fire Detection System
+- Factory Floor Management System
+- Quality Control System
+- Video Streaming Platform
+- Online Gaming Platform
+- Customer Relationship Management
+- Loan Approval System
+- Patient Records System
+- Blood Bank Management
+- Veterinary Clinic System
+- Driver License Renewal System
+- Donation Management System
+- Legal Case Management System
+- Port Management System
+- Online Auction Platform
+- Wholesale Distribution System
+- Broadcasting Management System
+- Clinical Trial Management System
+- Self-Storage Facility System
+- Farm Management System
+- Agricultural Marketplace
+- Kindergarten Management System
+- Land Registry System
+- Athlete Training System
+- Sports Equipment Rental
+- Network Monitoring System
+- Software License Management System
+- Remote Desktop Service
+- Laundry Pickup Service
+- Event Decoration Booking System
+- Notary Service Booking System
+- Microfinance System
+- Skill Sharing Platform
+- Vending Machine Management System
+- Assembly Line Monitoring System
+- Price Comparison Portal
+unique_domains:
+- Banking System
+- Restaurant Management System
+- Hospital Management System
+- Social Media Platform
+- Messaging Application
+- Flight Booking System
+- Library Management System
+- E-Learning Platform
+- Medical Clinic System
+- Pharmacy Management System
+- Car Rental System
+- University Enrollment System
+- Movie Ticket Booking
+- Gym Membership System
+- Insurance Management System
+- Payroll Management System
+- Human Resources System
+- Inventory Management System
+- Tax Filing System
+- Credit Card Management System
+- News Publishing System
+- Dating Application
+- Telemedicine System
+- Exam Management System
+- Courier Delivery System
+- Cloud Storage Service
+- Weather Forecasting Service
+- Podcast Platform
+- Expense Tracking System
+- Freelance Marketplace
+- Supply Chain Management
+- Employee Performance Review System
+- Public Transport System
+- Investment Portfolio System
+- Mental Health Appointment System
+- Student Attendance System
+- Scholarship Application System
+- Passport Application System
+- Forum and Discussion System
+- Software Bug Tracking System
+- Conference Registration System
+- Property Management System
+- Restaurant Reservation System
+- Catering Service System
+- Sports League Management
+- Freight Tracking System
+- Bike Sharing System
+- Electric Vehicle Charging Network
+- Second-Hand Marketplace
+- Loyalty Rewards Program
+- Subscription Box Service
+- Flash Sale Platform
+- Public Complaint Management System
+- Tax Authority Portal
+- Social Benefits Management System
+- Municipal Waste Management
+- Pet Adoption System
+- Neighbourhood Watch App
+- Dental Clinic System
+- Optometry Clinic System
+- Emergency Dispatch System
+- Medical Imaging System
+- Tutoring Marketplace
+- Language Learning App
+- Certification Examination System
+- Academic Conference Management System
+- Plagiarism Detection System
+- Research Grant Management System
+- Tour Package Booking System
+- Vacation Rental Platform
+- Hostel Booking System
+- City Tour Guide App
+- Visa Application System
+- Travel Insurance System
+- Cruise Booking System
+- Crowdfunding Platform
+- Accounting System
+- Stock Trading Platform
+- Budgeting Application
+- Cryptocurrency Exchange
+- Court Case Management System
+- Company Registration System
+- Legal Aid Management System
+- Electoral Roll Management System
+- Carpooling App
+- Mentorship Platform
+- Lost and Found System
+- Book Club Platform
+- Livestreaming Platform
+- Digital Photography Platform
+- E-Book Publishing System
+- Stadium Management System
+- Swimming Pool Booking System
+- Esports Tournament Platform
+- Yoga Class Booking
+- Climbing Gym Management System
+- Cybersecurity Incident Reporting System
+- IT Asset Management System
+- Data Backup and Recovery System
+- API Management Portal
+- Driving School Management System
+- Wedding Planning Platform
+- Spa and Wellness Booking System
+- Coworking Space Booking System
+- Parking Lot Management System
+- Escape Room Booking System
+- Photography Studio Booking System
+- Pet Care Service Booking
+- Language Translation Service
+- Funeral Service Management System
+- Baby Equipment Rental Service
+- Gift Registry System
+- Print-on-Demand Platform
+- Second-Hand Clothing Marketplace
+- Furniture Rental Service
+- Air Quality Monitoring System
+- Crop Monitoring System
+- Irrigation Control System
+- Equipment Maintenance System
+- Industrial Safety Reporting System
+- Product Recall Management System
+- Hazardous Materials Tracking System
+- Military Personnel Management System
+- Border Control System
+- Graphic Novel Platform
+- Fan Fiction Community
+- Hotel Booking System
+- Ride Sharing Service
+- Job Portal
+- Online Store
+- Food Delivery Platform
+- Music Streaming Platform
+- Grocery Delivery Service
+- Event Ticketing System
+- School Administration System
+- Volunteer Management System
+- IT Help Desk System
+- Home Services Booking
+- Construction Project Management
+- Cafe Order Management
+- Water Utility Management
+- Nursing Home Management System
+- Rehabilitation Centre System
+- Mortgage Application System
+- Alumni Network System
+- Community Garden Management System
+- Fitness Tracking App
+- Real Estate Listing Platform
+- Digital Wallet System
+- Smart Home Management System
+- Document Management System
+- Course Registration System
+- E-Voting System
+- Museum Ticketing System
+- Room Service Management
+- Tournament Registration System
+- Solar Energy Management System
+- Wildlife Conservation System
+- Forest Fire Detection System
+- Factory Floor Management System
+- Quality Control System
+- Video Streaming Platform
+- Online Gaming Platform
+- Customer Relationship Management
+- Loan Approval System
+- Patient Records System
+- Blood Bank Management
+- Veterinary Clinic System
+- Driver License Renewal System
+- Donation Management System
+- Legal Case Management System
+- Port Management System
+- Online Auction Platform
+- Wholesale Distribution System
+- Broadcasting Management System
+- Clinical Trial Management System
+- Self-Storage Facility System
+- Farm Management System
+- Agricultural Marketplace
+- Kindergarten Management System
+- Land Registry System
+- Athlete Training System
+- Sports Equipment Rental
+- Network Monitoring System
+- Software License Management System
+- Remote Desktop Service
+- Laundry Pickup Service
+- Event Decoration Booking System
+- Notary Service Booking System
+- Microfinance System
+- Skill Sharing Platform
+- Vending Machine Management System
+- Assembly Line Monitoring System
+- Price Comparison Portal
+total: 194
+unique_count: 194

@@ -1,0 +1,56 @@
+metadata:
+  prompt_number: 55
+  domain: veterinary_clinic_system
+  domain_display: Veterinary Clinic System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 20
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:53:38.978912'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_055_veterinary_clinic_system/veterinary_clinic_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_055_veterinary_clinic_system/veterinary_clinic_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_055_veterinary_clinic_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Veterinarian\" as Vet\nactor \"Receptionist\" as Recep\nactor \"Pet Owner\"\
+    \ as Owner\n\nrectangle \"Veterinary Clinic System\" {\n    usecase \"Register\
+    \ Pet\" as UC1\n    usecase \"Schedule Appointment\" as UC2\n    usecase \"Conduct\
+    \ Examination\" as UC3\n    usecase \"View Medical Records\" as UC6\n    usecase\
+    \ \"Process Payment\" as UC7\n    usecase \"Manage Vaccinations\" as UC9\n   \
+    \ usecase \"Cancel Appointment\" as UC10\n}\n\nOwner -- UC1\nOwner -- UC2\nOwner\
+    \ -- UC6\nOwner -- UC10\nRecep -- UC2\nRecep -- UC7\nRecep -- UC1\nVet -- UC3\n\
+    Vet -- UC9\nVet -- UC6\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: veterinary_clinic_system
+
+  DOMAIN_DISPLAY: Veterinary Clinic System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Conduct Examination, Check Vital Signs, include relationship
+  from Conduct Examination to Check Vital Signs
+
+  EXPLANATION: "Check Vital Signs" is an inclusion use case included only by "Conduct
+  Examination". It is not associated with any actor, is not included by any other
+  use case, does not include or extend any other use cas …[truncated]'

@@ -1,0 +1,114 @@
+
+
+DOMAIN: freelance_marketplace
+DOMAIN_DISPLAY: Freelance Marketplace
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Post Job, Validate Job Details, include (Post Job → Validate Job Details)
+EXPLANATION: "Validate Job Details" is an inclusion use case included only by "Post Job". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (validation) of posting a job rather than a complete, independently valuable service. This is functional decomposition of "Post Job" into an artificial sub-function.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Submit Proposal, Upload Portfolio Samples, include (Submit Proposal → Upload Portfolio Samples)
+EXPLANATION: "Upload Portfolio Samples" is an inclusion use case included only by "Submit Proposal". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Uploading portfolio samples is a sub-step of submitting a proposal, not a standalone service delivering an observable result to any actor. This decomposes "Submit Proposal" into an internal procedure.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Payment, Calculate Service Fee, include (Process Payment → Calculate Service Fee)
+EXPLANATION: "Calculate Service Fee" is an inclusion use case included only by "Process Payment". It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Fee calculation is an internal computation step within payment processing, not a complete service observable to a user. This is functional decomposition of the payment process.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Job Details", "Upload Portfolio Samples", "Calculate Service Fee") must be merged back into their respective base use cases ("Post Job", "Submit Proposal", "Process Payment"). These inclusion use cases each exist as isolated sub-steps included by exactly one use case, have no actor associations, and participate in no other relationships. By merging them, we eliminate 3 use cases and 3 include relationships (6 constructs removed), restoring each base use case to a single, cohesive unit that delivers a complete service. The resulting model has 18 constructs.
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Client" as Client
+actor "Freelancer" as Freelancer
+actor "Admin" as Admin
+
+rectangle "Freelance Marketplace" {
+    usecase "Post Job" as UC1
+    usecase "Validate Job Details" as UC2
+    usecase "Browse Jobs" as UC3
+    usecase "Submit Proposal" as UC4
+    usecase "Upload Portfolio Samples" as UC5
+    usecase "Accept Proposal" as UC6
+    usecase "Process Payment" as UC7
+    usecase "Calculate Service Fee" as UC8
+    usecase "Leave Review" as UC9
+    usecase "Manage Disputes" as UC10
+    usecase "Track Milestone" as UC11
+    usecase "Send Message" as UC12
+    usecase "Manage User Accounts" as UC13
+}
+
+Client --> UC1
+Client --> UC3
+Client --> UC6
+Client --> UC7
+Client --> UC9
+Client --> UC11
+Client --> UC12
+Freelancer --> UC3
+Freelancer --> UC4
+Freelancer --> UC9
+Freelancer --> UC11
+Freelancer --> UC12
+Admin --> UC10
+Admin --> UC13
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 18
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Client" as Client
+actor "Freelancer" as Freelancer
+actor "Admin" as Admin
+
+rectangle "Freelance Marketplace" {
+    usecase "Post Job" as UC1
+    usecase "Browse Jobs" as UC3
+    usecase "Submit Proposal" as UC4
+    usecase "Accept Proposal" as UC6
+    usecase "Process Payment" as UC7
+    usecase "Leave Review" as UC9
+    usecase "Manage Disputes" as UC10
+    usecase "Track Milestone" as UC11
+    usecase "Send Message" as UC12
+    usecase "Manage User Accounts" as UC13
+}
+
+Client --> UC1
+Client --> UC3
+Client --> UC6
+Client --> UC7
+Client --> UC9
+Client --> UC11
+Client --> UC12
+Freelancer --> UC3
+Freelancer --> UC4
+Freelancer --> UC9
+Freelancer --> UC11
+Freelancer --> UC12
+Admin --> UC10
+Admin --> UC13
+
+@enduml
+```

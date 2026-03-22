@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 4
+  domain: hospital_management_system
+  domain_display: Hospital Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T00:43:16.307345'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_004_hospital_management_system/hospital_management_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_004_hospital_management_system/hospital_management_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_004_hospital_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Receptionist as R\n\
+    actor Doctor as D\nactor Nurse as N\nactor \"Lab Technician\" as LT\nactor Administrator\
+    \ as A\n\nrectangle \"Hospital Management System\" {\n  usecase \"Register Patient\"\
+    \ as UC1\n  usecase \"Schedule Appointment\" as UC2\n  usecase \"Admit Patient\"\
+    \ as UC4\n  usecase \"Discharge Patient\" as UC6\n  usecase \"Record Diagnosis\"\
+    \ as UC8\n  usecase \"Prescribe Medication\" as UC9\n  usecase \"Record Vital\
+    \ Signs\" as UC10\n  usecase \"Order Lab Test\" as UC11\n  usecase \"Process Lab\
+    \ Results\" as UC12\n  usecase \"Manage Staff Records\" as UC13\n}\n\nR --> UC1\n\
+    R --> UC2\nR --> UC4\nR --> UC6\nD --> UC8\nD --> UC9\nD --> UC11\nN --> UC10\n\
+    LT --> UC12\nA --> UC13\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: hospital_management_system
+
+  DOMAIN_DISPLAY: Hospital Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Appointment, Check Doctor Availability
+
+  EXPLANATION: "Check Doctor Availability" is an inclusion use case included only
+  by "Schedule Appointment". It is not associated with any actor directly, is not
+  included by any other use case, does not include or extend any use case, is not
+  extended by any use case, and has …[truncated]'

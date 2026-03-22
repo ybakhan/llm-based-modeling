@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 169
+  domain: baby_equipment_rental_service
+  domain_display: Baby Equipment Rental Service
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:07:27.878912'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_169_baby_equipment_rental_service/baby_equipment_rental_service_refactored.puml
+    image: output/run_20260321_004201/models/prompt_169_baby_equipment_rental_service/baby_equipment_rental_service_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_169_baby_equipment_rental_service_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Parent\" as Parent\n\
+    actor \"Staff Member\" as Staff\nactor \"Delivery Driver\" as Driver\n\nrectangle\
+    \ \"Baby Equipment Rental Service\" {\n  usecase \"Browse Equipment Catalog\"\
+    \ as UC1\n  usecase \"Reserve Equipment\" as UC2\n  usecase \"Process Payment\"\
+    \ as UC4\n  usecase \"Return Equipment\" as UC6\n  usecase \"Manage Inventory\"\
+    \ as UC8\n  usecase \"Deliver Equipment\" as UC9\n  usecase \"Track Rental Orders\"\
+    \ as UC10\n  usecase \"Rate Equipment\" as UC11\n  usecase \"Extend Rental Period\"\
+    \ as UC12\n  usecase \"Apply Late Fee\" as UC13\n}\n\nParent --> UC1\nParent -->\
+    \ UC2\nParent --> UC4\nParent --> UC6\nParent --> UC11\nParent --> UC12\n\nStaff\
+    \ --> UC8\nStaff --> UC10\n\nDriver --> UC9\n\nUC6 <.. UC13 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: baby_equipment_rental_service
+
+  DOMAIN_DISPLAY: Baby Equipment Rental Service
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Reserve Equipment, Check Equipment Availability
+
+  EXPLANATION: "Check Equipment Availability" is an inclusion use case included only
+  by "Reserve Equipment". It is not associated with any actor directly, is not included
+  by any other use case, does not include or extend any use case, is not extended
+  by any use case, a …[truncated]'

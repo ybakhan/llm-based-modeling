@@ -1,0 +1,113 @@
+
+
+DOMAIN: telemedicine_system
+DOMAIN_DISPLAY: Telemedicine System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Schedule Appointment, Validate Patient Insurance
+EXPLANATION: "Validate Patient Insurance" is an inclusion use case included only by "Schedule Appointment". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (insurance validation) that has been improperly decomposed out of the scheduling process rather than being a complete service observable to an actor.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Conduct Video Consultation, Initialize Video Stream
+EXPLANATION: "Initialize Video Stream" is an inclusion use case included only by "Conduct Video Consultation". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a technical sub-step (stream initialization) that has been functionally decomposed out of the consultation use case and offers no standalone observable result to any user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Write Prescription, Verify Drug Interactions
+EXPLANATION: "Verify Drug Interactions" is an inclusion use case included only by "Write Prescription". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents an internal validation step improperly separated from the prescription-writing process and provides no complete service to any actor on its own.
+
+REFACTORING_RATIONALE: The three inclusion use cases — "Validate Patient Insurance", "Initialize Video Stream", and "Verify Drug Interactions" — must each be merged back into their respective base use cases ("Schedule Appointment", "Conduct Video Consultation", and "Write Prescription"). Each inclusion use case is only included by one base use case, is not connected to any actor, and has no other relationships, meaning they are purely decomposed sub-steps rather than reusable or independently meaningful services. Removing these three use cases and their three include relationships eliminates 6 constructs, bringing the model from 25 to 19 constructs while preserving all meaningful system behavior.
+
+CONSTRUCT_COUNT: 25
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Patient" as Patient
+actor "Doctor" as Doctor
+actor "Admin" as Admin
+actor "Pharmacist" as Pharmacist
+
+rectangle "Telemedicine System" {
+  usecase "Register Account" as UC1
+  usecase "Schedule Appointment" as UC2
+  usecase "Validate Patient Insurance" as UC3
+  usecase "Conduct Video Consultation" as UC4
+  usecase "Initialize Video Stream" as UC5
+  usecase "View Medical Records" as UC6
+  usecase "Write Prescription" as UC7
+  usecase "Verify Drug Interactions" as UC8
+  usecase "Process Prescription" as UC9
+  usecase "Manage User Accounts" as UC10
+  usecase "Generate Reports" as UC11
+  usecase "Request Refill" as UC12
+  usecase "Rate Consultation" as UC13
+}
+
+Patient --> UC1
+Patient --> UC2
+Patient --> UC4
+Patient --> UC6
+Patient --> UC12
+Patient --> UC13
+Doctor --> UC4
+Doctor --> UC6
+Doctor --> UC7
+Pharmacist --> UC9
+Admin --> UC10
+Admin --> UC11
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 19
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Patient" as Patient
+actor "Doctor" as Doctor
+actor "Admin" as Admin
+actor "Pharmacist" as Pharmacist
+
+rectangle "Telemedicine System" {
+  usecase "Register Account" as UC1
+  usecase "Schedule Appointment" as UC2
+  usecase "Conduct Video Consultation" as UC4
+  usecase "View Medical Records" as UC6
+  usecase "Write Prescription" as UC7
+  usecase "Process Prescription" as UC9
+  usecase "Manage User Accounts" as UC10
+  usecase "Generate Reports" as UC11
+  usecase "Request Refill" as UC12
+  usecase "Rate Consultation" as UC13
+}
+
+Patient --> UC1
+Patient --> UC2
+Patient --> UC4
+Patient --> UC6
+Patient --> UC12
+Patient --> UC13
+Doctor --> UC4
+Doctor --> UC6
+Doctor --> UC7
+Pharmacist --> UC9
+Admin --> UC10
+Admin --> UC11
+
+@enduml
+```

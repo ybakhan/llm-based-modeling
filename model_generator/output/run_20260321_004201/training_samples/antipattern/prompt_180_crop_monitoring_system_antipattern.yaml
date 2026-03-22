@@ -1,0 +1,111 @@
+metadata:
+  prompt_number: 180
+  domain: crop_monitoring_system
+  domain_display: Crop Monitoring System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Monitor Crop Health, Capture Sensor Data, include (Monitor
+        Crop Health → Capture Sensor Data)
+      explanation: '"Capture Sensor Data" is an inclusion use case included only by
+        "Monitor Crop Health." It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. It represents a sub-step (capturing raw sensor
+        readings) rather than a complete, independently valuable service to any actor.
+        This is functional decomposition of "Monitor Crop Health" into an artificially
+        separated procedural step.'
+    - constructs_involved: Generate Yield Report, Calculate Yield Statistics, include
+        (Generate Yield Report → Calculate Yield Statistics)
+      explanation: '"Calculate Yield Statistics" is an inclusion use case included
+        only by "Generate Yield Report." It is not associated with any actor, does
+        not include or extend any other use case, is not extended by any use case,
+        and is not part of any generalization. It represents an internal computational
+        step rather than a standalone service observable to a user. This is functional
+        decomposition breaking "Generate Yield Report" into an unnecessary sub-function.'
+    - constructs_involved: Schedule Irrigation, Validate Water Levels, include (Schedule
+        Irrigation → Validate Water Levels)
+      explanation: '"Validate Water Levels" is an inclusion use case included only
+        by "Schedule Irrigation." It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization. It represents an internal validation step within
+        irrigation scheduling rather than a complete service. This is functional decomposition
+        splitting a procedural sub-step out of "Schedule Irrigation."'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:11:19.740831'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_180_crop_monitoring_system/crop_monitoring_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_180_crop_monitoring_system/crop_monitoring_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_180_crop_monitoring_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Farm Manager\"\
+    \ as FM\nactor \"Agronomist\" as AG\nactor \"Field Technician\" as FT\nactor \"\
+    Weather Service\" as WS\n\nrectangle \"Crop Monitoring System\" {\n  usecase \"\
+    Monitor Crop Health\" as UC1\n  usecase \"Capture Sensor Data\" as UC2\n  usecase\
+    \ \"Generate Yield Report\" as UC3\n  usecase \"Calculate Yield Statistics\" as\
+    \ UC4\n  usecase \"Schedule Irrigation\" as UC5\n  usecase \"Validate Water Levels\"\
+    \ as UC6\n  usecase \"Detect Pest Outbreak\" as UC7\n  usecase \"Configure Field\
+    \ Zones\" as UC8\n  usecase \"View Weather Forecast\" as UC9\n  usecase \"Manage\
+    \ Crop Profiles\" as UC10\n  usecase \"Set Alert Thresholds\" as UC11\n  usecase\
+    \ \"Review Historical Data\" as UC12\n}\n\nFM --> UC1\nFM --> UC3\nFM --> UC5\n\
+    FM --> UC11\nAG --> UC7\nAG --> UC10\nAG --> UC12\nFT --> UC8\nWS --> UC9\n\n\
+    UC1 ..> UC2 : <<include>>\nUC3 ..> UC4 : <<include>>\nUC5 ..> UC6 : <<include>>\n\
+    \nUC7 ..> UC9 : <<include>>\nUC9 ..> UC1 : <<extend>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Monitor Crop Health, Capture Sensor Data,\
+    \ include (Monitor Crop Health → Capture Sensor Data)\n   Instance 1: Explanation:\
+    \ \"Capture Sensor Data\" is an inclusion use case included only by \"Monitor\
+    \ Crop Health.\" It is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and is not part of any\
+    \ generalization. It represents a sub-step (capturing raw sensor readings) rather\
+    \ than a complete, independently valuable service to any actor. This is functional\
+    \ decomposition of \"Monitor Crop Health\" into an artificially separated procedural\
+    \ step.\n\n   Instance 2: Constructs Involved: Generate Yield Report, Calculate\
+    \ Yield Statistics, include (Generate Yield Report → Calculate Yield Statistics)\n\
+    \   Instance 2: Explanation: \"Calculate Yield Statistics\" is an inclusion use\
+    \ case included only by \"Generate Yield Report.\" It is not associated with any\
+    \ actor, does not include or extend any other use case, is not extended by any\
+    \ use case, and is not part of any generalization. It represents an internal computational\
+    \ step rather than a standalone service observable to a user. This is functional\
+    \ decomposition breaking \"Generate Yield Report\" into an unnecessary sub-function.\n\
+    \n   Instance 3: Constructs Involved: Schedule Irrigation, Validate Water Levels,\
+    \ include (Schedule Irrigation → Validate Water Levels)\n   Instance 3: Explanation:\
+    \ \"Validate Water Levels\" is an inclusion use case included only by \"Schedule\
+    \ Irrigation.\" It is not associated with any actor, does not include or extend\
+    \ any other use case, is not extended by any use case, and is not part of any\
+    \ generalization. It represents an internal validation step within irrigation\
+    \ scheduling rather than a complete service. This is functional decomposition\
+    \ splitting a procedural sub-step out of \"Schedule Irrigation.\""
+raw_response_excerpt: '
+
+
+  DOMAIN: crop_monitoring_system
+
+  DOMAIN_DISPLAY: Crop Monitoring System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Monitor Crop Health, Capture Sensor Data, include (Monitor
+  Crop Health → Capture Sensor Data)
+
+  EXPLANATION: "Capture Sensor Data" is an inclusion use case included only by "Monitor
+  Crop Health." It is not associated with any actor, does not include or extend any
+  other use case, is not extended by any use case, and is not part of …[truncated]'

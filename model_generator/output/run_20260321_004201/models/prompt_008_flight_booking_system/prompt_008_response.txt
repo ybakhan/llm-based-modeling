@@ -1,0 +1,123 @@
+
+
+DOMAIN: flight_booking_system
+DOMAIN_DISPLAY: Flight Booking System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Flight, Validate Passenger Details, include (Book Flight → Validate Passenger Details)
+EXPLANATION: "Validate Passenger Details" is an inclusion use case included only by "Book Flight". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. It represents a sub-step (validation) rather than a complete, independently valuable service observable to an actor. This is functional decomposition of "Book Flight" into a procedural step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Make Payment, Process Credit Card, include (Make Payment → Process Credit Card)
+EXPLANATION: "Process Credit Card" is an inclusion use case included only by "Make Payment". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. It represents an internal processing step rather than a standalone service with an observable result to a user. This is functional decomposition of "Make Payment" into an implementation detail.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Check In Online, Generate Boarding Pass, include (Check In Online → Generate Boarding Pass)
+EXPLANATION: "Generate Boarding Pass" is an inclusion use case included only by "Check In Online". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. Generating a boarding pass is a sub-step of the check-in process, not a complete service independently offered to an actor. This is functional decomposition of the check-in use case.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Passenger Details", "Process Credit Card", and "Generate Boarding Pass" — each represent procedural sub-steps that are only included by a single base use case, have no actor associations, and participate in no other relationships. Per the Drop Functional Decomposition refactoring: (1) "Validate Passenger Details" must be merged into "Book Flight", removing the use case and its include relationship; (2) "Process Credit Card" must be merged into "Make Payment", removing the use case and its include relationship; (3) "Generate Boarding Pass" must be merged into "Check In Online", removing the use case and its include relationship. This eliminates 3 use cases and 3 include relationships (6 constructs total), yielding a cleaner model where each use case represents a complete, actor-observable service.
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Traveller" as Traveller
+actor "Travel Agent" as TravelAgent
+actor "Airline Admin" as Admin
+actor "Payment Gateway" as PayGW
+
+rectangle "Flight Booking System" {
+    usecase "Search Flights" as UC1
+    usecase "Book Flight" as UC2
+    usecase "Validate Passenger Details" as UC3
+    usecase "Make Payment" as UC4
+    usecase "Process Credit Card" as UC5
+    usecase "Cancel Booking" as UC6
+    usecase "Check In Online" as UC7
+    usecase "Generate Boarding Pass" as UC8
+    usecase "View Booking History" as UC9
+    usecase "Manage Flight Schedule" as UC10
+    usecase "Select Seat" as UC11
+    usecase "Apply Promo Code" as UC12
+
+    UC2 ..> UC3 : <<include>>
+    UC4 ..> UC5 : <<include>>
+    UC7 ..> UC8 : <<include>>
+
+    UC2 ..> UC4 : <<include>>
+    UC2 .> UC12 : <<extend>>
+    UC2 .> UC11 : <<extend>>
+}
+
+Traveller --> UC1
+Traveller --> UC2
+Traveller --> UC4
+Traveller --> UC6
+Traveller --> UC7
+Traveller --> UC9
+
+TravelAgent --> UC1
+TravelAgent --> UC2
+
+Admin --> UC10
+
+PayGW --> UC4
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Traveller" as Traveller
+actor "Travel Agent" as TravelAgent
+actor "Airline Admin" as Admin
+actor "Payment Gateway" as PayGW
+
+rectangle "Flight Booking System" {
+    usecase "Search Flights" as UC1
+    usecase "Book Flight" as UC2
+    usecase "Make Payment" as UC4
+    usecase "Cancel Booking" as UC6
+    usecase "Check In Online" as UC7
+    usecase "View Booking History" as UC9
+    usecase "Manage Flight Schedule" as UC10
+    usecase "Select Seat" as UC11
+    usecase "Apply Promo Code" as UC12
+
+    UC2 ..> UC4 : <<include>>
+    UC2 .> UC12 : <<extend>>
+    UC2 .> UC11 : <<extend>>
+}
+
+Traveller --> UC1
+Traveller --> UC2
+Traveller --> UC4
+Traveller --> UC6
+Traveller --> UC7
+Traveller --> UC9
+
+TravelAgent --> UC1
+TravelAgent --> UC2
+
+Admin --> UC10
+
+PayGW --> UC4
+
+@enduml
+```

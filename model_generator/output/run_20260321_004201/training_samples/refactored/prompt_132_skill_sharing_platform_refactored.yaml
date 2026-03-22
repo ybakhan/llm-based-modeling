@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 132
+  domain: skill_sharing_platform
+  domain_display: Skill Sharing Platform
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:59:56.694625'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_132_skill_sharing_platform/skill_sharing_platform_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_132_skill_sharing_platform/skill_sharing_platform_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_132_skill_sharing_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor Learner\nactor Instructor\nactor Admin\n\nrectangle \"Skill Sharing Platform\"\
+    \ {\n  usecase \"Browse Skills\" as UC1\n  usecase \"Search Instructors\" as UC2\n\
+    \  usecase \"Book Session\" as UC3\n  usecase \"Leave Review\" as UC6\n  usecase\
+    \ \"Create Skill Listing\" as UC7\n  usecase \"Manage Schedule\" as UC9\n  usecase\
+    \ \"View Earnings\" as UC10\n  usecase \"Send Message\" as UC11\n  usecase \"\
+    Moderate Content\" as UC12\n  usecase \"Manage Users\" as UC13\n  usecase \"View\
+    \ Analytics Dashboard\" as UC14\n}\n\nLearner -- UC1\nLearner -- UC2\nLearner\
+    \ -- UC3\nLearner -- UC6\nLearner -- UC11\nInstructor -- UC7\nInstructor -- UC9\n\
+    Instructor -- UC10\nInstructor -- UC11\nAdmin -- UC12\nAdmin -- UC13\nAdmin --\
+    \ UC14\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: skill_sharing_platform
+
+  DOMAIN_DISPLAY: Skill Sharing Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Session, Validate Availability
+
+  EXPLANATION: "Book Session" includes "Validate Availability". "Validate Availability"
+  is included by only "Book Session", is not associated with any actor, does not include
+  or extend any other use case, is not extended by any use case, and is not involved
+  in any generalization. It is a decomp …[truncated]'

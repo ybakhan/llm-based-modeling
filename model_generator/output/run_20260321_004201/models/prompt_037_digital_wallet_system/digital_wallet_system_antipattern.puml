@@ -1,0 +1,39 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Wallet User" as User
+actor "Merchant" as Merchant
+actor "Admin" as Admin
+
+rectangle "Digital Wallet System" {
+  usecase "Register Account" as UC1
+  usecase "Top Up Wallet" as UC2
+  usecase "Process Payment Gateway" as UC3
+  usecase "Send Money" as UC4
+  usecase "Validate Recipient" as UC5
+  usecase "Pay Merchant" as UC6
+  usecase "Generate Receipt" as UC7
+  usecase "View Transaction History" as UC8
+  usecase "Request Refund" as UC9
+  usecase "Manage Users" as UC10
+  usecase "View Balance" as UC11
+  usecase "Withdraw Funds" as UC12
+  usecase "Accept Payment" as UC13
+}
+
+User -- UC1
+User -- UC2
+User -- UC4
+User -- UC6
+User -- UC8
+User -- UC9
+User -- UC11
+User -- UC12
+Merchant -- UC13
+Admin -- UC10
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+@enduml

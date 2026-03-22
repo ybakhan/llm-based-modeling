@@ -1,0 +1,244 @@
+AUDIT LOG — Prompt #192
+Timestamp : 2026-03-21T02:15:40.724980
+Model     : claude-opus-4-6
+Tokens    : input=1355  output=1275
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (3 instances) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #192: Generate a MEDIUM use case model with exactly 25 constructs (valid range for medium: 24–30 constructs). Domain: Border Control System.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: border_control_system
+DOMAIN_DISPLAY: Border Control System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Verify Passport, Scan Passport Chip
+EXPLANATION: "Verify Passport" includes "Scan Passport Chip", but "Scan Passport Chip" is not associated with any actor, is included by only "Verify Passport", does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a decomposed sub-step of passport verification rather than a complete, independently valuable service observable to any actor.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Visa Application, Validate Supporting Documents
+EXPLANATION: "Process Visa Application" includes "Validate Supporting Documents", but "Validate Supporting Documents" is not associated with any actor, is included by only "Process Visa Application", does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It is a functional decomposition of a sub-step rather than a standalone service providing an observable result to a user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Conduct Secondary Screening, Perform Background Check
+EXPLANATION: "Conduct Secondary Screening" includes "Perform Background Check", but "Perform Background Check" is not associated with any actor, is included by only "Conduct Secondary Screening", does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It fragments the screening process into a sub-function that provides no complete service on its own to any actor.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Scan Passport Chip", "Validate Supporting Documents", "Perform Background Check") must be merged into their respective base use cases ("Verify Passport", "Process Visa Application", "Conduct Secondary Screening"). These inclusion use cases are only included by one base use case each, have no actor associations, and do not participate in any other relationships. They represent internal procedural steps rather than complete services. Removing them and their three include relationships eliminates all 3 functional decomposition instances, reducing the total by 6 constructs (3 use cases + 3 include relationships).
+
+CONSTRUCT_COUNT: 25
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Border Officer" as BO
+actor "Traveler" as TR
+actor "Immigration Supervisor" as IS
+actor "Customs Officer" as CO
+
+rectangle "Border Control System" {
+  usecase "Verify Passport" as UC1
+  usecase "Scan Passport Chip" as UC2
+  usecase "Process Visa Application" as UC3
+  usecase "Validate Supporting Documents" as UC4
+  usecase "Conduct Secondary Screening" as UC5
+  usecase "Perform Background Check" as UC6
+  usecase "Record Entry/Exit" as UC7
+  usecase "Submit Travel Declaration" as UC8
+  usecase "Issue Entry Denial" as UC9
+  usecase "Inspect Luggage" as UC10
+  usecase "Generate Crossing Report" as UC11
+  usecase "Flag Suspicious Traveler" as UC12
+  usecase "Override Entry Decision" as UC13
+}
+
+BO --> UC1
+BO --> UC5
+BO --> UC7
+BO --> UC9
+BO --> UC12
+
+TR --> UC8
+TR --> UC3
+
+IS --> UC11
+IS --> UC13
+
+CO --> UC10
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC9 ..> UC5 : <<extend>>
+IS --|> BO
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 19
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Border Officer" as BO
+actor "Traveler" as TR
+actor "Immigration Supervisor" as IS
+actor "Customs Officer" as CO
+
+rectangle "Border Control System" {
+  usecase "Verify Passport" as UC1
+  usecase "Process Visa Application" as UC3
+  usecase "Conduct Secondary Screening" as UC5
+  usecase "Record Entry/Exit" as UC7
+  usecase "Submit Travel Declaration" as UC8
+  usecase "Issue Entry Denial" as UC9
+  usecase "Inspect Luggage" as UC10
+  usecase "Generate Crossing Report" as UC11
+  usecase "Flag Suspicious Traveler" as UC12
+  usecase "Override Entry Decision" as UC13
+}
+
+BO --> UC1
+BO --> UC5
+BO --> UC7
+BO --> UC9
+BO --> UC12
+
+TR --> UC8
+TR --> UC3
+
+IS --> UC11
+IS --> UC13
+
+CO --> UC10
+
+UC9 ..> UC5 : <<extend>>
+IS --|> BO
+
+@enduml
+```

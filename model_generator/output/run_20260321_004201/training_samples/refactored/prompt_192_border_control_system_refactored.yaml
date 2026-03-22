@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 192
+  domain: border_control_system
+  domain_display: Border Control System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:15:40.727162'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_192_border_control_system/border_control_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_192_border_control_system/border_control_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_192_border_control_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Border Officer\" as\
+    \ BO\nactor \"Traveler\" as TR\nactor \"Immigration Supervisor\" as IS\nactor\
+    \ \"Customs Officer\" as CO\n\nrectangle \"Border Control System\" {\n  usecase\
+    \ \"Verify Passport\" as UC1\n  usecase \"Process Visa Application\" as UC3\n\
+    \  usecase \"Conduct Secondary Screening\" as UC5\n  usecase \"Record Entry/Exit\"\
+    \ as UC7\n  usecase \"Submit Travel Declaration\" as UC8\n  usecase \"Issue Entry\
+    \ Denial\" as UC9\n  usecase \"Inspect Luggage\" as UC10\n  usecase \"Generate\
+    \ Crossing Report\" as UC11\n  usecase \"Flag Suspicious Traveler\" as UC12\n\
+    \  usecase \"Override Entry Decision\" as UC13\n}\n\nBO --> UC1\nBO --> UC5\n\
+    BO --> UC7\nBO --> UC9\nBO --> UC12\n\nTR --> UC8\nTR --> UC3\n\nIS --> UC11\n\
+    IS --> UC13\n\nCO --> UC10\n\nUC9 ..> UC5 : <<extend>>\nIS --|> BO\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: border_control_system
+
+  DOMAIN_DISPLAY: Border Control System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Verify Passport, Scan Passport Chip
+
+  EXPLANATION: "Verify Passport" includes "Scan Passport Chip", but "Scan Passport
+  Chip" is not associated with any actor, is included by only "Verify Passport", does
+  not include or extend any other use case, is not extended by any use case, and is
+  not involved in any generalization. It represent …[truncated]'

@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 74
+  domain: restaurant_reservation_system
+  domain_display: Restaurant Reservation System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:29:47.364544'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_074_restaurant_reservation_system/restaurant_reservation_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_074_restaurant_reservation_system/restaurant_reservation_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_074_restaurant_reservation_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Customer\" as Customer\nactor \"Restaurant Manager\" as Manager\nactor\
+    \ \"Receptionist\" as Receptionist\n\nrectangle \"Restaurant Reservation System\"\
+    \ {\n  usecase \"Make Reservation\" as UC1\n  usecase \"Cancel Reservation\" as\
+    \ UC2\n  usecase \"Modify Reservation\" as UC3\n  usecase \"View Reservations\"\
+    \ as UC4\n  usecase \"Manage Table Layout\" as UC5\n  usecase \"Generate Reports\"\
+    \ as UC6\n  usecase \"Leave Review\" as UC7\n  usecase \"Request Special Seating\"\
+    \ as UC8\n  usecase \"View Waitlist\" as UC9\n}\n\nCustomer --> UC1\nCustomer\
+    \ --> UC2\nCustomer --> UC3\nCustomer --> UC7\nManager --> UC5\nManager --> UC6\n\
+    Manager --> UC4\nReceptionist --> UC4\nReceptionist --> UC9\n\nUC1 <.. UC8 : <<extend>>\n\
+    @enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: restaurant_reservation_system
+
+  DOMAIN_DISPLAY: Restaurant Reservation System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Make Reservation, Check Table Availability, include relationship
+  from Make Reservation to Check Table Availability
+
+  EXPLANATION: "Check Table Availability" is an inclusion use case included only by
+  "Make Reservation." It is not associated with any actor, not included by any other
+  use case, does not include or exten …[truncated]'

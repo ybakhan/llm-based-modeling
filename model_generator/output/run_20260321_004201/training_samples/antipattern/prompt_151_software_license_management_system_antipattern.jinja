@@ -1,0 +1,66 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "License Administrator" as Admin
+actor "End User" as EndUser
+actor "Compliance Auditor" as Auditor
+actor "Vendor" as Vendor
+
+rectangle "Software License Management System" {
+  usecase "Purchase License" as UC1
+  usecase "Validate Payment Details" as UC2
+  usecase "Renew License" as UC3
+  usecase "Assign License to User" as UC4
+  usecase "Check License Availability" as UC5
+  usecase "Revoke License" as UC6
+  usecase "View Assigned Licenses" as UC7
+  usecase "Request License" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Fetch License Data" as UC10
+  usecase "Monitor License Expiry" as UC11
+  usecase "Manage License Keys" as UC12
+  usecase "View License Catalog" as UC13
+  usecase "Notify Expiring Licenses" as UC14
+}
+
+Admin --> UC1
+Admin --> UC3
+Admin --> UC4
+Admin --> UC6
+Admin --> UC11
+Admin --> UC12
+
+EndUser --> UC7
+EndUser --> UC8
+EndUser --> UC13
+
+Auditor --> UC9
+
+Vendor --> UC1
+
+UC1 ..> UC2 : <<include>>
+UC9 ..> UC10 : <<include>>
+UC4 ..> UC5 : <<include>>
+
+UC11 ..> UC14 : <<include>>
+UC3 ..> UC14 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Purchase License, Validate Payment Details, include (Purchase License → Validate Payment Details)
+   Instance 1: Explanation: "Validate Payment Details" is an inclusion use case included only by "Purchase License." It is not associated with any actor directly, is not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. It represents a sub-step (payment validation) of purchasing a license rather than a complete, independently observable service to any actor. This is functional decomposition of "Purchase License" into a procedural step.
+
+   Instance 2: Constructs Involved: Generate Compliance Report, Fetch License Data, include (Generate Compliance Report → Fetch License Data)
+   Instance 2: Explanation: "Fetch License Data" is an inclusion use case included only by "Generate Compliance Report." It has no direct actor association, is not included by any other use case, and does not participate in any other relationship (include, extend, or generalization). It represents an internal data retrieval step rather than a complete service observable to a user. This is functional decomposition of "Generate Compliance Report" into a procedural sub-function.
+
+   Instance 3: Constructs Involved: Assign License to User, Check License Availability, include (Assign License to User → Check License Availability)
+   Instance 3: Explanation: "Check License Availability" is an inclusion use case included only by "Assign License to User." It is not associated with any actor, not included by any other use case, and has no other relationships. It represents an internal verification step of the assignment process rather than a standalone service delivering an observable result to an actor. This is functional decomposition of the assignment workflow.

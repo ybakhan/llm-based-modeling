@@ -1,0 +1,56 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Restaurant Manager" as Manager
+actor "Receptionist" as Receptionist
+
+rectangle "Restaurant Reservation System" {
+  usecase "Make Reservation" as UC1
+  usecase "Cancel Reservation" as UC2
+  usecase "Modify Reservation" as UC3
+  usecase "View Reservations" as UC4
+  usecase "Manage Table Layout" as UC5
+  usecase "Generate Reports" as UC6
+  usecase "Leave Review" as UC7
+  usecase "Check Table Availability" as UC8
+  usecase "Send Confirmation Email" as UC9
+  usecase "Validate Cancellation Policy" as UC10
+  usecase "Request Special Seating" as UC11
+  usecase "View Waitlist" as UC12
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC3
+Customer --> UC7
+Manager --> UC5
+Manager --> UC6
+Manager --> UC4
+Receptionist --> UC4
+Receptionist --> UC12
+
+UC1 ..> UC8 : <<include>>
+UC1 ..> UC9 : <<include>>
+UC2 ..> UC10 : <<include>>
+UC1 <.. UC11 : <<extend>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Make Reservation, Check Table Availability, include relationship from Make Reservation to Check Table Availability
+   Instance 1: Explanation: "Check Table Availability" is an inclusion use case included only by "Make Reservation." It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a decomposed sub-step of making a reservation rather than a complete, independently valuable service observable to any actor.
+
+   Instance 2: Constructs Involved: Make Reservation, Send Confirmation Email, include relationship from Make Reservation to Send Confirmation Email
+   Instance 2: Explanation: "Send Confirmation Email" is an inclusion use case included only by "Make Reservation." It has no actor association, is not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It is a functional decomposition of the reservation process — sending a confirmation is a sub-step, not a standalone service providing an observable result to a user.
+
+   Instance 3: Constructs Involved: Cancel Reservation, Validate Cancellation Policy, include relationship from Cancel Reservation to Validate Cancellation Policy
+   Instance 3: Explanation: "Validate Cancellation Policy" is an inclusion use case included only by "Cancel Reservation." It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Validating a cancellation policy is an internal procedural step decomposed out of cancellation, not a complete service with an observable result to any actor.

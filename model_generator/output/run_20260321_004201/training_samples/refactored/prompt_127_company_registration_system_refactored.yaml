@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 127
+  domain: company_registration_system
+  domain_display: Company Registration System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 23
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:51:57.515165'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_127_company_registration_system/company_registration_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_127_company_registration_system/company_registration_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_127_company_registration_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Company Applicant\"\
+    \ as Applicant\nactor \"Registrar\" as Registrar\nactor \"Company Director\" as\
+    \ Director\nactor \"System Administrator\" as Admin\n\nrectangle \"Company Registration\
+    \ System\" {\n  usecase \"Register New Company\" as UC1\n  usecase \"Search Company\
+    \ Registry\" as UC4\n  usecase \"Submit Annual Return\" as UC5\n  usecase \"Update\
+    \ Company Details\" as UC7\n  usecase \"Dissolve Company\" as UC8\n  usecase \"\
+    Review Registration Application\" as UC9\n  usecase \"Process Payment\" as UC10\n\
+    \  usecase \"Generate Compliance Report\" as UC11\n  usecase \"Manage User Accounts\"\
+    \ as UC12\n  usecase \"File Director Changes\" as UC13\n  usecase \"Request Company\
+    \ Certificate\" as UC14\n}\n\nApplicant --> UC1\nApplicant --> UC4\nApplicant\
+    \ --> UC10\nDirector --> UC5\nDirector --> UC7\nDirector --> UC13\nDirector -->\
+    \ UC14\nRegistrar --> UC9\nRegistrar --> UC8\nRegistrar --> UC11\nAdmin --> UC12\n\
+    \nUC8 ..> UC9 : <<extend>>\n}\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: company_registration_system
+
+  DOMAIN_DISPLAY: Company Registration System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register New Company, Validate Company Name
+
+  EXPLANATION: "Validate Company Name" is an inclusion use case included only by "Register
+  New Company". It is not associated with any actor, does not include or extend any
+  other use case, is not extended by any use case, and is not part of any generalization.
+  It represents a  …[truncated]'

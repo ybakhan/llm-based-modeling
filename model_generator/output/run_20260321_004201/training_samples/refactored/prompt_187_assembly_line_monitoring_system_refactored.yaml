@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 187
+  domain: assembly_line_monitoring_system
+  domain_display: Assembly Line Monitoring System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 18
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T01:01:04.941831'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_187_assembly_line_monitoring_system/assembly_line_monitoring_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_187_assembly_line_monitoring_system/assembly_line_monitoring_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_187_assembly_line_monitoring_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Line Operator\" as Operator\nactor \"Production Manager\" as Manager\n\
+    actor \"Maintenance Technician\" as Technician\n\nrectangle \"Assembly Line Monitoring\
+    \ System\" {\n    usecase \"Monitor Production Line\" as UC1\n    usecase \"Acknowledge\
+    \ Alarm\" as UC3\n    usecase \"Generate Production Report\" as UC5\n    usecase\
+    \ \"Configure Alert Thresholds\" as UC7\n    usecase \"View Line Status Dashboard\"\
+    \ as UC8\n    usecase \"Schedule Maintenance\" as UC9\n    usecase \"Escalate\
+    \ Critical Alert\" as UC10\n    usecase \"Review Downtime History\" as UC11\n\
+    }\n\nOperator -- UC1\nOperator -- UC3\nOperator -- UC8\nManager -- UC5\nManager\
+    \ -- UC7\nManager -- UC8\nManager -- UC11\nTechnician -- UC9\nTechnician -- UC3\n\
+    \nUC10 .> UC3 : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: assembly_line_monitoring_system
+
+  DOMAIN_DISPLAY: Assembly Line Monitoring System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Monitor Production Line, Fetch Sensor Data, include relationship
+  from Monitor Production Line to Fetch Sensor Data
+
+  EXPLANATION: "Fetch Sensor Data" is an inclusion use case included only by "Monitor
+  Production Line". It is not associated with any actor, not included by any other
+  use case, does not include or e …[truncated]'

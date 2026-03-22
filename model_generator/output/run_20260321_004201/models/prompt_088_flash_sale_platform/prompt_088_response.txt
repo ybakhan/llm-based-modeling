@@ -1,0 +1,71 @@
+
+
+DOMAIN: flash_sale_platform
+DOMAIN_DISPLAY: Flash Sale Platform
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Browse Flash Sales, Validate Sale Timer
+EXPLANATION: The use case "Validate Sale Timer" is an inclusion use case that is included by only one use case ("Browse Flash Sales"). "Validate Sale Timer" is not associated with any actor directly, does not include or extend any other use case, is not extended by any other use case, and is not involved in any generalization. It represents an internal substep (checking whether a sale is still active) rather than a complete, observable service to a user. This is classic functional decomposition — breaking the behavior of "Browse Flash Sales" into a procedural substep that has no standalone value to any actor.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Sale Timer" must be merged back into "Browse Flash Sales" because it serves no independent purpose — it is only included by one use case, has no actor association, and provides no complete observable result on its own. By dropping "Validate Sale Timer" and its <<include>> relationship, the timer validation logic becomes an internal part of browsing flash sales, eliminating the functional decomposition. This removes 1 use case and 1 include relationship (net −2 constructs).
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Shopper
+actor "Sale Admin" as Admin
+
+rectangle "Flash Sale Platform" {
+  usecase "Browse Flash Sales" as UC1
+  usecase "Purchase Item" as UC2
+  usecase "Create Flash Sale" as UC3
+  usecase "View Order History" as UC4
+  usecase "Apply Coupon" as UC5
+  usecase "Validate Sale Timer" as UC6
+}
+
+Shopper --> UC1
+Shopper --> UC2
+Shopper --> UC4
+Admin --> UC3
+UC2 .> UC5 : <<extend>>
+UC1 .> UC6 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 9
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Shopper
+actor "Sale Admin" as Admin
+
+rectangle "Flash Sale Platform" {
+  usecase "Browse Flash Sales" as UC1
+  usecase "Purchase Item" as UC2
+  usecase "Create Flash Sale" as UC3
+  usecase "View Order History" as UC4
+  usecase "Apply Coupon" as UC5
+}
+
+Shopper --> UC1
+Shopper --> UC2
+Shopper --> UC4
+Admin --> UC3
+UC2 .> UC5 : <<extend>>
+
+@enduml
+```

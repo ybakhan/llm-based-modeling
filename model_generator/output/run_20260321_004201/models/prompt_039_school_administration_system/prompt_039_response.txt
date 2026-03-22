@@ -1,0 +1,69 @@
+
+
+DOMAIN: school_administration_system
+DOMAIN_DISPLAY: School Administration System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Enroll Student (UC2), Validate Student Documents (UC3), the <<include>> relationship from UC2 to UC3
+EXPLANATION: "Validate Student Documents" (UC3) is an inclusion use case that is included by only one use case ("Enroll Student", UC2). UC3 is not associated with any actor directly — no actor interacts with it. UC3 does not include, extend, generalize, or specialize any other use case, nor is it extended by any other use case. It represents an internal procedural step of enrollment (document validation) rather than a complete, independently meaningful service yielding an observable result to an actor. This is classic functional decomposition: the enrollment service has been artificially broken into sub-steps via <<include>>, where the inclusion use case serves no standalone purpose.
+
+REFACTORING_RATIONALE: The "Validate Student Documents" (UC3) use case and the <<include>> relationship from UC2 to UC3 must be removed. The document validation behavior should be merged back into "Enroll Student" (UC2), which already represents the complete enrollment service offered to the Registrar. This eliminates the unnecessary functional decomposition while preserving the system's functionality. The refactored UC2 implicitly encompasses document validation as part of the enrollment process.
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Registrar" as Registrar
+actor "Teacher" as Teacher
+actor "Principal" as Principal
+
+rectangle "School Administration System" {
+  usecase "Manage Class Schedule" as UC1
+  usecase "Enroll Student" as UC2
+  usecase "Validate Student Documents" as UC3
+  usecase "Record Grades" as UC4
+  usecase "Generate Report Card" as UC5
+}
+
+Registrar -- UC1
+Registrar -- UC2
+UC2 ..> UC3 : <<include>>
+Teacher -- UC4
+Principal -- UC5
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 9
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Registrar" as Registrar
+actor "Teacher" as Teacher
+actor "Principal" as Principal
+
+rectangle "School Administration System" {
+  usecase "Manage Class Schedule" as UC1
+  usecase "Enroll Student" as UC2
+  usecase "Record Grades" as UC4
+  usecase "Generate Report Card" as UC5
+}
+
+Registrar -- UC1
+Registrar -- UC2
+Teacher -- UC4
+Principal -- UC5
+
+@enduml
+```

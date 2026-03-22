@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 80
+  domain: freight_tracking_system
+  domain_display: Freight Tracking System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:31:47.519601'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_080_freight_tracking_system/freight_tracking_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_080_freight_tracking_system/freight_tracking_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_080_freight_tracking_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Shipper\" as Shipper\nactor \"Carrier\" as Carrier\nactor \"Recipient\"\
+    \ as Recipient\nactor \"Logistics Manager\" as Manager\nactor \"Customer Service\
+    \ Agent\" as Agent\n\nrectangle \"Freight Tracking System\" {\n  usecase \"Register\
+    \ Shipment\" as UC1\n  usecase \"Track Shipment Location\" as UC3\n  usecase \"\
+    Update Shipment Status\" as UC4\n  usecase \"Receive Delivery Notification\" as\
+    \ UC6\n  usecase \"Generate Delivery Report\" as UC7\n  usecase \"Search Shipment\"\
+    \ as UC9\n  usecase \"Raise Shipment Issue\" as UC10\n  usecase \"Assign Carrier\"\
+    \ as UC11\n  usecase \"View Shipment History\" as UC12\n  usecase \"Escalate Delayed\
+    \ Shipment\" as UC13\n}\n\nShipper --> UC1\nShipper --> UC3\nCarrier --> UC4\n\
+    Carrier --> UC11\nRecipient --> UC3\nRecipient --> UC6\nManager --> UC7\nManager\
+    \ --> UC12\nAgent --> UC9\nAgent --> UC10\n\nUC10 ..> UC13 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: freight_tracking_system
+
+  DOMAIN_DISPLAY: Freight Tracking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Shipment, Validate Sender Address
+
+  EXPLANATION: "Validate Sender Address" is an inclusion use case included only by
+  "Register Shipment". It is not associated with any actor, not included by any other
+  use case, does not include or extend any use case, is not extended by any use case,
+  and has no generalization relations …[truncated]'

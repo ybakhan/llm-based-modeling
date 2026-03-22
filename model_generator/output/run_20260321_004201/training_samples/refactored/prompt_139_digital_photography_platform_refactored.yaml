@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 139
+  domain: digital_photography_platform
+  domain_display: Digital Photography Platform
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 21
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:56:09.988738'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_139_digital_photography_platform/digital_photography_platform_refactored.puml
+    image: output/run_20260321_004201/models/prompt_139_digital_photography_platform/digital_photography_platform_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_139_digital_photography_platform_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Photographer\nactor\
+    \ Viewer\nactor Administrator\n\nrectangle \"Digital Photography Platform\" {\n\
+    \  usecase \"Upload Photo\" as UC1\n  usecase \"Edit Photo\" as UC3\n  usecase\
+    \ \"Browse Gallery\" as UC5\n  usecase \"Search Photos\" as UC6\n  usecase \"\
+    Rate Photo\" as UC7\n  usecase \"Comment on Photo\" as UC8\n  usecase \"Create\
+    \ Album\" as UC9\n  usecase \"Purchase Print\" as UC10\n  usecase \"Manage User\
+    \ Accounts\" as UC12\n  usecase \"Moderate Content\" as UC13\n  usecase \"Share\
+    \ Photo\" as UC14\n  usecase \"Download Photo\" as UC15\n}\n\nPhotographer -->\
+    \ UC1\nPhotographer --> UC3\nPhotographer --> UC9\nPhotographer --> UC10\nPhotographer\
+    \ --> UC14\nPhotographer --> UC5\n\nViewer --> UC5\nViewer --> UC6\nViewer -->\
+    \ UC7\nViewer --> UC8\nViewer --> UC15\n\nAdministrator --> UC12\nAdministrator\
+    \ --> UC13\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: digital_photography_platform
+
+  DOMAIN_DISPLAY: Digital Photography Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Upload Photo, Validate File Format, include relationship from
+  Upload Photo to Validate File Format
+
+  EXPLANATION: "Validate File Format" is an inclusion use case included only by "Upload
+  Photo." It is not associated with any actor, is not included by any other use case,
+  does not include or extend any use case, is not  …[truncated]'

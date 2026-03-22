@@ -1,0 +1,35 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Seller
+actor Buyer
+actor Admin
+
+rectangle "Second-Hand Marketplace" {
+  usecase "Create Listing" as UC1
+  usecase "Manage My Listings" as UC3
+  usecase "Search Items" as UC4
+  usecase "Purchase Item" as UC6
+  usecase "Rate Seller" as UC8
+  usecase "Send Message" as UC9
+  usecase "Browse Categories" as UC10
+  usecase "Manage Users" as UC11
+  usecase "Resolve Dispute" as UC12
+  usecase "View Item Details" as UC13
+}
+
+Seller -- UC1
+Seller -- UC3
+Seller -- UC9
+
+Buyer -- UC4
+Buyer -- UC6
+Buyer -- UC8
+Buyer -- UC9
+Buyer -- UC10
+Buyer -- UC13
+
+Admin -- UC11
+Admin -- UC12
+
+@enduml

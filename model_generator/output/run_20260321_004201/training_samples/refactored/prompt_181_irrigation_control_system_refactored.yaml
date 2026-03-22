@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 181
+  domain: irrigation_control_system
+  domain_display: Irrigation Control System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 20
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:11:44.889592'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_181_irrigation_control_system/irrigation_control_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_181_irrigation_control_system/irrigation_control_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_181_irrigation_control_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Farm Manager\" as\
+    \ FM\nactor \"Technician\" as Tech\nactor \"Weather Service\" as WS\nactor \"\
+    Moisture Sensor\" as MS\n\nrectangle \"Irrigation Control System\" {\n  usecase\
+    \ \"Schedule Irrigation\" as UC1\n  usecase \"Configure Zones\" as UC3\n  usecase\
+    \ \"Monitor Soil Moisture\" as UC5\n  usecase \"Activate Manual Irrigation\" as\
+    \ UC7\n  usecase \"View Irrigation Dashboard\" as UC8\n  usecase \"Generate Water\
+    \ Usage Report\" as UC9\n  usecase \"Receive Weather Forecast\" as UC10\n  usecase\
+    \ \"Set Alert Thresholds\" as UC11\n  usecase \"Trigger Drought Alert\" as UC12\n\
+    \n  UC12 ..> UC5 : <<include>>\n  UC8 .> UC12 : <<extend>>\n}\n\nFM --> UC1\n\
+    FM --> UC3\nFM --> UC7\nFM --> UC8\nFM --> UC9\nTech --> UC3\nTech --> UC11\n\
+    WS --> UC10\nMS --> UC5\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: irrigation_control_system
+
+  DOMAIN_DISPLAY: Irrigation Control System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Irrigation, Validate Time Slots, include relationship
+  from "Schedule Irrigation" to "Validate Time Slots"
+
+  EXPLANATION: "Validate Time Slots" is an inclusion use case included only by "Schedule
+  Irrigation." It is not associated with any actor, not included by any other use
+  case, does not include or extend any use  …[truncated]'

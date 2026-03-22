@@ -1,0 +1,193 @@
+AUDIT LOG — Prompt #190
+Timestamp : 2026-03-21T02:14:59.370044
+Model     : claude-opus-4-6
+Tokens    : input=1226  output=795
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (1 instance) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #190: Generate a SMALL use case model with exactly 13 constructs (valid range for small: 9–13 constructs). Domain: Hazardous Materials Tracking System.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: hazardous_materials_tracking_system
+DOMAIN_DISPLAY: Hazardous Materials Tracking System
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register Shipment, Validate Hazard Classification
+EXPLANATION: The use case "Validate Hazard Classification" is an inclusion use case that is included by only one use case ("Register Shipment"). It is not associated with any actor directly, it does not include or extend any other use case, it is not extended by any other use case, and it has no generalization relationships. "Validate Hazard Classification" does not represent a complete service observable to any actor — it is merely a decomposed substep of "Register Shipment," making this a clear instance of Functional Decomposition via the include relationship.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Hazard Classification" must be merged back into "Register Shipment" because it serves no independent purpose — it is only included by one use case, has no actor association, and provides no standalone observable result. By absorbing the validation behavior into "Register Shipment," we eliminate the unnecessary decomposition while preserving the system's functionality. This removes one use case and one include relationship, reducing the construct count by 2.
+CONSTRUCT_COUNT: 13
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Safety Officer" as SO
+actor "Warehouse Manager" as WM
+actor "Regulatory Agency" as RA
+
+rectangle "Hazardous Materials Tracking System" {
+  usecase "Register Shipment" as UC1
+  usecase "Validate Hazard Classification" as UC2
+  usecase "Track Material Location" as UC3
+  usecase "Generate Compliance Report" as UC4
+  usecase "Dispose of Material" as UC5
+  usecase "View Inventory" as UC6
+  usecase "Receive Safety Alert" as UC7
+}
+
+SO --> UC1
+SO --> UC3
+SO --> UC5
+WM --> UC6
+WM --> UC3
+RA --> UC4
+SO --> UC7
+
+UC1 ..> UC2 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 11
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Safety Officer" as SO
+actor "Warehouse Manager" as WM
+actor "Regulatory Agency" as RA
+
+rectangle "Hazardous Materials Tracking System" {
+  usecase "Register Shipment" as UC1
+  usecase "Track Material Location" as UC3
+  usecase "Generate Compliance Report" as UC4
+  usecase "Dispose of Material" as UC5
+  usecase "View Inventory" as UC6
+  usecase "Receive Safety Alert" as UC7
+}
+
+SO --> UC1
+SO --> UC3
+SO --> UC5
+WM --> UC6
+WM --> UC3
+RA --> UC4
+SO --> UC7
+@enduml
+```

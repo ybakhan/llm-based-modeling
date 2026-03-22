@@ -1,0 +1,77 @@
+
+
+DOMAIN: mentorship_platform
+DOMAIN_DISPLAY: Mentorship Platform
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Request Mentorship (base use case), Validate Availability (inclusion use case), <<include>> from "Request Mentorship" to "Validate Availability"
+EXPLANATION: "Validate Availability" is an inclusion use case that is included by only one use case ("Request Mentorship"). It is not associated with any actor directly — no actor has a direct association to it. It does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Validate Availability" does not represent a complete, standalone service offering an observable result to a user; it is merely a decomposed sub-step of the "Request Mentorship" process. This constitutes the Functional Decomposition antipattern via the include relationship.
+
+REFACTORING_RATIONALE: The inclusion use case "Validate Availability" must be merged back into its sole base use case "Request Mentorship," since it does not provide a complete service on its own and is only included by that single use case. The <<include>> relationship between them is removed, and the availability validation logic becomes an internal step of "Request Mentorship." This eliminates the functional decomposition, reducing the model by one use case and one include relationship while preserving the domain semantics.
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Mentor
+actor Mentee
+actor Admin
+
+rectangle "Mentorship Platform" {
+  usecase "Create Profile" as UC1
+  usecase "Browse Mentors" as UC2
+  usecase "Request Mentorship" as UC3
+  usecase "Validate Availability" as UC4
+  usecase "Schedule Session" as UC5
+  usecase "Manage Users" as UC6
+  usecase "Provide Feedback" as UC7
+}
+
+Mentee --> UC1
+Mentee --> UC2
+Mentee --> UC3
+UC3 ..> UC4 : <<include>>
+Mentor --> UC5
+Mentor --> UC7
+Admin --> UC6
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Mentor
+actor Mentee
+actor Admin
+
+rectangle "Mentorship Platform" {
+  usecase "Create Profile" as UC1
+  usecase "Browse Mentors" as UC2
+  usecase "Request Mentorship" as UC3
+  usecase "Schedule Session" as UC5
+  usecase "Manage Users" as UC6
+  usecase "Provide Feedback" as UC7
+}
+
+Mentee --> UC1
+Mentee --> UC2
+Mentee --> UC3
+Mentor --> UC5
+Mentor --> UC7
+Admin --> UC6
+
+@enduml
+```

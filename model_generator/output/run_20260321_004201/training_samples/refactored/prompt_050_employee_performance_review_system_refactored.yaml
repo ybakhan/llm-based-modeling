@@ -1,0 +1,58 @@
+metadata:
+  prompt_number: 50
+  domain: employee_performance_review_system
+  domain_display: Employee Performance Review System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 19
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:19:17.356946'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_050_employee_performance_review_system/employee_performance_review_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_050_employee_performance_review_system/employee_performance_review_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_050_employee_performance_review_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Manager\" as Manager\n\
+    actor \"Employee\" as Employee\nactor \"HR Administrator\" as HRAdmin\n\nrectangle\
+    \ \"Employee Performance Review System\" {\n  usecase \"Conduct Review Meeting\"\
+    \ as UC1\n  usecase \"Set Performance Goals\" as UC3\n  usecase \"Submit Self-Assessment\"\
+    \ as UC5\n  usecase \"Approve Final Rating\" as UC7\n  usecase \"Generate Performance\
+    \ Report\" as UC8\n  usecase \"View Review Dashboard\" as UC9\n  usecase \"Manage\
+    \ Review Cycles\" as UC10\n  usecase \"Escalate Disputed Review\" as UC11\n  usecase\
+    \ \"Provide Peer Feedback\" as UC12\n  usecase \"Request Calibration Session\"\
+    \ as UC13\n}\n\nManager --> UC1\nManager --> UC3\nManager --> UC7\nManager -->\
+    \ UC9\n\nEmployee --> UC5\nEmployee --> UC9\nEmployee --> UC12\n\nHRAdmin -->\
+    \ UC8\nHRAdmin --> UC10\nHRAdmin --> UC13\n\nUC11 .> UC1 : <<extend>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: employee_performance_review_system
+
+  DOMAIN_DISPLAY: Employee Performance Review System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Conduct Review Meeting, Load Employee History
+
+  EXPLANATION: "Load Employee History" is an inclusion use case included only by "Conduct
+  Review Meeting". It is not associated with any actor, not included by any other
+  use case, does not include or extend any use case, is not extended by any use case,
+  and has …[truncated]'

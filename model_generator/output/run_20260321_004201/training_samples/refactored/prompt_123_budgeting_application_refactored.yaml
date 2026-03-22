@@ -1,0 +1,57 @@
+metadata:
+  prompt_number: 123
+  domain: budgeting_application
+  domain_display: Budgeting Application
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 20
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:47:41.671725'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_123_budgeting_application/budgeting_application_refactored.puml
+    image: output/run_20260321_004201/models/prompt_123_budgeting_application/budgeting_application_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_123_budgeting_application_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Budget Owner\" as\
+    \ Owner\nactor \"Financial Advisor\" as Advisor\nactor \"Administrator\" as Admin\n\
+    \nrectangle \"Budgeting Application\" {\n  usecase \"Create Budget\" as UC1\n\
+    \  usecase \"Track Expenses\" as UC3\n  usecase \"Set Savings Goals\" as UC5\n\
+    \  usecase \"Generate Report\" as UC6\n  usecase \"Review Budget Performance\"\
+    \ as UC8\n  usecase \"Manage User Accounts\" as UC9\n  usecase \"Send Budget Alerts\"\
+    \ as UC10\n  usecase \"Import Bank Transactions\" as UC11\n  usecase \"Categorize\
+    \ Transactions\" as UC12\n}\n\nOwner --> UC1\nOwner --> UC3\nOwner --> UC5\nOwner\
+    \ --> UC11\nOwner --> UC12\nAdvisor --> UC6\nAdvisor --> UC8\nAdmin --> UC9\n\
+    Admin --> UC10\n\nUC11 ..> UC12 : <<include>>\nUC8 ..> UC6 : <<include>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: budgeting_application
+
+  DOMAIN_DISPLAY: Budgeting Application
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Create Budget, Validate Budget Categories, include (Create
+  Budget → Validate Budget Categories)
+
+  EXPLANATION: "Validate Budget Categories" is an inclusion use case included only
+  by "Create Budget". It is not associated with any actor, not included by any other
+  use case, does not include or extend any other use case, is not extende …[truncated]'

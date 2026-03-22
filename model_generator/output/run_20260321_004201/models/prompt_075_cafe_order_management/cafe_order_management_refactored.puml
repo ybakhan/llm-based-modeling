@@ -1,0 +1,21 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Customer" as Customer
+actor "Barista" as Barista
+
+rectangle "Cafe Order Management System" {
+  usecase "Place Order" as UC1
+  usecase "Process Payment" as UC2
+  usecase "Prepare Order" as UC4
+  usecase "View Order Queue" as UC5
+}
+
+Customer -- UC1
+Customer -- UC2
+Barista -- UC4
+Barista -- UC5
+
+UC1 ..> UC2 : <<include>>
+@enduml

@@ -1,0 +1,102 @@
+metadata:
+  prompt_number: 108
+  domain: kindergarten_management_system
+  domain_display: Kindergarten Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Enroll Child, Validate Child Age
+      explanation: '"Validate Child Age" is an inclusion use case included only by
+        "Enroll Child". It is not associated with any actor, not included by any other
+        use case, does not include or extend any use case, is not extended by any
+        use case, and has no generalization relationships. It represents a decomposed
+        step of the enrollment process rather than a complete service observable to
+        an actor.'
+    - constructs_involved: Record Attendance, Log Arrival Time
+      explanation: '"Log Arrival Time" is an inclusion use case included only by "Record
+        Attendance". It is not associated with any actor, not included by any other
+        use case, does not include or extend any use case, is not extended by any
+        use case, and has no generalization relationships. It represents a decomposed
+        sub-step of attendance recording rather than a standalone service providing
+        an observable result to a user.'
+    - constructs_involved: Generate Report, Compile Statistics
+      explanation: '"Compile Statistics" is an inclusion use case included only by
+        "Generate Report". It is not associated with any actor, not included by any
+        other use case, does not include or extend any use case, is not extended by
+        any use case, and has no generalization relationships. It represents an internal
+        computational step of report generation rather than a complete service offered
+        to any actor.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:41:50.868486'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_108_kindergarten_management_system/kindergarten_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_108_kindergarten_management_system/kindergarten_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_108_kindergarten_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor \"Administrator\" as Admin\nactor \"Teacher\" as Teacher\nactor \"Parent\"\
+    \ as Parent\n\nrectangle \"Kindergarten Management System\" {\n  usecase \"Enroll\
+    \ Child\" as UC1\n  usecase \"Validate Child Age\" as UC2\n  usecase \"Manage\
+    \ Class Schedule\" as UC3\n  usecase \"Record Attendance\" as UC4\n  usecase \"\
+    Log Arrival Time\" as UC5\n  usecase \"Send Notifications\" as UC6\n  usecase\
+    \ \"View Child Progress\" as UC7\n  usecase \"Generate Report\" as UC8\n  usecase\
+    \ \"Compile Statistics\" as UC9\n  usecase \"Manage Staff\" as UC10\n  usecase\
+    \ \"Process Payments\" as UC11\n  usecase \"Update Child Profile\" as UC12\n \
+    \ usecase \"Plan Activities\" as UC13\n}\n\nAdmin -- UC1\nAdmin -- UC3\nAdmin\
+    \ -- UC8\nAdmin -- UC10\nAdmin -- UC11\nTeacher -- UC4\nTeacher -- UC6\nTeacher\
+    \ -- UC7\nTeacher -- UC13\nParent -- UC7\nParent -- UC12\n\nUC1 ..> UC2 : <<include>>\n\
+    UC4 ..> UC5 : <<include>>\nUC8 ..> UC9 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Enroll Child, Validate Child Age\n   Instance\
+    \ 1: Explanation: \"Validate Child Age\" is an inclusion use case included only\
+    \ by \"Enroll Child\". It is not associated with any actor, not included by any\
+    \ other use case, does not include or extend any use case, is not extended by\
+    \ any use case, and has no generalization relationships. It represents a decomposed\
+    \ step of the enrollment process rather than a complete service observable to\
+    \ an actor.\n\n   Instance 2: Constructs Involved: Record Attendance, Log Arrival\
+    \ Time\n   Instance 2: Explanation: \"Log Arrival Time\" is an inclusion use case\
+    \ included only by \"Record Attendance\". It is not associated with any actor,\
+    \ not included by any other use case, does not include or extend any use case,\
+    \ is not extended by any use case, and has no generalization relationships. It\
+    \ represents a decomposed sub-step of attendance recording rather than a standalone\
+    \ service providing an observable result to a user.\n\n   Instance 3: Constructs\
+    \ Involved: Generate Report, Compile Statistics\n   Instance 3: Explanation: \"\
+    Compile Statistics\" is an inclusion use case included only by \"Generate Report\"\
+    . It is not associated with any actor, not included by any other use case, does\
+    \ not include or extend any use case, is not extended by any use case, and has\
+    \ no generalization relationships. It represents an internal computational step\
+    \ of report generation rather than a complete service offered to any actor."
+raw_response_excerpt: '
+
+
+  DOMAIN: kindergarten_management_system
+
+  DOMAIN_DISPLAY: Kindergarten Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Enroll Child, Validate Child Age
+
+  EXPLANATION: "Validate Child Age" is an inclusion use case included only by "Enroll
+  Child". It is not associated with any actor, not included by any other use case,
+  does not include or extend any use case, is not extended by any use case, and has
+  no generalization relationships.  …[truncated]'

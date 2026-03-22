@@ -1,0 +1,59 @@
+metadata:
+  prompt_number: 124
+  domain: cryptocurrency_exchange
+  domain_display: Cryptocurrency Exchange
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:48:04.857841'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_124_cryptocurrency_exchange/cryptocurrency_exchange_refactored.puml
+    image: output/run_20260321_004201/models/prompt_124_cryptocurrency_exchange/cryptocurrency_exchange_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_124_cryptocurrency_exchange_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor Trader\nactor \"System\
+    \ Admin\" as Admin\nactor \"Payment Gateway\" as PG\n\nrectangle \"Cryptocurrency\
+    \ Exchange\" {\n  usecase \"Register Account\" as UC1\n  usecase \"Login\" as\
+    \ UC3\n  usecase \"View Portfolio\" as UC4\n  usecase \"Deposit Funds\" as UC5\n\
+    \  usecase \"Withdraw Funds\" as UC6\n  usecase \"Place Trade\" as UC8\n  usecase\
+    \ \"View Order History\" as UC10\n  usecase \"Set Price Alert\" as UC11\n  usecase\
+    \ \"Complete KYC Verification\" as UC12\n  usecase \"Monitor Platform Activity\"\
+    \ as UC13\n  usecase \"Manage User Accounts\" as UC14\n  usecase \"View Market\
+    \ Data\" as UC15\n  usecase \"Process Payment\" as UC16\n}\n\nTrader --> UC1\n\
+    Trader --> UC3\nTrader --> UC4\nTrader --> UC5\nTrader --> UC6\nTrader --> UC8\n\
+    Trader --> UC10\nTrader --> UC11\nTrader --> UC12\nTrader --> UC15\nAdmin -->\
+    \ UC13\nAdmin --> UC14\nPG --> UC16\n\nUC5 ..> UC16 : <<include>>\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: cryptocurrency_exchange
+
+  DOMAIN_DISPLAY: Cryptocurrency Exchange
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Trade, Validate Order Parameters, include (Place Trade
+  → Validate Order Parameters)
+
+  EXPLANATION: "Validate Order Parameters" is an inclusion use case included only
+  by "Place Trade". It is not associated with any actor, not included by any other
+  use case, does not include or extend any use case, is not extended by any us …[truncated]'

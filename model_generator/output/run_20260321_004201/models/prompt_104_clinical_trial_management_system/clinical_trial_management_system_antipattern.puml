@@ -1,0 +1,40 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Clinical Investigator" as CI
+actor "Study Coordinator" as SC
+actor "Data Manager" as DM
+actor "Sponsor" as SP
+actor "Regulatory Authority" as RA
+
+rectangle "Clinical Trial Management System" {
+  usecase "Enroll Patient" as UC1
+  usecase "Validate Eligibility Criteria" as UC2
+  usecase "Randomize Patient" as UC3
+  usecase "Record Adverse Event" as UC4
+  usecase "Generate Adverse Event Notification" as UC5
+  usecase "Submit Case Report Form" as UC6
+  usecase "Monitor Trial Progress" as UC7
+  usecase "Review Data Queries" as UC8
+  usecase "Generate Compliance Report" as UC9
+  usecase "Manage Study Protocol" as UC10
+  usecase "Audit Trial Data" as UC11
+  usecase "Close Study Site" as UC12
+}
+
+CI -- UC1
+CI -- UC4
+SC -- UC6
+SC -- UC1
+DM -- UC8
+DM -- UC7
+SP -- UC7
+SP -- UC10
+SP -- UC12
+RA -- UC9
+RA -- UC11
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+@enduml

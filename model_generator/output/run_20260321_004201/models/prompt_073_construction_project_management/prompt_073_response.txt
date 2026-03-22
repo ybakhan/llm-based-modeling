@@ -1,0 +1,73 @@
+
+
+DOMAIN: construction_project_management
+DOMAIN_DISPLAY: Construction Project Management
+SIZE: small
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 1
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Submit Inspection Request, Select Inspection Type, Submit Inspection Request --include--> Select Inspection Type
+EXPLANATION: The use case "Select Inspection Type" is an inclusion use case that is included by only one use case ("Submit Inspection Request"). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Select Inspection Type" does not represent a complete, standalone service yielding an observable result to any actor — it is merely a decomposed step of submitting an inspection request. This constitutes the Functional Decomposition antipattern via the include relationship.
+
+REFACTORING_RATIONALE: The inclusion use case "Select Inspection Type" must be merged back into its sole base use case "Submit Inspection Request", since selecting the inspection type is simply an internal step of submitting an inspection request and does not provide independent value to any actor. The <<include>> relationship between them must also be removed. This eliminates the functional decomposition, resulting in "Submit Inspection Request" being a self-contained use case that fully describes the service offered to the Inspector actor.
+CONSTRUCT_COUNT: 12
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Project Manager" as PM
+actor "Inspector" as Inspector
+actor "Contractor" as Contractor
+
+rectangle "Construction Project Management System" {
+  usecase "Create Project Schedule" as UC1
+  usecase "Assign Subcontractor" as UC2
+  usecase "Submit Inspection Request" as UC3
+  usecase "Select Inspection Type" as UC4
+  usecase "Log Daily Progress" as UC5
+  usecase "Review Budget" as UC6
+}
+
+PM -- UC1
+PM -- UC2
+PM -- UC6
+Inspector -- UC3
+Contractor -- UC5
+UC3 ..> UC4 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 10
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Project Manager" as PM
+actor "Inspector" as Inspector
+actor "Contractor" as Contractor
+
+rectangle "Construction Project Management System" {
+  usecase "Create Project Schedule" as UC1
+  usecase "Assign Subcontractor" as UC2
+  usecase "Submit Inspection Request" as UC3
+  usecase "Log Daily Progress" as UC5
+  usecase "Review Budget" as UC6
+}
+
+PM -- UC1
+PM -- UC2
+PM -- UC6
+Inspector -- UC3
+Contractor -- UC5
+
+@enduml
+```

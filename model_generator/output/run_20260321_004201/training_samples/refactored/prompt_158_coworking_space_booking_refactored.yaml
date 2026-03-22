@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 158
+  domain: coworking_space_booking
+  domain_display: Coworking Space Booking System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 10
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:03:16.573004'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_158_coworking_space_booking/coworking_space_booking_refactored.puml
+    image: output/run_20260321_004201/models/prompt_158_coworking_space_booking/coworking_space_booking_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_158_coworking_space_booking_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Member\" as Member\n\
+    actor \"Administrator\" as Admin\n\nrectangle \"Coworking Space Booking System\"\
+    \ {\n  usecase \"Browse Spaces\" as UC1\n  usecase \"Book Workspace\" as UC2\n\
+    \  usecase \"Cancel Booking\" as UC4\n  usecase \"Manage Spaces\" as UC5\n  usecase\
+    \ \"View Bookings\" as UC6\n}\n\nMember --> UC1\nMember --> UC2\nMember --> UC4\n\
+    Member --> UC6\nAdmin --> UC5\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: coworking_space_booking
+
+  DOMAIN_DISPLAY: Coworking Space Booking System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Workspace, Check Availability
+
+  EXPLANATION: The use case "Check Availability" is an inclusion use case that is
+  included by only one use case ("Book Workspace"). "Check Availability" is not associated
+  with any actor directly — no actor interacts with it. It does not include or extend
+  any other use case, is not extend …[truncated]'

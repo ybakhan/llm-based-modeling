@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 141
+  domain: stadium_management_system
+  domain_display: Stadium Management System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 22
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:56:52.454145'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_141_stadium_management_system/stadium_management_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_141_stadium_management_system/stadium_management_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_141_stadium_management_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Event Manager\" as EM\nactor \"Ticket Agent\" as TA\nactor \"Security\
+    \ Officer\" as SO\nactor \"Maintenance Staff\" as MS\nactor \"Fan\" as FN\n\n\
+    rectangle \"Stadium Management System\" {\n  usecase \"Schedule Event\" as UC1\n\
+    \  usecase \"Cancel Event\" as UC3\n  usecase \"Process Ticket Sale\" as UC4\n\
+    \  usecase \"Issue Refund\" as UC6\n  usecase \"Manage Security Patrol\" as UC7\n\
+    \  usecase \"Monitor CCTV Feeds\" as UC9\n  usecase \"Submit Maintenance Request\"\
+    \ as UC10\n  usecase \"Track Repair Status\" as UC11\n  usecase \"View Event Schedule\"\
+    \ as UC12\n  usecase \"Purchase Ticket Online\" as UC13\n  usecase \"View Seating\
+    \ Map\" as UC14\n  usecase \"Generate Attendance Report\" as UC15\n}\n\nEM -->\
+    \ UC1\nEM --> UC3\nEM --> UC15\nTA --> UC4\nTA --> UC6\nSO --> UC7\nSO --> UC9\n\
+    MS --> UC10\nMS --> UC11\nFN --> UC12\nFN --> UC13\nFN --> UC14\n\nUC3 ..> UC1\
+    \ : <<extend>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: stadium_management_system
+
+  DOMAIN_DISPLAY: Stadium Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Schedule Event, Check Venue Availability, include (Schedule
+  Event → Check Venue Availability)
+
+  EXPLANATION: "Check Venue Availability" is an inclusion use case included only by
+  "Schedule Event." It is not associated with any actor, not included by any other
+  use case, does not include or extend any use case, is not extended …[truncated]'

@@ -1,0 +1,195 @@
+prompt_num,domain_display,size,antipattern_codes,antipattern_instance_counts,total_antipattern_instances,sample_type,task_mode,construct_count_reported,actors,use_cases,includes,extends,generalizations,total_parsed,count_matches_reported
+1,Banking System,small,a4,1,1,refactored,detect,11,2,5,0,0,0,7,False
+2,Restaurant Management System,medium,a4,3,3,refactored,detect,18,4,9,0,1,0,14,False
+4,Hospital Management System,medium,a4,3,3,refactored,detect,19,5,10,0,0,0,15,False
+5,Social Media Platform,small,a4,1,1,refactored,detect,8,2,4,0,0,0,6,False
+6,Messaging Application,small,a4,1,1,refactored,detect,11,2,6,0,0,0,8,False
+8,Flight Booking System,medium,a4,3,3,refactored,detect,21,4,9,1,2,0,16,False
+13,Library Management System,medium,a4,3,3,refactored,detect,20,3,10,0,1,0,14,False
+14,E-Learning Platform,small,a4,1,1,refactored,detect,9,2,5,0,0,0,7,False
+17,Medical Clinic System,medium,a4,3,3,refactored,detect,18,4,10,1,0,0,15,False
+18,Pharmacy Management System,medium,a4,3,3,refactored,detect,19,3,9,1,0,0,13,False
+19,Car Rental System,medium,a4,3,3,refactored,detect,19,3,10,0,1,0,14,False
+20,University Enrollment System,medium,a4,3,3,refactored,detect,23,4,11,0,0,0,15,False
+21,Movie Ticket Booking,medium,a4,3,3,refactored,detect,24,3,12,0,1,0,16,False
+23,Gym Membership System,medium,a4,3,3,refactored,detect,24,4,11,1,1,0,17,False
+25,Insurance Management System,small,a4,1,1,refactored,detect,7,2,4,0,0,0,6,False
+26,Payroll Management System,medium,a4,3,3,refactored,detect,22,4,10,1,0,0,15,False
+27,Human Resources System,medium,a4,3,3,refactored,detect,18,3,11,0,0,0,14,False
+29,Inventory Management System,small,a4,1,1,refactored,detect,9,2,5,0,0,0,7,False
+30,Tax Filing System,medium,a4,3,3,refactored,detect,23,3,10,0,1,0,14,False
+31,Credit Card Management System,small,a4,1,1,refactored,detect,8,2,4,0,0,0,6,False
+34,News Publishing System,small,a4,1,1,refactored,detect,11,3,5,0,0,0,8,False
+36,Dating Application,small,a4,1,1,refactored,detect,11,2,5,0,0,0,7,False
+38,Telemedicine System,medium,a4,3,3,refactored,detect,19,4,10,0,0,0,14,False
+40,Exam Management System,small,a4,1,1,refactored,detect,7,2,4,0,0,0,6,False
+41,Courier Delivery System,medium,a4,3,3,refactored,detect,20,4,10,0,0,0,14,False
+42,Cloud Storage Service,small,a4,1,1,refactored,detect,8,2,4,0,0,0,6,False
+43,Weather Forecasting Service,small,a4,1,1,refactored,detect,11,3,6,0,1,0,10,False
+44,Podcast Platform,medium,a4,3,3,refactored,detect,18,3,11,0,0,0,14,False
+46,Expense Tracking System,small,a4,1,1,refactored,detect,9,2,5,0,0,0,7,False
+47,Freelance Marketplace,medium,a4,3,3,refactored,detect,18,3,10,0,0,0,13,False
+49,Supply Chain Management,medium,a4,3,3,refactored,detect,20,5,8,0,1,0,14,False
+50,Employee Performance Review System,medium,a4,3,3,refactored,detect,19,3,10,0,1,0,14,False
+51,Public Transport System,medium,a4,3,3,refactored,detect,22,3,11,0,1,0,15,False
+52,Investment Portfolio System,medium,a4,3,3,refactored,detect,20,3,10,0,1,0,14,False
+56,Mental Health Appointment System,medium,a4,3,3,refactored,detect,19,3,8,1,0,0,12,False
+57,Student Attendance System,medium,a4,3,3,refactored,detect,22,4,11,0,0,0,15,False
+59,Scholarship Application System,small,a4,1,1,refactored,detect,10,3,5,0,0,0,8,False
+60,Passport Application System,small,a4,1,1,refactored,detect,10,2,6,1,1,0,10,True
+65,Forum and Discussion System,medium,a4,3,3,refactored,detect,19,3,11,0,0,0,14,False
+67,Software Bug Tracking System,medium,a4,3,3,refactored,detect,23,4,12,0,1,0,17,False
+69,Conference Registration System,small,a4,1,1,refactored,detect,11,3,5,0,0,0,8,False
+71,Property Management System,medium,a4,3,3,refactored,detect,21,4,10,1,0,0,15,False
+74,Restaurant Reservation System,medium,a4,3,3,refactored,detect,18,3,9,0,1,0,13,False
+76,Catering Service System,medium,a4,3,3,refactored,detect,18,4,9,0,0,0,13,False
+78,Sports League Management,medium,a4,3,3,refactored,detect,21,4,11,0,0,0,15,False
+80,Freight Tracking System,medium,a4,3,3,refactored,detect,22,5,10,0,1,0,16,False
+81,Bike Sharing System,medium,a4,3,3,refactored,detect,19,3,9,0,0,0,12,False
+82,Electric Vehicle Charging Network,small,a4,1,1,refactored,detect,9,2,5,0,0,0,7,False
+85,Second-Hand Marketplace,medium,a4,3,3,refactored,detect,18,3,10,0,0,0,13,False
+86,Loyalty Rewards Program,medium,a4,3,3,refactored,detect,23,4,11,0,1,0,16,False
+87,Subscription Box Service,small,a4,1,1,refactored,detect,10,2,5,0,0,0,7,False
+88,Flash Sale Platform,small,a4,1,1,refactored,detect,9,2,5,0,1,0,8,False
+91,Public Complaint Management System,medium,a4,3,3,refactored,detect,21,4,10,0,1,0,15,False
+92,Tax Authority Portal,medium,a4,3,3,refactored,detect,24,4,13,0,0,0,17,False
+93,Social Benefits Management System,small,a4,1,1,refactored,detect,11,3,5,0,0,0,8,False
+94,Municipal Waste Management,medium,a4,3,3,refactored,detect,23,4,12,0,1,0,17,False
+96,Pet Adoption System,medium,a4,3,3,refactored,detect,24,4,12,0,1,0,17,False
+97,Neighbourhood Watch App,medium,a4,3,3,refactored,detect,19,3,9,0,0,0,12,False
+98,Dental Clinic System,medium,a4,3,3,refactored,detect,22,4,10,0,1,0,15,False
+99,Optometry Clinic System,medium,a4,3,3,refactored,detect,23,4,10,1,1,0,16,False
+100,Emergency Dispatch System,small,a4,1,1,refactored,detect,11,3,5,0,0,0,8,False
+103,Medical Imaging System,medium,a4,3,3,refactored,detect,21,4,10,1,0,0,15,False
+105,Tutoring Marketplace,medium,a4,3,3,refactored,detect,21,3,13,0,0,0,16,False
+106,Language Learning App,medium,a4,3,3,refactored,detect,18,3,9,0,0,0,12,False
+107,Certification Examination System,medium,a4,3,3,refactored,detect,22,4,11,0,1,0,16,False
+109,Academic Conference Management System,medium,a4,3,3,refactored,detect,19,4,9,0,0,0,13,False
+110,Plagiarism Detection System,medium,a4,3,3,refactored,detect,18,3,9,0,0,0,12,False
+111,Research Grant Management System,small,a4,1,1,refactored,detect,10,3,5,0,0,0,8,False
+112,Tour Package Booking System,medium,a4,3,3,refactored,detect,18,3,9,0,1,0,13,False
+113,Vacation Rental Platform,medium,a4,3,3,refactored,detect,23,4,10,0,0,0,14,False
+114,Hostel Booking System,medium,a4,3,3,refactored,detect,19,3,10,0,0,0,13,False
+115,City Tour Guide App,small,a4,1,1,refactored,detect,11,2,6,0,0,0,8,False
+116,Visa Application System,medium,a4,3,3,refactored,detect,18,3,10,0,1,0,14,False
+117,Travel Insurance System,small,a4,1,1,refactored,detect,11,3,6,0,0,0,9,False
+118,Cruise Booking System,medium,a4,3,3,refactored,detect,19,3,8,0,1,0,12,False
+120,Crowdfunding Platform,medium,a4,3,3,refactored,detect,19,4,9,1,0,0,14,False
+121,Accounting System,medium,a4,3,3,refactored,detect,24,4,13,0,1,0,18,False
+122,Stock Trading Platform,medium,a4,3,3,refactored,detect,19,3,10,0,1,2,16,False
+123,Budgeting Application,medium,a4,3,3,refactored,detect,20,3,9,2,0,0,14,False
+124,Cryptocurrency Exchange,medium,a4,3,3,refactored,detect,22,3,13,1,0,0,17,False
+126,Court Case Management System,medium,a4,3,3,refactored,detect,23,4,10,0,1,0,15,False
+127,Company Registration System,medium,a4,3,3,refactored,detect,23,4,11,0,1,0,16,False
+129,Legal Aid Management System,medium,a4,3,3,refactored,detect,18,4,10,0,0,0,14,False
+130,Electoral Roll Management System,medium,a4,3,3,refactored,detect,18,3,11,0,0,0,14,False
+131,Carpooling App,medium,a4,3,3,refactored,detect,20,3,10,0,0,0,13,False
+133,Mentorship Platform,small,a4,1,1,refactored,detect,10,3,6,0,0,0,9,False
+135,Lost and Found System,small,a4,1,1,refactored,detect,8,2,5,0,0,0,7,False
+136,Book Club Platform,small,a4,1,1,refactored,detect,9,2,5,0,0,0,7,False
+138,Livestreaming Platform,small,a4,1,1,refactored,detect,10,3,6,0,0,0,9,False
+139,Digital Photography Platform,medium,a4,3,3,refactored,detect,21,3,12,0,0,0,15,False
+140,E-Book Publishing System,small,a4,1,1,refactored,detect,10,3,5,0,0,0,8,False
+141,Stadium Management System,medium,a4,3,3,refactored,detect,22,5,12,0,1,0,18,False
+142,Swimming Pool Booking System,medium,a4,3,3,refactored,detect,24,5,10,1,0,0,16,False
+143,Esports Tournament Platform,medium,a4,3,3,refactored,detect,22,4,11,0,0,0,15,False
+146,Yoga Class Booking,small,a4,1,1,refactored,detect,10,2,5,0,0,0,7,False
+147,Climbing Gym Management System,medium,a4,3,3,refactored,detect,21,4,10,1,0,0,15,False
+149,Cybersecurity Incident Reporting System,medium,a4,3,3,refactored,detect,21,4,10,0,1,0,15,False
+150,IT Asset Management System,small,a4,1,1,refactored,detect,11,2,6,0,0,0,8,False
+152,Data Backup and Recovery System,medium,a4,3,3,refactored,detect,21,3,10,1,1,0,15,False
+153,API Management Portal,medium,a4,3,3,refactored,detect,20,3,10,0,1,0,14,False
+155,Driving School Management System,medium,a4,3,3,refactored,detect,20,4,9,0,1,0,14,False
+156,Wedding Planning Platform,medium,a4,3,3,refactored,detect,21,4,11,0,0,0,15,False
+157,Spa and Wellness Booking System,small,a4,1,1,refactored,detect,8,2,4,0,0,0,6,False
+158,Coworking Space Booking System,small,a4,1,1,refactored,detect,10,2,5,0,0,0,7,False
+159,Parking Lot Management System,medium,a4,3,3,refactored,detect,21,4,11,0,1,0,16,False
+160,Escape Room Booking System,medium,a4,3,3,refactored,detect,24,3,12,2,0,0,17,False
+161,Photography Studio Booking System,medium,a4,3,3,refactored,detect,23,4,10,0,2,0,16,False
+162,Pet Care Service Booking,small,a4,1,1,refactored,detect,10,2,6,0,0,0,8,False
+165,Language Translation Service,medium,a4,3,3,refactored,detect,22,3,11,1,0,0,15,False
+167,Funeral Service Management System,medium,a4,3,3,refactored,detect,22,4,12,0,1,0,17,False
+169,Baby Equipment Rental Service,medium,a4,3,3,refactored,detect,19,3,10,0,1,0,14,False
+171,Gift Registry System,small,a4,1,1,refactored,detect,10,3,5,0,0,0,8,False
+172,Print-on-Demand Platform,medium,a4,3,3,refactored,detect,19,4,9,0,0,0,13,False
+174,Second-Hand Clothing Marketplace,medium,a4,3,3,refactored,detect,23,3,12,0,0,0,15,False
+175,Furniture Rental Service,small,a4,1,1,refactored,detect,9,2,4,0,0,0,6,False
+179,Air Quality Monitoring System,small,a4,1,1,refactored,detect,10,3,5,0,0,0,8,False
+180,Crop Monitoring System,medium,a4,3,3,refactored,detect,18,4,9,1,1,0,15,False
+181,Irrigation Control System,medium,a4,3,3,refactored,detect,20,4,9,1,1,0,15,False
+186,Equipment Maintenance System,small,a4,1,1,refactored,detect,8,2,4,0,0,0,6,False
+188,Industrial Safety Reporting System,medium,a4,3,3,refactored,detect,24,4,12,2,0,0,18,False
+189,Product Recall Management System,medium,a4,3,3,refactored,detect,24,5,11,2,1,0,19,False
+190,Hazardous Materials Tracking System,small,a4,1,1,refactored,detect,11,3,6,0,0,0,9,False
+191,Military Personnel Management System,small,a4,1,1,refactored,detect,9,2,4,0,0,0,6,False
+192,Border Control System,medium,a4,3,3,refactored,detect,19,4,10,0,1,1,16,False
+193,Graphic Novel Platform,small,a4,1,1,refactored,detect,10,2,6,0,0,0,8,False
+194,Fan Fiction Community,small,a4,1,1,refactored,detect,10,2,5,0,0,0,7,False
+7,Hotel Booking System,medium,a4,3,3,refactored,detect,20,3,10,0,1,0,14,False
+10,Ride Sharing Service,small,a4,1,1,refactored,detect,8,2,5,0,0,0,7,False
+15,Job Portal,small,a4,1,1,refactored,detect,11,3,6,0,0,0,9,False
+3,Online Store,small,a4,1,1,refactored,detect,11,2,5,0,0,0,7,False
+9,Food Delivery Platform,small,a4,1,1,refactored,detect,10,3,5,0,0,0,8,False
+11,Music Streaming Platform,small,a4,1,1,refactored,detect,9,2,4,0,0,0,6,False
+16,Grocery Delivery Service,small,a4,1,1,refactored,detect,11,3,5,0,0,0,8,False
+35,Event Ticketing System,small,a4,1,1,refactored,detect,8,2,5,0,0,0,7,False
+39,School Administration System,small,a4,1,1,refactored,detect,9,3,4,0,0,0,7,False
+64,Volunteer Management System,small,a4,1,1,refactored,detect,9,2,5,0,0,0,7,False
+66,IT Help Desk System,small,a4,1,1,refactored,detect,8,2,5,0,0,0,7,False
+72,Home Services Booking,small,a4,1,1,refactored,detect,9,2,5,0,0,0,7,False
+73,Construction Project Management,small,a4,1,1,refactored,detect,10,3,5,0,0,0,8,False
+75,Cafe Order Management,small,a4,1,1,refactored,detect,9,2,4,1,0,0,7,False
+95,Water Utility Management,medium,a4,3,3,refactored,detect,18,4,9,0,0,0,13,False
+101,Nursing Home Management System,small,a4,1,1,refactored,detect,11,3,5,0,0,0,8,False
+102,Rehabilitation Centre System,small,a4,1,1,refactored,detect,7,2,4,0,0,0,6,False
+119,Mortgage Application System,small,a4,1,1,refactored,detect,8,2,5,0,0,0,7,False
+134,Alumni Network System,small,a4,1,1,refactored,detect,9,2,4,0,0,0,6,False
+137,Community Garden Management System,small,a4,1,1,refactored,detect,11,2,6,0,0,0,8,False
+24,Fitness Tracking App,medium,a4,3,3,refactored,detect,18,3,10,0,0,0,13,False
+33,Real Estate Listing Platform,small,a4,1,1,refactored,detect,8,2,5,0,0,0,7,False
+37,Digital Wallet System,medium,a4,3,3,refactored,detect,18,3,10,0,0,0,13,False
+45,Smart Home Management System,small,a4,1,1,refactored,detect,9,2,4,0,0,0,6,False
+48,Document Management System,small,a4,1,1,refactored,detect,11,3,6,0,0,0,9,False
+58,Course Registration System,small,a4,1,1,refactored,detect,10,2,6,0,0,0,8,False
+62,E-Voting System,medium,a4,3,3,refactored,detect,21,3,11,0,0,0,14,False
+70,Museum Ticketing System,medium,a4,3,3,refactored,detect,21,4,9,1,1,0,15,False
+77,Room Service Management,small,a4,1,1,refactored,detect,10,2,5,0,0,0,7,False
+79,Tournament Registration System,small,a4,1,1,refactored,detect,10,2,5,0,0,0,7,False
+178,Solar Energy Management System,small,a4,1,1,refactored,detect,9,2,4,0,0,0,6,False
+182,Wildlife Conservation System,small,a4,1,1,refactored,detect,10,3,5,0,0,0,8,False
+183,Forest Fire Detection System,small,a4,1,1,refactored,detect,7,2,4,0,0,0,6,False
+184,Factory Floor Management System,small,a4,1,1,refactored,detect,8,2,4,0,0,0,6,False
+185,Quality Control System,small,a4,1,1,refactored,detect,8,2,4,0,0,0,6,False
+12,Video Streaming Platform,medium,a4,3,3,refactored,detect,21,3,10,0,0,0,13,False
+22,Online Gaming Platform,small,a4,1,1,refactored,detect,7,2,4,0,0,0,6,False
+28,Customer Relationship Management,medium,a4,3,3,refactored,detect,21,4,9,0,0,0,13,False
+32,Loan Approval System,medium,a4,3,3,refactored,detect,24,4,10,1,0,0,15,False
+53,Patient Records System,small,a4,1,1,refactored,detect,9,2,5,0,0,0,7,False
+54,Blood Bank Management,medium,a4,3,3,refactored,detect,24,5,11,0,0,0,16,False
+55,Veterinary Clinic System,medium,a4,3,3,refactored,detect,20,3,7,0,0,0,10,False
+61,Driver License Renewal System,medium,a4,3,3,refactored,detect,21,4,10,1,1,0,16,False
+63,Donation Management System,medium,a4,3,3,refactored,detect,20,3,10,0,0,0,13,False
+68,Legal Case Management System,medium,a4,3,3,refactored,detect,24,4,11,1,0,0,16,False
+83,Port Management System,medium,a4,3,3,refactored,detect,18,5,8,0,1,0,14,False
+84,Online Auction Platform,medium,a4,3,3,refactored,detect,22,4,11,1,0,0,16,False
+89,Wholesale Distribution System,medium,a4,3,3,refactored,detect,20,3,9,0,1,0,13,False
+90,Broadcasting Management System,medium,a4,3,3,refactored,detect,22,4,9,0,1,0,14,False
+104,Clinical Trial Management System,medium,a4,3,3,refactored,detect,22,5,9,0,0,0,14,False
+164,Self-Storage Facility System,medium,a4,3,3,refactored,detect,23,3,10,0,1,0,14,False
+176,Farm Management System,small,a4,1,1,refactored,detect,10,2,6,0,0,0,8,False
+177,Agricultural Marketplace,small,a4,1,1,refactored,detect,11,3,6,0,0,0,9,False
+108,Kindergarten Management System,medium,a4,3,3,refactored,detect,18,3,10,0,0,0,13,False
+128,Land Registry System,medium,a4,3,3,refactored,detect,19,5,7,0,0,0,12,False
+144,Athlete Training System,medium,a4,3,3,refactored,detect,22,3,9,1,1,0,14,False
+145,Sports Equipment Rental,medium,a4,3,3,refactored,detect,19,2,8,0,1,0,11,False
+148,Network Monitoring System,medium,a4,3,3,refactored,detect,23,4,9,0,1,0,14,False
+151,Software License Management System,medium,a4,3,3,refactored,detect,19,4,9,0,1,0,14,False
+154,Remote Desktop Service,small,a4,1,1,refactored,detect,10,2,5,0,0,0,7,False
+163,Laundry Pickup Service,medium,a4,3,3,refactored,detect,19,3,10,0,1,0,14,False
+166,Event Decoration Booking System,medium,a4,3,3,refactored,detect,22,3,9,0,2,0,14,False
+168,Notary Service Booking System,small,a4,1,1,refactored,detect,11,2,6,0,0,0,8,False
+125,Microfinance System,medium,a4,3,3,refactored,detect,20,4,9,0,0,0,13,False
+132,Skill Sharing Platform,medium,a4,3,3,refactored,detect,22,3,11,0,0,0,14,False
+173,Vending Machine Management System,medium,a4,3,3,refactored,detect,18,3,9,0,0,0,12,False
+187,Assembly Line Monitoring System,medium,a4,3,3,refactored,detect,18,3,8,0,1,0,12,False
+170,Price Comparison Portal,medium,a4,3,3,refactored,detect,23,3,11,0,0,0,14,False

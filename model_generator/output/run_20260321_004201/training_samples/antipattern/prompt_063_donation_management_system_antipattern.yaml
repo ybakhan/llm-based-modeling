@@ -1,0 +1,109 @@
+metadata:
+  prompt_number: 63
+  domain: donation_management_system
+  domain_display: Donation Management System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Process Donation, Validate Payment Details, <<include>>
+        from Process Donation to Validate Payment Details
+      explanation: '"Validate Payment Details" is an inclusion use case included only
+        by "Process Donation". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, and
+        is not extended by any use case. It represents a sub-step of processing a
+        donation rather than a complete, independently valuable service. This is functional
+        decomposition of "Process Donation" into a procedural sub-task.'
+    - constructs_involved: Process Donation, Send Thank You Notification, <<include>>
+        from Process Donation to Send Thank You Notification
+      explanation: '"Send Thank You Notification" is an inclusion use case included
+        only by "Process Donation". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, and
+        is not extended by any use case. It represents a procedural step within donation
+        processing rather than a standalone service observable to an actor. This is
+        functional decomposition.'
+    - constructs_involved: Register Donor, Verify Donor Identity, <<include>> from
+        Register Donor to Verify Donor Identity
+      explanation: '"Verify Donor Identity" is an inclusion use case included only
+        by "Register Donor". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, and
+        is not extended by any use case. It decomposes the registration process into
+        a procedural verification sub-step rather than representing a complete service.
+        This is functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 26
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:54:25.396775'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_063_donation_management_system/donation_management_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_063_donation_management_system/donation_management_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_063_donation_management_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\nleft to right direction\n\
+    \nactor Donor\nactor Administrator\nactor \"Finance Officer\" as FO\n\nrectangle\
+    \ \"Donation Management System\" {\n  usecase \"Register Donor\" as UC1\n  usecase\
+    \ \"Verify Donor Identity\" as UC2\n  usecase \"Process Donation\" as UC3\n  usecase\
+    \ \"Validate Payment Details\" as UC4\n  usecase \"Send Thank You Notification\"\
+    \ as UC5\n  usecase \"View Donation History\" as UC6\n  usecase \"Generate Donation\
+    \ Report\" as UC7\n  usecase \"Manage Campaigns\" as UC8\n  usecase \"Allocate\
+    \ Funds\" as UC9\n  usecase \"Issue Tax Receipt\" as UC10\n  usecase \"Update\
+    \ Donor Profile\" as UC11\n  usecase \"Process Recurring Donation\" as UC12\n\
+    \  usecase \"Search Donors\" as UC13\n}\n\nDonor -- UC1\nDonor -- UC3\nDonor --\
+    \ UC6\nDonor -- UC11\nDonor -- UC12\n\nAdministrator -- UC8\nAdministrator --\
+    \ UC13\nAdministrator -- UC7\n\nFO -- UC9\nFO -- UC10\nFO -- UC7\n\nUC1 ..> UC2\
+    \ : <<include>>\nUC3 ..> UC4 : <<include>>\nUC3 ..> UC5 : <<include>>\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Process Donation, Validate Payment Details,\
+    \ <<include>> from Process Donation to Validate Payment Details\n   Instance 1:\
+    \ Explanation: \"Validate Payment Details\" is an inclusion use case included\
+    \ only by \"Process Donation\". It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any other use case, and is\
+    \ not extended by any use case. It represents a sub-step of processing a donation\
+    \ rather than a complete, independently valuable service. This is functional decomposition\
+    \ of \"Process Donation\" into a procedural sub-task.\n\n   Instance 2: Constructs\
+    \ Involved: Process Donation, Send Thank You Notification, <<include>> from Process\
+    \ Donation to Send Thank You Notification\n   Instance 2: Explanation: \"Send\
+    \ Thank You Notification\" is an inclusion use case included only by \"Process\
+    \ Donation\". It is not associated with any actor, is not included by any other\
+    \ use case, does not include or extend any other use case, and is not extended\
+    \ by any use case. It represents a procedural step within donation processing\
+    \ rather than a standalone service observable to an actor. This is functional\
+    \ decomposition.\n\n   Instance 3: Constructs Involved: Register Donor, Verify\
+    \ Donor Identity, <<include>> from Register Donor to Verify Donor Identity\n \
+    \  Instance 3: Explanation: \"Verify Donor Identity\" is an inclusion use case\
+    \ included only by \"Register Donor\". It is not associated with any actor, is\
+    \ not included by any other use case, does not include or extend any other use\
+    \ case, and is not extended by any use case. It decomposes the registration process\
+    \ into a procedural verification sub-step rather than representing a complete\
+    \ service. This is functional decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: donation_management_system
+
+  DOMAIN_DISPLAY: Donation Management System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Process Donation, Validate Payment Details, <<include>> from
+  Process Donation to Validate Payment Details
+
+  EXPLANATION: "Validate Payment Details" is an inclusion use case included only by
+  "Process Donation". It is not associated with any actor, is not included by any
+  other use case, does not include or extend any other  …[truncated]'

@@ -1,0 +1,105 @@
+
+
+DOMAIN: print_on_demand_platform
+DOMAIN_DISPLAY: Print-on-Demand Platform
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Upload Design, Validate File Format, include relationship from Upload Design to Validate File Format
+EXPLANATION: "Validate File Format" is an inclusion use case included only by "Upload Design." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (file validation) of the upload process rather than a complete, independently valuable service to any actor. This is functional decomposition of "Upload Design" into an internal step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Place Order, Calculate Shipping Cost, include relationship from Place Order to Calculate Shipping Cost
+EXPLANATION: "Calculate Shipping Cost" is an inclusion use case included only by "Place Order." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal computational step within the ordering process, not a standalone service observable to a user. This is functional decomposition of "Place Order."
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Payment, Generate Invoice, include relationship from Process Payment to Generate Invoice
+EXPLANATION: "Generate Invoice" is an inclusion use case included only by "Process Payment." It is not associated with any actor, not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal sub-step of payment processing rather than a complete service offered to any actor. This is functional decomposition of "Process Payment."
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate File Format," "Calculate Shipping Cost," "Generate Invoice") must be merged back into their respective base use cases ("Upload Design," "Place Order," "Process Payment"). "Validate File Format" is merely an internal step of uploading a design and should be absorbed into "Upload Design." "Calculate Shipping Cost" is an internal calculation within placing an order and should be absorbed into "Place Order." "Generate Invoice" is an internal step of processing payment and should be absorbed into "Process Payment." This removes 3 use cases and 3 include relationships (6 constructs total), eliminating all functional decomposition instances while preserving the complete services the system offers to its actors.
+
+CONSTRUCT_COUNT: 25
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Designer
+actor Customer
+actor "Production Staff" as PS
+actor "Payment Gateway" as PG
+
+rectangle "Print-on-Demand Platform" {
+  usecase "Upload Design" as UC1
+  usecase "Validate File Format" as UC2
+  usecase "Browse Catalog" as UC3
+  usecase "Customize Product" as UC4
+  usecase "Place Order" as UC5
+  usecase "Calculate Shipping Cost" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Generate Invoice" as UC8
+  usecase "Track Order" as UC9
+  usecase "Fulfill Order" as UC10
+  usecase "Manage Product Listings" as UC11
+  usecase "View Sales Reports" as UC12
+}
+
+Designer --> UC1
+Designer --> UC11
+Designer --> UC12
+Customer --> UC3
+Customer --> UC4
+Customer --> UC5
+Customer --> UC7
+Customer --> UC9
+PS --> UC10
+PG --> UC7
+
+UC1 ..> UC2 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 19
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Designer
+actor Customer
+actor "Production Staff" as PS
+actor "Payment Gateway" as PG
+
+rectangle "Print-on-Demand Platform" {
+  usecase "Upload Design" as UC1
+  usecase "Browse Catalog" as UC3
+  usecase "Customize Product" as UC4
+  usecase "Place Order" as UC5
+  usecase "Process Payment" as UC7
+  usecase "Track Order" as UC9
+  usecase "Fulfill Order" as UC10
+  usecase "Manage Product Listings" as UC11
+  usecase "View Sales Reports" as UC12
+}
+
+Designer --> UC1
+Designer --> UC11
+Designer --> UC12
+Customer --> UC3
+Customer --> UC4
+Customer --> UC5
+Customer --> UC7
+Customer --> UC9
+PS --> UC10
+PG --> UC7
+@enduml
+```

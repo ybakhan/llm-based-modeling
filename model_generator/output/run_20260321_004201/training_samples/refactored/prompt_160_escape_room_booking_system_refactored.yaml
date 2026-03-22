@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 160
+  domain: escape_room_booking_system
+  domain_display: Escape Room Booking System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T02:04:04.218660'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_160_escape_room_booking_system/escape_room_booking_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_160_escape_room_booking_system/escape_room_booking_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_160_escape_room_booking_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Customer\" as Customer\nactor \"Admin\" as Admin\nactor \"Payment Gateway\"\
+    \ as PayGW\n\nrectangle \"Escape Room Booking System\" {\n  usecase \"Register\
+    \ Account\" as UC1\n  usecase \"Browse Escape Rooms\" as UC3\n  usecase \"View\
+    \ Room Details\" as UC4\n  usecase \"Book Escape Room\" as UC5\n  usecase \"Process\
+    \ Payment\" as UC7\n  usecase \"Cancel Booking\" as UC9\n  usecase \"View Booking\
+    \ History\" as UC10\n  usecase \"Leave Review\" as UC11\n  usecase \"Manage Rooms\"\
+    \ as UC12\n  usecase \"View Booking Reports\" as UC13\n  usecase \"Apply Promo\
+    \ Code\" as UC14\n  usecase \"Manage Customer Accounts\" as UC15\n}\n\nCustomer\
+    \ --> UC1\nCustomer --> UC3\nCustomer --> UC4\nCustomer --> UC5\nCustomer -->\
+    \ UC7\nCustomer --> UC9\nCustomer --> UC10\nCustomer --> UC11\nCustomer --> UC14\n\
+    \nAdmin --> UC12\nAdmin --> UC13\nAdmin --> UC15\n\nPayGW --> UC7\n\nUC5 ..> UC7\
+    \ : <<include>>\nUC3 ..> UC4 : <<include>>\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: escape_room_booking_system
+
+  DOMAIN_DISPLAY: Escape Room Booking System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Book Escape Room, Validate Time Slot, include (Book Escape
+  Room → Validate Time Slot)
+
+  EXPLANATION: "Validate Time Slot" is an inclusion use case included only by "Book
+  Escape Room." It is not associated with any actor, not included by any other use
+  case, and does not include, extend, generalize, or get extended by any o …[truncated]'

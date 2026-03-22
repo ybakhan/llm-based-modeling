@@ -1,0 +1,115 @@
+
+
+DOMAIN: athlete_training_system
+DOMAIN_DISPLAY: Athlete Training System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Schedule Training Session, Validate Time Slot, include relationship from Schedule Training Session to Validate Time Slot
+EXPLANATION: "Validate Time Slot" is an inclusion use case included only by "Schedule Training Session". It is not associated with any actor, not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. It represents a sub-step (checking schedule availability) rather than a complete service observable to an actor, making this a functional decomposition of "Schedule Training Session."
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Log Workout Results, Calculate Performance Metrics, include relationship from Log Workout Results to Calculate Performance Metrics
+EXPLANATION: "Calculate Performance Metrics" is an inclusion use case included only by "Log Workout Results". It is not associated with any actor, not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. Computing metrics is an internal sub-step of logging results, not a standalone service yielding an observable result to a user, making this functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Monitor Injury Status, Retrieve Medical Records, include relationship from Monitor Injury Status to Retrieve Medical Records
+EXPLANATION: "Retrieve Medical Records" is an inclusion use case included only by "Monitor Injury Status". It is not associated with any actor, not included by any other use case, and does not include, extend, generalize, or get extended by any other use case. Retrieving records is an internal data-fetching step within injury monitoring, not a complete service to any actor, making this functional decomposition.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Time Slot", "Calculate Performance Metrics", "Retrieve Medical Records") must be merged into their respective base use cases ("Schedule Training Session", "Log Workout Results", "Monitor Injury Status"). Each inclusion use case is included by only one base use case, is not associated with any actor, and participates in no other relationships — meeting all criteria for the Drop Functional Decomposition refactoring. Removing these three use cases and their three include relationships eliminates 6 constructs, reducing the model from 28 to 22 constructs. To maintain a realistic model, we keep all remaining use cases and relationships intact.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Athlete" as Athlete
+actor "Coach" as Coach
+actor "Medical Staff" as MedicalStaff
+
+rectangle "Athlete Training System" {
+  usecase "Schedule Training Session" as UC1
+  usecase "Validate Time Slot" as UC2
+  usecase "Log Workout Results" as UC3
+  usecase "Calculate Performance Metrics" as UC4
+  usecase "Monitor Injury Status" as UC5
+  usecase "Retrieve Medical Records" as UC6
+  usecase "Create Training Plan" as UC7
+  usecase "View Progress Report" as UC8
+  usecase "Manage Nutrition Plan" as UC9
+  usecase "Send Alert Notification" as UC10
+  usecase "Assign Exercise Routine" as UC11
+  usecase "Track Recovery Progress" as UC12
+}
+
+Athlete -- UC1
+Athlete -- UC3
+Athlete -- UC8
+Athlete -- UC9
+
+Coach -- UC1
+Coach -- UC7
+Coach -- UC8
+Coach -- UC11
+
+MedicalStaff -- UC5
+MedicalStaff -- UC12
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC7 ..> UC11 : <<include>>
+UC10 ..> UC5 : <<extend>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Athlete" as Athlete
+actor "Coach" as Coach
+actor "Medical Staff" as MedicalStaff
+
+rectangle "Athlete Training System" {
+  usecase "Schedule Training Session" as UC1
+  usecase "Log Workout Results" as UC3
+  usecase "Monitor Injury Status" as UC5
+  usecase "Create Training Plan" as UC7
+  usecase "View Progress Report" as UC8
+  usecase "Manage Nutrition Plan" as UC9
+  usecase "Send Alert Notification" as UC10
+  usecase "Assign Exercise Routine" as UC11
+  usecase "Track Recovery Progress" as UC12
+}
+
+Athlete -- UC1
+Athlete -- UC3
+Athlete -- UC8
+Athlete -- UC9
+
+Coach -- UC1
+Coach -- UC7
+Coach -- UC8
+Coach -- UC11
+
+MedicalStaff -- UC5
+MedicalStaff -- UC12
+
+UC7 ..> UC11 : <<include>>
+UC10 ..> UC5 : <<extend>>
+@enduml
+```

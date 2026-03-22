@@ -1,0 +1,42 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Seller
+actor Buyer
+actor Admin
+
+rectangle "Second-Hand Marketplace" {
+  usecase "Create Listing" as UC1
+  usecase "Upload Photos" as UC2
+  usecase "Manage My Listings" as UC3
+  usecase "Search Items" as UC4
+  usecase "Apply Filters" as UC5
+  usecase "Purchase Item" as UC6
+  usecase "Process Payment" as UC7
+  usecase "Rate Seller" as UC8
+  usecase "Send Message" as UC9
+  usecase "Browse Categories" as UC10
+  usecase "Manage Users" as UC11
+  usecase "Resolve Dispute" as UC12
+  usecase "View Item Details" as UC13
+}
+
+Seller -- UC1
+Seller -- UC3
+Seller -- UC9
+
+Buyer -- UC4
+Buyer -- UC6
+Buyer -- UC8
+Buyer -- UC9
+Buyer -- UC10
+Buyer -- UC13
+
+Admin -- UC11
+Admin -- UC12
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+@enduml

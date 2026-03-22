@@ -1,0 +1,111 @@
+metadata:
+  prompt_number: 122
+  domain: stock_trading_platform
+  domain_display: Stock Trading Platform
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Place Order, Validate Order Parameters, include relationship
+        from Place Order to Validate Order Parameters
+      explanation: '"Validate Order Parameters" is an inclusion use case included
+        only by "Place Order". It is not associated with any actor, does not include
+        or extend any other use case, is not extended by any use case, and is not
+        part of any generalization hierarchy. It represents a sub-step (validating
+        parameters) of placing an order rather than a complete, standalone service
+        observable to any actor. This is functional decomposition of "Place Order"
+        into a procedural sub-step.'
+    - constructs_involved: Execute Trade, Route to Exchange, include relationship
+        from Execute Trade to Route to Exchange
+      explanation: '"Route to Exchange" is an inclusion use case included only by
+        "Execute Trade". It is not associated with any actor, does not include or
+        extend any other use case, is not extended by any use case, and is not part
+        of any generalization hierarchy. Routing to an exchange is an internal implementation
+        step of executing a trade, not a complete service yielding an observable result
+        to a user. This is functional decomposition of "Execute Trade".'
+    - constructs_involved: View Portfolio, Fetch Account Data, include relationship
+        from View Portfolio to Fetch Account Data
+      explanation: '"Fetch Account Data" is an inclusion use case included only by
+        "View Portfolio". It is not associated with any actor, does not include or
+        extend any other use case, is not extended by any use case, and is not part
+        of any generalization hierarchy. Fetching account data is an internal retrieval
+        step within viewing a portfolio, not a standalone service with an observable
+        result to any user. This is functional decomposition of "View Portfolio".'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 25
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:47:18.429552'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_122_stock_trading_platform/stock_trading_platform_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_122_stock_trading_platform/stock_trading_platform_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_122_stock_trading_platform_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Trader\"\
+    \ as Trader\nactor \"Broker\" as Broker\nactor \"System Administrator\" as Admin\n\
+    \nrectangle \"Stock Trading Platform\" {\n  usecase \"Place Order\" as UC1\n \
+    \ usecase \"Validate Order Parameters\" as UC2\n  usecase \"Execute Trade\" as\
+    \ UC3\n  usecase \"Route to Exchange\" as UC4\n  usecase \"View Portfolio\" as\
+    \ UC5\n  usecase \"Fetch Account Data\" as UC6\n  usecase \"Cancel Order\" as\
+    \ UC7\n  usecase \"View Market Data\" as UC8\n  usecase \"Set Price Alert\" as\
+    \ UC9\n  usecase \"Manage User Accounts\" as UC10\n  usecase \"Generate Trade\
+    \ Report\" as UC11\n  usecase \"Place Limit Order\" as UC12\n  usecase \"Place\
+    \ Market Order\" as UC13\n\n  UC1 ..> UC2 : <<include>>\n  UC3 ..> UC4 : <<include>>\n\
+    \  UC5 ..> UC6 : <<include>>\n\n  UC12 --|> UC1\n  UC13 --|> UC1\n\n  UC7 ..>\
+    \ UC1 : <<extend>>\n}\n\nTrader --> UC1\nTrader --> UC5\nTrader --> UC8\nTrader\
+    \ --> UC9\nBroker --> UC3\nBroker --> UC11\nAdmin --> UC10\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Place Order, Validate Order Parameters,\
+    \ include relationship from Place Order to Validate Order Parameters\n   Instance\
+    \ 1: Explanation: \"Validate Order Parameters\" is an inclusion use case included\
+    \ only by \"Place Order\". It is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization hierarchy. It represents a sub-step (validating parameters)\
+    \ of placing an order rather than a complete, standalone service observable to\
+    \ any actor. This is functional decomposition of \"Place Order\" into a procedural\
+    \ sub-step.\n\n   Instance 2: Constructs Involved: Execute Trade, Route to Exchange,\
+    \ include relationship from Execute Trade to Route to Exchange\n   Instance 2:\
+    \ Explanation: \"Route to Exchange\" is an inclusion use case included only by\
+    \ \"Execute Trade\". It is not associated with any actor, does not include or\
+    \ extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization hierarchy. Routing to an exchange is an internal implementation\
+    \ step of executing a trade, not a complete service yielding an observable result\
+    \ to a user. This is functional decomposition of \"Execute Trade\".\n\n   Instance\
+    \ 3: Constructs Involved: View Portfolio, Fetch Account Data, include relationship\
+    \ from View Portfolio to Fetch Account Data\n   Instance 3: Explanation: \"Fetch\
+    \ Account Data\" is an inclusion use case included only by \"View Portfolio\"\
+    . It is not associated with any actor, does not include or extend any other use\
+    \ case, is not extended by any use case, and is not part of any generalization\
+    \ hierarchy. Fetching account data is an internal retrieval step within viewing\
+    \ a portfolio, not a standalone service with an observable result to any user.\
+    \ This is functional decomposition of \"View Portfolio\"."
+raw_response_excerpt: '
+
+
+  DOMAIN: stock_trading_platform
+
+  DOMAIN_DISPLAY: Stock Trading Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Place Order, Validate Order Parameters, include relationship
+  from Place Order to Validate Order Parameters
+
+  EXPLANATION: "Validate Order Parameters" is an inclusion use case included only
+  by "Place Order". It is not associated with any actor, does not include or extend
+  any other use case, is not extended by any use case, and is  …[truncated]'

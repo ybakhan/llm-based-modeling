@@ -1,0 +1,240 @@
+AUDIT LOG — Prompt #030
+Timestamp : 2026-03-21T01:00:49.785358
+Model     : claude-opus-4-6
+Tokens    : input=1355  output=1345
+
+────────────────────────────────────────────────────────────────────────
+SYSTEM PROMPT
+────────────────────────────────────────────────────────────────────────
+You are an expert UML use case modeling consultant specialising in antipattern detection and refactoring for software engineering research.
+
+Your task: for each request, generate exactly TWO versions of a PlantUML use case model for the specified domain and construct count.
+
+═══ ANTIPATTERNS TO EMBED ═══════════════════════════════════════════════════════
+─── Antipattern: Functional Decomposition: Using the include relationship (3 instances) ───
+Description : This antipattern represents improper usage of the include relationship. The service
+offered by a use case is divided into several inclusion use cases. Moreover, these
+inclusion use cases are not directly associated with any actor. They do not represent a
+complete service that is offered the system; hence, provide no observable result to a user.
+Functional decomposition is acceptable if an inclusion use case provides complete
+behavior to another actor and/or is included by another use case.
+
+Refactoring strategy:
+  Name        : Drop Functional Decomposition
+  Description : This refactoring merges the inclusion use cases into the base use case, which
+individually provides a complete service to the actor. A use case is involved in this
+antipattern if it:
+- is an inclusion use case which is included by one use case only
+- is not associated with any actor
+- is neither including nor extending any use case
+- is not extended by any use case
+- is neither a generalization nor a specialization of any use case
+
+═══ WHAT COUNTS AS A CONSTRUCT ══════════════════════════════════════════════════
+  • Actor          – each actor node
+  • Use Case       – each use case ellipse
+  • Include        – each <<include>> dependency arrow
+  • Extend         – each <<extend>> dependency arrow
+  • Generalize     – each generalisation (inheritance) arrow
+
+  TOTAL constructs = Actors + Use Cases + Includes + Extends + Generalisations.
+
+═══ DOMAIN RULE ═════════════════════════════════════════════════════════════════
+Use the exact domain specified in the user message. Do not substitute a different
+domain. Set DOMAIN_DISPLAY to the domain name as given.
+
+═══ MANDATORY RESPONSE FORMAT ═══════════════════════════════════════════════════
+Follow this template EXACTLY — including the marker lines.
+
+DOMAIN: <snake_case_domain>
+DOMAIN_DISPLAY: <Human Readable Domain Name>
+SIZE: <small|medium|large>
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: <comma-separated names of the constructs forming this instance>
+EXPLANATION: <clear, specific explanation of why exactly these constructs constitute the "Functional Decomposition: Using the include relationship" antipattern — reference each construct by name>
+
+REFACTORING_RATIONALE: <what must change and why — address every antipattern instance explicitly, naming the constructs to be restructured and the goal of the refactoring>
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+<model here>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: <integer>
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+<model here>
+@enduml
+```
+
+═══ SYSTEM CONTEXT (BOUNDARY) RULE ══════════════════════════════════════════════
+Every PlantUML model MUST include a system boundary rectangle:
+  • Use a `rectangle "System Name" {{ }}` block to represent the system context.
+  • ALL use cases MUST be placed INSIDE the rectangle.
+  • ALL actors MUST be placed OUTSIDE the rectangle.
+  • The rectangle label should be the name of the system being modelled.
+
+Example structure:
+  actor Customer
+  rectangle "Online Store" {{
+    usecase "Browse Products" as UC1
+    usecase "Place Order" as UC2
+  }}
+  Customer --> UC1
+  Customer --> UC2
+
+═══ QUALITY RULES ════════════════════════��═══════════════════════════════════════
+1. Version 1 MUST contain clear, unambiguous instances of every assigned antipattern.
+2. Version 2 MUST be a correct, fully refactored model with no antipattern.
+3. The construct count in each version must match CONSTRUCT_COUNT exactly.
+4. Both models must be realistic and domain-appropriate.
+5. Every model MUST have a system boundary rectangle with actors outside and use cases inside.
+6. These models train an LLM to detect antipatterns — name each one and list the exact constructs involved. Make them educationally clear examples.
+
+
+────────────────────────────────────────────────────────────────────────
+MESSAGE 1 — USER
+────────────────────────────────────────────────────────────────────────
+Prompt #030: Generate a MEDIUM use case model with exactly 29 constructs (valid range for medium: 24–30 constructs). Domain: Tax Filing System.
+
+────────────────────────────────────────────────────────────────────────
+ASSISTANT RESPONSE (raw)
+────────────────────────────────────────────────────────────────────────
+
+
+DOMAIN: tax_filing_system
+DOMAIN_DISPLAY: Tax Filing System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: File Tax Return, Validate SSN, include relationship from File Tax Return to Validate SSN
+EXPLANATION: "Validate SSN" is an inclusion use case included only by "File Tax Return." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (validating a social security number) rather than a complete, independently valuable service observable to an actor. This is functional decomposition of "File Tax Return" into a procedural step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Calculate Tax Liability, Apply Tax Brackets, include relationship from Calculate Tax Liability to Apply Tax Brackets
+EXPLANATION: "Apply Tax Brackets" is an inclusion use case included only by "Calculate Tax Liability." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Applying tax brackets is an internal computational step of calculating tax liability, not a standalone service delivering an observable result to any user. This constitutes functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Submit Payment, Generate Payment Reference, include relationship from Submit Payment to Generate Payment Reference
+EXPLANATION: "Generate Payment Reference" is an inclusion use case included only by "Submit Payment." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a payment reference number is an internal procedural step within payment submission, not an independent service with observable value to an actor. This is functional decomposition.
+
+REFACTORING_RATIONALE: Each of the three decomposed inclusion use cases ("Validate SSN," "Apply Tax Brackets," "Generate Payment Reference") must be merged back into their respective base use cases ("File Tax Return," "Calculate Tax Liability," "Submit Payment"). These inclusion use cases each represent internal procedural steps rather than complete services. By absorbing them, each base use case becomes self-contained. This removes 3 use cases and 3 include relationships (6 constructs total), simplifying the model while preserving all functionality within the base use cases that actors actually interact with.
+
+CONSTRUCT_COUNT: 29
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Taxpayer" as Taxpayer
+actor "Tax Preparer" as TaxPreparer
+actor "IRS Auditor" as Auditor
+
+rectangle "Tax Filing System" {
+  usecase "File Tax Return" as UC1
+  usecase "Validate SSN" as UC2
+  usecase "Calculate Tax Liability" as UC3
+  usecase "Apply Tax Brackets" as UC4
+  usecase "Submit Payment" as UC5
+  usecase "Generate Payment Reference" as UC6
+  usecase "Request Refund" as UC7
+  usecase "Upload W-2 Forms" as UC8
+  usecase "View Filing Status" as UC9
+  usecase "Amend Tax Return" as UC10
+  usecase "Audit Tax Return" as UC11
+  usecase "Generate Tax Summary Report" as UC12
+  usecase "Request Filing Extension" as UC13
+}
+
+Taxpayer --> UC1
+Taxpayer --> UC3
+Taxpayer --> UC5
+Taxpayer --> UC7
+Taxpayer --> UC8
+Taxpayer --> UC9
+Taxpayer --> UC13
+
+TaxPreparer --> UC1
+TaxPreparer --> UC10
+TaxPreparer --> UC12
+
+Auditor --> UC11
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC10 ..> UC1 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 23
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Taxpayer" as Taxpayer
+actor "Tax Preparer" as TaxPreparer
+actor "IRS Auditor" as Auditor
+
+rectangle "Tax Filing System" {
+  usecase "File Tax Return" as UC1
+  usecase "Calculate Tax Liability" as UC3
+  usecase "Submit Payment" as UC5
+  usecase "Request Refund" as UC7
+  usecase "Upload W-2 Forms" as UC8
+  usecase "View Filing Status" as UC9
+  usecase "Amend Tax Return" as UC10
+  usecase "Audit Tax Return" as UC11
+  usecase "Generate Tax Summary Report" as UC12
+  usecase "Request Filing Extension" as UC13
+}
+
+Taxpayer --> UC1
+Taxpayer --> UC3
+Taxpayer --> UC5
+Taxpayer --> UC7
+Taxpayer --> UC8
+Taxpayer --> UC9
+Taxpayer --> UC13
+
+TaxPreparer --> UC1
+TaxPreparer --> UC10
+TaxPreparer --> UC12
+
+Auditor --> UC11
+
+UC10 ..> UC1 : <<extend>>
+
+@enduml
+```

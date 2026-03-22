@@ -1,0 +1,110 @@
+
+
+DOMAIN: broadcasting_management_system
+DOMAIN_DISPLAY: Broadcasting Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Schedule Broadcast, Validate Time Slot, <<include>> from Schedule Broadcast to Validate Time Slot
+EXPLANATION: "Validate Time Slot" is an inclusion use case included only by "Schedule Broadcast". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a decomposed sub-step (validating a time slot) rather than a complete service observable to a user, making this a clear functional decomposition via the include relationship.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Manage Content Library, Verify Content Format, <<include>> from Manage Content Library to Verify Content Format
+EXPLANATION: "Verify Content Format" is an inclusion use case included only by "Manage Content Library". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Verifying content format is an internal sub-step of managing the content library, not a standalone service providing an observable result to any user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Start Live Transmission, Configure Transmission, <<include>> from Start Live Transmission to Configure Transmission
+EXPLANATION: "Configure Transmission" is an inclusion use case included only by "Start Live Transmission". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Configuring transmission parameters is a decomposed procedural step within starting a live transmission, not a complete service yielding an observable result to any actor.
+
+REFACTORING_RATIONALE: All three functional decomposition instances must be resolved by merging each orphan inclusion use case into its sole base use case. Specifically: (1) "Validate Time Slot" and its <<include>> relationship must be removed, with the validation behavior absorbed into "Schedule Broadcast". (2) "Verify Content Format" and its <<include>> relationship must be removed, with the format verification behavior absorbed into "Manage Content Library". (3) "Configure Transmission" and its <<include>> relationship must be removed, with the configuration behavior absorbed into "Start Live Transmission". This eliminates 3 use cases and 3 <<include>> relationships, reducing the construct count from 28 to 22.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Program Director" as PD
+actor "Broadcast Engineer" as BE
+actor "Content Manager" as CM
+actor "Advertiser" as AD
+
+rectangle "Broadcasting Management System" {
+  usecase "Schedule Broadcast" as UC1
+  usecase "Validate Time Slot" as UC2
+  usecase "Manage Content Library" as UC3
+  usecase "Verify Content Format" as UC4
+  usecase "Start Live Transmission" as UC5
+  usecase "Configure Transmission" as UC6
+  usecase "Monitor Signal Quality" as UC7
+  usecase "Generate Broadcast Report" as UC8
+  usecase "Manage Ad Placements" as UC9
+  usecase "Review Program Ratings" as UC10
+  usecase "Manage Channel Lineup" as UC11
+  usecase "Archive Broadcast" as UC12
+
+  UC1 ..> UC2 : <<include>>
+  UC3 ..> UC4 : <<include>>
+  UC5 ..> UC6 : <<include>>
+  UC9 ..> UC1 : <<extend>>
+}
+
+PD -- UC1
+PD -- UC10
+PD -- UC11
+CM -- UC3
+CM -- UC12
+BE -- UC5
+BE -- UC7
+BE -- UC8
+AD -- UC9
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Program Director" as PD
+actor "Broadcast Engineer" as BE
+actor "Content Manager" as CM
+actor "Advertiser" as AD
+
+rectangle "Broadcasting Management System" {
+  usecase "Schedule Broadcast" as UC1
+  usecase "Manage Content Library" as UC3
+  usecase "Start Live Transmission" as UC5
+  usecase "Monitor Signal Quality" as UC7
+  usecase "Generate Broadcast Report" as UC8
+  usecase "Manage Ad Placements" as UC9
+  usecase "Review Program Ratings" as UC10
+  usecase "Manage Channel Lineup" as UC11
+  usecase "Archive Broadcast" as UC12
+
+  UC9 ..> UC1 : <<extend>>
+}
+
+PD -- UC1
+PD -- UC10
+PD -- UC11
+CM -- UC3
+CM -- UC12
+BE -- UC5
+BE -- UC7
+BE -- UC8
+AD -- UC9
+
+@enduml
+```

@@ -1,0 +1,125 @@
+
+
+DOMAIN: tutoring_marketplace
+DOMAIN_DISPLAY: Tutoring Marketplace
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Session, Validate Tutor Availability, include (Book Session → Validate Tutor Availability)
+EXPLANATION: "Validate Tutor Availability" is included only by "Book Session", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents a sub-step (checking if a tutor is free) rather than a complete service observable to a user. This is functional decomposition of "Book Session" into an internal procedural step.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Payment, Calculate Service Fee, include (Process Payment → Calculate Service Fee)
+EXPLANATION: "Calculate Service Fee" is included only by "Process Payment", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Calculating a fee is an internal computation step within payment processing, not a standalone service delivering an observable result to any user.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Register As Tutor, Upload Credentials, include (Register As Tutor → Upload Credentials)
+EXPLANATION: "Upload Credentials" is included only by "Register As Tutor", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. Uploading credentials is a sub-step of tutor registration, not a complete service offered to any actor independently.
+
+REFACTORING_RATIONALE: Three inclusion use cases — "Validate Tutor Availability", "Calculate Service Fee", and "Upload Credentials" — each serve as decomposed sub-steps of their respective base use cases and provide no standalone value to any actor. To refactor: (1) Merge "Validate Tutor Availability" into "Book Session", since availability checking is an internal part of booking. (2) Merge "Calculate Service Fee" into "Process Payment", since fee calculation is inherent to payment processing. (3) Merge "Upload Credentials" into "Register As Tutor", since credential upload is part of the registration workflow. Each merge removes one use case node and one include relationship, eliminating all three functional decomposition instances while preserving the system's observable services.
+
+CONSTRUCT_COUNT: 27
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Student" as Student
+actor "Tutor" as Tutor
+actor "Admin" as Admin
+
+rectangle "Tutoring Marketplace" {
+  usecase "Search Tutors" as UC1
+  usecase "Book Session" as UC2
+  usecase "Validate Tutor Availability" as UC3
+  usecase "Process Payment" as UC4
+  usecase "Calculate Service Fee" as UC5
+  usecase "Leave Review" as UC6
+  usecase "Register As Tutor" as UC7
+  usecase "Upload Credentials" as UC8
+  usecase "Manage Schedule" as UC9
+  usecase "View Earnings" as UC10
+  usecase "Conduct Session" as UC11
+  usecase "Manage Listings" as UC12
+  usecase "Resolve Dispute" as UC13
+  usecase "View Dashboard" as UC14
+  usecase "Send Message" as UC15
+  usecase "Cancel Session" as UC16
+}
+
+Student --> UC1
+Student --> UC2
+Student --> UC4
+Student --> UC6
+Student --> UC15
+Student --> UC16
+
+Tutor --> UC7
+Tutor --> UC9
+Tutor --> UC10
+Tutor --> UC11
+Tutor --> UC15
+
+Admin --> UC12
+Admin --> UC13
+Admin --> UC14
+
+UC2 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 21
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Student" as Student
+actor "Tutor" as Tutor
+actor "Admin" as Admin
+
+rectangle "Tutoring Marketplace" {
+  usecase "Search Tutors" as UC1
+  usecase "Book Session" as UC2
+  usecase "Process Payment" as UC4
+  usecase "Leave Review" as UC6
+  usecase "Register As Tutor" as UC7
+  usecase "Manage Schedule" as UC9
+  usecase "View Earnings" as UC10
+  usecase "Conduct Session" as UC11
+  usecase "Manage Listings" as UC12
+  usecase "Resolve Dispute" as UC13
+  usecase "View Dashboard" as UC14
+  usecase "Send Message" as UC15
+  usecase "Cancel Session" as UC16
+}
+
+Student --> UC1
+Student --> UC2
+Student --> UC4
+Student --> UC6
+Student --> UC15
+Student --> UC16
+
+Tutor --> UC7
+Tutor --> UC9
+Tutor --> UC10
+Tutor --> UC11
+Tutor --> UC15
+
+Admin --> UC12
+Admin --> UC13
+Admin --> UC14
+@enduml
+```

@@ -1,0 +1,118 @@
+metadata:
+  prompt_number: 121
+  domain: accounting_system
+  domain_display: Accounting System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Create Invoice, Validate Invoice Fields, include relationship
+        from Create Invoice to Validate Invoice Fields
+      explanation: '"Validate Invoice Fields" is an inclusion use case included only
+        by "Create Invoice". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. It represents
+        a sub-step (field validation) of creating an invoice rather than a complete,
+        independently meaningful service observable to any actor. This is functional
+        decomposition of the "Create Invoice" use case into a procedural sub-task.'
+    - constructs_involved: Generate Financial Report, Fetch Report Data, include relationship
+        from Generate Financial Report to Fetch Report Data
+      explanation: '"Fetch Report Data" is an inclusion use case included only by
+        "Generate Financial Report". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. Fetching
+        data is an internal procedural step of report generation, not a complete service
+        yielding an observable result to a user. This constitutes functional decomposition.'
+    - constructs_involved: Process Payroll, Calculate Deductions, include relationship
+        from Process Payroll to Calculate Deductions
+      explanation: '"Calculate Deductions" is an inclusion use case included only
+        by "Process Payroll". It is not associated with any actor, is not included
+        by any other use case, does not include or extend any other use case, is not
+        extended by any use case, and has no generalization relationships. Calculating
+        deductions is an internal computational step within payroll processing rather
+        than a standalone service observable to any actor. This is a clear case of
+        functional decomposition.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 30
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:46:54.966784'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_121_accounting_system/accounting_system_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_121_accounting_system/accounting_system_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_121_accounting_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Accountant\"\
+    \ as Accountant\nactor \"Manager\" as Manager\nactor \"Auditor\" as Auditor\n\
+    actor \"Payroll Clerk\" as PayrollClerk\n\nrectangle \"Accounting System\" {\n\
+    \  usecase \"Create Invoice\" as UC1\n  usecase \"Validate Invoice Fields\" as\
+    \ UC2\n  usecase \"Record Payment\" as UC3\n  usecase \"Manage Chart of Accounts\"\
+    \ as UC4\n  usecase \"Generate Financial Report\" as UC5\n  usecase \"Fetch Report\
+    \ Data\" as UC6\n  usecase \"Process Payroll\" as UC7\n  usecase \"Calculate Deductions\"\
+    \ as UC8\n  usecase \"Reconcile Bank Statements\" as UC9\n  usecase \"Manage Tax\
+    \ Filing\" as UC10\n  usecase \"Review Audit Trail\" as UC11\n  usecase \"Approve\
+    \ Expense Claims\" as UC12\n  usecase \"Record Journal Entry\" as UC13\n  usecase\
+    \ \"Manage Vendor Accounts\" as UC14\n  usecase \"Generate Tax Summary\" as UC15\n\
+    \  usecase \"Flag Discrepancy\" as UC16\n}\n\nAccountant --> UC1\nAccountant -->\
+    \ UC3\nAccountant --> UC4\nAccountant --> UC9\nAccountant --> UC13\nAccountant\
+    \ --> UC14\n\nManager --> UC5\nManager --> UC12\nManager --> UC10\n\nPayrollClerk\
+    \ --> UC7\n\nAuditor --> UC11\nAuditor --> UC15\n\nUC1 ..> UC2 : <<include>>\n\
+    UC5 ..> UC6 : <<include>>\nUC7 ..> UC8 : <<include>>\nUC9 ..> UC16 : <<extend>>\n\
+    \n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Create Invoice, Validate Invoice Fields,\
+    \ include relationship from Create Invoice to Validate Invoice Fields\n   Instance\
+    \ 1: Explanation: \"Validate Invoice Fields\" is an inclusion use case included\
+    \ only by \"Create Invoice\". It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any other use case, is not\
+    \ extended by any use case, and has no generalization relationships. It represents\
+    \ a sub-step (field validation) of creating an invoice rather than a complete,\
+    \ independently meaningful service observable to any actor. This is functional\
+    \ decomposition of the \"Create Invoice\" use case into a procedural sub-task.\n\
+    \n   Instance 2: Constructs Involved: Generate Financial Report, Fetch Report\
+    \ Data, include relationship from Generate Financial Report to Fetch Report Data\n\
+    \   Instance 2: Explanation: \"Fetch Report Data\" is an inclusion use case included\
+    \ only by \"Generate Financial Report\". It is not associated with any actor,\
+    \ is not included by any other use case, does not include or extend any other\
+    \ use case, is not extended by any use case, and has no generalization relationships.\
+    \ Fetching data is an internal procedural step of report generation, not a complete\
+    \ service yielding an observable result to a user. This constitutes functional\
+    \ decomposition.\n\n   Instance 3: Constructs Involved: Process Payroll, Calculate\
+    \ Deductions, include relationship from Process Payroll to Calculate Deductions\n\
+    \   Instance 3: Explanation: \"Calculate Deductions\" is an inclusion use case\
+    \ included only by \"Process Payroll\". It is not associated with any actor, is\
+    \ not included by any other use case, does not include or extend any other use\
+    \ case, is not extended by any use case, and has no generalization relationships.\
+    \ Calculating deductions is an internal computational step within payroll processing\
+    \ rather than a standalone service observable to any actor. This is a clear case\
+    \ of functional decomposition."
+raw_response_excerpt: '
+
+
+  DOMAIN: accounting_system
+
+  DOMAIN_DISPLAY: Accounting System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Create Invoice, Validate Invoice Fields, include relationship
+  from Create Invoice to Validate Invoice Fields
+
+  EXPLANATION: "Validate Invoice Fields" is an inclusion use case included only by
+  "Create Invoice". It is not associated with any actor, is not included by any other
+  use case, does not include or extend any other use case, is not e …[truncated]'

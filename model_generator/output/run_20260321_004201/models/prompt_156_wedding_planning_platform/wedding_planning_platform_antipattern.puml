@@ -1,0 +1,47 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Couple" as Couple
+actor "Wedding Planner" as Planner
+actor "Vendor" as Vendor
+actor "Guest" as Guest
+
+rectangle "Wedding Planning Platform" {
+  usecase "Register Account" as UC1
+  usecase "Browse Vendors" as UC2
+  usecase "Book Venue" as UC3
+  usecase "Check Venue Availability" as UC4
+  usecase "Manage Guest List" as UC5
+  usecase "Send Invitations" as UC6
+  usecase "Validate Guest Addresses" as UC7
+  usecase "RSVP to Event" as UC8
+  usecase "Manage Budget" as UC9
+  usecase "Calculate Remaining Balance" as UC10
+  usecase "Create Seating Arrangement" as UC11
+  usecase "Submit Vendor Proposal" as UC12
+  usecase "Schedule Consultation" as UC13
+  usecase "View Wedding Timeline" as UC14
+}
+
+Couple -- UC1
+Couple -- UC2
+Couple -- UC3
+Couple -- UC5
+Couple -- UC6
+Couple -- UC9
+Couple -- UC11
+Couple -- UC14
+
+Planner -- UC3
+Planner -- UC13
+Planner -- UC14
+
+Vendor -- UC12
+
+Guest -- UC8
+
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC9 ..> UC10 : <<include>>
+
+@enduml

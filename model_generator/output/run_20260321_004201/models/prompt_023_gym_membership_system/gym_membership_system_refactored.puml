@@ -1,0 +1,38 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor Member
+actor Trainer
+actor Administrator
+actor "Payment Gateway" as PG
+
+rectangle "Gym Membership System" {
+  usecase "Register Membership" as UC1
+  usecase "Renew Membership" as UC2
+  usecase "Cancel Membership" as UC3
+  usecase "Book Class" as UC4
+  usecase "View Schedule" as UC5
+  usecase "Process Payment" as UC6
+  usecase "Manage Class Schedule" as UC7
+  usecase "Track Attendance" as UC8
+  usecase "Generate Reports" as UC9
+  usecase "Update Member Profile" as UC10
+  usecase "Apply Discount" as UC11
+}
+
+Member -- UC1
+Member -- UC2
+Member -- UC3
+Member -- UC4
+Member -- UC5
+Member -- UC10
+Trainer -- UC7
+Trainer -- UC8
+Administrator -- UC9
+Administrator -- UC3
+PG -- UC6
+
+UC2 ..> UC6 : <<include>>
+UC11 ..> UC6 : <<extend>>
+
+@enduml

@@ -1,0 +1,117 @@
+metadata:
+  prompt_number: 143
+  domain: esports_tournament_platform
+  domain_display: Esports Tournament Platform
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Register Team, Validate Team Roster, include relationship
+        from Register Team to Validate Team Roster
+      explanation: '"Validate Team Roster" is an inclusion use case included only
+        by "Register Team." It is not associated with any actor, is not included by
+        any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. It represents an
+        internal validation step (checking roster size, player eligibility) rather
+        than a complete, independently valuable service. This is functional decomposition
+        — breaking "Register Team" into a sub-step that provides no observable result
+        to any actor on its own.'
+    - constructs_involved: Schedule Match, Assign Server Instance, include relationship
+        from Schedule Match to Assign Server Instance
+      explanation: '"Assign Server Instance" is an inclusion use case included only
+        by "Schedule Match." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Assigning a game
+        server is an internal infrastructure step within scheduling a match, not a
+        standalone service observable to any user. This decomposes "Schedule Match"
+        into a sub-function unnecessarily.'
+    - constructs_involved: Process Prize Payout, Calculate Prize Split, include relationship
+        from Process Prize Payout to Calculate Prize Split
+      explanation: '"Calculate Prize Split" is an inclusion use case included only
+        by "Process Prize Payout." It is not associated with any actor, is not included
+        by any other use case, does not include or extend any use case, is not extended
+        by any use case, and has no generalization relationships. Calculating how
+        prize money is split among team members is an internal computational step
+        within processing a payout, not a complete service offered to any actor. This
+        is a classic functional decomposition of "Process Prize Payout."'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 28
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:57:42.970178'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_143_esports_tournament_platform/esports_tournament_platform_antipattern.puml
+    image: output/run_20260321_004201/models/prompt_143_esports_tournament_platform/esports_tournament_platform_antipattern.jpg
+    jinja: output/run_20260321_004201/training_samples/antipattern/prompt_143_esports_tournament_platform_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nleft to right direction\n\
+    \nactor \"Team Captain\" as TC\nactor \"Tournament Admin\" as TA\nactor \"Spectator\"\
+    \ as SP\nactor \"Finance Manager\" as FM\n\nrectangle \"Esports Tournament Platform\"\
+    \ {\n  usecase \"Register Team\" as UC1\n  usecase \"Validate Team Roster\" as\
+    \ UC2\n  usecase \"Browse Tournaments\" as UC3\n  usecase \"Join Tournament\"\
+    \ as UC4\n  usecase \"Schedule Match\" as UC5\n  usecase \"Assign Server Instance\"\
+    \ as UC6\n  usecase \"Report Match Result\" as UC7\n  usecase \"View Live Bracket\"\
+    \ as UC8\n  usecase \"Watch Live Stream\" as UC9\n  usecase \"Manage Tournament\
+    \ Settings\" as UC10\n  usecase \"Process Prize Payout\" as UC11\n  usecase \"\
+    Calculate Prize Split\" as UC12\n  usecase \"View Match History\" as UC13\n  usecase\
+    \ \"Submit Dispute\" as UC14\n}\n\nTC --> UC1\nTC --> UC3\nTC --> UC4\nTC -->\
+    \ UC7\nTC --> UC13\nTC --> UC14\n\nTA --> UC5\nTA --> UC10\nTA --> UC7\n\nSP -->\
+    \ UC8\nSP --> UC9\n\nFM --> UC11\n\nUC1 ..> UC2 : <<include>>\nUC5 ..> UC6 : <<include>>\n\
+    UC11 ..> UC12 : <<include>>\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Register Team, Validate Team Roster, include\
+    \ relationship from Register Team to Validate Team Roster\n   Instance 1: Explanation:\
+    \ \"Validate Team Roster\" is an inclusion use case included only by \"Register\
+    \ Team.\" It is not associated with any actor, is not included by any other use\
+    \ case, does not include or extend any use case, is not extended by any use case,\
+    \ and has no generalization relationships. It represents an internal validation\
+    \ step (checking roster size, player eligibility) rather than a complete, independently\
+    \ valuable service. This is functional decomposition — breaking \"Register Team\"\
+    \ into a sub-step that provides no observable result to any actor on its own.\n\
+    \n   Instance 2: Constructs Involved: Schedule Match, Assign Server Instance,\
+    \ include relationship from Schedule Match to Assign Server Instance\n   Instance\
+    \ 2: Explanation: \"Assign Server Instance\" is an inclusion use case included\
+    \ only by \"Schedule Match.\" It is not associated with any actor, is not included\
+    \ by any other use case, does not include or extend any use case, is not extended\
+    \ by any use case, and has no generalization relationships. Assigning a game server\
+    \ is an internal infrastructure step within scheduling a match, not a standalone\
+    \ service observable to any user. This decomposes \"Schedule Match\" into a sub-function\
+    \ unnecessarily.\n\n   Instance 3: Constructs Involved: Process Prize Payout,\
+    \ Calculate Prize Split, include relationship from Process Prize Payout to Calculate\
+    \ Prize Split\n   Instance 3: Explanation: \"Calculate Prize Split\" is an inclusion\
+    \ use case included only by \"Process Prize Payout.\" It is not associated with\
+    \ any actor, is not included by any other use case, does not include or extend\
+    \ any use case, is not extended by any use case, and has no generalization relationships.\
+    \ Calculating how prize money is split among team members is an internal computational\
+    \ step within processing a payout, not a complete service offered to any actor.\
+    \ This is a classic functional decomposition of \"Process Prize Payout.\""
+raw_response_excerpt: '
+
+
+  DOMAIN: esports_tournament_platform
+
+  DOMAIN_DISPLAY: Esports Tournament Platform
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Register Team, Validate Team Roster, include relationship from
+  Register Team to Validate Team Roster
+
+  EXPLANATION: "Validate Team Roster" is an inclusion use case included only by "Register
+  Team." It is not associated with any actor, is not included by any other use case,
+  does not include or extend any use case, is not …[truncated]'

@@ -1,0 +1,25 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Pet Owner" as PO
+actor "Service Provider" as SP
+
+rectangle "Pet Care Service Booking System" {
+  usecase "Browse Services" as UC1
+  usecase "Book Grooming Appointment" as UC2
+  usecase "Select Time Slot" as UC3
+  usecase "Cancel Booking" as UC4
+  usecase "View Bookings" as UC5
+  usecase "Manage Availability" as UC6
+  usecase "Confirm Booking" as UC7
+}
+
+PO -- UC1
+PO -- UC2
+PO -- UC4
+PO -- UC5
+UC2 ..> UC3 : <<include>>
+SP -- UC6
+SP -- UC7
+
+@enduml

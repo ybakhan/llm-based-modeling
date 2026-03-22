@@ -1,0 +1,115 @@
+
+
+DOMAIN: api_management_portal
+DOMAIN_DISPLAY: API Management Portal
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register API, Validate API Schema
+EXPLANATION: "Register API" includes "Validate API Schema". "Validate API Schema" is included only by "Register API", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. This is functional decomposition because validating the schema is merely an internal step of the API registration process, not a standalone service offering an observable result to any user.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Generate API Key, Encrypt Key Value
+EXPLANATION: "Generate API Key" includes "Encrypt Key Value". "Encrypt Key Value" is included only by "Generate API Key", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Encrypting the key value is an internal implementation detail of key generation, not a complete service visible to any actor.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Configure Rate Limiting, Save Rate Limit Rules
+EXPLANATION: "Configure Rate Limiting" includes "Save Rate Limit Rules". "Save Rate Limit Rules" is included only by "Configure Rate Limiting", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Saving rules to persistence is an internal substep of configuring rate limiting, decomposing the use case functionally rather than representing a complete user-facing service.
+
+REFACTORING_RATIONALE: All three inclusion use cases ("Validate API Schema", "Encrypt Key Value", "Save Rate Limit Rules") must be merged back into their respective base use cases ("Register API", "Generate API Key", "Configure Rate Limiting"). Each inclusion use case represents an internal processing step, not a standalone service. Merging them eliminates 3 use cases and 3 include relationships (6 constructs total), simplifying the model while preserving all functionality within the base use cases. The refactored model retains complete, actor-facing services without artificial decomposition.
+
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "API Developer" as Dev
+actor "API Admin" as Admin
+actor "Portal Visitor" as Visitor
+
+rectangle "API Management Portal" {
+  usecase "Register API" as UC1
+  usecase "Validate API Schema" as UC2
+  usecase "Generate API Key" as UC3
+  usecase "Encrypt Key Value" as UC4
+  usecase "Browse API Catalog" as UC5
+  usecase "View API Documentation" as UC6
+  usecase "Monitor API Usage" as UC7
+  usecase "Configure Rate Limiting" as UC8
+  usecase "Save Rate Limit Rules" as UC9
+  usecase "Manage API Versions" as UC10
+  usecase "Revoke API Key" as UC11
+  usecase "View Analytics Dashboard" as UC12
+  usecase "Set Deprecation Notice" as UC13
+}
+
+Dev --> UC1
+Dev --> UC3
+Dev --> UC5
+Dev --> UC6
+Dev --> UC7
+
+Admin --> UC8
+Admin --> UC10
+Admin --> UC11
+Admin --> UC12
+
+Visitor --> UC5
+Visitor --> UC6
+
+UC10 ..> UC13 : <<extend>>
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC8 ..> UC9 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "API Developer" as Dev
+actor "API Admin" as Admin
+actor "Portal Visitor" as Visitor
+
+rectangle "API Management Portal" {
+  usecase "Register API" as UC1
+  usecase "Generate API Key" as UC3
+  usecase "Browse API Catalog" as UC5
+  usecase "View API Documentation" as UC6
+  usecase "Monitor API Usage" as UC7
+  usecase "Configure Rate Limiting" as UC8
+  usecase "Manage API Versions" as UC10
+  usecase "Revoke API Key" as UC11
+  usecase "View Analytics Dashboard" as UC12
+  usecase "Set Deprecation Notice" as UC13
+}
+
+Dev --> UC1
+Dev --> UC3
+Dev --> UC5
+Dev --> UC6
+Dev --> UC7
+
+Admin --> UC8
+Admin --> UC10
+Admin --> UC11
+Admin --> UC12
+
+Visitor --> UC5
+Visitor --> UC6
+
+UC10 ..> UC13 : <<extend>>
+@enduml
+```

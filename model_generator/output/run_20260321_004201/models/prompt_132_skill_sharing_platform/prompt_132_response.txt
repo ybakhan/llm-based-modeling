@@ -1,0 +1,113 @@
+
+
+DOMAIN: skill_sharing_platform
+DOMAIN_DISPLAY: Skill Sharing Platform
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Session, Validate Availability
+EXPLANATION: "Book Session" includes "Validate Availability". "Validate Availability" is included by only "Book Session", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It is a decomposed sub-step of booking rather than a complete service offering an observable result to a user.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Book Session, Process Payment
+EXPLANATION: "Book Session" includes "Process Payment". "Process Payment" is included by only "Book Session", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It represents an internal processing step decomposed out of the booking flow, not a standalone service with an observable result to any actor.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Create Skill Listing, Upload Portfolio Media
+EXPLANATION: "Create Skill Listing" includes "Upload Portfolio Media". "Upload Portfolio Media" is included by only "Create Skill Listing", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. It is a decomposed sub-step of creating a listing rather than a complete service.
+
+REFACTORING_RATIONALE: All three functional decomposition instances must be resolved by merging the inclusion use cases back into their respective base use cases. "Validate Availability" and "Process Payment" must both be merged into "Book Session" — their behavior becomes internal to the booking use case. "Upload Portfolio Media" must be merged into "Create Skill Listing" — its behavior becomes internal to the listing creation use case. This eliminates three use cases and three include relationships (six constructs total), producing a cleaner model where each use case represents a complete, actor-meaningful service.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor Learner
+actor Instructor
+actor Admin
+
+rectangle "Skill Sharing Platform" {
+  usecase "Browse Skills" as UC1
+  usecase "Search Instructors" as UC2
+  usecase "Book Session" as UC3
+  usecase "Validate Availability" as UC4
+  usecase "Process Payment" as UC5
+  usecase "Leave Review" as UC6
+  usecase "Create Skill Listing" as UC7
+  usecase "Upload Portfolio Media" as UC8
+  usecase "Manage Schedule" as UC9
+  usecase "View Earnings" as UC10
+  usecase "Send Message" as UC11
+  usecase "Moderate Content" as UC12
+  usecase "Manage Users" as UC13
+  usecase "View Analytics Dashboard" as UC14
+}
+
+Learner -- UC1
+Learner -- UC2
+Learner -- UC3
+Learner -- UC6
+Learner -- UC11
+Instructor -- UC7
+Instructor -- UC9
+Instructor -- UC10
+Instructor -- UC11
+Admin -- UC12
+Admin -- UC13
+Admin -- UC14
+
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor Learner
+actor Instructor
+actor Admin
+
+rectangle "Skill Sharing Platform" {
+  usecase "Browse Skills" as UC1
+  usecase "Search Instructors" as UC2
+  usecase "Book Session" as UC3
+  usecase "Leave Review" as UC6
+  usecase "Create Skill Listing" as UC7
+  usecase "Manage Schedule" as UC9
+  usecase "View Earnings" as UC10
+  usecase "Send Message" as UC11
+  usecase "Moderate Content" as UC12
+  usecase "Manage Users" as UC13
+  usecase "View Analytics Dashboard" as UC14
+}
+
+Learner -- UC1
+Learner -- UC2
+Learner -- UC3
+Learner -- UC6
+Learner -- UC11
+Instructor -- UC7
+Instructor -- UC9
+Instructor -- UC10
+Instructor -- UC11
+Admin -- UC12
+Admin -- UC13
+Admin -- UC14
+@enduml
+```

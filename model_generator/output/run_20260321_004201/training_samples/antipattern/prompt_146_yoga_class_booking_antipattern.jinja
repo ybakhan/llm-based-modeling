@@ -1,0 +1,36 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Member" as A1
+actor "Instructor" as A2
+
+rectangle "Yoga Class Booking System" {
+  usecase "Browse Classes" as UC1
+  usecase "Book Class" as UC2
+  usecase "Cancel Booking" as UC3
+  usecase "View My Schedule" as UC4
+  usecase "Check Schedule Availability" as UC5
+  usecase "Manage Class Offerings" as UC6
+}
+
+A1 --> UC1
+A1 --> UC2
+A1 --> UC3
+A1 --> UC4
+A2 --> UC6
+
+UC2 ..> UC5 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Book Class (UC2), Check Schedule Availability (UC5), the <<include>> relationship from UC2 to UC5
+   Explanation: "Check Schedule Availability" (UC5) is an inclusion use case that is included by only one use case ("Book Class" UC2). It is not associated with any actor directly, does not include or extend any other use case, is not extended by any other use case, and has no generalization relationships. It represents a sub-step of the booking process rather than a complete, independently valuable service observable to any actor. This is a classic functional decomposition — the developer broke apart the "Book Class" use case into a procedural step ("check if the schedule slot is available") that has no standalone value to any user.

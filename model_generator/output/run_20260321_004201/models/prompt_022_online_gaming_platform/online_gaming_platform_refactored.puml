@@ -1,0 +1,20 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Player" as Player
+actor "Game Admin" as Admin
+
+rectangle "Online Gaming Platform" {
+  usecase "Join Match" as UC1
+  usecase "Browse Games" as UC2
+  usecase "Create Tournament" as UC4
+  usecase "Chat with Players" as UC5
+}
+
+Player -- UC1
+Player -- UC2
+Player -- UC5
+Admin -- UC4
+
+@enduml

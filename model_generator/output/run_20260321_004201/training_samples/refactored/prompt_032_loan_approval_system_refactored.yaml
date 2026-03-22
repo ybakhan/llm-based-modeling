@@ -1,0 +1,60 @@
+metadata:
+  prompt_number: 32
+  domain: loan_approval_system
+  domain_display: Loan Approval System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T20:52:35.482499'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_032_loan_approval_system/loan_approval_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_032_loan_approval_system/loan_approval_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_032_loan_approval_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\nleft to right direction\n\n\
+    actor \"Applicant\" as Applicant\nactor \"Loan Officer\" as LoanOfficer\nactor\
+    \ \"Manager\" as Manager\nactor \"Credit Bureau\" as CreditBureau\n\nrectangle\
+    \ \"Loan Approval System\" {\n    usecase \"Submit Loan Application\" as UC1\n\
+    \    usecase \"Track Application Status\" as UC3\n    usecase \"Evaluate Loan\
+    \ Application\" as UC4\n    usecase \"Request Additional Documents\" as UC6\n\
+    \    usecase \"Approve Loan\" as UC7\n    usecase \"Reject Loan\" as UC9\n   \
+    \ usecase \"Appeal Rejection\" as UC10\n    usecase \"Override Decision\" as UC11\n\
+    \    usecase \"Retrieve Credit Report\" as UC12\n    usecase \"Disburse Funds\"\
+    \ as UC13\n}\n\nApplicant -- UC1\nApplicant -- UC3\nApplicant -- UC10\n\nLoanOfficer\
+    \ -- UC4\nLoanOfficer -- UC6\nLoanOfficer -- UC7\nLoanOfficer -- UC9\nLoanOfficer\
+    \ -- UC13\n\nManager -- UC11\n\nCreditBureau -- UC12\n\nUC4 ..> UC12 : <<include>>\n\
+    }\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: loan_approval_system
+
+  DOMAIN_DISPLAY: Loan Approval System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Submit Loan Application, Validate Applicant Identity, include
+  relationship from "Submit Loan Application" to "Validate Applicant Identity"
+
+  EXPLANATION: "Validate Applicant Identity" is an inclusion use case included only
+  by "Submit Loan Application". It is not associated with any actor, not included
+  by any other use case, does not  …[truncated]'

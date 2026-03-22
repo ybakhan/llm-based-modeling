@@ -1,0 +1,21 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Policyholder" as PH
+actor "Agent" as AG
+
+rectangle "Insurance Management System" {
+  usecase "Purchase Policy" as UC1
+  usecase "Submit Claim" as UC2
+  usecase "Review Claim" as UC3
+  usecase "Validate Claim Documents" as UC4
+  usecase "View Policy Details" as UC5
+}
+
+PH -- UC1
+PH -- UC2
+PH -- UC5
+AG -- UC3
+UC2 ..> UC4 : <<include>>
+
+@enduml

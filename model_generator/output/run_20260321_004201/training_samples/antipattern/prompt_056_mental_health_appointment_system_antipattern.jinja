@@ -1,0 +1,57 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Patient" as Patient
+actor "Therapist" as Therapist
+actor "Receptionist" as Receptionist
+
+rectangle "Mental Health Appointment System" {
+  usecase "Book Appointment" as UC1
+  usecase "Validate Insurance Details" as UC2
+  usecase "Select Time Slot" as UC3
+  usecase "Cancel Appointment" as UC4
+  usecase "Send Cancellation Notification" as UC5
+  usecase "View Schedule" as UC6
+  usecase "Reschedule Appointment" as UC7
+  usecase "Record Session Notes" as UC8
+  usecase "View Patient History" as UC9
+  usecase "Manage Therapist Availability" as UC10
+  usecase "Generate Appointment Report" as UC11
+}
+
+Patient --> UC1
+Patient --> UC4
+Patient --> UC7
+Patient --> UC6
+Therapist --> UC6
+Therapist --> UC8
+Therapist --> UC9
+Receptionist --> UC1
+Receptionist --> UC10
+Receptionist --> UC11
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC1 : <<include>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Book Appointment, Validate Insurance Details, include (Book Appointment → Validate Insurance Details)
+   Instance 1: Explanation: "Validate Insurance Details" is an inclusion use case included only by "Book Appointment." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (insurance validation) of the booking process rather than a complete, independently valuable service observable to any actor. This is functional decomposition — breaking "Book Appointment" into procedural steps via include.
+
+   Instance 2: Constructs Involved: Book Appointment, Select Time Slot, include (Book Appointment → Select Time Slot)
+   Instance 2: Explanation: "Select Time Slot" is an inclusion use case included only by "Book Appointment." It has no direct association with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Selecting a time slot is a sub-step of booking, not a standalone service delivering an observable result to a user. This is functional decomposition of the booking workflow.
+
+   Instance 3: Constructs Involved: Cancel Appointment, Send Cancellation Notification, include (Cancel Appointment → Send Cancellation Notification)
+   Instance 3: Explanation: "Send Cancellation Notification" is an inclusion use case included only by "Cancel Appointment." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Sending a notification is an internal procedural step of cancellation, not a complete service with an observable result to an actor. This is functional decomposition of the cancellation process.

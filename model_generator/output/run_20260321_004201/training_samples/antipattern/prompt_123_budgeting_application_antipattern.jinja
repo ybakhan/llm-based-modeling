@@ -1,0 +1,57 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Budget Owner" as Owner
+actor "Financial Advisor" as Advisor
+actor "Administrator" as Admin
+
+rectangle "Budgeting Application" {
+  usecase "Create Budget" as UC1
+  usecase "Validate Budget Categories" as UC2
+  usecase "Track Expenses" as UC3
+  usecase "Retrieve Expense Data" as UC4
+  usecase "Set Savings Goals" as UC5
+  usecase "Generate Report" as UC6
+  usecase "Calculate Totals" as UC7
+  usecase "Review Budget Performance" as UC8
+  usecase "Manage User Accounts" as UC9
+  usecase "Send Budget Alerts" as UC10
+  usecase "Import Bank Transactions" as UC11
+  usecase "Categorize Transactions" as UC12
+}
+
+Owner --> UC1
+Owner --> UC3
+Owner --> UC5
+Owner --> UC11
+Owner --> UC12
+Advisor --> UC6
+Advisor --> UC8
+Admin --> UC9
+Admin --> UC10
+
+UC1 ..> UC2 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC3 ..> UC4 : <<include>>
+
+UC11 ..> UC12 : <<include>>
+UC8 ..> UC6 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Create Budget, Validate Budget Categories, include (Create Budget → Validate Budget Categories)
+   Instance 1: Explanation: "Validate Budget Categories" is an inclusion use case included only by "Create Budget". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (validating categories) rather than a complete service observable to any user. This is functional decomposition of "Create Budget" into an internal processing step.
+
+   Instance 2: Constructs Involved: Generate Report, Calculate Totals, include (Generate Report → Calculate Totals)
+   Instance 2: Explanation: "Calculate Totals" is an inclusion use case included only by "Generate Report". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Calculating totals is an internal computational step of report generation, not a standalone service offering an observable result to a user. This is functional decomposition.
+
+   Instance 3: Constructs Involved: Track Expenses, Retrieve Expense Data, include (Track Expenses → Retrieve Expense Data)
+   Instance 3: Explanation: "Retrieve Expense Data" is an inclusion use case included only by "Track Expenses". It is not associated with any actor, not included by any other use case, does not include or extend any other use case, is not extended by any use case, and has no generalization relationships. Retrieving data is an internal data-fetching step within expense tracking, not a complete service providing an observable result to any actor. This is functional decomposition.

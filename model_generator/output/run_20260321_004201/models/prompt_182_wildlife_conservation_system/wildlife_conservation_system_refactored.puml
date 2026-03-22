@@ -1,0 +1,22 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Field Ranger" as Ranger
+actor "Conservation Manager" as Manager
+actor "Veterinarian" as Vet
+
+rectangle "Wildlife Conservation System" {
+  usecase "Report Animal Sighting" as UC1
+  usecase "Monitor Endangered Species" as UC3
+  usecase "Manage Protected Areas" as UC4
+  usecase "Record Animal Treatment" as UC5
+  usecase "Generate Conservation Report" as UC6
+}
+
+Ranger -- UC1
+Ranger -- UC3
+Manager -- UC4
+Manager -- UC6
+Vet -- UC5
+
+@enduml

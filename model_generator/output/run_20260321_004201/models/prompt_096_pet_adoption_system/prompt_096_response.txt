@@ -1,0 +1,121 @@
+
+
+DOMAIN: pet_adoption_system
+DOMAIN_DISPLAY: Pet Adoption System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Submit Adoption Application, Validate Applicant Address
+EXPLANATION: "Validate Applicant Address" is an inclusion use case included only by "Submit Adoption Application". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents a sub-step (address validation) that is not a complete service observable to any user — it is a functional decomposition of the application submission process.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Schedule Home Visit, Check Availability Slot
+EXPLANATION: "Check Availability Slot" is an inclusion use case included only by "Schedule Home Visit". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Checking an availability slot is an internal sub-step of scheduling, not a standalone service providing an observable result to any actor.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Adoption Fee, Generate Payment Receipt
+EXPLANATION: "Generate Payment Receipt" is an inclusion use case included only by "Process Adoption Fee". It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Generating a receipt is a decomposed sub-function of fee processing, not a complete service offered to any actor on its own.
+
+REFACTORING_RATIONALE: Each of the three inclusion use cases ("Validate Applicant Address", "Check Availability Slot", "Generate Payment Receipt") must be merged into their respective base use cases ("Submit Adoption Application", "Schedule Home Visit", "Process Adoption Fee"). These inclusion use cases each represent internal procedural steps rather than complete, actor-observable services. By absorbing them, we eliminate 3 use cases and 3 include relationships (6 constructs total), simplifying the model while preserving all functionality within the base use cases. The refactored model retains all meaningful behavior and actor interactions.
+
+CONSTRUCT_COUNT: 30
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Adopter" as Adopter
+actor "Shelter Staff" as Staff
+actor "Veterinarian" as Vet
+actor "Administrator" as Admin
+
+rectangle "Pet Adoption System" {
+  usecase "Browse Available Pets" as UC1
+  usecase "Search Pets by Criteria" as UC2
+  usecase "View Pet Profile" as UC3
+  usecase "Submit Adoption Application" as UC4
+  usecase "Validate Applicant Address" as UC5
+  usecase "Review Application" as UC6
+  usecase "Schedule Home Visit" as UC7
+  usecase "Check Availability Slot" as UC8
+  usecase "Process Adoption Fee" as UC9
+  usecase "Generate Payment Receipt" as UC10
+  usecase "Register New Pet" as UC11
+  usecase "Update Pet Medical Records" as UC12
+  usecase "Perform Health Checkup" as UC13
+  usecase "Manage User Accounts" as UC14
+  usecase "Generate Adoption Reports" as UC15
+}
+
+Adopter --> UC1
+Adopter --> UC2
+Adopter --> UC3
+Adopter --> UC4
+Adopter --> UC9
+Staff --> UC6
+Staff --> UC7
+Staff --> UC11
+Vet --> UC12
+Vet --> UC13
+Admin --> UC14
+Admin --> UC15
+
+UC4 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC9 ..> UC10 : <<include>>
+
+UC1 <.. UC2 : <<extend>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 24
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Adopter" as Adopter
+actor "Shelter Staff" as Staff
+actor "Veterinarian" as Vet
+actor "Administrator" as Admin
+
+rectangle "Pet Adoption System" {
+  usecase "Browse Available Pets" as UC1
+  usecase "Search Pets by Criteria" as UC2
+  usecase "View Pet Profile" as UC3
+  usecase "Submit Adoption Application" as UC4
+  usecase "Review Application" as UC6
+  usecase "Schedule Home Visit" as UC7
+  usecase "Process Adoption Fee" as UC9
+  usecase "Register New Pet" as UC11
+  usecase "Update Pet Medical Records" as UC12
+  usecase "Perform Health Checkup" as UC13
+  usecase "Manage User Accounts" as UC14
+  usecase "Generate Adoption Reports" as UC15
+}
+
+Adopter --> UC1
+Adopter --> UC2
+Adopter --> UC3
+Adopter --> UC4
+Adopter --> UC9
+Staff --> UC6
+Staff --> UC7
+Staff --> UC11
+Vet --> UC12
+Vet --> UC13
+Admin --> UC14
+Admin --> UC15
+
+UC1 <.. UC2 : <<extend>>
+
+@enduml
+```

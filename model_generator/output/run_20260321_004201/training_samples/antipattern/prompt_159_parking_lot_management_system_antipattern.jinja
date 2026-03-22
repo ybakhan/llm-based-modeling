@@ -1,0 +1,61 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Driver" as Driver
+actor "Parking Attendant" as Attendant
+actor "Manager" as Manager
+actor "Payment System" as PaymentSystem
+
+rectangle "Parking Lot Management System" {
+    usecase "Enter Parking Lot" as UC1
+    usecase "Exit Parking Lot" as UC2
+    usecase "Register Vehicle" as UC3
+    usecase "Capture License Plate" as UC4
+    usecase "Process Payment" as UC5
+    usecase "Validate Payment Details" as UC6
+    usecase "Check Spot Availability" as UC7
+    usecase "Reserve Parking Spot" as UC8
+    usecase "Assign Parking Spot" as UC9
+    usecase "Generate Report" as UC10
+    usecase "Aggregate Occupancy Data" as UC11
+    usecase "Monitor Lot Status" as UC12
+    usecase "Issue Parking Ticket" as UC13
+    usecase "Apply Discount" as UC14
+}
+
+Driver --> UC1
+Driver --> UC2
+Driver --> UC5
+Driver --> UC7
+Driver --> UC8
+Attendant --> UC3
+Attendant --> UC9
+Attendant --> UC13
+Manager --> UC10
+Manager --> UC12
+PaymentSystem --> UC5
+
+UC3 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC10 ..> UC11 : <<include>>
+UC5 ..> UC14 : <<extend>>
+
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Process Payment, Validate Payment Details
+   Instance 1: Explanation: "Process Payment" includes "Validate Payment Details" via an <<include>> relationship. "Validate Payment Details" is included by only "Process Payment", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. It represents a decomposed sub-step (validating payment info) rather than a complete, independently valuable service. This is functional decomposition of the payment processing behavior.
+
+   Instance 2: Constructs Involved: Register Vehicle, Capture License Plate
+   Instance 2: Explanation: "Register Vehicle" includes "Capture License Plate" via an <<include>> relationship. "Capture License Plate" is included only by "Register Vehicle", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. Capturing a license plate is merely a procedural step within vehicle registration, not a standalone service offering an observable result to any user.
+
+   Instance 3: Constructs Involved: Generate Report, Aggregate Occupancy Data
+   Instance 3: Explanation: "Generate Report" includes "Aggregate Occupancy Data" via an <<include>> relationship. "Aggregate Occupancy Data" is included only by "Generate Report", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization hierarchy. Aggregating data is an internal computational step of report generation, not a complete service visible to any actor.

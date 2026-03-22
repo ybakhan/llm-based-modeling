@@ -1,0 +1,61 @@
+metadata:
+  prompt_number: 121
+  domain: accounting_system
+  domain_display: Accounting System
+  size: medium
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 24
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T01:46:54.966784'
+  files:
+    plantuml: output/run_20260321_004201/models/prompt_121_accounting_system/accounting_system_refactored.puml
+    image: output/run_20260321_004201/models/prompt_121_accounting_system/accounting_system_refactored.jpg
+    jinja: output/run_20260321_004201/training_samples/refactored/prompt_121_accounting_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Accountant\" as Accountant\n\
+    actor \"Manager\" as Manager\nactor \"Auditor\" as Auditor\nactor \"Payroll Clerk\"\
+    \ as PayrollClerk\n\nrectangle \"Accounting System\" {\n  usecase \"Create Invoice\"\
+    \ as UC1\n  usecase \"Record Payment\" as UC3\n  usecase \"Manage Chart of Accounts\"\
+    \ as UC4\n  usecase \"Generate Financial Report\" as UC5\n  usecase \"Process\
+    \ Payroll\" as UC7\n  usecase \"Reconcile Bank Statements\" as UC9\n  usecase\
+    \ \"Manage Tax Filing\" as UC10\n  usecase \"Review Audit Trail\" as UC11\n  usecase\
+    \ \"Approve Expense Claims\" as UC12\n  usecase \"Record Journal Entry\" as UC13\n\
+    \  usecase \"Manage Vendor Accounts\" as UC14\n  usecase \"Generate Tax Summary\"\
+    \ as UC15\n  usecase \"Flag Discrepancy\" as UC16\n}\n\nAccountant --> UC1\nAccountant\
+    \ --> UC3\nAccountant --> UC4\nAccountant --> UC9\nAccountant --> UC13\nAccountant\
+    \ --> UC14\n\nManager --> UC5\nManager --> UC12\nManager --> UC10\n\nPayrollClerk\
+    \ --> UC7\n\nAuditor --> UC11\nAuditor --> UC15\n\nUC9 ..> UC16 : <<extend>>\n\
+    \n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: accounting_system
+
+  DOMAIN_DISPLAY: Accounting System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Create Invoice, Validate Invoice Fields, include relationship
+  from Create Invoice to Validate Invoice Fields
+
+  EXPLANATION: "Validate Invoice Fields" is an inclusion use case included only by
+  "Create Invoice". It is not associated with any actor, is not included by any other
+  use case, does not include or extend any other use case, is not e …[truncated]'

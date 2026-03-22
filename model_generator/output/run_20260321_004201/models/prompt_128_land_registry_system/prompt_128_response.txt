@@ -1,0 +1,104 @@
+
+
+DOMAIN: land_registry_system
+DOMAIN_DISPLAY: Land Registry System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register Property, Validate Property Documents
+EXPLANATION: "Register Property" includes "Validate Property Documents", but "Validate Property Documents" is only included by "Register Property", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. This is functional decomposition — a step of property registration has been broken out as a separate use case that provides no independent service to any actor.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Transfer Ownership, Verify Ownership Chain
+EXPLANATION: "Transfer Ownership" includes "Verify Ownership Chain", but "Verify Ownership Chain" is only included by "Transfer Ownership", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. This is functional decomposition — verifying the ownership chain is merely an internal step of the transfer process, not a standalone service.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Mortgage Registration, Record Lien Details
+EXPLANATION: "Process Mortgage Registration" includes "Record Lien Details", but "Record Lien Details" is only included by "Process Mortgage Registration", is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. This is functional decomposition — recording lien details is an internal substep of mortgage registration, not a complete service offered to any user.
+
+REFACTORING_RATIONALE: The three inclusion use cases — "Validate Property Documents", "Verify Ownership Chain", and "Record Lien Details" — must each be merged back into their respective base use cases ("Register Property", "Transfer Ownership", and "Process Mortgage Registration"). Each inclusion use case is only included by one base use case, has no actor association, and participates in no other relationships, so they serve no independent purpose. Removing these three use cases and their three include relationships eliminates 6 constructs, reducing the count from 25 to 19.
+CONSTRUCT_COUNT: 25
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Land Owner" as LO
+actor "Buyer" as BU
+actor "Notary" as NO
+actor "Bank Officer" as BO
+actor "Registry Clerk" as RC
+
+rectangle "Land Registry System" {
+  usecase "Register Property" as UC1
+  usecase "Validate Property Documents" as UC2
+  usecase "Transfer Ownership" as UC3
+  usecase "Verify Ownership Chain" as UC4
+  usecase "Search Land Records" as UC5
+  usecase "Process Mortgage Registration" as UC6
+  usecase "Record Lien Details" as UC7
+  usecase "Issue Title Certificate" as UC8
+  usecase "Update Cadastral Map" as UC9
+  usecase "Generate Ownership Report" as UC10
+}
+
+LO -- UC1
+LO -- UC3
+BU -- UC3
+BU -- UC5
+NO -- UC3
+NO -- UC8
+BO -- UC6
+RC -- UC1
+RC -- UC9
+RC -- UC10
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC7 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 19
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Land Owner" as LO
+actor "Buyer" as BU
+actor "Notary" as NO
+actor "Bank Officer" as BO
+actor "Registry Clerk" as RC
+
+rectangle "Land Registry System" {
+  usecase "Register Property" as UC1
+  usecase "Transfer Ownership" as UC3
+  usecase "Search Land Records" as UC5
+  usecase "Process Mortgage Registration" as UC6
+  usecase "Issue Title Certificate" as UC8
+  usecase "Update Cadastral Map" as UC9
+  usecase "Generate Ownership Report" as UC10
+}
+
+LO -- UC1
+LO -- UC3
+BU -- UC3
+BU -- UC5
+NO -- UC3
+NO -- UC8
+BO -- UC6
+RC -- UC1
+RC -- UC9
+RC -- UC10
+@enduml
+```

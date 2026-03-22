@@ -1,0 +1,53 @@
+metadata:
+  prompt_number: 39
+  domain: school_administration_system
+  domain_display: School Administration System
+  size: small
+  antipatterns_detected: []
+  sample_type: refactored
+  task_mode: detect
+  construct_count: 9
+  refactoring_rationale: ''
+  generated_at: '2026-03-21T19:06:32.250383'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_039_school_administration_system/school_administration_system_refactored.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_039_school_administration_system/school_administration_system_refactored.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/refactored/prompt_039_school_administration_system_refactored.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 2 – refactored,\
+    \ no antipattern (Drop Functional Decomposition)\n\nactor \"Registrar\" as Registrar\n\
+    actor \"Teacher\" as Teacher\nactor \"Principal\" as Principal\n\nrectangle \"\
+    School Administration System\" {\n  usecase \"Manage Class Schedule\" as UC1\n\
+    \  usecase \"Enroll Student\" as UC2\n  usecase \"Record Grades\" as UC4\n  usecase\
+    \ \"Generate Report Card\" as UC5\n}\n\nRegistrar -- UC1\nRegistrar -- UC2\nTeacher\
+    \ -- UC4\nPrincipal -- UC5\n\n@enduml"
+  output: No antipattern detected.
+raw_response_excerpt: '
+
+
+  DOMAIN: school_administration_system
+
+  DOMAIN_DISPLAY: School Administration System
+
+  SIZE: small
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 1
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Enroll Student (UC2), Validate Student Documents (UC3), the
+  <<include>> relationship from UC2 to UC3
+
+  EXPLANATION: "Validate Student Documents" (UC3) is an inclusion use case that is
+  included by only one use case ("Enroll Student", UC2). UC3 is not associated with
+  any actor directly — no actor interacts with it. UC3 d …[truncated]'

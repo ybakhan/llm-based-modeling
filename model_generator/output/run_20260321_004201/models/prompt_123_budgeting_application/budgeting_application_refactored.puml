@@ -1,0 +1,32 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Budget Owner" as Owner
+actor "Financial Advisor" as Advisor
+actor "Administrator" as Admin
+
+rectangle "Budgeting Application" {
+  usecase "Create Budget" as UC1
+  usecase "Track Expenses" as UC3
+  usecase "Set Savings Goals" as UC5
+  usecase "Generate Report" as UC6
+  usecase "Review Budget Performance" as UC8
+  usecase "Manage User Accounts" as UC9
+  usecase "Send Budget Alerts" as UC10
+  usecase "Import Bank Transactions" as UC11
+  usecase "Categorize Transactions" as UC12
+}
+
+Owner -- UC1
+Owner -- UC3
+Owner -- UC5
+Owner -- UC11
+Owner -- UC12
+Advisor -- UC6
+Advisor -- UC8
+Admin -- UC9
+Admin -- UC10
+
+UC11 ..> UC12 : <<include>>
+UC8 ..> UC6 : <<include>>
+@enduml

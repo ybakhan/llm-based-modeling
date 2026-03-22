@@ -1,0 +1,125 @@
+
+
+DOMAIN: esports_tournament_platform
+DOMAIN_DISPLAY: Esports Tournament Platform
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Register Team, Validate Team Roster, include relationship from Register Team to Validate Team Roster
+EXPLANATION: "Validate Team Roster" is an inclusion use case included only by "Register Team." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. It represents an internal validation step (checking roster size, player eligibility) rather than a complete, independently valuable service. This is functional decomposition — breaking "Register Team" into a sub-step that provides no observable result to any actor on its own.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Schedule Match, Assign Server Instance, include relationship from Schedule Match to Assign Server Instance
+EXPLANATION: "Assign Server Instance" is an inclusion use case included only by "Schedule Match." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Assigning a game server is an internal infrastructure step within scheduling a match, not a standalone service observable to any user. This decomposes "Schedule Match" into a sub-function unnecessarily.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Prize Payout, Calculate Prize Split, include relationship from Process Prize Payout to Calculate Prize Split
+EXPLANATION: "Calculate Prize Split" is an inclusion use case included only by "Process Prize Payout." It is not associated with any actor, is not included by any other use case, does not include or extend any use case, is not extended by any use case, and has no generalization relationships. Calculating how prize money is split among team members is an internal computational step within processing a payout, not a complete service offered to any actor. This is a classic functional decomposition of "Process Prize Payout."
+
+REFACTORING_RATIONALE: All three inclusion use cases — "Validate Team Roster," "Assign Server Instance," and "Calculate Prize Split" — must be merged back into their respective base use cases ("Register Team," "Schedule Match," and "Process Prize Payout"). Each inclusion use case is included by exactly one base use case, is not connected to any actor, and has no other relationships (no includes, extends, or generalizations). They represent internal processing steps, not independently valuable services. Removing these three use cases and their three include relationships eliminates 6 constructs, producing a cleaner model where each base use case encapsulates its full behavior.
+
+CONSTRUCT_COUNT: 28
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+left to right direction
+
+actor "Team Captain" as TC
+actor "Tournament Admin" as TA
+actor "Spectator" as SP
+actor "Finance Manager" as FM
+
+rectangle "Esports Tournament Platform" {
+  usecase "Register Team" as UC1
+  usecase "Validate Team Roster" as UC2
+  usecase "Browse Tournaments" as UC3
+  usecase "Join Tournament" as UC4
+  usecase "Schedule Match" as UC5
+  usecase "Assign Server Instance" as UC6
+  usecase "Report Match Result" as UC7
+  usecase "View Live Bracket" as UC8
+  usecase "Watch Live Stream" as UC9
+  usecase "Manage Tournament Settings" as UC10
+  usecase "Process Prize Payout" as UC11
+  usecase "Calculate Prize Split" as UC12
+  usecase "View Match History" as UC13
+  usecase "Submit Dispute" as UC14
+}
+
+TC --> UC1
+TC --> UC3
+TC --> UC4
+TC --> UC7
+TC --> UC13
+TC --> UC14
+
+TA --> UC5
+TA --> UC10
+TA --> UC7
+
+SP --> UC8
+SP --> UC9
+
+FM --> UC11
+
+UC1 ..> UC2 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC11 ..> UC12 : <<include>>
+
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 22
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+left to right direction
+
+actor "Team Captain" as TC
+actor "Tournament Admin" as TA
+actor "Spectator" as SP
+actor "Finance Manager" as FM
+
+rectangle "Esports Tournament Platform" {
+  usecase "Register Team" as UC1
+  usecase "Browse Tournaments" as UC3
+  usecase "Join Tournament" as UC4
+  usecase "Schedule Match" as UC5
+  usecase "Report Match Result" as UC7
+  usecase "View Live Bracket" as UC8
+  usecase "Watch Live Stream" as UC9
+  usecase "Manage Tournament Settings" as UC10
+  usecase "Process Prize Payout" as UC11
+  usecase "View Match History" as UC13
+  usecase "Submit Dispute" as UC14
+}
+
+TC --> UC1
+TC --> UC3
+TC --> UC4
+TC --> UC7
+TC --> UC13
+TC --> UC14
+
+TA --> UC5
+TA --> UC10
+TA --> UC7
+
+SP --> UC8
+SP --> UC9
+
+FM --> UC11
+
+@enduml
+```

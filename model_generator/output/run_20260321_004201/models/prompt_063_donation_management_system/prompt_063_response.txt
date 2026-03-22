@@ -1,0 +1,113 @@
+
+
+DOMAIN: donation_management_system
+DOMAIN_DISPLAY: Donation Management System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Process Donation, Validate Payment Details, <<include>> from Process Donation to Validate Payment Details
+EXPLANATION: "Validate Payment Details" is an inclusion use case included only by "Process Donation". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by any use case. It represents a sub-step of processing a donation rather than a complete, independently valuable service. This is functional decomposition of "Process Donation" into a procedural sub-task.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Process Donation, Send Thank You Notification, <<include>> from Process Donation to Send Thank You Notification
+EXPLANATION: "Send Thank You Notification" is an inclusion use case included only by "Process Donation". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by any use case. It represents a procedural step within donation processing rather than a standalone service observable to an actor. This is functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Register Donor, Verify Donor Identity, <<include>> from Register Donor to Verify Donor Identity
+EXPLANATION: "Verify Donor Identity" is an inclusion use case included only by "Register Donor". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by any use case. It decomposes the registration process into a procedural verification sub-step rather than representing a complete service. This is functional decomposition.
+
+REFACTORING_RATIONALE: All three functional decomposition instances must be resolved by merging each orphan inclusion use case into its sole base use case. Specifically: (1) "Validate Payment Details" and its <<include>> relationship must be removed, with that behavior absorbed into "Process Donation". (2) "Send Thank You Notification" and its <<include>> relationship must be removed, with that behavior absorbed into "Process Donation". (3) "Verify Donor Identity" and its <<include>> relationship must be removed, with that behavior absorbed into "Register Donor". This eliminates 3 use cases and 3 include relationships, reducing the construct count by 6. The resulting model retains all meaningful actor-facing services without procedural sub-task decomposition.
+
+CONSTRUCT_COUNT: 26
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor Donor
+actor Administrator
+actor "Finance Officer" as FO
+
+rectangle "Donation Management System" {
+  usecase "Register Donor" as UC1
+  usecase "Verify Donor Identity" as UC2
+  usecase "Process Donation" as UC3
+  usecase "Validate Payment Details" as UC4
+  usecase "Send Thank You Notification" as UC5
+  usecase "View Donation History" as UC6
+  usecase "Generate Donation Report" as UC7
+  usecase "Manage Campaigns" as UC8
+  usecase "Allocate Funds" as UC9
+  usecase "Issue Tax Receipt" as UC10
+  usecase "Update Donor Profile" as UC11
+  usecase "Process Recurring Donation" as UC12
+  usecase "Search Donors" as UC13
+}
+
+Donor -- UC1
+Donor -- UC3
+Donor -- UC6
+Donor -- UC11
+Donor -- UC12
+
+Administrator -- UC8
+Administrator -- UC13
+Administrator -- UC7
+
+FO -- UC9
+FO -- UC10
+FO -- UC7
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 20
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor Donor
+actor Administrator
+actor "Finance Officer" as FO
+
+rectangle "Donation Management System" {
+  usecase "Register Donor" as UC1
+  usecase "Process Donation" as UC3
+  usecase "View Donation History" as UC6
+  usecase "Generate Donation Report" as UC7
+  usecase "Manage Campaigns" as UC8
+  usecase "Allocate Funds" as UC9
+  usecase "Issue Tax Receipt" as UC10
+  usecase "Update Donor Profile" as UC11
+  usecase "Process Recurring Donation" as UC12
+  usecase "Search Donors" as UC13
+}
+
+Donor -- UC1
+Donor -- UC3
+Donor -- UC6
+Donor -- UC11
+Donor -- UC12
+
+Administrator -- UC8
+Administrator -- UC13
+Administrator -- UC7
+
+FO -- UC9
+FO -- UC10
+FO -- UC7
+@enduml
+```

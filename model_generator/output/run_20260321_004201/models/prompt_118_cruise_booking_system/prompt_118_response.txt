@@ -1,0 +1,106 @@
+
+
+DOMAIN: cruise_booking_system
+DOMAIN_DISPLAY: Cruise Booking System
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Book Cruise, Validate Passenger Details, include (Book Cruise → Validate Passenger Details)
+EXPLANATION: "Validate Passenger Details" is an inclusion use case included only by "Book Cruise". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents a sub-step (validating passenger info) rather than a complete, independently valuable service observable to an actor. This is functional decomposition of "Book Cruise" into a procedural sub-task.
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Book Cruise, Select Cabin, include (Book Cruise → Select Cabin)
+EXPLANATION: "Select Cabin" is an inclusion use case included only by "Book Cruise". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Selecting a cabin is an internal step of the booking process, not a standalone service providing an observable result to any actor. This is functional decomposition.
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Process Payment, Calculate Total Price, include (Process Payment → Calculate Total Price)
+EXPLANATION: "Calculate Total Price" is an inclusion use case included only by "Process Payment". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. Calculating the total price is a computational sub-step within payment processing, not a complete service to any actor. This is functional decomposition.
+
+REFACTORING_RATIONALE: The three decomposed inclusion use cases — "Validate Passenger Details", "Select Cabin", and "Calculate Total Price" — along with their three <<include>> relationships must be removed. The behavior of "Validate Passenger Details" and "Select Cabin" should be merged into "Book Cruise", since validation and cabin selection are inherent parts of booking a cruise. The behavior of "Calculate Total Price" should be merged into "Process Payment", since price calculation is an inherent step of processing a payment. This eliminates 3 use cases and 3 include relationships (6 constructs removed), resulting in a cleaner model where each use case provides a complete, observable service.
+
+CONSTRUCT_COUNT: 25
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Passenger" as Passenger
+actor "Travel Agent" as TravelAgent
+actor "Payment Gateway" as PaymentGateway
+
+rectangle "Cruise Booking System" {
+  usecase "Browse Cruises" as UC1
+  usecase "Book Cruise" as UC2
+  usecase "Validate Passenger Details" as UC3
+  usecase "Select Cabin" as UC4
+  usecase "Process Payment" as UC5
+  usecase "Calculate Total Price" as UC6
+  usecase "Cancel Booking" as UC7
+  usecase "View Itinerary" as UC8
+  usecase "Manage Passenger Profile" as UC9
+  usecase "Search Excursions" as UC10
+  usecase "Apply Discount" as UC11
+}
+
+Passenger --> UC1
+Passenger --> UC2
+Passenger --> UC5
+Passenger --> UC7
+Passenger --> UC8
+Passenger --> UC9
+Passenger --> UC10
+TravelAgent --> UC2
+TravelAgent --> UC7
+PaymentGateway --> UC5
+
+UC2 ..> UC3 : <<include>>
+UC2 ..> UC4 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC5 ..> UC11 : <<extend>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 19
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Passenger" as Passenger
+actor "Travel Agent" as TravelAgent
+actor "Payment Gateway" as PaymentGateway
+
+rectangle "Cruise Booking System" {
+  usecase "Browse Cruises" as UC1
+  usecase "Book Cruise" as UC2
+  usecase "Process Payment" as UC5
+  usecase "Cancel Booking" as UC7
+  usecase "View Itinerary" as UC8
+  usecase "Manage Passenger Profile" as UC9
+  usecase "Search Excursions" as UC10
+  usecase "Apply Discount" as UC11
+}
+
+Passenger --> UC1
+Passenger --> UC2
+Passenger --> UC5
+Passenger --> UC7
+Passenger --> UC8
+Passenger --> UC9
+Passenger --> UC10
+TravelAgent --> UC2
+TravelAgent --> UC7
+PaymentGateway --> UC5
+
+UC5 ..> UC11 : <<extend>>
+@enduml
+```

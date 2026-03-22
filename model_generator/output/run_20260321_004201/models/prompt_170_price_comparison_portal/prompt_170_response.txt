@@ -1,0 +1,112 @@
+
+
+DOMAIN: price_comparison_portal
+DOMAIN_DISPLAY: Price Comparison Portal
+SIZE: medium
+
+=== VERSION 1: WITH ANTIPATTERNS ===
+[ANTIPATTERN 1]
+ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+INSTANCE_COUNT: 3
+
+[INSTANCE 1]
+CONSTRUCTS_INVOLVED: Search Products, Validate Search Input, include relationship from Search Products to Validate Search Input
+EXPLANATION: "Validate Search Input" is an inclusion use case included only by "Search Products". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal sub-step (input validation) rather than a complete service observable to a user, making this a functional decomposition of "Search Products".
+
+[INSTANCE 2]
+CONSTRUCTS_INVOLVED: Compare Prices, Fetch Retailer Data, include relationship from Compare Prices to Fetch Retailer Data
+EXPLANATION: "Fetch Retailer Data" is an inclusion use case included only by "Compare Prices". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal data retrieval step rather than a complete service observable to a user, making this a functional decomposition of "Compare Prices".
+
+[INSTANCE 3]
+CONSTRUCTS_INVOLVED: Set Price Alert, Store Alert Preferences, include relationship from Set Price Alert to Store Alert Preferences
+EXPLANATION: "Store Alert Preferences" is an inclusion use case included only by "Set Price Alert". It is not associated with any actor, does not include or extend any other use case, is not extended by any use case, and is not part of any generalization. It represents an internal persistence step rather than a complete service observable to a user, making this a functional decomposition of "Set Price Alert".
+
+REFACTORING_RATIONALE: All three functional decomposition instances must be resolved by merging each inclusion use case into its respective base use case. (1) "Validate Search Input" is merged into "Search Products" — the validation step becomes part of the search service. The use case "Validate Search Input" and its include relationship are removed. (2) "Fetch Retailer Data" is merged into "Compare Prices" — retailer data fetching becomes part of the comparison service. The use case "Fetch Retailer Data" and its include relationship are removed. (3) "Store Alert Preferences" is merged into "Set Price Alert" — preference storage becomes part of the alert-setting service. The use case "Store Alert Preferences" and its include relationship are removed. This eliminates 3 use cases and 3 include relationships, reducing the construct count by 6.
+CONSTRUCT_COUNT: 29
+
+```plantuml
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Shopper" as Shopper
+actor "Retailer" as Retailer
+actor "Admin" as Admin
+
+rectangle "Price Comparison Portal" {
+  usecase "Search Products" as UC1
+  usecase "Validate Search Input" as UC2
+  usecase "Compare Prices" as UC3
+  usecase "Fetch Retailer Data" as UC4
+  usecase "View Product Details" as UC5
+  usecase "Filter Results" as UC6
+  usecase "Set Price Alert" as UC7
+  usecase "Store Alert Preferences" as UC8
+  usecase "Write Review" as UC9
+  usecase "Register Account" as UC10
+  usecase "Manage Retailer Listings" as UC11
+  usecase "View Price History" as UC12
+  usecase "Moderate Reviews" as UC13
+  usecase "Generate Analytics Report" as UC14
+}
+
+Shopper -- UC1
+Shopper -- UC3
+Shopper -- UC5
+Shopper -- UC6
+Shopper -- UC7
+Shopper -- UC9
+Shopper -- UC10
+Shopper -- UC12
+Retailer -- UC11
+Retailer -- UC10
+Admin -- UC13
+Admin -- UC14
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+```
+
+=== VERSION 2: REFACTORED ===
+NO_ANTIPATTERN_DETECTED
+CONSTRUCT_COUNT: 23
+
+```plantuml
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+left to right direction
+
+actor "Shopper" as Shopper
+actor "Retailer" as Retailer
+actor "Admin" as Admin
+
+rectangle "Price Comparison Portal" {
+  usecase "Search Products" as UC1
+  usecase "Compare Prices" as UC3
+  usecase "View Product Details" as UC5
+  usecase "Filter Results" as UC6
+  usecase "Set Price Alert" as UC7
+  usecase "Write Review" as UC9
+  usecase "Register Account" as UC10
+  usecase "Manage Retailer Listings" as UC11
+  usecase "View Price History" as UC12
+  usecase "Moderate Reviews" as UC13
+  usecase "Generate Analytics Report" as UC14
+}
+
+Shopper -- UC1
+Shopper -- UC3
+Shopper -- UC5
+Shopper -- UC6
+Shopper -- UC7
+Shopper -- UC9
+Shopper -- UC10
+Shopper -- UC12
+Retailer -- UC11
+Retailer -- UC10
+Admin -- UC13
+Admin -- UC14
+@enduml
+```

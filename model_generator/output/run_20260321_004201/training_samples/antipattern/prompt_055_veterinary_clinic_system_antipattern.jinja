@@ -1,0 +1,54 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Veterinarian" as Vet
+actor "Receptionist" as Recep
+actor "Pet Owner" as Owner
+
+rectangle "Veterinary Clinic System" {
+    usecase "Register Pet" as UC1
+    usecase "Schedule Appointment" as UC2
+    usecase "Conduct Examination" as UC3
+    usecase "Check Vital Signs" as UC4
+    usecase "Prescribe Medication" as UC5
+    usecase "View Medical Records" as UC6
+    usecase "Process Payment" as UC7
+    usecase "Generate Invoice" as UC8
+    usecase "Manage Vaccinations" as UC9
+    usecase "Cancel Appointment" as UC10
+}
+
+Owner -- UC1
+Owner -- UC2
+Owner -- UC6
+Owner -- UC10
+Recep -- UC2
+Recep -- UC7
+Recep -- UC1
+Vet -- UC3
+Vet -- UC9
+Vet -- UC6
+
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+UC7 ..> UC8 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Instance 1: Constructs Involved: Conduct Examination, Check Vital Signs, include relationship from Conduct Examination to Check Vital Signs
+   Instance 1: Explanation: "Check Vital Signs" is an inclusion use case included only by "Conduct Examination". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by or generalized with any use case. It represents a sub-step of the examination rather than a complete service observable to an actor, making this a functional decomposition antipattern.
+
+   Instance 2: Constructs Involved: Conduct Examination, Prescribe Medication, include relationship from Conduct Examination to Prescribe Medication
+   Instance 2: Explanation: "Prescribe Medication" is an inclusion use case included only by "Conduct Examination". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by or generalized with any use case. It represents a sub-step of the examination process rather than a standalone service, making this a functional decomposition antipattern.
+
+   Instance 3: Constructs Involved: Process Payment, Generate Invoice, include relationship from Process Payment to Generate Invoice
+   Instance 3: Explanation: "Generate Invoice" is an inclusion use case included only by "Process Payment". It is not associated with any actor, is not included by any other use case, does not include or extend any other use case, and is not extended by or generalized with any use case. It represents a decomposed sub-step of payment processing rather than a complete service to any actor, making this a functional decomposition antipattern.

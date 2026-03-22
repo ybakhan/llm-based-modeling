@@ -1,0 +1,37 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor "Harbor Master" as HM
+actor "Customs Officer" as CO
+actor "Crane Operator" as CrOp
+actor "Shipping Agent" as SA
+actor "Port Administrator" as PA
+
+rectangle "Port Management System" {
+  usecase "Register Vessel Arrival" as UC1
+  usecase "Validate Vessel Documents" as UC2
+  usecase "Allocate Berth" as UC3
+  usecase "Check Berth Availability" as UC4
+  usecase "Schedule Cargo Loading" as UC5
+  usecase "Schedule Cargo Unloading" as UC6
+  usecase "Conduct Customs Inspection" as UC7
+  usecase "Verify Cargo Manifest" as UC8
+  usecase "Handle Hazardous Cargo" as UC9
+  usecase "Generate Port Activity Report" as UC10
+  usecase "Manage Vessel Departure" as UC11
+}
+
+SA -- UC1
+HM -- UC3
+CrOp -- UC5
+CrOp -- UC6
+CO -- UC7
+PA -- UC10
+HM -- UC11
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC7 ..> UC8 : <<include>>
+
+UC9 ..> UC7 : <<extend>>
+@enduml

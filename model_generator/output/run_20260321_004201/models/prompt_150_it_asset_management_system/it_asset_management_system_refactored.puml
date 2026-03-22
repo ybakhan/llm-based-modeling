@@ -1,0 +1,23 @@
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "IT Administrator" as Admin
+actor "Auditor" as Auditor
+
+rectangle "IT Asset Management System" {
+  usecase "Register Asset" as UC1
+  usecase "Retire Asset" as UC3
+  usecase "Search Assets" as UC4
+  usecase "Track Asset Location" as UC5
+  usecase "Generate Audit Report" as UC6
+  usecase "Assign Asset to Employee" as UC7
+}
+
+Admin -- UC1
+Admin -- UC3
+Admin -- UC4
+Admin -- UC5
+Admin -- UC7
+Auditor -- UC6
+
+@enduml

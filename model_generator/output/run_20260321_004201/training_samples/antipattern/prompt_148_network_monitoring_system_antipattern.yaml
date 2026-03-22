@@ -1,0 +1,105 @@
+metadata:
+  prompt_number: 148
+  domain: network_monitoring_system
+  domain_display: Network Monitoring System
+  size: medium
+  antipatterns_detected:
+  - name: 'Functional Decomposition: Using the include relationship'
+    instances:
+    - constructs_involved: Monitor Network Traffic, Parse Packet Headers
+      explanation: '"Monitor Network Traffic" includes "Parse Packet Headers" via
+        an <<include>> relationship. "Parse Packet Headers" is only included by "Monitor
+        Network Traffic", is not associated with any actor, does not include or extend
+        any other use case, is not extended by any use case, and is not part of any
+        generalization. It represents a sub-step of monitoring rather than a complete,
+        independently valuable service — a classic functional decomposition.'
+    - constructs_involved: Generate Performance Report, Aggregate Metrics Data
+      explanation: '"Generate Performance Report" includes "Aggregate Metrics Data"
+        via an <<include>> relationship. "Aggregate Metrics Data" is only included
+        by "Generate Performance Report", is not associated with any actor, does not
+        include or extend any other use case, is not extended by any use case, and
+        is not part of any generalization. It decomposes report generation into a
+        sub-function rather than offering an observable result to any user.'
+    - constructs_involved: Respond to Alert, Log Alert Details
+      explanation: '"Respond to Alert" includes "Log Alert Details" via an <<include>>
+        relationship. "Log Alert Details" is only included by "Respond to Alert",
+        is not associated with any actor, does not include or extend any other use
+        case, is not extended by any use case, and is not part of any generalization.
+        Logging alert details is a procedural sub-step of responding to an alert,
+        not a standalone service.'
+  sample_type: antipattern
+  task_mode: detect
+  construct_count: 29
+  refactoring_rationale: ''
+  generated_at: '2026-03-22T00:44:04.422219'
+  files:
+    plantuml: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_148_network_monitoring_system/network_monitoring_system_antipattern.puml
+    image: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/models/prompt_148_network_monitoring_system/network_monitoring_system_antipattern.jpg
+    jinja: /Users/yak/Documents/swe-research/llm-based-modeling/model_generator/output/run_20260321_004201/training_samples/antipattern/prompt_148_network_monitoring_system_antipattern.jinja
+training_sample:
+  input: "Analyze the following PlantUML use case model and detect if it contains\
+    \ any antipatterns. Base your analysis solely on the model provided. Do not use\
+    \ any outside knowledge.\n\nPlantUML Model:\n@startuml\n' Version 1 – contains\
+    \ Functional Decomposition: Using the include relationship\n\nactor \"Network\
+    \ Admin\" as Admin\nactor \"NOC Operator\" as NOC\nactor \"Manager\" as Manager\n\
+    actor \"Monitoring Agent\" as Agent\n\nrectangle \"Network Monitoring System\"\
+    \ {\n  usecase \"Monitor Network Traffic\" as UC1\n  usecase \"Parse Packet Headers\"\
+    \ as UC2\n  usecase \"Configure Device Thresholds\" as UC3\n  usecase \"Respond\
+    \ to Alert\" as UC4\n  usecase \"Log Alert Details\" as UC5\n  usecase \"Escalate\
+    \ Incident\" as UC6\n  usecase \"Generate Performance Report\" as UC7\n  usecase\
+    \ \"Aggregate Metrics Data\" as UC8\n  usecase \"View Dashboard\" as UC9\n  usecase\
+    \ \"Manage Device Inventory\" as UC10\n  usecase \"Discover Network Devices\"\
+    \ as UC11\n  usecase \"Schedule Maintenance Window\" as UC12\n}\n\nAdmin -- UC1\n\
+    Admin -- UC3\nAdmin -- UC10\nAdmin -- UC11\n\nNOC -- UC4\nNOC -- UC9\n\nManager\
+    \ -- UC7\nManager -- UC9\n\nAgent -- UC1\nAgent -- UC11\n\nUC1 ..> UC2 : <<include>>\n\
+    UC7 ..> UC8 : <<include>>\nUC4 ..> UC5 : <<include>>\nUC6 .> UC4 : <<extend>>\n\
+    \nAdmin -- UC12\n\n@enduml"
+  output: "Antipattern Detected: Functional Decomposition: Using the include relationship\n\
+    \n   Instance 1: Constructs Involved: Monitor Network Traffic, Parse Packet Headers\n\
+    \   Instance 1: Explanation: \"Monitor Network Traffic\" includes \"Parse Packet\
+    \ Headers\" via an <<include>> relationship. \"Parse Packet Headers\" is only\
+    \ included by \"Monitor Network Traffic\", is not associated with any actor, does\
+    \ not include or extend any other use case, is not extended by any use case, and\
+    \ is not part of any generalization. It represents a sub-step of monitoring rather\
+    \ than a complete, independently valuable service — a classic functional decomposition.\n\
+    \n   Instance 2: Constructs Involved: Generate Performance Report, Aggregate Metrics\
+    \ Data\n   Instance 2: Explanation: \"Generate Performance Report\" includes \"\
+    Aggregate Metrics Data\" via an <<include>> relationship. \"Aggregate Metrics\
+    \ Data\" is only included by \"Generate Performance Report\", is not associated\
+    \ with any actor, does not include or extend any other use case, is not extended\
+    \ by any use case, and is not part of any generalization. It decomposes report\
+    \ generation into a sub-function rather than offering an observable result to\
+    \ any user.\n\n   Instance 3: Constructs Involved: Respond to Alert, Log Alert\
+    \ Details\n   Instance 3: Explanation: \"Respond to Alert\" includes \"Log Alert\
+    \ Details\" via an <<include>> relationship. \"Log Alert Details\" is only included\
+    \ by \"Respond to Alert\", is not associated with any actor, does not include\
+    \ or extend any other use case, is not extended by any use case, and is not part\
+    \ of any generalization. Logging alert details is a procedural sub-step of responding\
+    \ to an alert, not a standalone service."
+raw_response_excerpt: '
+
+
+  DOMAIN: network_monitoring_system
+
+  DOMAIN_DISPLAY: Network Monitoring System
+
+  SIZE: medium
+
+
+  === VERSION 1: WITH ANTIPATTERNS ===
+
+  [ANTIPATTERN 1]
+
+  ANTIPATTERN_DETECTED: Functional Decomposition: Using the include relationship
+
+  INSTANCE_COUNT: 3
+
+
+  [INSTANCE 1]
+
+  CONSTRUCTS_INVOLVED: Monitor Network Traffic, Parse Packet Headers
+
+  EXPLANATION: "Monitor Network Traffic" includes "Parse Packet Headers" via an <<include>>
+  relationship. "Parse Packet Headers" is only included by "Monitor Network Traffic",
+  is not associated with any actor, does not include or extend any other use case,
+  is not extended by any …[truncated]'

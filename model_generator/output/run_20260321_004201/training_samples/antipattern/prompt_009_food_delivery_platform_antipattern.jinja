@@ -1,0 +1,37 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+left to right direction
+
+actor "Customer" as Customer
+actor "Restaurant" as Restaurant
+actor "Delivery Driver" as Driver
+
+rectangle "Food Delivery Platform" {
+  usecase "Browse Restaurants" as UC1
+  usecase "Place Order" as UC2
+  usecase "Track Delivery" as UC3
+  usecase "Update Menu" as UC4
+  usecase "Validate Delivery Address" as UC5
+  usecase "Accept Delivery" as UC6
+}
+
+Customer -- UC1
+Customer -- UC2
+Customer -- UC3
+Restaurant -- UC4
+Driver -- UC6
+
+UC2 ..> UC5 : <<include>>
+@enduml
+
+
+Answer:
+Antipattern Detected: Functional Decomposition: Using the include relationship
+
+   Constructs Involved: Place Order (UC2), Validate Delivery Address (UC5), the <<include>> relationship from UC2 to UC5
+   Explanation: "Validate Delivery Address" (UC5) is an inclusion use case that is included by only one use case ("Place Order" / UC2). It is not associated with any actor directly. It does not include or extend any other use case, is not extended by any use case, and is not involved in any generalization. "Validate Delivery Address" represents a sub-step of placing an order rather than a complete, independently valuable service observable to an actor. This is a textbook instance of Functional Decomposition via the include relationship — the designer has decomposed the "Place Order" behavior into a separate inclusion use case that has no standalone value.

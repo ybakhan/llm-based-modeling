@@ -1,0 +1,33 @@
+Analyze the following PlantUML use case model and detect if it contains any antipatterns.
+Base your analysis solely on the model provided. Do not use any outside knowledge.
+
+
+PlantUML Model:
+@startuml
+' Version 2 – refactored, no antipattern (Drop Functional Decomposition)
+
+actor "Traveler" as Traveler
+actor "Insurance Agent" as Agent
+actor "Claims Adjuster" as Adjuster
+
+rectangle "Travel Insurance System" {
+  usecase "Purchase Policy" as UC1
+  usecase "Browse Insurance Plans" as UC3
+  usecase "File Claim" as UC4
+  usecase "Review Claim" as UC5
+  usecase "Cancel Policy" as UC6
+  usecase "Get Quote" as UC7
+}
+
+Traveler --> UC3
+Traveler --> UC1
+Traveler --> UC4
+Traveler --> UC7
+Agent --> UC6
+Adjuster --> UC5
+
+@enduml
+
+
+Answer:
+No antipattern detected.

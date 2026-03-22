@@ -1,0 +1,37 @@
+@startuml
+' Version 1 – contains Functional Decomposition: Using the include relationship
+
+actor Learner
+actor Instructor
+actor Admin
+
+rectangle "Language Learning App" {
+  usecase "Register Account" as UC1
+  usecase "Browse Courses" as UC2
+  usecase "Complete Lesson" as UC3
+  usecase "Take Vocabulary Quiz" as UC4
+  usecase "Practice Pronunciation" as UC5
+  usecase "View Progress Dashboard" as UC6
+  usecase "Create Course Content" as UC7
+  usecase "Manage Users" as UC8
+  usecase "Review Flashcards" as UC9
+  usecase "Load Quiz Questions" as UC10
+  usecase "Update Progress Tracker" as UC11
+  usecase "Record Audio Input" as UC12
+}
+
+Learner -- UC1
+Learner -- UC2
+Learner -- UC3
+Learner -- UC4
+Learner -- UC5
+Learner -- UC6
+Learner -- UC9
+Instructor -- UC7
+Admin -- UC8
+
+UC4 ..> UC10 : <<include>>
+UC3 ..> UC11 : <<include>>
+UC5 ..> UC12 : <<include>>
+
+@enduml
