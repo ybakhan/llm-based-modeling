@@ -38,8 +38,8 @@ GREEN   = "#a6e3a1"
 ORANGE  = "#fab387"
 BLUE    = "#89b4fa"
 
-STATUS_COLORS = {"good": GREEN, "bad": RED, "needs-rework": ORANGE}
-STATUS_LABELS = {"good": "Good", "bad": "Bad", "needs-rework": "Needs Rework"}
+STATUS_COLORS = {"approved": GREEN, "needs-rework": ORANGE}
+STATUS_LABELS = {"approved": "Approved", "needs-rework": "Needs Rework"}
 
 ZOOM_MIN  = 0.05
 ZOOM_MAX  = 8.0
@@ -94,7 +94,14 @@ def load_stats(run_dir: Path) -> dict[int, dict]:
 
 def load_review(path: Path) -> dict:
     if path.exists():
-        return json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8"))
+        for entry in data.get("prompts", {}).values():
+            if entry.get("status") == "good":
+                entry["status"] = "approved"
+            elif entry.get("status") == "bad":
+                entry.pop("status", None)
+                entry.pop("reviewed_at", None)
+        return data
     return {"prompts": {}}
 
 
@@ -202,10 +209,15 @@ def open_popup(root: tk.Tk, path: Path) -> None:
     top = tk.Toplevel(root)
     top.title(path.stem.replace("_", " ").title())
     top.configure(bg=BG)
-    sw, sh = root.winfo_screenwidth(), root.winfo_screenheight()
-    top.geometry(f"{sw - 80}x{sh - 80}+40+40")
 
     orig = Image.open(path)
+    sw, sh = root.winfo_screenwidth(), root.winfo_screenheight()
+    ctrl_h = 52   # approximate height of the control bar
+    win_w  = min(orig.width  + 20, sw - 40)
+    win_h  = min(orig.height + 20 + ctrl_h, sh - 40)
+    x_off  = (sw - win_w) // 2
+    y_off  = (sh - win_h) // 2
+    top.geometry(f"{win_w}x{win_h}+{x_off}+{y_off}")
     zoom  = [1.0]
     photo = [None]
 
@@ -276,7 +288,7 @@ def open_popup(root: tk.Tk, path: Path) -> None:
               font=("Helvetica", 10, "bold"), cursor="hand2"
               ).pack(side="right", padx=8)
 
-    top.after(60, fit)   # fit after layout settles
+    top.after(60, render)   # render at 1:1 after layout settles
 
 
 # ── App ───────────────────────────────────────────────────────────────────────
@@ -366,24 +378,24 @@ class ReviewApp(tk.Tk):
                  fg=OVERLAY, bg=BG, font=("Helvetica", 9)).pack(side="left", padx=12)
 
         # ── Images
-        img_frame = tk.Frame(self, bg=BG)
-        img_frame.pack(fill="both", expand=True, padx=12)
+        paned = tk.PanedWindow(self, orient="horizontal", bg=OVERLAY,
+                               sashwidth=6, sashrelief="flat", sashpad=2,
+                               handlesize=0)
+        paned.pack(fill="both", expand=True, padx=12)
 
         self._ap_panel = ImagePanel(
-            img_frame, "ANTIPATTERN", RED,
+            paned, "ANTIPATTERN", RED,
             on_scroll=self._on_panel_scroll,
             on_click=self._on_image_click,
         )
-        self._ap_panel.pack(side="left", fill="both", expand=True)
-
-        tk.Frame(img_frame, width=2, bg=OVERLAY).pack(side="left", fill="y", padx=8)
+        paned.add(self._ap_panel, stretch="always")
 
         self._ref_panel = ImagePanel(
-            img_frame, "REFACTORED", GREEN,
+            paned, "REFACTORED", GREEN,
             on_scroll=self._on_panel_scroll,
             on_click=self._on_image_click,
         )
-        self._ref_panel.pack(side="left", fill="both", expand=True)
+        paned.add(self._ref_panel, stretch="always")
 
         # ── Notes
         notes_row = tk.Frame(self, bg=BG, pady=6)
@@ -430,6 +442,11 @@ class ReviewApp(tk.Tk):
 
         tk.Button(nf, text="◀  Prev", command=self._prev,
                   bg=SURFACE, fg=TEXT, relief="flat", padx=12, pady=5,
+                  cursor="hand2").pack(side="left", padx=4)
+
+        tk.Button(nf, text="Next Flagged  ⚑", command=self._next_flagged,
+                  bg=ORANGE, fg=BG_ALT, relief="flat", padx=12, pady=5,
+                  font=("Helvetica", 10, "bold"),
                   cursor="hand2").pack(side="left", padx=4)
 
         tk.Label(nf, text="Jump to:", fg=SUBTEXT, bg=BG_ALT,
@@ -619,6 +636,20 @@ class ReviewApp(tk.Tk):
         self._persist()
         self.current_idx = min(len(self.prompts) - 1, self.current_idx + 1)
         self._show_current()
+
+    def _next_flagged(self):
+        if not self.prompts:
+            return
+        flagged = {"bad", "needs-rework"}
+        for i in range(self.current_idx + 1, len(self.prompts)):
+            key = str(self.prompts[i]["num"])
+            if self.review_data["prompts"].get(key, {}).get("status") in flagged:
+                self._persist()
+                self.current_idx = i
+                self._show_current()
+                return
+        messagebox.showinfo("No more flagged",
+                            "No bad / needs-rework prompts found after this one.")
 
     def _jump(self):
         if not self.prompts:
