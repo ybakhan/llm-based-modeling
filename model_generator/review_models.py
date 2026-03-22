@@ -56,14 +56,11 @@ def find_prompts(run_dir: Path) -> list[dict]:
     for folder in sorted(models_dir.iterdir()):
         if not folder.is_dir():
             continue
-        parts = folder.name.split("_", 2)
-        if len(parts) < 2 or parts[0] != "prompt":
-            continue
+        num_str, _, domain_slug = folder.name.partition("_")
         try:
-            num = int(parts[1])
+            num = int(num_str)
         except ValueError:
             continue
-        domain_slug = parts[2] if len(parts) > 2 else ""
         ap_img = ref_img = None
         for f in folder.iterdir():
             if f.suffix.lower() in (".png", ".jpg", ".jpeg"):

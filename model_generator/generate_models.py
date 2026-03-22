@@ -329,7 +329,7 @@ def write_audit(
     """Write a human-readable audit file for one API round-trip."""
     audit_dir = run_dir / "audit"
     audit_dir.mkdir(parents=True, exist_ok=True)
-    path = audit_dir / f"prompt_{prompt_num:03d}_audit.txt"
+    path = audit_dir / f"{prompt_num:03d}_audit.txt"
 
     sep = "─" * 72
     lines = [
@@ -1171,7 +1171,7 @@ def main():
                 continue
     
             # ── Directory & file names ─────────────────────────────────────────────
-            dir_name    = f"prompt_{i:03d}_{slugify(domain)}"
+            dir_name    = f"{i:03d}_{slugify(domain)}"
             prompt_dir  = models_dir / dir_name
             domain_slug = slugify(domain)
     
@@ -1230,7 +1230,7 @@ def main():
                     args.task_mode,
                     parsed["refactored_puml"],
                 ),
-                training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.jinja",
+                training_dir / "antipattern" / f"{i:03d}_{domain_slug}_antipattern.jinja",
             )
     
             ap_answer = make_jinja_antipattern(
@@ -1267,7 +1267,7 @@ def main():
                     sort_keys=False,
                     default_flow_style=False,
                 ),
-                training_dir / "antipattern" / f"prompt_{i:03d}_{domain_slug}_antipattern.yaml",
+                training_dir / "antipattern" / f"{i:03d}_{domain_slug}_antipattern.yaml",
             )
             append_training_record(training_yaml_path, training_jsonl_path, {
                 "sample_id":                f"p{i:03d}_antipattern",
@@ -1289,7 +1289,7 @@ def main():
     
             jinja_rf = write_file(
                 make_jinja_refactored(parsed["refactored_puml"], args.task_mode),
-                training_dir / "refactored" / f"prompt_{i:03d}_{domain_slug}_refactored.jinja",
+                training_dir / "refactored" / f"{i:03d}_{domain_slug}_refactored.jinja",
             )
     
             write_file(
@@ -1316,7 +1316,7 @@ def main():
                     sort_keys=False,
                     default_flow_style=False,
                 ),
-                training_dir / "refactored" / f"prompt_{i:03d}_{domain_slug}_refactored.yaml",
+                training_dir / "refactored" / f"{i:03d}_{domain_slug}_refactored.yaml",
             )
             append_training_record(training_yaml_path, training_jsonl_path, {
                 "sample_id":                f"p{i:03d}_refactored",
