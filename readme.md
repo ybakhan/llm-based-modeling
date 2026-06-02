@@ -54,24 +54,21 @@ Each trial distinguishes two types of follow-up prompts needed after the initial
 
 ## Sample Diagrams
 
-<table>
-<tr>
-<td align="center"><b>ATM System</b> (Medium — 25 constructs)</td>
-<td align="center"><b>Swiss Bank</b> (Large — 54 constructs)</td>
-</tr>
-<tr>
-<td><img src="misusecases/atm/atm.png" alt="ATM misuse case diagram" width="380"/></td>
-<td><img src="misusecases/swissbank/swissbank.png" alt="Swiss Bank misuse case diagram" width="380"/></td>
-</tr>
-<tr>
-<td align="center"><b>RFID System</b> (Large — 54 constructs)</td>
-<td align="center"><b>E-Voting System</b> (Medium — 26 constructs)</td>
-</tr>
-<tr>
-<td><img src="misusecases/rfid/rfid.png" alt="RFID misuse case diagram" width="380"/></td>
-<td><img src="misusecases/e-voting/e-voting.png" alt="E-Voting misuse case diagram" width="380"/></td>
-</tr>
-</table>
+**ATM System** (Medium — 25 constructs)
+
+![ATM misuse case diagram](misusecases/atm/atm.png)
+
+**E-Voting System** (Medium — 26 constructs)
+
+![E-Voting misuse case diagram](misusecases/e-voting/e-voting.png)
+
+**RFID System** (Large — 54 constructs)
+
+![RFID misuse case diagram](misusecases/rfid/rfid.png)
+
+**Swiss Bank** (Large — 54 constructs)
+
+![Swiss Bank misuse case diagram](misusecases/swissbank/swissbank.png)
 
 ---
 
