@@ -97,20 +97,6 @@ Each `trial.md` contains:
 
 ---
 
-## Reproducing the Diagrams
-
-The `.puml` source files in each system folder define the intended model. To regenerate the rendered outputs:
-
-```bash
-# Generate SVG from PlantUML source
-java -jar /path/to/plantuml.jar -tsvg <system>.puml
-
-# Export high-resolution PNG from SVG (requires Inkscape)
-inkscape "<system>.svg" --export-type=png --export-dpi=600 --export-background=white
-```
-
----
-
 ## Citation
 
 If you use this material in your work, please cite the associated paper:
