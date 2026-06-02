@@ -8,7 +8,7 @@
 
 Supplementary material for the paper published at [**ENASE 2026**](https://www.scitepress.org/publishedPapers/2026/150140/pdf/) — the 21st International Conference on Evaluation of Novel Approaches to Software Engineering.
 
-This repository contains the **intended misuse case diagrams** and **trial session records** for 12 software systems of varying complexity. It evaluates the capability of a large language model (LLM) to generate [misuse case](https://en.wikipedia.org/wiki/Misuse_case) diagrams in [PlantUML](https://plantuml.com/) from structured natural-language security requirements — with no diagram syntax provided by the user.
+This repository contains the **intended misuse case diagrams** and **trial session records** for 12 software systems of varying complexity. It evaluates the capability of a large language model (LLM) to generate [misuse case](https://en.wikipedia.org/wiki/Misuse_case) diagrams in [PlantUML](https://plantuml.com/) from structured natural-language security requirements. No diagram syntax is provided by the user.
 
 All 12 case studies were completed in a **single conversation session** using **ChatGPT 5.2 (Default Mode)**, requiring between **1 and 4 prompts** to reach the intended model.
 
