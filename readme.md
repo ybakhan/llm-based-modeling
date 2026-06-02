@@ -102,7 +102,7 @@ Each `trial.md` contains:
 If you use this material in your work, please cite the associated paper:
 
 ```bibtex
-@inproceedings{alzarooni2026evaluating,
+@inproceedings{khan2026evaluating,
   title     = {Evaluating {ChatGPT-5} for Misuse Case Diagram Generation:
                An Empirical Evaluation},
   author    = {Alzarooni, Alia and Khan, Yasser and Alsayegh, Hassan and
