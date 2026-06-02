@@ -102,13 +102,17 @@ Each `trial.md` contains:
 If you use this material in your work, please cite the associated paper:
 
 ```bibtex
-@inproceedings{khan2026llm,
-  title     = {<paper title>},
-  author    = {<authors>},
+@inproceedings{alzarooni2026evaluating,
+  title     = {Evaluating {ChatGPT-5} for Misuse Case Diagram Generation:
+               An Empirical Evaluation},
+  author    = {Alzarooni, Alia and Khan, Yasser and Alsayegh, Hassan and
+               El-Attar, Mohamed and Grati, Rima},
   booktitle = {Proceedings of the 21st International Conference on Evaluation
                of Novel Approaches to Software Engineering (ENASE 2026)},
+  pages     = {599--610},
   year      = {2026},
   publisher = {SciTePress},
+  doi       = {10.5220/0015014000004999},
   url       = {https://www.scitepress.org/publishedPapers/2026/150140/pdf/}
 }
 ```
